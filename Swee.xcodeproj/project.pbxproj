@@ -7,12 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF170B012C71C02900544970 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF170B002C71C02900544970 /* AppDelegate.swift */; };
-		AF170B032C71C02900544970 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF170B022C71C02900544970 /* SceneDelegate.swift */; };
 		AF170B052C71C02900544970 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF170B042C71C02900544970 /* ViewController.swift */; };
 		AF170B082C71C02900544970 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = AF170B072C71C02900544970 /* Base */; };
 		AF170B0A2C71C02B00544970 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF170B092C71C02B00544970 /* Assets.xcassets */; };
 		AF170B0D2C71C02B00544970 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = AF170B0C2C71C02B00544970 /* Base */; };
+		AF557FC82C79AAC700AD99A5 /* SweeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF557FC72C79AAC700AD99A5 /* SweeApp.swift */; };
 		AF80222C2C72F39E001274FA /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF80222B2C72F39E001274FA /* OnboardingView.swift */; };
 		AF80222F2C770C27001274FA /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF80222E2C770C27001274FA /* Colors.swift */; };
 		AF8022452C785E96001274FA /* Poppins-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022332C785E95001274FA /* Poppins-Italic.ttf */; };
@@ -40,13 +39,12 @@
 		669376952C1EE713F9129744 /* Pods_Swee.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Swee.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		917C3D03CF12F5C5F725DBA2 /* Pods-Swee.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swee.debug.xcconfig"; path = "Target Support Files/Pods-Swee/Pods-Swee.debug.xcconfig"; sourceTree = "<group>"; };
 		AF170AFD2C71C02900544970 /* Swee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swee.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF170B002C71C02900544970 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		AF170B022C71C02900544970 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		AF170B042C71C02900544970 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		AF170B072C71C02900544970 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AF170B092C71C02B00544970 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AF170B0C2C71C02B00544970 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AF170B0E2C71C02B00544970 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AF557FC72C79AAC700AD99A5 /* SweeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SweeApp.swift; sourceTree = "<group>"; };
 		AF80222B2C72F39E001274FA /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		AF80222E2C770C27001274FA /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		AF8022332C785E95001274FA /* Poppins-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Italic.ttf"; sourceTree = "<group>"; };
@@ -120,8 +118,7 @@
 		AF170AFF2C71C02900544970 /* Swee */ = {
 			isa = PBXGroup;
 			children = (
-				AF170B002C71C02900544970 /* AppDelegate.swift */,
-				AF170B022C71C02900544970 /* SceneDelegate.swift */,
+				AF557FC72C79AAC700AD99A5 /* SweeApp.swift */,
 				AF80222B2C72F39E001274FA /* OnboardingView.swift */,
 				AF170B042C71C02900544970 /* ViewController.swift */,
 				AF170B062C71C02900544970 /* Main.storyboard */,
@@ -301,8 +298,7 @@
 				AF170B052C71C02900544970 /* ViewController.swift in Sources */,
 				AF80222F2C770C27001274FA /* Colors.swift in Sources */,
 				AF80222C2C72F39E001274FA /* OnboardingView.swift in Sources */,
-				AF170B012C71C02900544970 /* AppDelegate.swift in Sources */,
-				AF170B032C71C02900544970 /* SceneDelegate.swift in Sources */,
+				AF557FC82C79AAC700AD99A5 /* SweeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
