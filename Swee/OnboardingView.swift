@@ -7,24 +7,6 @@ struct OnboardingView: View {
         let description: String
     }
     
-    private var tosText: (String) -> AttributedString =  { text in
-        var string = AttributedString(text)
-        string.font = .custom("Poppins-Regular", size: 14)
-        string.foregroundColor = Color.text.black60
-        
-        return string
-    }
-    
-    private var tosLink: (String) -> AttributedString =  { text in
-        var string = AttributedString(text)
-        string.font = .custom("Poppins-Medium", size: 14)
-        string.foregroundColor = Color.text.black80
-        string.link = URL(string: "https://google.com")
-        string.underlineStyle = Text.LineStyle(pattern: .solid, color: Color.text.black80)
-        
-        return string
-    }
-    
     @State private var colors: [Color] = [.red, .green, .blue]
     @State private var offset: CGFloat = 0
     @State private var page = 0

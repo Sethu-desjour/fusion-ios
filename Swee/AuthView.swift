@@ -32,7 +32,6 @@ struct AuthView: View {
     
     var body: some View {
         VStack {
-            //            Spacer()
             Spacer()
             Text("Enter your phone number")
                 .font(.custom("Poppins-SemiBold", size: 24))
@@ -49,8 +48,6 @@ struct AuthView: View {
                     .font(.custom("Poppins-Medium", size: 16))
                 HStack {
                     TextField("", text: $code) {
-                        // Called when the user tap the return button
-                        // see `onCommit` on TextField initializer.
                         UIApplication.shared.endEditing()
                     }
                     .padding([.top, .bottom], 17)
@@ -62,8 +59,6 @@ struct AuthView: View {
                         .stroke(codeFieldActive ? Color.primary.brand : Color(hex: "#E7EAEB"),
                                 lineWidth: codeFieldActive ? 2 : 1))
                     TextField("Phone number", text: $phone) {
-                        // Called when the user tap the return button
-                        // see `onCommit` on TextField initializer.
                         UIApplication.shared.endEditing()
                     }
                     .padding([.top, .bottom], 17)
@@ -74,13 +69,11 @@ struct AuthView: View {
                         .stroke(phoneFieldActive ? Color.primary.brand : Color(hex: "#E7EAEB"),
                                 lineWidth: phoneFieldActive ? 2 : 1))
                 }
-                //                .textFieldStyle(OutlinedTextFieldStyle())
             }
             Spacer()
             Spacer()
             Button {
                 // validate and navigate next
-                print("PRESSED ====")
             } label: {
                 Text("Verify")
                     .frame(maxWidth: .infinity)
@@ -91,8 +84,6 @@ struct AuthView: View {
             .buttonStyle(PrimaryButton())
             Spacer()
             Spacer()
-            //                .padding([.top, .bottom], 60)
-            
             HStack {
                 Rectangle()
                     .fill(Color.text.black20)
@@ -199,11 +190,7 @@ struct PrimaryButton: ButtonStyle {
 }
 
 
-extension UIApplication {
-    func endEditing() {
-        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-}
+
 
 #Preview {
     AuthView()
