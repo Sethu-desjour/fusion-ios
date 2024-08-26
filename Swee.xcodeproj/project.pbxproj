@@ -50,6 +50,7 @@
 		AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */; };
 		AFCEC5BC2C7AD00F00D157BE /* OtpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */; };
 		AFCEC5C02C7C0E9100D157BE /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5BF2C7C0E9100D157BE /* ButtonStyles.swift */; };
+		AFCEC5C22C7C111200D157BE /* CompleteProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */; };
 		F514815AD254E714A20D5845 /* Pods_Swee.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 669376952C1EE713F9129744 /* Pods_Swee.framework */; };
 /* End PBXBuildFile section */
 
@@ -101,6 +102,7 @@
 		AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtpView.swift; sourceTree = "<group>"; };
 		AFCEC5BF2C7C0E9100D157BE /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
+		AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteProfileView.swift; sourceTree = "<group>"; };
 		D2B9A208B79A055F506C21FC /* Pods-Swee.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swee.release.xcconfig"; path = "Target Support Files/Pods-Swee/Pods-Swee.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -159,6 +161,7 @@
 				AF7DF73A2C79F2B100C3F347 /* TestView.swift */,
 				AF1FAC462C79B0E100654FB7 /* AuthView.swift */,
 				AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */,
+				AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */,
 				AF170B042C71C02900544970 /* ViewController.swift */,
 				AFCEC5BD2C7C0E7200D157BE /* UI */,
 				AF170B062C71C02900544970 /* Main.storyboard */,
@@ -385,6 +388,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFCEC5C22C7C111200D157BE /* CompleteProfileView.swift in Sources */,
 				AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */,
 				AF7DF73B2C79F2B100C3F347 /* TestView.swift in Sources */,
 				AFCEC5BC2C7AD00F00D157BE /* OtpView.swift in Sources */,
