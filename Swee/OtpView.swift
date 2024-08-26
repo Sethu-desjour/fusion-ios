@@ -9,110 +9,116 @@ struct OtpView: View {
     @State var showError: Bool = false
     
     var body: some View {
-        VStack {
-            Spacer()
-            Text("Enter your OTP")
-                .font(.custom("Poppins-SemiBold", size: 24))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, 8)
-            Text("We’ve sent an SMS with an OTP to your phone +65-86445476")
-                .font(.custom("Poppins-Regular", size: 14))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundStyle(Color.text.black60)
-                .padding(.bottom, 32)
+        NavigationView {
             VStack {
-                Text("Enter OTP")
+                Spacer()
+                Text("Enter your OTP")
+                    .font(.custom("Poppins-SemiBold", size: 24))
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.custom("Poppins-Medium", size: 16))
-                
-                HStack(spacing: 15) {
-                    ForEach(0..<5, id: \.self) { index in
-                        OTPTextBox(otpText: $otpText,
-                                   showError: $showError,
-                                   isKeyboardShowing: $isKeyboardShowing,
-                                   index: index)
-                    }
-                }
-                .background {
-                    TextField("", text: $otpText.limit(5))
-                        .keyboardType(.numberPad)
-                        .textContentType(.oneTimeCode)
-                        .frame(width: 1, height: 1)
-                        .opacity(0.001)
-                        .blendMode(.screen)
-                        .focused($isKeyboardShowing)
-                        .onChange(of: otpText) { newValue in
-                            showError = false
+                    .padding(.bottom, 8)
+                Text("We’ve sent an SMS with an OTP to your phone +65-86445476")
+                    .font(.custom("Poppins-Regular", size: 14))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .foregroundStyle(Color.text.black60)
+                    .padding(.bottom, 32)
+                VStack {
+                    Text("Enter OTP")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.custom("Poppins-Medium", size: 16))
+                    
+                    HStack(spacing: 15) {
+                        ForEach(0..<5, id: \.self) { index in
+                            OTPTextBox(otpText: $otpText,
+                                       showError: $showError,
+                                       isKeyboardShowing: $isKeyboardShowing,
+                                       index: index)
                         }
-                }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    isKeyboardShowing.toggle()
-                }
-            }
-            Text(showError ? "Wrong code, please try again" : "")
-                .font(.custom("Poppins-Regular", size: 16))
-                .foregroundStyle(Color.secondary.brand)
-                .padding([.bottom, .top], 10)
-                .frame(height: 40)
-            Button {
-                // validate and navigate next
-                showError = true
-            } label: {
-                Text("Login")
-                    .frame(maxWidth: .infinity)
-                    .font(.custom("Roboto-Bold", size: 16))
-                
-            }
-            .disabled(otpText.count != 5)
-            .buttonStyle(PrimaryButton())
-            Spacer()
-            Spacer()
-            Spacer()
-        }
-        .padding()
-        .ignoresSafeArea(.keyboard)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    Image("back_auth", bundle: .main)
-                }
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    if timeRemaining == 0 {
-                        timeRemaining = 20
                     }
+                    .background {
+                        TextField("", text: $otpText.limit(5))
+                            .keyboardType(.numberPad)
+                            .textContentType(.oneTimeCode)
+                            .frame(width: 1, height: 1)
+                            .opacity(0.001)
+                            .blendMode(.screen)
+                            .focused($isKeyboardShowing)
+                            .onChange(of: otpText) { newValue in
+                                showError = false
+                            }
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        isKeyboardShowing.toggle()
+                    }
+                }
+                Text(showError ? "Wrong code, please try again" : "")
+                    .font(.custom("Poppins-Regular", size: 16))
+                    .foregroundStyle(Color.secondary.brand)
+                    .padding([.bottom, .top], 10)
+                    .frame(height: 40)
+                Button {
+                    // validate and navigate next
+                    //                showError = true
                 } label: {
-                    if timeRemaining == 0 {
-                        Text("Resend OTP")
+                    NavigationLink(destination: CompleteProfileView()) {
+                        Text("Login")
                             .frame(maxWidth: .infinity)
-                            .font(.custom("Poppins-Bold", size: 16))
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: Color.gradient.primary,
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                    } else {
-                        Text("Resend OTP again in 0:\(timeRemaining >= 10 ? "" : "0")\(timeRemaining)")
-                            .frame(maxWidth: .infinity)
-                            .font(.custom("Poppins-Bold", size: 16))
-                            .foregroundStyle(Color.text.black60)
-                            .onReceive(timer, perform: { _ in
-                                if timeRemaining > 0 {
-                                    timeRemaining -= 1
-                                }
-                            })
+                            .font(.custom("Roboto-Bold", size: 16))
                     }
                     
                 }
+                .disabled(otpText.count != 5)
+                .buttonStyle(PrimaryButton())
+                Spacer()
+                Spacer()
+                Spacer()
+            }
+            .padding()
+            .ignoresSafeArea(.keyboard)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image("back_auth", bundle: .main)
+                    }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        if timeRemaining == 0 {
+                            timeRemaining = 20
+                        }
+                    } label: {
+                        if timeRemaining == 0 {
+                            Text("Resend OTP")
+                                .frame(maxWidth: .infinity)
+                                .font(.custom("Poppins-Bold", size: 16))
+                                .foregroundStyle(
+                                    LinearGradient(
+                                        colors: Color.gradient.primary,
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                        } else {
+                            Text("Resend OTP again in 0:\(timeRemaining >= 10 ? "" : "0")\(timeRemaining)")
+                                .frame(maxWidth: .infinity)
+                                .font(.custom("Poppins-Bold", size: 16))
+                                .foregroundStyle(Color.text.black60)
+                                .onReceive(timer, perform: { _ in
+                                    if timeRemaining > 0 {
+                                        timeRemaining -= 1
+                                    }
+                                })
+                        }
+                        
+                    }
+                }
             }
         }
+        .navigationBarTitle("")
+        .navigationBarHidden(true)
     }
 }
 
