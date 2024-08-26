@@ -11,7 +11,7 @@ import SwiftUI
 struct SweeApp: App {
     var body: some Scene {
         WindowGroup {
-            OnboardingView()
+            HomeView()
         }
     }
 }
