@@ -45,12 +45,8 @@ public struct CarouselViewRepresentable: UIViewControllerRepresentable {
                                                                       badgeImage: model.badgeImage)))
         }
         
-        let carouselViewController = CarouselViewController(viewControllers: children)
-        let carouselView = CarouselView(horizontalPadding: 80)
-        carouselView.dataSource = carouselViewController
-        carouselView.delegate = carouselViewController
-        carouselView.updateDelegate = context.coordinator
-        carouselViewController.view = carouselView
+        let carouselViewController = CarouselViewController(viewControllers: children, horizontalPadding: 85)
+        carouselViewController.carouselView.updateDelegate = context.coordinator
         
         return carouselViewController
     }

@@ -180,6 +180,7 @@ public extension CarouselView {
         addSubview(pageControl)
         pageControl.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         pageControl.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -pageControlBottomSpacing).isActive = true
+        pageControl.isHidden = true
         layoutSubviews()
     }
 

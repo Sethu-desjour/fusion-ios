@@ -11,6 +11,7 @@ import UIKit
 /// A view controller that manages a carousel view
 public class CarouselViewController: UIViewController, CarouselViewDelegate, CarouselViewDataSource {
     private let pages: [CarouselPage]
+    private let horizontalPadding: CGFloat
 
     /// Enables keyboard navigation. Default is `true`.
     public var isKeyboardNavigationEnabled: Bool = true
@@ -20,15 +21,17 @@ public class CarouselViewController: UIViewController, CarouselViewDelegate, Car
 
     /// Creates a carousel view controller object with the specified views.
     /// - Parameter views: The list of views to be added as pages
-    public required init(views: [UIView]) {
+    public required init(views: [UIView], horizontalPadding: CGFloat = 0) {
         self.pages = views
+        self.horizontalPadding = horizontalPadding
         super.init(nibName: nil, bundle: nil)
     }
 
     /// Creates a carousel view controller with the views of the view controllers.
     /// - Parameter viewControllers: The list of view controllers  whose views are to be added as pages
-    public required init(viewControllers: [UIViewController]) {
+    public required init(viewControllers: [UIViewController], horizontalPadding: CGFloat = 0) {
         pages = viewControllers
+        self.horizontalPadding = horizontalPadding
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -36,7 +39,7 @@ public class CarouselViewController: UIViewController, CarouselViewDelegate, Car
 
     /// :nodoc:
     public override func loadView() {
-        let carouselView = CarouselView()
+        let carouselView = CarouselView(horizontalPadding: horizontalPadding)
         carouselView.dataSource = self
         carouselView.delegate = self
         self.view = carouselView
