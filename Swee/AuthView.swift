@@ -2,6 +2,7 @@ import SwiftUI
 
 struct AuthView: View {
     @Environment(\.dismiss) private var dismiss
+    
     @State private var phone: String = ""
     @State private var code: String = "🇸🇬 +65"
     @FocusState var isPhoneFocused: Bool

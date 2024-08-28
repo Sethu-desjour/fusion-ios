@@ -4,28 +4,54 @@ struct HomeView: View {
     @State private var hide = true
 
     var body: some View {
-        ZStack(alignment: .bottom) {
+        NavigationView {
+//            ZStack(alignment: .bottom) {
             ScrollView {
-                Button {
-                    hide.toggle()
-                } label: {
-                    Text("Tap")
+                VStack {
+//                    Button {
+//                        hide.toggle()
+//                    } label: {
+//                        Text("Tap")
+//                    }
+                    BannersCarousel()
+                        .frame(maxWidth: .infinity, minHeight: 240)
+                    OfferRow()
+                    ExploreView()
+                    ReferalCard()
                 }
-                BannersCarousel()
-                    .frame(maxWidth: .infinity, minHeight: 240)
-                OfferRow()
-                ExploreView()
-                ReferalCard()
+                .padding(.bottom, 20)
             }
-            .safeAreaInset(edge: .bottom) {
-                Color.clear
-                    .frame(height: 50)
+            .navigationBarHidden(false)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Image("logo")
+                        Button {
+                        } label: {
+                            HStack(spacing: 4) {
+                                Image("location")
+                                Text("Singapore")
+                                    .font(.custom("Poppins-Regular", size: 14))
+                                    .foregroundStyle(Color.text.black80)
+                            }
+                        }
+                    }
+                    .padding(.bottom, 15)
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                      
+                    } label: {
+                        Image("cart")
+                    }
+                    .padding(.bottom, 15)
+                }
             }
-            BottomSheet(hide: $hide) {
-                NotificationUpsell(hide: $hide)
+            //                BottomSheet(hide: $hide) {
+            //                    NotificationUpsell(hide: $hide)
+            //                }
             }
-        }
-        .ignoresSafeArea(edges: .bottom)
+//        }
     }
 }
 
@@ -464,16 +490,6 @@ struct HomeRowTitleStyle: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.custom("Poppins-SemiBold", size: 20))
-    }
-}
-
-#Preview {
-    BottomSheet(hide: Binding.init(get: {
-        return false
-    }, set: { _ in
-        
-    })) {
-        Text("")
     }
 }
 

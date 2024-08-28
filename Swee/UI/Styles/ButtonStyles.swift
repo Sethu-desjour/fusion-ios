@@ -32,6 +32,12 @@ struct PrimaryButton: ButtonStyle {
     }
 }
 
+struct EmptyStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+    }
+}
+
 struct OutlineButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
