@@ -1,18 +1,12 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var hide = true
-
+    @EnvironmentObject private var showNotificationUpsellWrapper: ObservableWrapper<Bool>
+    
     var body: some View {
         NavigationView {
-//            ZStack(alignment: .bottom) {
             ScrollView {
                 VStack {
-//                    Button {
-//                        hide.toggle()
-//                    } label: {
-//                        Text("Tap")
-//                    }
                     BannersCarousel()
                         .frame(maxWidth: .infinity, minHeight: 240)
                     OfferRow()
@@ -40,18 +34,14 @@ struct HomeView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                      
+                        showNotificationUpsellWrapper.prop.toggle()
                     } label: {
                         Image("cart")
                     }
                     .padding(.bottom, 15)
                 }
             }
-            //                BottomSheet(hide: $hide) {
-            //                    NotificationUpsell(hide: $hide)
-            //                }
-            }
-//        }
+        }
     }
 }
 
@@ -452,37 +442,6 @@ struct NotificationUpsell: View {
             }
             .buttonStyle(OutlineButton())
         }
-    }
-}
-
-struct BottomSheet<Content: View>: View {
-    @Binding var hide: Bool
-    @ViewBuilder let content: Content
-    
-    var body: some View {
-        ZStack(alignment: .bottom) {
-            if !hide {
-                Button {
-                    hide.toggle()
-                } label: {
-                    Color.black.opacity(0.5)
-                        .ignoresSafeArea()
-                        .animation(.easeInOut(duration: 0.2), value: hide)
-                }
-            }
-            VStack {
-                content
-            }
-            .padding([.leading, .trailing], 16)
-            .padding([.top, .bottom], 33)
-            .background(.white)
-            .clipShape(RoundedRectangle(cornerRadius: 20))
-            .layoutPriority(1)
-            .frame(height: hide ? 0 : nil, alignment: .top)
-            .hidden(hide)
-            .animation(.easeInOut(duration: 0.2), value: hide)
-        }
-        .ignoresSafeArea()
     }
 }
 

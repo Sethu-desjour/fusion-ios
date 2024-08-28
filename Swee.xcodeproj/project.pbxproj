@@ -61,6 +61,8 @@
 		AFCEC5DA2C7C663500D157BE /* CarouselViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5D22C7C663500D157BE /* CarouselViewController.swift */; };
 		AFCEC5DB2C7C663500D157BE /* CarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5D32C7C663500D157BE /* CarouselView.swift */; };
 		AFDF67F72C7E38FB00489D0C /* TextStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67F62C7E38FB00489D0C /* TextStyles.swift */; };
+		AFDF67F92C7F4EA900489D0C /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */; };
+		AFDF67FB2C7F576C00489D0C /* ObservableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67FA2C7F576B00489D0C /* ObservableWrapper.swift */; };
 		F514815AD254E714A20D5845 /* Pods_Swee.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 669376952C1EE713F9129744 /* Pods_Swee.framework */; };
 /* End PBXBuildFile section */
 
@@ -123,6 +125,8 @@
 		AFCEC5D22C7C663500D157BE /* CarouselViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewController.swift; sourceTree = "<group>"; };
 		AFCEC5D32C7C663500D157BE /* CarouselView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselView.swift; sourceTree = "<group>"; };
 		AFDF67F62C7E38FB00489D0C /* TextStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyles.swift; sourceTree = "<group>"; };
+		AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheet.swift; sourceTree = "<group>"; };
+		AFDF67FA2C7F576B00489D0C /* ObservableWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableWrapper.swift; sourceTree = "<group>"; };
 		D2B9A208B79A055F506C21FC /* Pods-Swee.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swee.release.xcconfig"; path = "Target Support Files/Pods-Swee/Pods-Swee.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -223,6 +227,7 @@
 				AF80222E2C770C27001274FA /* Colors.swift */,
 				AF1FAC482C79B12A00654FB7 /* View.swift */,
 				AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */,
+				AFDF67FA2C7F576B00489D0C /* ObservableWrapper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -273,6 +278,7 @@
 			isa = PBXGroup;
 			children = (
 				AFCEC5BE2C7C0E7900D157BE /* Styles */,
+				AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -440,8 +446,10 @@
 			files = (
 				AFCEC5C22C7C111200D157BE /* CompleteProfileView.swift in Sources */,
 				AFCEC5C62C7C26EB00D157BE /* MainView.swift in Sources */,
+				AFDF67F92C7F4EA900489D0C /* BottomSheet.swift in Sources */,
 				AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */,
 				AFDF67F72C7E38FB00489D0C /* TextStyles.swift in Sources */,
+				AFDF67FB2C7F576C00489D0C /* ObservableWrapper.swift in Sources */,
 				AFCEC5D92C7C663500D157BE /* CarouselViewDelegate.swift in Sources */,
 				AF7DF73B2C79F2B100C3F347 /* TestView.swift in Sources */,
 				AFCEC5CB2C7C59A400D157BE /* CarouselViewRepresentable.swift in Sources */,

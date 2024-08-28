@@ -35,6 +35,7 @@ enum Tabs: Int, CaseIterable{
 
 struct MainView: View {
     @State var selectedTab = 0
+    @StateObject private var showNotificationUpsell = ObservableWrapper(true)
     
     func TabItem(imageName: String, title: String, isActive: Bool) -> some View {
         GeometryReader { geometry in
@@ -54,8 +55,6 @@ struct MainView: View {
             .frame(maxWidth: 100, maxHeight: 50)
         }
         .frame(maxWidth: 100, maxHeight: 50)
-//        .background(isActive ? .purple.opacity(0.4) : .clear)
-//        .cornerRadius(30)
     }
     
     var body: some View {
@@ -66,10 +65,8 @@ struct MainView: View {
                     .tag(0)
                 AuthView()
                     .tag(1)
-
                 CompleteProfileView()
                     .tag(2)
-
                 HomeView()
                     .tag(3)
             }
@@ -95,14 +92,16 @@ struct MainView: View {
                             .buttonStyle(EmptyStyle())
                         }
                     }
-                    //                .padding(6)
                     .frame(maxWidth: .infinity)
                     .background(.ultraThinMaterial)
                     .shadow(color: .black.opacity(0.15), radius: 15, y: 5)
                 }
-                //            .frame(height: 70)
+            }
+            BottomSheet(hide: $showNotificationUpsell.prop) {
+                NotificationUpsell(hide: $showNotificationUpsell.prop)
             }
         }
+        .environmentObject(showNotificationUpsell)
     }
 }
 
