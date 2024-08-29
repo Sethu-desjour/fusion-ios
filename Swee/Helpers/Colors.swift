@@ -5,7 +5,7 @@ extension Color {
         static let brand = Color(hex:"#00B7AA")
         static let dark = Color(hex:"#008980")
         static let light = Color(hex:"#005C55")
-        static let lighter = Color(hex:"#40C9BF")
+        static let lighter = Color(hex:"#80DBD5")
     }
     
     struct secondary {
@@ -31,6 +31,7 @@ extension Color {
     
     struct gradient {
         static let primary: [Color] = [Color(hex: "#80DBD5"), Color(hex: "#00B7AA"), Color(hex: "#008980")]
+        static let secondary: [Color] = [Color(hex: "#F57A5B"), Color(hex: "#F09819")]
     }
 }
 

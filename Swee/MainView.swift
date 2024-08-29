@@ -63,7 +63,7 @@ struct MainView: View {
                 TabView(selection: $selectedTab) {
                     HomeView()
                         .tag(0)
-                    AuthView()
+                    ActivityView()
                         .tag(1)
                     CompleteProfileView()
                         .tag(2)

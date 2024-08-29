@@ -148,7 +148,7 @@ struct Banner: View {
 }
 
 
-enum Vendors {
+enum Vendors: CaseIterable {
     case Zoomoov
     case Jollyfield
 }
