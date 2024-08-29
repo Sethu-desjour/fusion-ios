@@ -36,9 +36,6 @@ struct OffersView: View {
                     }
                     .padding([.leading, .trailing, .top], 16)
                 }
-//                .onWillAppear({
-//                    hideTabBarWrapper.prop = true
-//                })
                 .navigationBarBackButtonHidden(true)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {

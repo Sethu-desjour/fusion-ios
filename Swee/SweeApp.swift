@@ -2,9 +2,9 @@ import SwiftUI
 
 final class AppRootManager: ObservableObject {
     
-    @Published var currentRoot: eAppRoots = .authentication
+    @Published var currentRoot: AppRoots = .authentication
     
-    enum eAppRoots {
+    enum AppRoots {
 //        case splash
         case authentication
         case home

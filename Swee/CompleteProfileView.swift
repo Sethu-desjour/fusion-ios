@@ -42,19 +42,12 @@ struct CompleteProfileView: View {
                 .padding([.bottom], 70)
                 Button {
                     // validate and navigate next
-                    print("SWIIIIITCH!!!")
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//                        withAnimation(.spring()) {
-                            appRootManager.currentRoot = .home
-                            print(appRootManager.currentRoot)
-//                        }
-//                    }
+                    appRootManager.currentRoot = .home
+                    print(appRootManager.currentRoot)
                 } label: {
-//                    NavigationLink(destination: HomeView()) {
-                        Text("Complete")
-                            .frame(maxWidth: .infinity)
-                            .font(.custom("Roboto-Bold", size: 16))
-//                    }
+                    Text("Complete")
+                        .frame(maxWidth: .infinity)
+                        .font(.custom("Roboto-Bold", size: 16))
                 }
                 .disabled(fullName == "")
                 .buttonStyle(PrimaryButton())
