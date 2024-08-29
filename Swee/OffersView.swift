@@ -1,4 +1,6 @@
 import SwiftUI
+import SwiftUIIntrospect
+import DispatchIntrospection
 
 struct OffersView: View {
     @Environment(\.dismiss) private var dismiss
@@ -19,6 +21,9 @@ struct OffersView: View {
         GridItem(.flexible()),
     ]
     
+    @State var uiNavController: UINavigationController?
+    @EnvironmentObject private var hideTabBarWrapper: ObservableWrapper<Bool, TabBarNamespace>
+
     var body: some View {
         NavigationView {
 //            VStack(spacing: 0) {
@@ -31,6 +36,9 @@ struct OffersView: View {
                     }
                     .padding([.leading, .trailing, .top], 16)
                 }
+//                .onWillAppear({
+//                    hideTabBarWrapper.prop = true
+//                })
                 .navigationBarBackButtonHidden(true)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
@@ -59,6 +67,17 @@ struct OffersView: View {
                 }
 //            }
         }
+        .introspect(.navigationView(style: .stack), on: .iOS(.v15, .v16, .v17, .v18), customize: { navBar in
+            navBar.tabBarController?.tabBar.isHidden = true
+            uiNavController = navBar
+        })
+        .onWillAppear({
+            hideTabBarWrapper.prop = true
+        })
+        .onWillDisappear({
+            uiNavController?.tabBarController?.tabBar.isHidden = false
+            hideTabBarWrapper.prop = false
+        })
         .navigationBarTitle("")
         .navigationBarHidden(true)
     }

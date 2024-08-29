@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject private var showNotificationUpsellWrapper: ObservableWrapper<Bool>
+    @EnvironmentObject private var showNotificationUpsellWrapper: ObservableWrapper<Bool, NotificationUpsellNamespace>
     
     var body: some View {
         NavigationView {

@@ -1,6 +1,6 @@
 import Combine
 
-class ObservableWrapper<T>: ObservableObject {
+class ObservableWrapper<T, U>: ObservableObject {
     @Published var prop: T
     
     init(_ propToWrap: T) {

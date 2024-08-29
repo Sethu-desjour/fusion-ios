@@ -33,14 +33,16 @@ enum Tabs: Int, CaseIterable{
     }
 }
 
+enum NotificationUpsellNamespace {}
+enum TabBarNamespace {}
+
 struct MainView: View {
     @State var selectedTab = 0
-    @StateObject private var showNotificationUpsell = ObservableWrapper(true)
+    @StateObject private var showNotificationUpsell = ObservableWrapper<Bool, NotificationUpsellNamespace>(true)
+    @StateObject private var hideTabBar = ObservableWrapper<Bool, TabBarNamespace>(false)
     
     func TabItem(imageName: String, title: String, isActive: Bool) -> some View {
-        GeometryReader { geometry in
             VStack {
-                Spacer()
                 Image(imageName)
                     .resizable()
                     .renderingMode(.template)
@@ -49,12 +51,9 @@ struct MainView: View {
                 Text(title)
                     .font(isActive ? .custom("Roboto-Bold", size: 12) : .custom("Roboto-Medium", size: 12))
                     .foregroundStyle(isActive ? Color.primary.brand : Color.text.black60)
-                Spacer()
             }
             .animation(.default, value: selectedTab)
             .frame(maxWidth: 100, maxHeight: 50)
-        }
-        .frame(maxWidth: 100, maxHeight: 50)
     }
     
     var body: some View {
@@ -98,12 +97,14 @@ struct MainView: View {
                         .shadow(color: .black.opacity(0.15), radius: 15, y: 5)
                     }
                 }
+                .hidden(hideTabBar.prop)
                 BottomSheet(hide: $showNotificationUpsell.prop) {
                     NotificationUpsell(hide: $showNotificationUpsell.prop)
                 }
             }
         }
         .environmentObject(showNotificationUpsell)
+        .environmentObject(hideTabBar)
     }
 }
 
