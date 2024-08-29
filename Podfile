@@ -3,4 +3,5 @@
 use_frameworks!
 
 target 'Swee' do
+  pod 'SwiftUIIntrospect', '~> 1.0'
 end

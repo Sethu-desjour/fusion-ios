@@ -31,3 +31,24 @@ struct PrimaryButton: ButtonStyle {
             )
     }
 }
+
+struct EmptyStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+    }
+}
+
+struct OutlineButton: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding()
+            .background(.clear)
+            .foregroundStyle(.white)
+            .clipShape(Capsule())
+            .overlay(RoundedRectangle(cornerRadius: 24)
+                .stroke(.black,
+                        lineWidth: 1)
+            )
+    }
+}
+

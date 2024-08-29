@@ -38,7 +38,6 @@ extension Color {
     init(hex: String, opacity: Double = 1) {
         var cleanHexCode = hex.trimmingCharacters(in: .whitespacesAndNewlines)
         cleanHexCode = cleanHexCode.replacingOccurrences(of: "#", with: "")
-        print(cleanHexCode)
         var rgb: UInt64 = 0
         Scanner(string: cleanHexCode).scanHexInt64(&rgb)
         let redValue = Double((rgb >> 16) & 0xFF) / 255.0
