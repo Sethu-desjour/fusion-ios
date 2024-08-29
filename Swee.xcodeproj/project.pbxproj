@@ -63,6 +63,7 @@
 		AFDF67F72C7E38FB00489D0C /* TextStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67F62C7E38FB00489D0C /* TextStyles.swift */; };
 		AFDF67F92C7F4EA900489D0C /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */; };
 		AFDF67FB2C7F576C00489D0C /* ObservableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67FA2C7F576B00489D0C /* ObservableWrapper.swift */; };
+		AFDF67FD2C7F5A6C00489D0C /* OffersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67FC2C7F5A6C00489D0C /* OffersView.swift */; };
 		F514815AD254E714A20D5845 /* Pods_Swee.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 669376952C1EE713F9129744 /* Pods_Swee.framework */; };
 /* End PBXBuildFile section */
 
@@ -127,6 +128,7 @@
 		AFDF67F62C7E38FB00489D0C /* TextStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyles.swift; sourceTree = "<group>"; };
 		AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheet.swift; sourceTree = "<group>"; };
 		AFDF67FA2C7F576B00489D0C /* ObservableWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableWrapper.swift; sourceTree = "<group>"; };
+		AFDF67FC2C7F5A6C00489D0C /* OffersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffersView.swift; sourceTree = "<group>"; };
 		D2B9A208B79A055F506C21FC /* Pods-Swee.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swee.release.xcconfig"; path = "Target Support Files/Pods-Swee/Pods-Swee.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -187,6 +189,7 @@
 				AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */,
 				AFCEC5C32C7C260B00D157BE /* HomeView.swift */,
 				AFCEC5C52C7C26EB00D157BE /* MainView.swift */,
+				AFDF67FC2C7F5A6C00489D0C /* OffersView.swift */,
 				AFCEC5CA2C7C59A400D157BE /* CarouselViewRepresentable.swift */,
 				AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */,
 				AF170B042C71C02900544970 /* ViewController.swift */,
@@ -447,6 +450,7 @@
 				AFCEC5C22C7C111200D157BE /* CompleteProfileView.swift in Sources */,
 				AFCEC5C62C7C26EB00D157BE /* MainView.swift in Sources */,
 				AFDF67F92C7F4EA900489D0C /* BottomSheet.swift in Sources */,
+				AFDF67FD2C7F5A6C00489D0C /* OffersView.swift in Sources */,
 				AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */,
 				AFDF67F72C7E38FB00489D0C /* TextStyles.swift in Sources */,
 				AFDF67FB2C7F576C00489D0C /* ObservableWrapper.swift in Sources */,

@@ -15,7 +15,6 @@ struct HomeView: View {
                 }
                 .padding(.bottom, 20)
             }
-            .navigationBarHidden(false)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     VStack(alignment: .leading, spacing: 0) {
@@ -199,11 +198,13 @@ struct OfferRow: View {
                 Text(model.title)
                     .textStyle(HomeRowTitleStyle())
                 Spacer()
-                HStack(spacing: 4) {
-                    Text("See all")
-                        .font(.custom("Poppins-Regular", size: 14))
-                        .foregroundStyle(Color.text.black60)
-                    Image("chevron-right")
+                NavigationLink(destination: OffersView()) {
+                    HStack(spacing: 4) {
+                        Text("See all")
+                            .font(.custom("Poppins-Regular", size: 14))
+                            .foregroundStyle(Color.text.black60)
+                        Image("chevron-right")
+                    }
                 }
             }
             LazyVGrid(columns: columns, spacing: 16) {

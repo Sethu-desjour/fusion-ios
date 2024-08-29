@@ -59,46 +59,48 @@ struct MainView: View {
     
     var body: some View {
         
+        NavigationView {
         ZStack(alignment: .bottom) {
-            TabView(selection: $selectedTab) {
-                HomeView()
-                    .tag(0)
-                AuthView()
-                    .tag(1)
-                CompleteProfileView()
-                    .tag(2)
-                HomeView()
-                    .tag(3)
-            }
-            
-            ZStack {
-                VStack(spacing: 0) {
-                    HStack {
-                        ForEach((Tabs.allCases.indices), id: \.self) { index in
-                            Rectangle()
-                                .fill(selectedTab == index ? Color.primary.brand : .clear)
-                                .frame(maxWidth: .infinity, maxHeight: 1)
-                                .padding([.leading, .trailing], 20)
-                                .animation(.default, value: selectedTab)
-                        }
-                    }
-                    HStack{
-                        ForEach((Tabs.allCases), id: \.self){ item in
-                            Button{
-                                selectedTab = item.rawValue
-                            } label: {
-                                TabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item.rawValue))
-                            }
-                            .buttonStyle(EmptyStyle())
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                    .background(.ultraThinMaterial)
-                    .shadow(color: .black.opacity(0.15), radius: 15, y: 5)
+                TabView(selection: $selectedTab) {
+                    HomeView()
+                        .tag(0)
+                    AuthView()
+                        .tag(1)
+                    CompleteProfileView()
+                        .tag(2)
+                    HomeView()
+                        .tag(3)
                 }
-            }
-            BottomSheet(hide: $showNotificationUpsell.prop) {
-                NotificationUpsell(hide: $showNotificationUpsell.prop)
+                
+                ZStack {
+                    VStack(spacing: 0) {
+                        HStack {
+                            ForEach((Tabs.allCases.indices), id: \.self) { index in
+                                Rectangle()
+                                    .fill(selectedTab == index ? Color.primary.brand : .clear)
+                                    .frame(maxWidth: .infinity, maxHeight: 1)
+                                    .padding([.leading, .trailing], 20)
+                                    .animation(.default, value: selectedTab)
+                            }
+                        }
+                        HStack{
+                            ForEach((Tabs.allCases), id: \.self){ item in
+                                Button{
+                                    selectedTab = item.rawValue
+                                } label: {
+                                    TabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item.rawValue))
+                                }
+                                .buttonStyle(EmptyStyle())
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .background(.ultraThinMaterial)
+                        .shadow(color: .black.opacity(0.15), radius: 15, y: 5)
+                    }
+                }
+                BottomSheet(hide: $showNotificationUpsell.prop) {
+                    NotificationUpsell(hide: $showNotificationUpsell.prop)
+                }
             }
         }
         .environmentObject(showNotificationUpsell)
