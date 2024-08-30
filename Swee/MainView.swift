@@ -34,11 +34,13 @@ enum Tabs: Int, CaseIterable{
 }
 
 enum NotificationUpsellNamespace {}
+enum ActivityFiltersNamespace {}
 enum TabBarNamespace {}
 
 struct MainView: View {
     @State var selectedTab = 0
-    @StateObject private var showNotificationUpsell = ObservableWrapper<Bool, NotificationUpsellNamespace>(true)
+    @StateObject private var hideNotificationUpsell = ObservableWrapper<Bool, NotificationUpsellNamespace>(true)
+    @StateObject private var hideActivityFilters = ObservableWrapper<Bool, ActivityFiltersNamespace>(true)
     @StateObject private var hideTabBar = ObservableWrapper<Bool, TabBarNamespace>(false)
     
     func TabItem(imageName: String, title: String, isActive: Bool) -> some View {
@@ -98,12 +100,16 @@ struct MainView: View {
                     }
                 }
                 .hidden(hideTabBar.prop)
-                BottomSheet(hide: $showNotificationUpsell.prop) {
-                    NotificationUpsell(hide: $showNotificationUpsell.prop)
-                }
+            BottomSheet(hide: $hideNotificationUpsell.prop) {
+                NotificationUpsell(hide: $hideNotificationUpsell.prop)
+            }
+            BottomSheet(hide: $hideActivityFilters.prop) {
+                FiltersView()
+            }
             }
         }
-        .environmentObject(showNotificationUpsell)
+        .environmentObject(hideNotificationUpsell)
+        .environmentObject(hideActivityFilters)
         .environmentObject(hideTabBar)
     }
 }
