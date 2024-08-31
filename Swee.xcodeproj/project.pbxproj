@@ -25,6 +25,7 @@
 		AF1FAC622C79CEDD00654FB7 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC562C79CEDD00654FB7 /* Roboto-Black.ttf */; };
 		AF557FC82C79AAC700AD99A5 /* SweeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF557FC72C79AAC700AD99A5 /* SweeApp.swift */; };
 		AF72DFE72C80248200F70387 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72DFE62C80248200F70387 /* ActivityView.swift */; };
+		AF72DFE92C81699C00F70387 /* MerchantPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72DFE82C81699C00F70387 /* MerchantPageView.swift */; };
 		AF7DF73B2C79F2B100C3F347 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF7DF73A2C79F2B100C3F347 /* TestView.swift */; };
 		AF80222C2C72F39E001274FA /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF80222B2C72F39E001274FA /* OnboardingView.swift */; };
 		AF80222F2C770C27001274FA /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF80222E2C770C27001274FA /* Colors.swift */; };
@@ -46,6 +47,7 @@
 		AF8022542C785E96001274FA /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022422C785E96001274FA /* Poppins-BlackItalic.ttf */; };
 		AF8022552C785E96001274FA /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022432C785E96001274FA /* Poppins-ExtraLight.ttf */; };
 		AF8022562C785E96001274FA /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022442C785E96001274FA /* Poppins-Black.ttf */; };
+		AF82A4632C819B8500E0DD4C /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF82A4622C819B8500E0DD4C /* String.swift */; };
 		AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */; };
 		AFCEC5BC2C7AD00F00D157BE /* OtpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */; };
 		AFCEC5C02C7C0E9100D157BE /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5BF2C7C0E9100D157BE /* ButtonStyles.swift */; };
@@ -89,6 +91,7 @@
 		AF1FAC562C79CEDD00654FB7 /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
 		AF557FC72C79AAC700AD99A5 /* SweeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SweeApp.swift; sourceTree = "<group>"; };
 		AF72DFE62C80248200F70387 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
+		AF72DFE82C81699C00F70387 /* MerchantPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPageView.swift; sourceTree = "<group>"; };
 		AF7DF73A2C79F2B100C3F347 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		AF80222B2C72F39E001274FA /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		AF80222E2C770C27001274FA /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
@@ -110,6 +113,7 @@
 		AF8022422C785E96001274FA /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
 		AF8022432C785E96001274FA /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
 		AF8022442C785E96001274FA /* Poppins-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Black.ttf"; sourceTree = "<group>"; };
+		AF82A4622C819B8500E0DD4C /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtpView.swift; sourceTree = "<group>"; };
 		AFCEC5BF2C7C0E9100D157BE /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
@@ -187,6 +191,7 @@
 				AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */,
 				AFCEC5C32C7C260B00D157BE /* HomeView.swift */,
 				AFCEC5C52C7C26EB00D157BE /* MainView.swift */,
+				AF72DFE82C81699C00F70387 /* MerchantPageView.swift */,
 				AFDF67FC2C7F5A6C00489D0C /* OffersView.swift */,
 				AF72DFE62C80248200F70387 /* ActivityView.swift */,
 				AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */,
@@ -227,6 +232,7 @@
 				AF1FAC482C79B12A00654FB7 /* View.swift */,
 				AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */,
 				AFDF67FA2C7F576B00489D0C /* ObservableWrapper.swift */,
+				AF82A4622C819B8500E0DD4C /* String.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -458,6 +464,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AFCEC5C22C7C111200D157BE /* CompleteProfileView.swift in Sources */,
+				AF72DFE92C81699C00F70387 /* MerchantPageView.swift in Sources */,
 				AFCEC5C62C7C26EB00D157BE /* MainView.swift in Sources */,
 				AFDF67F92C7F4EA900489D0C /* BottomSheet.swift in Sources */,
 				AFDF67FD2C7F5A6C00489D0C /* OffersView.swift in Sources */,
@@ -470,6 +477,7 @@
 				AFCEC5CB2C7C59A400D157BE /* CarouselViewRepresentable.swift in Sources */,
 				AFCEC5DA2C7C663500D157BE /* CarouselViewController.swift in Sources */,
 				AFCEC5D62C7C663500D157BE /* CarouselViewProvider.swift in Sources */,
+				AF82A4632C819B8500E0DD4C /* String.swift in Sources */,
 				AFCEC5BC2C7AD00F00D157BE /* OtpView.swift in Sources */,
 				AFCEC5D82C7C663500D157BE /* CarouselViewDataSource.swift in Sources */,
 				AFCEC5DB2C7C663500D157BE /* CarouselView.swift in Sources */,

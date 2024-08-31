@@ -37,6 +37,7 @@ struct HomeView: View {
                     } label: {
                         Image("cart")
                     }
+                    .buttonStyle(EmptyStyle())
                     .padding(.bottom, 15)
                 }
             }
@@ -295,22 +296,26 @@ struct ExploreView: View {
 struct ExploreCard: View {
     @State var vendor: Vendors
     var body: some View {
-        ZStack {
-            Image(vendor == .Jollyfield ? "explore-bg-1" : "explore-bg-2")
-                .resizable()
-                .scaledToFill()
-                .frame(minWidth: 0)
-                .edgesIgnoringSafeArea(.all)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-            HStack {
-                Text(vendor.toString())
-                    .font(.custom("Poppins-Bold", size: 20))
-                    .foregroundStyle(.white)
-                Spacer()
-                Image("arrow-right")
+        NavigationLink {
+            MerchantPageView()
+        } label: {
+            ZStack {
+                Image(vendor == .Jollyfield ? "explore-bg-1" : "explore-bg-2")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(minWidth: 0)
+                    .edgesIgnoringSafeArea(.all)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                HStack {
+                    Text(vendor.toString())
+                        .font(.custom("Poppins-Bold", size: 20))
+                        .foregroundStyle(.white)
+                    Spacer()
+                    Image("arrow-right")
+                }
+                .padding(.leading, 10)
+                .padding(.trailing, 20)
             }
-            .padding(.leading, 10)
-            .padding(.trailing, 20)
         }
     }
 }

@@ -22,7 +22,7 @@ struct OffersView: View {
     ]
     
     @State var uiNavController: UINavigationController?
-    @EnvironmentObject private var hideTabBarWrapper: ObservableWrapper<Bool, TabBarNamespace>
+//    @EnvironmentObject private var hideTabBarWrapper: ObservableWrapper<Bool, TabBarNamespace>
 
     var body: some View {
         NavigationView {
@@ -69,11 +69,11 @@ struct OffersView: View {
             uiNavController = navBar
         })
         .onWillAppear({
-            hideTabBarWrapper.prop = true
+//            hideTabBarWrapper.prop = true
         })
         .onWillDisappear({
             uiNavController?.tabBarController?.tabBar.isHidden = false
-            hideTabBarWrapper.prop = false
+//            hideTabBarWrapper.prop = false
         })
         .navigationBarTitle("")
         .navigationBarHidden(true)
