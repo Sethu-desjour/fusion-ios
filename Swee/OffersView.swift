@@ -4,6 +4,9 @@ import DispatchIntrospection
 
 struct OffersView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var hideTabBarWrapper: ObservableWrapper<Bool, TabBarNamespace>
+
+    @State var uiNavController: UINavigationController?
     @State var model: OfferRowModel = OfferRowModel(title: "Package just for you",
                                                     offers: [
                                                         .init(vendor: .Zoomoov, image: .init("offer-1"), title: "10 Zoomoov Rides", description: "Get 3 rides free", price: 50, originalPrice: 69),
@@ -21,9 +24,6 @@ struct OffersView: View {
         GridItem(.flexible()),
     ]
     
-    @State var uiNavController: UINavigationController?
-    @EnvironmentObject private var hideTabBarWrapper: ObservableWrapper<Bool, TabBarNamespace>
-
     var body: some View {
         NavigationView {
 //            VStack(spacing: 0) {
@@ -59,6 +59,7 @@ struct OffersView: View {
                         } label: {
                             Image("cart")
                         }
+                        .buttonStyle(EmptyStyle())
                         .padding(.bottom, 15)
                     }
                 }

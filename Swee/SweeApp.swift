@@ -2,10 +2,11 @@ import SwiftUI
 
 final class AppRootManager: ObservableObject {
     
-    @Published var currentRoot: AppRoots = .authentication
+    @Published var currentRoot: AppRoots = .home
     
     enum AppRoots {
 //        case splash
+        case onboarding
         case authentication
         case home
     }
@@ -19,6 +20,8 @@ struct SweeApp: App {
         WindowGroup {
             Group {
                 switch appRootManager.currentRoot {
+                case .onboarding:
+                    OnboardingView()
                 case .authentication:
                     AuthView()
                 case .home:

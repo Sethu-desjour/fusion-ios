@@ -37,6 +37,7 @@ struct HomeView: View {
                     } label: {
                         Image("cart")
                     }
+                    .buttonStyle(EmptyStyle())
                     .padding(.bottom, 15)
                 }
             }
@@ -183,7 +184,9 @@ struct OfferRowModel {
 struct OfferRow: View {
     @State var model: OfferRowModel = OfferRowModel(title: "Package just for you",
                                                     offers: [
-                                                        .init(vendor: .Zoomoov, image: .init("offer-1"), title: "10 Zoomoov Rides", description: "Get 3 rides free", price: 50, originalPrice: 69),
+                                                        .init(vendor: .Zoomoov, image: .init("offer-1"), title: "10 Zoomoov Rides 10 Zoomoov Rides", description: "Get 3 rides free", price: 50, originalPrice: 69),
+                                                        .init(vendor: .Jollyfield, image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
+                                                        .init(vendor: .Zoomoov, image: .init("offer-1"), title: "10 Zoomoov Rides 10 Zoomoov Rides", description: "Get 3 rides free", price: 50, originalPrice: 69),
                                                         .init(vendor: .Jollyfield, image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
                                                     ])
     
@@ -207,11 +210,17 @@ struct OfferRow: View {
                     }
                 }
             }
-            LazyVGrid(columns: columns, spacing: 16) {
-                ForEach(model.offers.indices, id: \.self) { index in
-                    OfferCard(offer: model.offers[index])
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHGrid(rows: [.init()], spacing: 16) {
+                    ForEach(model.offers.indices, id: \.self) { index in
+                        OfferCard(offer: model.offers[index])
+                            .frame(width: 165)
+                    }
                 }
             }
+            .introspect(.scrollView, on: .iOS(.v15, .v16, .v17, .v18), customize: { scrollView in
+                scrollView.clipsToBounds = false
+            })
         }
         .padding([.leading, .trailing], 16)
     }
@@ -236,33 +245,18 @@ struct OfferCard: View {
                     .frame(minWidth: 0)
                     .edgesIgnoringSafeArea(.all)
                     .clipShape(RoundedRectangle(cornerRadius: 4))
-                VStack {
-                    HStack(alignment: .center) {
-                        Text(offer.vendor.toString())
-                            .font(.custom("Poppins-SemiBold", size: 12))
-                            .padding([.top, .bottom], 4)
-                            .padding([.leading, .trailing], 8)
-                            .background {
-                                Rectangle()
-                                    .fill(Color.text.black10)
-                                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                            }
-                        Spacer()
-                    }
-                    Spacer()
-                }
-                .padding([.top, .bottom], 11)
-                .padding([.leading, .trailing], 6)
             }
             .frame(maxWidth: .infinity, maxHeight: 140)
             Text(offer.title)
                 .font(.custom("Poppins-SemiBold", size: 16))
                 .foregroundStyle(Color.text.black100)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .lineLimit(1)
             Text(offer.description)
                 .font(.custom("Poppins-SemiBold", size: 12))
                 .foregroundStyle(Color.text.black80)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .lineLimit(1)
             HStack {
                 if let price = offer.originalPrice {
                     Text(strikethroughText("SGD \(String(format: "%.2f", price))"))
@@ -295,22 +289,26 @@ struct ExploreView: View {
 struct ExploreCard: View {
     @State var vendor: Vendors
     var body: some View {
-        ZStack {
-            Image(vendor == .Jollyfield ? "explore-bg-1" : "explore-bg-2")
-                .resizable()
-                .scaledToFill()
-                .frame(minWidth: 0)
-                .edgesIgnoringSafeArea(.all)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-            HStack {
-                Text(vendor.toString())
-                    .font(.custom("Poppins-Bold", size: 20))
-                    .foregroundStyle(.white)
-                Spacer()
-                Image("arrow-right")
+        NavigationLink {
+            MerchantPageView()
+        } label: {
+            ZStack {
+                Image(vendor == .Jollyfield ? "explore-bg-1" : "explore-bg-2")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(minWidth: 0)
+                    .edgesIgnoringSafeArea(.all)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                HStack {
+                    Text(vendor.toString())
+                        .font(.custom("Poppins-Bold", size: 20))
+                        .foregroundStyle(.white)
+                    Spacer()
+                    Image("arrow-right")
+                }
+                .padding(.leading, 10)
+                .padding(.trailing, 20)
             }
-            .padding(.leading, 10)
-            .padding(.trailing, 20)
         }
     }
 }

@@ -22,11 +22,8 @@ struct AuthView: View {
     }
     
     private var tosLink: (String) -> AttributedString =  { text in
-        var string = AttributedString(text)
-        string.font = .custom("Poppins-Medium", size: 14)
-        string.foregroundColor = Color.text.black80
+        var string = text.underline()
         string.link = URL(string: "https://google.com")
-        string.underlineStyle = Text.LineStyle(pattern: .solid, color: Color.text.black80)
         
         return string
     }
