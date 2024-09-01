@@ -1,10 +1,3 @@
-//
-//  MerchantPageView.swift
-//  Swee
-//
-//  Created by Serghei on 30.08.2024.
-//
-
 import SwiftUI
 import SwiftUIIntrospect
 
@@ -84,7 +77,6 @@ struct MerchantPageView: View {
                                 .padding([.leading, .trailing], 16)
                             }
                             .frame(height: 200)
-//                            .frame(maxWidth: geometry.size.width)
                             .frame(maxWidth: .infinity)
                             .padding(.bottom, 40)
                             .background(LinearGradient(colors: [.black, .black.opacity(0.2), .clear], startPoint: .bottom, endPoint: .top))
@@ -296,11 +288,6 @@ struct VenueCard: View {
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
-
-#Preview {
-    VenueCard(model: .init(title: "Jurong point mall", distance: "0.5 km away", image: Image("location-1")))
-}
-
 
 #Preview {
     MerchantPageView()
