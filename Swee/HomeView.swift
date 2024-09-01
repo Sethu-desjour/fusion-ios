@@ -2,18 +2,17 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var showNotificationUpsellWrapper: ObservableWrapper<Bool, NotificationUpsellNamespace>
-    
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack {
                     BannersCarousel()
-                        .frame(maxWidth: .infinity, minHeight: 240)
                     OfferRow()
                     ExploreView()
                     ReferalCard()
                 }
-                .padding(.bottom, 20)
+                .padding(.vertical, 20)
+                .padding(.horizontal, 16)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -54,6 +53,35 @@ struct BannerModel {
     let badgeImage: Image
 }
 
+struct BannersView: View {
+    @Binding var bannerModels: [BannerModel]
+    @Binding var page: Int
+    @State private var contentOffset: CGFloat = 0
+    
+    var body: some View {
+        
+        ObservableScrollView(.horizontal, showIndicators: false, contentOffset: $contentOffset) {
+            LazyHGrid(rows: [.init()]) {
+                ForEach(bannerModels.indices, id: \.self) { index in
+                    Banner(banner: bannerModels[index])
+                }
+            }
+            .onChange(of: contentOffset) { newValue in
+                if contentOffset > -100  {
+                    page = 0
+                    return
+                }
+                var offset = newValue
+                offset.negate()
+                page = min(Int(offset / 210) + 1, bannerModels.count - 1)
+            }
+        }
+        .introspect(.scrollView, on: .iOS(.v15, .v16, .v17, .v18), customize: { scrollView in
+            scrollView.clipsToBounds = false
+        })
+    }
+}
+
 struct BannersCarousel: View {
     @State var page: Int = 0
     @State var banners: [BannerModel] = [
@@ -87,9 +115,6 @@ struct BannersCarousel: View {
     var body: some View {
         VStack {
             BannersView(bannerModels: $banners, page: $page)
-                .onPageChange { newValue in
-                    page = newValue
-                }
             HStack(spacing: 8, content: {
                 ForEach(banners.indices, id:\.self) { index in
                     Capsule()
@@ -222,7 +247,6 @@ struct OfferRow: View {
                 scrollView.clipsToBounds = false
             })
         }
-        .padding([.leading, .trailing], 16)
     }
 }
 
@@ -282,7 +306,6 @@ struct ExploreView: View {
                 ExploreCard(vendor: .Jollyfield)
             }
         }
-        .padding([.leading, .trailing], 16)
     }
 }
 
@@ -374,10 +397,9 @@ struct ReferalCard: View {
                     }
                 }
             }
-            .padding([.leading, .trailing], 16)
+            .padding(.horizontal, 16)
             .padding([.top], 24)
         }
-        .padding([.leading, .trailing], 16)
     }
 }
 
