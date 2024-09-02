@@ -67,12 +67,12 @@ struct BannersView: View {
                 }
             }
             .onChange(of: contentOffset) { newValue in
-                if contentOffset > -100  {
+                var offset = newValue
+                offset.negate()
+                if offset < 100  {
                     page = 0
                     return
                 }
-                var offset = newValue
-                offset.negate()
                 page = min(Int(offset / 210) + 1, bannerModels.count - 1)
             }
         }

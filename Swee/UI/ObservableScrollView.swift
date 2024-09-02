@@ -13,24 +13,27 @@ struct ObservableScrollView<Content: View>: View {
     let axis: Axis.Set
     let showIndicators: Bool
     @Binding var contentOffset: CGFloat
-
-    init(_ axis: Axis.Set = .vertical, 
+    
+    init(_ axis: Axis.Set = .vertical,
          showIndicators: Bool = true,
-         contentOffset: Binding<CGFloat>, 
+         contentOffset: Binding<CGFloat>,
          @ViewBuilder content: () -> Content) {
         self._contentOffset = contentOffset
         self.content = content()
         self.axis = axis
         self.showIndicators = showIndicators
     }
-
+    
     var body: some View {
         ScrollView(axis, showsIndicators: showIndicators) {
             content
                 .background {
                     GeometryReader { geometry in
                         Color.clear
-                            .preference(key: ContentOffsetKey.self, value: geometry.frame(in: .named("scrollView")).minX)
+                            .preference(key: ContentOffsetKey.self,
+                                        value: axis == .horizontal ?
+                                        geometry.frame(in: .named("scrollView")).minX
+                                        : geometry.frame(in: .named("scrollView")).minY)
                     }
                 }
         }
