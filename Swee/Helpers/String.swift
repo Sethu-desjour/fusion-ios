@@ -10,4 +10,11 @@ extension String {
         
         return string
     }
+    
+    func strikethroughText(color: Color = Color.text.black40) -> AttributedString {
+        var string = AttributedString(self)
+        string.strikethroughStyle = Text.LineStyle(color: color)
+        
+        return string
+    }
 }
