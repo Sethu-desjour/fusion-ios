@@ -2,18 +2,17 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var showNotificationUpsellWrapper: ObservableWrapper<Bool, NotificationUpsellNamespace>
-    
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack {
                     BannersCarousel()
-                        .frame(maxWidth: .infinity, minHeight: 240)
                     OfferRow()
                     ExploreView()
                     ReferalCard()
                 }
-                .padding(.bottom, 20)
+                .padding(.vertical, 20)
+                .padding(.horizontal, 16)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -54,6 +53,35 @@ struct BannerModel {
     let badgeImage: Image
 }
 
+struct BannersView: View {
+    @Binding var bannerModels: [BannerModel]
+    @Binding var page: Int
+    @State private var contentOffset: CGFloat = 0
+    
+    var body: some View {
+        
+        ObservableScrollView(.horizontal, showIndicators: false, contentOffset: $contentOffset) {
+            LazyHGrid(rows: [.init()]) {
+                ForEach(bannerModels.indices, id: \.self) { index in
+                    Banner(banner: bannerModels[index])
+                }
+            }
+            .onChange(of: contentOffset) { newValue in
+                var offset = newValue
+                offset.negate()
+                if offset < 100  {
+                    page = 0
+                    return
+                }
+                page = min(Int(offset / 210) + 1, bannerModels.count - 1)
+            }
+        }
+        .introspect(.scrollView, on: .iOS(.v15, .v16, .v17, .v18), customize: { scrollView in
+            scrollView.clipsToBounds = false
+        })
+    }
+}
+
 struct BannersCarousel: View {
     @State var page: Int = 0
     @State var banners: [BannerModel] = [
@@ -87,9 +115,6 @@ struct BannersCarousel: View {
     var body: some View {
         VStack {
             BannersView(bannerModels: $banners, page: $page)
-                .onPageChange { newValue in
-                    page = newValue
-                }
             HStack(spacing: 8, content: {
                 ForEach(banners.indices, id:\.self) { index in
                     Capsule()
@@ -222,52 +247,55 @@ struct OfferRow: View {
                 scrollView.clipsToBounds = false
             })
         }
-        .padding([.leading, .trailing], 16)
     }
 }
 
 struct OfferCard: View {
     @State var offer: Offer
     
-    func strikethroughText(_ text: String) -> AttributedString {
-        var string = AttributedString(text)
-        string.strikethroughStyle = Text.LineStyle(color: Color.text.black40)
-        
-        return string
-    }
+    var mockProduct: ProductDetailModel = .init(id: "id", image: Image("product-detail-img"), title: "Chinese new year", subtitle: "10 Zoomoov rides + 1 Hero mask + 1 Bingo draw", vendor: .Zoomoov, locations: Array(0..<12), price: "S$ 50", originalPrice: "S$ 69",
+                                                        description: """
+                   Buy our **SUPERHERO** promo to get free rides from our Bingo Draws & Superhero Tuesday!
+
+                   Best promo of 15 Rides, you get 2 **SUPERHERO** masks and 3 **Bingo Draws** (guaranteed 1 free ride minimum each draw)
+                   """,
+                                                        redemptionSteps: .init(title: "How to redeem", points: ["Go to the Zoomoov outlet", "Scan the QR code at the counter", "Our staff will provide you the mask if included", "Enjoy the ride"], type: .Numbered), aboutSteps: .init(title: "About package", points: ["Access to all play areas in the zone", "Expiry only after a year", "Free meals and beverages", "Other package benefit will also be listed here", "as different points"], type: .Bullet), tosText: "In no event shall Swee or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out In no event shall Swee or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out ")
     
     var body: some View {
-        VStack {
-            ZStack {
-                offer.image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(minWidth: 0)
-                    .edgesIgnoringSafeArea(.all)
-                    .clipShape(RoundedRectangle(cornerRadius: 4))
-            }
-            .frame(maxWidth: .infinity, maxHeight: 140)
-            Text(offer.title)
-                .font(.custom("Poppins-SemiBold", size: 16))
-                .foregroundStyle(Color.text.black100)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .lineLimit(1)
-            Text(offer.description)
-                .font(.custom("Poppins-SemiBold", size: 12))
-                .foregroundStyle(Color.text.black80)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .lineLimit(1)
-            HStack {
-                if let price = offer.originalPrice {
-                    Text(strikethroughText("SGD \(String(format: "%.2f", price))"))
-                        .font(.custom("Poppins-Medium", size: 10))
-                        .foregroundStyle(Color.text.black40)
+        NavigationLink(destination: ProductDetailView(product: mockProduct)) {
+            VStack {
+                ZStack {
+                    offer.image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(minWidth: 0)
+                        .edgesIgnoringSafeArea(.all)
+                        .clipShape(RoundedRectangle(cornerRadius: 4))
                 }
-                Text("SGD \(String(format: "%.2f", offer.price))")
+                .frame(maxWidth: .infinity, maxHeight: 140)
+                Text(offer.title)
+                    .font(.custom("Poppins-SemiBold", size: 16))
+                    .foregroundStyle(Color.text.black100)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .lineLimit(1)
+                Text(offer.description)
                     .font(.custom("Poppins-SemiBold", size: 12))
-                Spacer()
+                    .foregroundStyle(Color.text.black80)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .lineLimit(1)
+                HStack {
+                    if let price = offer.originalPrice {
+                        Text("SGD \(String(format: "%.2f", price))".strikethroughText())
+                            .font(.custom("Poppins-Medium", size: 10))
+                            .foregroundStyle(Color.text.black40)
+                    }
+                    Text("SGD \(String(format: "%.2f", offer.price))")
+                        .font(.custom("Poppins-SemiBold", size: 12))
+                    Spacer()
+                }
             }
         }
+        .buttonStyle(EmptyStyle())
     }
 }
 
@@ -282,7 +310,6 @@ struct ExploreView: View {
                 ExploreCard(vendor: .Jollyfield)
             }
         }
-        .padding([.leading, .trailing], 16)
     }
 }
 
@@ -374,10 +401,9 @@ struct ReferalCard: View {
                     }
                 }
             }
-            .padding([.leading, .trailing], 16)
+            .padding(.horizontal, 16)
             .padding([.top], 24)
         }
-        .padding([.leading, .trailing], 16)
     }
 }
 

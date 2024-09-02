@@ -48,19 +48,14 @@
 		AF8022552C785E96001274FA /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022432C785E96001274FA /* Poppins-ExtraLight.ttf */; };
 		AF8022562C785E96001274FA /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022442C785E96001274FA /* Poppins-Black.ttf */; };
 		AF82A4632C819B8500E0DD4C /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF82A4622C819B8500E0DD4C /* String.swift */; };
+		AF82A4652C8432C700E0DD4C /* ObservableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF82A4642C8432C700E0DD4C /* ObservableScrollView.swift */; };
+		AF82A4672C84418200E0DD4C /* ProductDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF82A4662C84418200E0DD4C /* ProductDetailView.swift */; };
 		AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */; };
 		AFCEC5BC2C7AD00F00D157BE /* OtpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */; };
 		AFCEC5C02C7C0E9100D157BE /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5BF2C7C0E9100D157BE /* ButtonStyles.swift */; };
 		AFCEC5C22C7C111200D157BE /* CompleteProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */; };
 		AFCEC5C42C7C260B00D157BE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5C32C7C260B00D157BE /* HomeView.swift */; };
 		AFCEC5C62C7C26EB00D157BE /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5C52C7C26EB00D157BE /* MainView.swift */; };
-		AFCEC5CB2C7C59A400D157BE /* CarouselViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5CA2C7C59A400D157BE /* CarouselViewRepresentable.swift */; };
-		AFCEC5D62C7C663500D157BE /* CarouselViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5CD2C7C663500D157BE /* CarouselViewProvider.swift */; };
-		AFCEC5D72C7C663500D157BE /* CarouselPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5CE2C7C663500D157BE /* CarouselPage.swift */; };
-		AFCEC5D82C7C663500D157BE /* CarouselViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5CF2C7C663500D157BE /* CarouselViewDataSource.swift */; };
-		AFCEC5D92C7C663500D157BE /* CarouselViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5D02C7C663500D157BE /* CarouselViewDelegate.swift */; };
-		AFCEC5DA2C7C663500D157BE /* CarouselViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5D22C7C663500D157BE /* CarouselViewController.swift */; };
-		AFCEC5DB2C7C663500D157BE /* CarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5D32C7C663500D157BE /* CarouselView.swift */; };
 		AFDF67F72C7E38FB00489D0C /* TextStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67F62C7E38FB00489D0C /* TextStyles.swift */; };
 		AFDF67F92C7F4EA900489D0C /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */; };
 		AFDF67FB2C7F576C00489D0C /* ObservableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67FA2C7F576B00489D0C /* ObservableWrapper.swift */; };
@@ -114,19 +109,14 @@
 		AF8022432C785E96001274FA /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
 		AF8022442C785E96001274FA /* Poppins-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Black.ttf"; sourceTree = "<group>"; };
 		AF82A4622C819B8500E0DD4C /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		AF82A4642C8432C700E0DD4C /* ObservableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableScrollView.swift; sourceTree = "<group>"; };
+		AF82A4662C84418200E0DD4C /* ProductDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailView.swift; sourceTree = "<group>"; };
 		AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtpView.swift; sourceTree = "<group>"; };
 		AFCEC5BF2C7C0E9100D157BE /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteProfileView.swift; sourceTree = "<group>"; };
 		AFCEC5C32C7C260B00D157BE /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		AFCEC5C52C7C26EB00D157BE /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		AFCEC5CA2C7C59A400D157BE /* CarouselViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselViewRepresentable.swift; sourceTree = "<group>"; };
-		AFCEC5CD2C7C663500D157BE /* CarouselViewProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewProvider.swift; sourceTree = "<group>"; };
-		AFCEC5CE2C7C663500D157BE /* CarouselPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselPage.swift; sourceTree = "<group>"; };
-		AFCEC5CF2C7C663500D157BE /* CarouselViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewDataSource.swift; sourceTree = "<group>"; };
-		AFCEC5D02C7C663500D157BE /* CarouselViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewDelegate.swift; sourceTree = "<group>"; };
-		AFCEC5D22C7C663500D157BE /* CarouselViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewController.swift; sourceTree = "<group>"; };
-		AFCEC5D32C7C663500D157BE /* CarouselView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselView.swift; sourceTree = "<group>"; };
 		AFDF67F62C7E38FB00489D0C /* TextStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyles.swift; sourceTree = "<group>"; };
 		AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheet.swift; sourceTree = "<group>"; };
 		AFDF67FA2C7F576B00489D0C /* ObservableWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableWrapper.swift; sourceTree = "<group>"; };
@@ -190,12 +180,12 @@
 				AF1FAC462C79B0E100654FB7 /* AuthView.swift */,
 				AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */,
 				AFCEC5C32C7C260B00D157BE /* HomeView.swift */,
+				AF82A4662C84418200E0DD4C /* ProductDetailView.swift */,
 				AFCEC5C52C7C26EB00D157BE /* MainView.swift */,
 				AF72DFE82C81699C00F70387 /* MerchantPageView.swift */,
 				AFDF67FC2C7F5A6C00489D0C /* OffersView.swift */,
 				AF72DFE62C80248200F70387 /* ActivityView.swift */,
 				AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */,
-				AFCEC5CC2C7C661E00D157BE /* Carousel */,
 				AFCEC5BD2C7C0E7200D157BE /* UI */,
 				AF170B092C71C02B00544970 /* Assets.xcassets */,
 				AF170B0B2C71C02B00544970 /* LaunchScreen.storyboard */,
@@ -284,7 +274,7 @@
 			children = (
 				AFCEC5BE2C7C0E7900D157BE /* Styles */,
 				AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */,
-				AFCEC5CA2C7C59A400D157BE /* CarouselViewRepresentable.swift */,
+				AF82A4642C8432C700E0DD4C /* ObservableScrollView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -296,27 +286,6 @@
 				AFDF67F62C7E38FB00489D0C /* TextStyles.swift */,
 			);
 			path = Styles;
-			sourceTree = "<group>";
-		};
-		AFCEC5CC2C7C661E00D157BE /* Carousel */ = {
-			isa = PBXGroup;
-			children = (
-				AFCEC5D32C7C663500D157BE /* CarouselView.swift */,
-				AFCEC5D22C7C663500D157BE /* CarouselViewController.swift */,
-				AFCEC5CD2C7C663500D157BE /* CarouselViewProvider.swift */,
-				AFCEC5D12C7C663500D157BE /* Protocols */,
-			);
-			path = Carousel;
-			sourceTree = "<group>";
-		};
-		AFCEC5D12C7C663500D157BE /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				AFCEC5CE2C7C663500D157BE /* CarouselPage.swift */,
-				AFCEC5CF2C7C663500D157BE /* CarouselViewDataSource.swift */,
-				AFCEC5D02C7C663500D157BE /* CarouselViewDelegate.swift */,
-			);
-			path = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -471,17 +440,12 @@
 				AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */,
 				AF72DFE72C80248200F70387 /* ActivityView.swift in Sources */,
 				AFDF67F72C7E38FB00489D0C /* TextStyles.swift in Sources */,
+				AF82A4672C84418200E0DD4C /* ProductDetailView.swift in Sources */,
+				AF82A4652C8432C700E0DD4C /* ObservableScrollView.swift in Sources */,
 				AFDF67FB2C7F576C00489D0C /* ObservableWrapper.swift in Sources */,
-				AFCEC5D92C7C663500D157BE /* CarouselViewDelegate.swift in Sources */,
 				AF7DF73B2C79F2B100C3F347 /* TestView.swift in Sources */,
-				AFCEC5CB2C7C59A400D157BE /* CarouselViewRepresentable.swift in Sources */,
-				AFCEC5DA2C7C663500D157BE /* CarouselViewController.swift in Sources */,
-				AFCEC5D62C7C663500D157BE /* CarouselViewProvider.swift in Sources */,
 				AF82A4632C819B8500E0DD4C /* String.swift in Sources */,
 				AFCEC5BC2C7AD00F00D157BE /* OtpView.swift in Sources */,
-				AFCEC5D82C7C663500D157BE /* CarouselViewDataSource.swift in Sources */,
-				AFCEC5DB2C7C663500D157BE /* CarouselView.swift in Sources */,
-				AFCEC5D72C7C663500D157BE /* CarouselPage.swift in Sources */,
 				AF1FAC472C79B0E100654FB7 /* AuthView.swift in Sources */,
 				AFCEC5C02C7C0E9100D157BE /* ButtonStyles.swift in Sources */,
 				AF1FAC492C79B12A00654FB7 /* View.swift in Sources */,

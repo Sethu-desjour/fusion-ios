@@ -44,24 +44,24 @@ struct MainView: View {
     @StateObject private var hideTabBar = ObservableWrapper<Bool, TabBarNamespace>(false)
     
     func TabItem(imageName: String, title: String, isActive: Bool) -> some View {
-            VStack {
-                Image(imageName)
-                    .resizable()
-                    .renderingMode(.template)
-                    .foregroundStyle(Color.text.black60)
-                    .frame(width: 24, height: 24)
-                Text(title)
-                    .font(isActive ? .custom("Roboto-Bold", size: 12) : .custom("Roboto-Medium", size: 12))
-                    .foregroundStyle(isActive ? Color.primary.brand : Color.text.black60)
-            }
-            .animation(.default, value: selectedTab)
-            .frame(maxWidth: 100, maxHeight: 50)
+        VStack {
+            Image(imageName)
+                .resizable()
+                .renderingMode(.template)
+                .foregroundStyle(Color.text.black60)
+                .frame(width: 24, height: 24)
+            Text(title)
+                .font(isActive ? .custom("Roboto-Bold", size: 12) : .custom("Roboto-Medium", size: 12))
+                .foregroundStyle(isActive ? Color.primary.brand : Color.text.black60)
+        }
+        .animation(.default, value: selectedTab)
+        .frame(maxWidth: 100, maxHeight: 50)
     }
     
     var body: some View {
         
         NavigationView {
-        ZStack(alignment: .bottom) {
+            ZStack(alignment: .bottom) {
                 TabView(selection: $selectedTab) {
                     HomeView()
                         .tag(0)
@@ -100,12 +100,12 @@ struct MainView: View {
                     }
                 }
                 .hidden(hideTabBar.prop)
-            BottomSheet(hide: $hideNotificationUpsell.prop) {
-                NotificationUpsell(hide: $hideNotificationUpsell.prop)
-            }
-            BottomSheet(hide: $hideActivityFilters.prop) {
-                FiltersView()
-            }
+                BottomSheet(hide: $hideNotificationUpsell.prop) {
+                    NotificationUpsell(hide: $hideNotificationUpsell.prop)
+                }
+                BottomSheet(hide: $hideActivityFilters.prop) {
+                    FiltersView()
+                }
             }
         }
         .environmentObject(hideNotificationUpsell)

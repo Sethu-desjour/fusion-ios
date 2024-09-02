@@ -11,8 +11,16 @@ extension View {
         modifier(WillAppearModifier(callback: perform))
     }
     
+    func onDidAppear(_ perform: @escaping () -> Void) -> some View {
+        modifier(DidAppearModifier(callback: perform))
+    }
+    
     func onWillDisappear(_ perform: @escaping () -> Void) -> some View {
         modifier(WillDisappearModifier(callback: perform))
+    }
+    
+    func onDidLoad(_ perform: @escaping () -> Void) -> some View {
+        modifier(DidLoadModifier(callback: perform))
     }
 }
 
@@ -32,11 +40,29 @@ struct WillAppearModifier: ViewModifier {
     }
 }
 
+struct DidAppearModifier: ViewModifier {
+    let callback: () -> Void
+
+    func body(content: Content) -> some View {
+        content.background(UIViewLifeCycleHandler(onDidAppear: callback))
+    }
+}
+
+struct DidLoadModifier: ViewModifier {
+    let callback: () -> Void
+
+    func body(content: Content) -> some View {
+        content.background(UIViewLifeCycleHandler(onDidLoad: callback))
+    }
+}
+
 struct UIViewLifeCycleHandler: UIViewControllerRepresentable {
     typealias UIViewControllerType = UIViewController
 
     var onWillAppear: () -> Void = { }
+    var onDidAppear: () -> Void = { }
     var onWillDisappear: () -> Void = { }
+    var onDidLoad: () -> Void = { }
 
     func makeUIViewController(context: UIViewControllerRepresentableContext<Self>) -> UIViewControllerType {
         context.coordinator
@@ -48,16 +74,20 @@ struct UIViewLifeCycleHandler: UIViewControllerRepresentable {
     ) { }
 
     func makeCoordinator() -> Self.Coordinator {
-        Coordinator(onWillAppear: onWillAppear, onWillDisappear: onWillDisappear)
+        Coordinator(onWillAppear: onWillAppear, onDidAppear: onDidAppear, onWillDisappear: onWillDisappear, onDidLoad: onDidLoad)
     }
 
     class Coordinator: UIViewControllerType {
         let onWillAppear: () -> Void
+        let onDidAppear: () -> Void
         let onWillDisappear: () -> Void
+        let onDidLoad: () -> Void
 
-        init(onWillAppear: @escaping () -> Void, onWillDisappear: @escaping () -> Void) {
+        init(onWillAppear: @escaping () -> Void, onDidAppear: @escaping () -> Void,  onWillDisappear: @escaping () -> Void, onDidLoad: @escaping () -> Void) {
             self.onWillAppear = onWillAppear
+            self.onDidAppear = onDidAppear
             self.onWillDisappear = onWillDisappear
+            self.onDidLoad = onDidLoad
             super.init(nibName: nil, bundle: nil)
         }
 
@@ -73,6 +103,16 @@ struct UIViewLifeCycleHandler: UIViewControllerRepresentable {
         override func viewWillDisappear(_ animated: Bool) {
             super.viewWillDisappear(animated)
             onWillDisappear()
+        }
+        
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            onDidLoad()
+        }
+        
+        override func viewDidAppear(_ animated: Bool) {
+            super.viewDidAppear(animated)
+            onDidAppear()
         }
     }
 }
