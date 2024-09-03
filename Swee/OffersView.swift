@@ -4,7 +4,7 @@ import DispatchIntrospection
 
 struct OffersView: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var hideTabBarWrapper: ObservableWrapper<Bool, TabBarNamespace>
+    @Environment(\.tabIsShown) private var tabIsShown
 
     @State var uiNavController: UINavigationController?
     @State var model: OfferRowModel = OfferRowModel(title: "Package just for you",
@@ -70,11 +70,11 @@ struct OffersView: View {
             uiNavController = navBar
         })
         .onWillAppear({
-            hideTabBarWrapper.prop = true
+            tabIsShown.wrappedValue = false
         })
         .onWillDisappear({
             uiNavController?.tabBarController?.tabBar.isHidden = false
-            hideTabBarWrapper.prop = false
+            tabIsShown.wrappedValue = true
         })
         .navigationBarTitle("")
         .navigationBarHidden(true)

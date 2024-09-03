@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject private var showNotificationUpsellWrapper: ObservableWrapper<Bool, NotificationUpsellNamespace>
+//    @EnvironmentObject private var showNotificationUpsellWrapper: ObservableWrapper<Bool, NotificationUpsellNamespace>
     var body: some View {
         NavigationView {
             ScrollView {
@@ -31,11 +31,9 @@ struct HomeView: View {
                     .padding(.bottom, 15)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        showNotificationUpsellWrapper.prop.toggle()
-                    } label: {
+                    NavigationLink(destination: CheckoutView(), label: {
                         Image("cart")
-                    }
+                    })
                     .buttonStyle(EmptyStyle())
                     .padding(.bottom, 15)
                 }
