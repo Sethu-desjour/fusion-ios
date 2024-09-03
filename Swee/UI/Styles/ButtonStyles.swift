@@ -40,6 +40,7 @@ struct EmptyStyle: ButtonStyle {
 
 struct OutlineButton: ButtonStyle {
     var strokeColor: Color = .black
+    var cornerRadius: CGFloat = 24
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -47,7 +48,7 @@ struct OutlineButton: ButtonStyle {
             .background(.clear)
             .foregroundStyle(.white)
             .clipShape(Capsule())
-            .overlay(RoundedRectangle(cornerRadius: 24)
+            .overlay(RoundedRectangle(cornerRadius: cornerRadius)
                 .stroke(strokeColor,
                         lineWidth: 1)
             )

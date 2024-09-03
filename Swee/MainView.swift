@@ -1,10 +1,25 @@
 import SwiftUI
 
-enum Tabs: Int, CaseIterable{
+enum Tabs: Int, CaseIterable, Identifiable {
+    
     case home = 0
     case purchases
     case alerts
     case profile
+    
+    @ViewBuilder
+    var screen: some View {
+        switch self {
+        case .home:
+            HomeView()
+        case .purchases:
+            ActivityView()
+        case .alerts:
+            CompleteProfileView()
+        case .profile:
+            HomeView()
+        }
+    }
     
     var title: String{
         switch self {
@@ -31,17 +46,19 @@ enum Tabs: Int, CaseIterable{
             return "profile"
         }
     }
+    
+    var id: Tabs { self }
 }
 
 enum NotificationUpsellNamespace {}
 enum ActivityFiltersNamespace {}
-enum TabBarNamespace {}
 
 struct MainView: View {
-    @State var selectedTab = 0
+    @State private var selectedTab: Tabs = .home
+    @State private var showTabBar = true
+    
     @StateObject private var hideNotificationUpsell = ObservableWrapper<Bool, NotificationUpsellNamespace>(true)
     @StateObject private var hideActivityFilters = ObservableWrapper<Bool, ActivityFiltersNamespace>(true)
-    @StateObject private var hideTabBar = ObservableWrapper<Bool, TabBarNamespace>(false)
     
     func TabItem(imageName: String, title: String, isActive: Bool) -> some View {
         VStack {
@@ -59,26 +76,21 @@ struct MainView: View {
     }
     
     var body: some View {
-        
         NavigationView {
             ZStack(alignment: .bottom) {
                 TabView(selection: $selectedTab) {
-                    HomeView()
-                        .tag(0)
-                    ActivityView()
-                        .tag(1)
-                    CompleteProfileView()
-                        .tag(2)
-                    HomeView()
-                        .tag(3)
+                    ForEach(Tabs.allCases) { tab in
+                        tab.screen
+                            .tag(tab as Tabs?)
+                    }
                 }
                 
                 ZStack {
                     VStack(spacing: 0) {
                         HStack {
-                            ForEach((Tabs.allCases.indices), id: \.self) { index in
+                            ForEach((Tabs.allCases), id: \.self) { tab in
                                 Rectangle()
-                                    .fill(selectedTab == index ? Color.primary.brand : .clear)
+                                    .fill(selectedTab == tab ? Color.primary.brand : .clear)
                                     .frame(maxWidth: .infinity, maxHeight: 1)
                                     .padding([.leading, .trailing], 20)
                                     .animation(.default, value: selectedTab)
@@ -87,9 +99,9 @@ struct MainView: View {
                         HStack{
                             ForEach((Tabs.allCases), id: \.self){ item in
                                 Button{
-                                    selectedTab = item.rawValue
+                                    selectedTab = item
                                 } label: {
-                                    TabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item.rawValue))
+                                    TabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item))
                                 }
                                 .buttonStyle(EmptyStyle())
                             }
@@ -99,7 +111,7 @@ struct MainView: View {
                         .shadow(color: .black.opacity(0.15), radius: 15, y: 5)
                     }
                 }
-                .hidden(hideTabBar.prop)
+                .hidden(!showTabBar)
                 BottomSheet(hide: $hideNotificationUpsell.prop) {
                     NotificationUpsell(hide: $hideNotificationUpsell.prop)
                 }
@@ -110,7 +122,8 @@ struct MainView: View {
         }
         .environmentObject(hideNotificationUpsell)
         .environmentObject(hideActivityFilters)
-        .environmentObject(hideTabBar)
+        .environment(\.tabIsShown, $showTabBar)
+        .environment(\.currentTab, $selectedTab)
     }
 }
 

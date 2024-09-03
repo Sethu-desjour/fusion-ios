@@ -26,7 +26,7 @@ struct ProductDetailModel {
 
 struct ProductDetailView: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var hideTabBarWrapper: ObservableWrapper<Bool, TabBarNamespace>
+    @Environment(\.tabIsShown) private var tabIsShown
     @State private var uiNavController: UINavigationController?
     @State private var isExpanded: Bool = false
     @State var product: ProductDetailModel
@@ -257,11 +257,11 @@ struct ProductDetailView: View {
             uiNavController = navBar
         })
         .onWillAppear({
-            hideTabBarWrapper.prop = true
+            tabIsShown.wrappedValue = false
         })
         .onWillDisappear({
             uiNavController?.tabBarController?.tabBar.isHidden = false
-            hideTabBarWrapper.prop = false
+            tabIsShown.wrappedValue = true
         })
         .navigationBarTitle("")
         .navigationBarHidden(true)
