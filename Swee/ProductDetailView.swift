@@ -277,5 +277,4 @@ Buy our **SUPERHERO** promo to get free rides from our Bingo Draws & Superhero T
 Best promo of 15 Rides, you get 2 **SUPERHERO** masks and 3 **Bingo Draws** (guaranteed 1 free ride minimum each draw)
 """,
                                      redemptionSteps: .init(title: "How to redeem", points: ["Go to the Zoomoov outlet", "Scan the QR code at the counter", "Our staff will provide you the mask if included", "Enjoy the ride"], type: .Numbered), aboutSteps: .init(title: "About package", points: ["Access to all play areas in the zone", "Expiry only after a year", "Free meals and beverages", "Other package benefit will also be listed here", "as different points"], type: .Bullet), tosText: "In no event shall Swee or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out In no event shall Swee or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out "))
-//    .environmentObject(ObservableWrapper<Bool, TabBarNamespace>(false))
 }

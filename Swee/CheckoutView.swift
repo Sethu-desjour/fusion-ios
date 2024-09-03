@@ -18,7 +18,6 @@ struct CheckoutProduct {
 struct CheckoutView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.tabIsShown) private var tabIsShown
-//    @EnvironmentObject private var hideTabBarWrapper: ObservableWrapper<Bool, TabBarNamespace>
     @Environment(\.currentTab) private var selectedTab
     
     @State var uiNavController: UINavigationController?
