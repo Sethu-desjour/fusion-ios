@@ -12,7 +12,7 @@ struct BottomSheet<Content: View>: View {
                 } label: {
                     Color.black.opacity(0.5)
                         .ignoresSafeArea()
-                        .animation(.easeInOut(duration: 0.2), value: hide)
+//                        .animation(.easeInOut(duration: 0.2), value: hide)
                 }
             }
             VStack {
@@ -25,8 +25,8 @@ struct BottomSheet<Content: View>: View {
             .layoutPriority(1)
             .frame(height: hide ? 0 : nil, alignment: .top)
             .hidden(hide)
-            .animation(.easeInOut(duration: 0.2), value: hide)
         }
+        .animation(.easeInOut(duration: 0.2), value: hide)
         .ignoresSafeArea()
     }
 }

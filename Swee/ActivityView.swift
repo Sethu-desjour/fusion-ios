@@ -33,8 +33,11 @@ struct PurchasesSection: Hashable {
 }
 
 struct ActivityView: View {
-    @EnvironmentObject private var hideActivityFilterWrapper: ObservableWrapper<Bool, ActivityFiltersNamespace>
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.tabIsShown) private var tabIsShown
+    @Environment(\.bottomSheetData) private var bottomSheetData
+
+    @State var uiNavController: UINavigationController?
     @State private var tab = ActivityTab.Purchased
     @State private var purchases: [PurchasesSection] = [
         .init(date: Date(), purchases: [
@@ -176,6 +179,14 @@ struct ActivityView: View {
                 }
             }
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image("back")
+                    }
+                    .padding(.bottom, 15)
+                }
                 ToolbarItem(placement: .principal) {
                     Text("My Activity")
                         .font(.custom("Poppins-Bold", size: 18))
@@ -184,18 +195,30 @@ struct ActivityView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        hideActivityFilterWrapper.prop = false
+                        bottomSheetData.wrappedValue.hidden = false
                     } label: {
                         noData ? Image("cart") : Image("filter")
                     }
                     .padding(.bottom, 15)
                 }
             }
-            .navigationBarTitle("")
-            .navigationBarHidden(false)
             .navigationBarBackButtonHidden(true)
             .navigationBarTitleDisplayMode(.inline)
         }
+        .introspect(.navigationView(style: .stack), on: .iOS(.v15, .v16, .v17, .v18), customize: { navBar in
+            navBar.tabBarController?.tabBar.isHidden = true
+            uiNavController = navBar
+        })
+        .onWillAppear({
+            bottomSheetData.wrappedValue.view = FiltersView()
+            tabIsShown.wrappedValue = false
+        })
+        .onWillDisappear({
+            uiNavController?.tabBarController?.tabBar.isHidden = false
+            tabIsShown.wrappedValue = true
+        })
+        .navigationBarTitle("")
+        .navigationBarHidden(true)
     }
 }
 

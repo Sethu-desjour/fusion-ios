@@ -1,7 +1,9 @@
 import SwiftUI
 
 struct HomeView: View {
-//    @EnvironmentObject private var showNotificationUpsellWrapper: ObservableWrapper<Bool, NotificationUpsellNamespace>
+    
+    @Environment(\.bottomSheetData) private var bottomSheetData
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -13,6 +15,9 @@ struct HomeView: View {
                 }
                 .padding(.vertical, 20)
                 .padding(.horizontal, 16)
+            }
+            .onWillAppear {
+                bottomSheetData.wrappedValue.view = NotificationUpsell(hide: bottomSheetData.hidden)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -31,11 +36,18 @@ struct HomeView: View {
                     .padding(.bottom, 15)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: CheckoutView(), label: {
+                    Button(action: {
+                        bottomSheetData.wrappedValue.hidden = false
+                    }, label: {
                         Image("cart")
                     })
                     .buttonStyle(EmptyStyle())
                     .padding(.bottom, 15)
+//                    NavigationLink(destination: CheckoutView(), label: {
+//                        Image("cart")
+//                    })
+//                    .buttonStyle(EmptyStyle())
+//                    .padding(.bottom, 15)
                 }
             }
         }

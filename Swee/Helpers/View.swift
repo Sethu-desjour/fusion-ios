@@ -1,6 +1,20 @@
 import SwiftUI
 
 extension View {
+    func addInnerShadow() -> some View {
+        if #available(iOS 16.0, *) {
+            return self.foregroundStyle(
+                Color.white.shadow(
+                    .inner(color: .black.opacity(0.25), radius: 1, x: 0, y: 1)
+                )
+            )
+        } else {
+            return self.foregroundStyle(.white)
+        }
+    }
+}
+
+extension View {
     func hidden(_ shouldHide: Bool) -> some View {
         opacity(shouldHide ? 0 : 1)
     }
