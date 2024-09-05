@@ -27,7 +27,6 @@ struct ProductDetailModel {
 struct ProductDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.tabIsShown) private var tabIsShown
-    @State private var uiNavController: UINavigationController?
     @State private var isExpanded: Bool = false
     @State var product: ProductDetailModel
     @State private var quantity: Int = 0
@@ -252,17 +251,12 @@ struct ProductDetailView: View {
             .navigationBarBackButtonHidden(true)
             .navigationBarTitleDisplayMode(.inline)
         }
-        .introspect(.navigationView(style: .stack), on: .iOS(.v15, .v16, .v17, .v18), customize: { navBar in
-            navBar.tabBarController?.tabBar.isHidden = true
-            uiNavController = navBar
-        })
         .onWillAppear({
             tabIsShown.wrappedValue = false
         })
-        .onWillDisappear({
-            uiNavController?.tabBarController?.tabBar.isHidden = false
-            tabIsShown.wrappedValue = true
-        })
+//        .onWillDisappear({
+//            tabIsShown.wrappedValue = true
+//        })
         .navigationBarTitle("")
         .navigationBarHidden(true)
         .edgesIgnoringSafeArea(.bottom)

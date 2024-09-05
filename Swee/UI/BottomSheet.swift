@@ -24,6 +24,7 @@ struct BottomSheet<Content: View>: View {
             .clipShape(RoundedRectangle(cornerRadius: 20))
             .layoutPriority(1)
             .frame(height: hide ? 0 : nil, alignment: .top)
+            .frame(maxWidth: .infinity)
             .hidden(hide)
         }
         .animation(.easeInOut(duration: 0.2), value: hide)

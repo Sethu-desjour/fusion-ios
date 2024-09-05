@@ -9,57 +9,283 @@ struct Ticket: Hashable {
     let colors: [Color]
 }
 
+enum ZoomoovRedemptionSteps {
+    case setup
+    case redemptionQueue
+    case loading
+    // case error @todo maybe?
+    case completed
+}
+
+struct ZoomoovRedemptionModel {
+    var totalQuantity: Int
+    var qtyToRedeem: Int = 1
+    var currentTicket: Int = 1
+    let merchant: String
+    let type: String
+    let disclaimer: String
+}
+
+struct ZoomoovRedemptionSetupView: View {
+    @Binding var model: ZoomoovRedemptionModel
+    var closure: (() -> Void)? = nil
+    
+    var body: some View {
+        VStack {
+            Text("\(model.merchant) \(model.type)")
+                .font(.custom("Poppins-SemiBold", size: 24))
+            HStack {
+                Text("\(model.type.capitalized) quantity")
+                    .font(.custom("Poppins-Medium", size: 16))
+                    .foregroundStyle(Color.text.black60)
+                Spacer()
+                HStack {
+                    Button {
+                        if model.qtyToRedeem == 1 {
+                            return
+                        }
+                        model.qtyToRedeem -= 1
+                    } label: {
+                        Image("minus-circle")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                    }
+                    .tint(model.qtyToRedeem == 1 ? Color.text.black20 : Color.secondary.brand)
+                    Spacer()
+                    Text("\(model.qtyToRedeem)")
+                        .font(.custom("Poppins-Medium", size: 20))
+                        .foregroundStyle(Color.secondary.brand)
+                        .lineLimit(1)
+                    Spacer()
+                    Button {
+                        if model.qtyToRedeem == model.totalQuantity {
+                            return
+                        }
+                        model.qtyToRedeem += 1
+                    } label: {
+                        Image("plus-circle")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                    }
+                    .tint(model.qtyToRedeem == model.totalQuantity ? Color.text.black20 : Color.secondary.brand)
+                }
+                .frame(width: 100)
+            }
+            .padding(16)
+            .background(RoundedRectangle(cornerRadius: 12)
+                .foregroundStyle(Color.background.pale))
+            
+            VStack(alignment: .leading) {
+                Text("Note:")
+                    .font(.custom("Poppins-Bold", size: 18))
+                    .foregroundStyle(Color.text.black100)
+                Text(model.disclaimer)
+                    .font(.custom("Poppins-Medium", size: 14))
+                    .foregroundStyle(Color.text.black80)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(16)
+            .background(RoundedRectangle(cornerRadius: 12)
+                .foregroundStyle(Color.background.pale))
+            .padding(.bottom, 37)
+            Button {
+                // @todo make request
+                closure?()
+            } label: {
+                HStack {
+                    Text("Redeem now")
+                        .font(.custom("Roboto-Bold", size: 16))
+                }
+                .foregroundStyle(Color.background.white)
+                .padding(.vertical, 18)
+                .frame(maxWidth: .infinity)
+                .background(LinearGradient(colors: Color.gradient.primaryDark, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .clipShape(Capsule())
+            }
+            .padding(.bottom, 16)
+//            .buttonStyle(EmptyStyle())
+        }
+    }
+}
+
+struct ZoomoovRedemptionScanView: View {
+    @Binding var model: ZoomoovRedemptionModel
+    var closure: (() -> Void)?
+    
+    var body: some View {
+        VStack {
+            Text("\(model.type.capitalized) \(model.currentTicket)/\(model.qtyToRedeem)")
+                .font(.custom("Poppins-SemiBold", size: 24))
+                .foregroundStyle(Color.text.black100)
+            Image("qr")
+                .padding(.bottom, 8)
+            Text("Scan QR to start your ride")
+                .font(.custom("Poppins-SemiBold", size: 20))
+                .foregroundStyle(Color.text.black100)
+            Text("Show this QR code at the counter, our staff will scan this QR to mark your presence")
+                .font(.custom("Poppins-Medium", size: 12))
+                .multilineTextAlignment(.center)
+                .foregroundStyle(Color.text.black60)
+                .padding(.bottom, 37)
+            Button {
+                // @todo make request
+                closure?()
+            } label: {
+                HStack {
+                    Text("Next QR")
+                        .font(.custom("Roboto-Bold", size: 16))
+                }
+                .foregroundStyle(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(OutlineButton(strokeColor: Color.primary.brand))
+            .padding(.bottom, 16)
+        }
+    }
+}
+
+struct ZoomoovRedemptionLoadingView: View {
+    @Binding var model: ZoomoovRedemptionModel
+    var closure: (() -> Void)?
+    
+    var body: some View {
+        VStack {
+            Image("spinner")
+                .padding(.top, 150)
+                .onTapGesture {
+                    closure?()
+                }
+                .padding(.bottom, 22)
+            Text("Scanning for \(model.type.capitalized) \(model.currentTicket)")
+                .font(.custom("Poppins-SemiBold", size: 20))
+                .multilineTextAlignment(.center)
+                .foregroundStyle(Color.text.black100)
+                .padding(.bottom, 150)
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
+
+struct ZoomoovRedemptionCompletedView: View {
+    @Binding var model: ZoomoovRedemptionModel
+    var closure: (() -> Void)?
+    
+    var body: some View {
+        VStack {
+            Text("\(model.type.capitalized) \(model.currentTicket)/\(model.qtyToRedeem)")
+                .font(.custom("Poppins-SemiBold", size: 24))
+                .foregroundStyle(Color.text.black100)
+                .padding(.bottom, 32)
+            Image("checkout-success")
+                .resizable()
+                .scaledToFill()
+                .frame(width: 164, height: 136)
+            Text("\(model.qtyToRedeem) Coupons redeemed successfully!")
+                .font(.custom("Poppins-SemiBold", size: 20))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 39)
+                .foregroundStyle(Color.text.black100)
+            Button {
+                // @todo make request
+                closure?()
+            } label: {
+                HStack {
+                    Text("Done")
+                        .font(.custom("Roboto-Bold", size: 16))
+                }
+                .foregroundStyle(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(OutlineButton(strokeColor: Color.primary.brand))
+            .padding(.top, 44)
+            .padding(.bottom, 16)
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
+
+
 struct TicketsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.tabIsShown) private var tabIsShown
+    
+    @State var tempQuantity = 1
+    @State var tempCurrentRide = 1
+    @State var tempStep: ZoomoovRedemptionSteps = .setup
+    @State var tempModel: ZoomoovRedemptionModel = .init(totalQuantity: 4, 
+                                                         merchant: "Zoomoov",
+                                                         type: "rides",
+                                                         disclaimer: "Ride cannot be refunded, or anything that the parent should be aware of will take up this space.")
+    @State var hidden = false
 
-    @State var uiNavController: UINavigationController?
     @State var tickets: [Ticket]
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 24) {
-                    ForEach(tickets, id: \.self) { ticket in
-                        VStack(alignment: .leading, spacing: 0) {
-                            Text(ticket.type)
-                                .font(.custom("Poppins-SemiBold", size: 20))
-                            TicketView(ticket: ticket)
+            ZStack {
+                ScrollView {
+                    VStack(spacing: 24) {
+                        ForEach(tickets, id: \.self) { ticket in
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text(ticket.type)
+                                    .font(.custom("Poppins-SemiBold", size: 20))
+                                TicketView(ticket: ticket)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .navigationBarBackButtonHidden(true)
+                    .navigationBarTitleDisplayMode(.inline)
+                }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image("back")
+                        }
+                        .padding(.bottom, 10)
+                    }
+                    ToolbarItem(placement: .principal) {
+                        Text(tickets[0].merchant)
+                            .font(.custom("Poppins-Bold", size: 18))
+                            .foregroundStyle(Color.text.black100)
+                            .padding(.bottom, 10)
+                    }
+                }
+                .onWillAppear({
+                    tabIsShown.wrappedValue = false
+                })
+//                .onWillDisappear({
+//                    tabIsShown.wrappedValue = true
+//                })
+            .background(Color.background.pale)
+                BottomSheet(hide: $hidden) {
+                    switch $tempStep.wrappedValue {
+                    case .setup:
+                        ZoomoovRedemptionSetupView(model: $tempModel) {
+                            $tempStep.wrappedValue = .redemptionQueue
+                        }
+                    case .redemptionQueue:
+                        ZoomoovRedemptionScanView(model: $tempModel) {
+                            $tempStep.wrappedValue = .loading
+                        }
+                    case .loading:
+                        ZoomoovRedemptionLoadingView(model: $tempModel) {
+                            if tempModel.currentTicket == tempModel.qtyToRedeem {
+                                $tempStep.wrappedValue = .completed
+                            } else {
+                                tempModel.currentTicket += 1
+                                $tempStep.wrappedValue = .redemptionQueue
+                            }
+                        }
+                    case .completed:
+                        ZoomoovRedemptionCompletedView(model: $tempModel) {
+                            hidden = true
                         }
                     }
                 }
-                .padding(.horizontal, 16)
-                .navigationBarBackButtonHidden(true)
-                .navigationBarTitleDisplayMode(.inline)
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image("back")
-                    }
-                    .padding(.bottom, 10)
-                }
-                ToolbarItem(placement: .principal) {
-                    Text(tickets[0].merchant)
-                        .font(.custom("Poppins-Bold", size: 18))
-                        .foregroundStyle(Color.text.black100)
-                        .padding(.bottom, 10)
-                }
-            }
-            .introspect(.navigationView(style: .stack), on: .iOS(.v15, .v16, .v17, .v18), customize: { navBar in
-                navBar.tabBarController?.tabBar.isHidden = true
-                uiNavController = navBar
-            })
-            .onWillAppear({
-                tabIsShown.wrappedValue = false
-            })
-            .onWillDisappear({
-                uiNavController?.tabBarController?.tabBar.isHidden = false
-                tabIsShown.wrappedValue = true
-            })
-            .background(Color.background.pale)
         }
         .navigationBarTitle("")
         .navigationBarHidden(true)

@@ -8,6 +8,7 @@ struct MerchantPurchases {
 }
 
 struct MyPurchasesView: View {
+    @Environment(\.tabIsShown) private var tabIsShown
     @State var purchases: [MerchantPurchases] = [
         .init(image: Image("purhcase-1"), merchant: "Zoomoov AMK", summary: "24 Rides + 12 masks", colors: Color.gradient.secondary),
         .init(image: Image("purhcase-2"), merchant: "Jollyfield Bugis+", summary: "01:30 hrs left", colors: Color.gradient.primary)
@@ -76,6 +77,12 @@ struct MyPurchasesView: View {
                 }
             }
             .background(Color.background.pale)
+            .onWillAppear({
+                tabIsShown.wrappedValue = true
+            })
+//            .onWillDisappear({
+//                tabIsShown.wrappedValue = false
+//            })
         }
     }
 }

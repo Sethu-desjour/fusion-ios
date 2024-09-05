@@ -37,7 +37,6 @@ struct ActivityView: View {
     @Environment(\.tabIsShown) private var tabIsShown
     @Environment(\.bottomSheetData) private var bottomSheetData
 
-    @State var uiNavController: UINavigationController?
     @State private var tab = ActivityTab.Purchased
     @State private var purchases: [PurchasesSection] = [
         .init(date: Date(), purchases: [
@@ -205,18 +204,13 @@ struct ActivityView: View {
             .navigationBarBackButtonHidden(true)
             .navigationBarTitleDisplayMode(.inline)
         }
-        .introspect(.navigationView(style: .stack), on: .iOS(.v15, .v16, .v17, .v18), customize: { navBar in
-            navBar.tabBarController?.tabBar.isHidden = true
-            uiNavController = navBar
-        })
         .onWillAppear({
             bottomSheetData.wrappedValue.view = FiltersView()
             tabIsShown.wrappedValue = false
         })
-        .onWillDisappear({
-            uiNavController?.tabBarController?.tabBar.isHidden = false
-            tabIsShown.wrappedValue = true
-        })
+//        .onWillDisappear({
+//            tabIsShown.wrappedValue = true
+//        })
         .navigationBarTitle("")
         .navigationBarHidden(true)
     }

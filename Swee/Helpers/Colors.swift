@@ -32,6 +32,7 @@ extension Color {
     struct gradient {
         static let primary: [Color] = [Color(hex: "#80DBD5"), Color(hex: "#00B7AA"), Color(hex: "#008980")]
         static let secondary: [Color] = [Color(hex: "#F57A5B"), Color(hex: "#F09819")]
+        static let primaryDark: [Color] = [Color(hex: "#03959A"), Color(hex: "#01AA8F")]
     }
 }
 

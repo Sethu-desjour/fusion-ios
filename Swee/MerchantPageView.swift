@@ -7,7 +7,6 @@ struct MerchantPageView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.tabIsShown) private var tabIsShown
 
-    @State var uiNavController: UINavigationController?
     @State var model: OfferRowModel = OfferRowModel(title: "Package just for you",
                                                     offers: [
                                                         .init(vendor: .Zoomoov, image: .init("offer-1"), title: "10 Zoomoov Rides", description: "Get 3 rides free", price: 50, originalPrice: 69),
@@ -158,17 +157,12 @@ struct MerchantPageView: View {
                 .navigationBarBackButtonHidden(true)
                 .navigationBarTitleDisplayMode(.inline)
             }
-            .introspect(.navigationView(style: .stack), on: .iOS(.v15, .v16, .v17, .v18), customize: { navBar in
-                navBar.tabBarController?.tabBar.isHidden = true
-                uiNavController = navBar
-            })
             .onWillAppear({
                 tabIsShown.wrappedValue = false
             })
-            .onWillDisappear({
-                uiNavController?.tabBarController?.tabBar.isHidden = false
-                tabIsShown.wrappedValue = true
-            })
+//            .onWillDisappear({
+//                tabIsShown.wrappedValue = true
+//            })
             .navigationBarTitle("")
             .navigationBarHidden(true)
             .edgesIgnoringSafeArea(.bottom)

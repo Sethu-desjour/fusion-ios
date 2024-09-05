@@ -3,6 +3,7 @@ import SwiftUI
 struct HomeView: View {
     
     @Environment(\.bottomSheetData) private var bottomSheetData
+    @Environment(\.tabIsShown) private var tabIsShown
     
     var body: some View {
         NavigationView {
@@ -15,9 +16,6 @@ struct HomeView: View {
                 }
                 .padding(.vertical, 20)
                 .padding(.horizontal, 16)
-            }
-            .onWillAppear {
-                bottomSheetData.wrappedValue.view = NotificationUpsell(hide: bottomSheetData.hidden)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -50,7 +48,14 @@ struct HomeView: View {
 //                    .padding(.bottom, 15)
                 }
             }
+            .onWillAppear({
+                bottomSheetData.wrappedValue.view = NotificationUpsell(hide: bottomSheetData.hidden)
+                tabIsShown.wrappedValue = true
+            })
         }
+        .introspect(.navigationView(style: .stack), on: .iOS(.v15, .v16, .v17, .v18), customize: { navBar in
+            navBar.tabBarController?.tabBar.isHidden = true
+        })
     }
 }
 

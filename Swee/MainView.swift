@@ -79,7 +79,6 @@ struct MainView: View {
                             .tag(tab as Tabs?)
                     }
                 }
-                
                 ZStack {
                     VStack(spacing: 0) {
                         HStack {
@@ -102,7 +101,7 @@ struct MainView: View {
                             }
                         }
                         .frame(maxWidth: .infinity)
-                        .background(.ultraThinMaterial)
+                        .background(.ultraThickMaterial)
                         .shadow(color: .black.opacity(0.15), radius: 15, y: 5)
                     }
                 }

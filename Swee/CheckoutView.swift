@@ -20,7 +20,6 @@ struct CheckoutView: View {
     @Environment(\.tabIsShown) private var tabIsShown
     @Environment(\.currentTab) private var selectedTab
     
-    @State var uiNavController: UINavigationController?
     @State var products: [CheckoutProduct] = [
         .init(product: .init(id: "1", title: "Merchant 1", description: "10 Zoomoov rides + 1 Hero mask + 1 bingo draw", priceString: "S$ 125", price: 125, image: Image("product-1"), validity: "Validity - 1 year"), quantity: 2),
         .init(product: .init(id: "2", title: "Package name", description: "10 Zoomoov rides + 1 Hero mask + 1 bingo draw", priceString: "S$ 125", price: 125, image: Image("product-2"), validity: "Validity - 1 year"), quantity: 1),
@@ -204,7 +203,8 @@ struct CheckoutView: View {
                             .font(.custom("Roboto-Bold", size: 16))
                     }
                     .foregroundStyle(Color.background.white)
-                    .frame(maxWidth: .infinity, maxHeight: 55)
+                    .padding(.vertical, 18)
+                    .frame(maxWidth: .infinity)
                     .background(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
                     .clipShape(Capsule())
                 }
@@ -265,16 +265,11 @@ struct CheckoutView: View {
                 mainUI
             }
         }
-        .introspect(.navigationView(style: .stack), on: .iOS(.v15, .v16, .v17, .v18), customize: { navBar in
-            navBar.tabBarController?.tabBar.isHidden = true
-            uiNavController = navBar
-        })
         .onWillAppear({
             tabIsShown.wrappedValue = false
         })
         .onWillDisappear({
-            uiNavController?.tabBarController?.tabBar.isHidden = false
-            tabIsShown.wrappedValue = true
+//            tabIsShown.wrappedValue = true
             if showPaymentSuccess {
                 selectedTab.wrappedValue = .purchases
             }
