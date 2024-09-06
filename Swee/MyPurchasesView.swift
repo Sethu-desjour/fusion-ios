@@ -42,11 +42,18 @@ struct MyPurchasesView: View {
                 .padding(.horizontal, 16)
                 LazyVStack(spacing: 16) {
                     ForEach(purchases, id: \.merchant) { purchase in
-                        NavigationLink(destination: TicketsView(tickets: [
-                            .init(merchant: "Zoomoov", quantity: 12, description: "Rides", type: "Rides", expirationDate: Date(), colors: Color.gradient.primary),
-                            .init(merchant: "Zoomoov", quantity: 1, description: "Masks", type: "Mask", expirationDate: Date(), colors: [Color(hex: "#EC048A"), Color(hex: "#F0971C")])
-                        ])) {
-                            MerchantPurchasesCard(purchase: purchase)
+                        let view = MerchantPurchasesCard(purchase: purchase)
+                        if purchase.merchant == "Zoomooov" {
+                            NavigationLink(destination: ZoomoovRedemptionView(tickets: [
+                                .init(merchant: "Zoomoov", quantity: 12, description: "Rides", type: "Rides", expirationDate: Date(), colors: Color.gradient.primary),
+                                .init(merchant: "Zoomoov", quantity: 1, description: "Masks", type: "Mask", expirationDate: Date(), colors: [Color(hex: "#EC048A"), Color(hex: "#F0971C")])
+                            ])) {
+                                view
+                            }
+                        } else {
+                            NavigationLink(destination: JollyfieldRedemptionView()) {
+                                view
+                            }
                         }
                     }
                 }

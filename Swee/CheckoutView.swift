@@ -234,33 +234,37 @@ struct CheckoutView: View {
         }
     }
     
+    var successUI: some View {
+        VStack {
+            Image("checkout-success")
+            Text("Payment success")
+                .font(.custom("Poppins-Medium", size: 24))
+            Text("2 Rides have been added to your purchase") // @todo compute this
+                .font(.custom("Poppins-Medium", size: 16))
+                .multilineTextAlignment(.center)
+                .foregroundStyle(Color.text.black40)
+                .padding(.bottom, 57)
+            Button {
+                dismiss()
+            } label: {
+                HStack {
+                    Text("View my purchases")
+                        .font(.custom("Roboto-Bold", size: 16))
+                }
+                .foregroundStyle(Color.background.white)
+                .frame(maxWidth: .infinity, maxHeight: 55)
+                .background(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .clipShape(Capsule())
+            }
+            .buttonStyle(EmptyStyle())
+        }
+        .padding(.horizontal, 24)
+    }
+    
     var body: some View {
         NavigationView {
             if showPaymentSuccess {
-                VStack {
-                    Image("checkout-success")
-                    Text("Payment success")
-                        .font(.custom("Poppins-Medium", size: 24))
-                    Text("2 Rides have been added to your purchase") // @todo compute this
-                        .font(.custom("Poppins-Medium", size: 16))
-                        .multilineTextAlignment(.center)
-                        .foregroundStyle(Color.text.black40)
-                        .padding(.bottom, 57)
-                    Button {
-                        dismiss()
-                    } label: {
-                        HStack {
-                            Text("View my purchases")
-                                .font(.custom("Roboto-Bold", size: 16))
-                        }
-                        .foregroundStyle(Color.background.white)
-                        .frame(maxWidth: .infinity, maxHeight: 55)
-                        .background(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
-                        .clipShape(Capsule())
-                    }
-                    .buttonStyle(EmptyStyle())
-                }
-                .padding(.horizontal, 24)
+                successUI
             } else {
                 mainUI
             }

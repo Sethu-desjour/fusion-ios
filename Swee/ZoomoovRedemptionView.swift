@@ -205,7 +205,7 @@ struct ZoomoovRedemptionCompletedView: View {
 }
 
 
-struct TicketsView: View {
+struct ZoomoovRedemptionView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.tabIsShown) private var tabIsShown
     
@@ -216,7 +216,7 @@ struct TicketsView: View {
                                                          merchant: "Zoomoov",
                                                          type: "rides",
                                                          disclaimer: "Ride cannot be refunded, or anything that the parent should be aware of will take up this space.")
-    @State var hidden = false
+    @State var hidden = true
 
     @State var tickets: [Ticket]
     
@@ -230,6 +230,9 @@ struct TicketsView: View {
                                 Text(ticket.type)
                                     .font(.custom("Poppins-SemiBold", size: 20))
                                 TicketView(ticket: ticket)
+                                    .onTapGesture {
+                                        hidden = false
+                                    }
                             }
                         }
                     }
@@ -411,7 +414,7 @@ struct TicketView: View {
 }
 
 #Preview {
-    TicketsView(tickets: [
+    ZoomoovRedemptionView(tickets: [
         .init(merchant: "Zoomoov", quantity: 12, description: "Rides", type: "Rides", expirationDate: Date(), colors: Color.gradient.primary),
         .init(merchant: "Zoomoov", quantity: 1, description: "Masks", type: "Mask", expirationDate: Date(), colors: [Color(hex: "#EC048A"), Color(hex: "#F0971C")])
     ]
