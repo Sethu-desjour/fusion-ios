@@ -5,7 +5,7 @@ struct ChildModel: Equatable, Hashable {
     var dob: Date?
 }
 
-struct JollyfieldRedemptionScanView: View {
+struct RedemptionScanView: View {
     struct Model {
         let header: String
         let title: String
@@ -13,7 +13,7 @@ struct JollyfieldRedemptionScanView: View {
         let description: String
         let actionTitle: String
     }
-//    @Binding var model: ZoomoovRedemptionModel
+    //    @Binding var model: ZoomoovRedemptionModel
     var model: Model
     var closure: (() -> Void)?
     
@@ -49,12 +49,12 @@ struct JollyfieldRedemptionScanView: View {
     }
 }
 
-struct JollyfieldLoadingView: View {
+struct RedemptionLoadingView: View {
     struct Model {
         let header: String
         let title: String
     }
-//    @Binding var model: ZoomoovRedemptionModel
+    //    @Binding var model: ZoomoovRedemptionModel
     var model: Model
     var closure: (() -> Void)?
     
@@ -81,14 +81,14 @@ struct JollyfieldLoadingView: View {
     }
 }
 
-struct JollyfieldCompletedView: View {
+struct RedemptionCompletedView: View {
     struct Model {
         let header: String
         let title: String
         let description: String
         let actionTitle: String
     }
-//    @Binding var model: ZoomoovRedemptionModel
+    //    @Binding var model: ZoomoovRedemptionModel
     var model: Model
     var closure: (() -> Void)?
     
@@ -278,10 +278,10 @@ struct JollyfieldRedemptionView: View {
                                 .background(RoundedRectangle(cornerRadius: 8)
                                     .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [6]))
                                     .foregroundStyle(Color.black.opacity(0.3))
-                                    )
+                                )
                                 .background(RoundedRectangle(cornerRadius: 8)
                                     .foregroundStyle(Color.primary.brand)
-                                    )
+                                )
                                 .padding(.bottom, 16)
                                 if children.isEmpty {
                                     emptyUI
@@ -301,9 +301,14 @@ struct JollyfieldRedemptionView: View {
                                                         selectedChildren.insert(child)
                                                     }
                                                 } label: {
-                                                    Text(isSelected ? "Time alotted : \(alottedTime.toString()) Hr" : "Select child")
-                                                        .font(.custom("Poppins-SemiBold", size: 16))
-                                                        .foregroundStyle(isSelected ? Color.primary.dark : Color.text.black100)
+                                                    HStack {
+                                                        Spacer()
+                                                        Text(isSelected ? "Time alotted : \(alottedTime.toString()) Hr" : "Select child")
+                                                            .font(.custom("Poppins-SemiBold", size: 16))
+                                                            .foregroundStyle(isSelected ? Color.primary.dark : Color.text.black100)
+                                                        Spacer()
+                                                    }
+                                                    .contentShape(Rectangle())
                                                 }
                                                 .frame(maxWidth: .infinity)
                                                 .padding(.vertical, 12)
@@ -350,29 +355,29 @@ struct JollyfieldRedemptionView: View {
                 BottomSheet(hide: $hidden) {
                     switch $tempStep.wrappedValue {
                     case .qrStart:
-                        JollyfieldRedemptionScanView(model: .init(header: "Start session", title: "Scan QR to start your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
+                        RedemptionScanView(model: .init(header: "Start session", title: "Scan QR to start your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
                             $tempStep.wrappedValue = .scanningStart
                         }
                     case .scanningStart:
-                        JollyfieldLoadingView(model: .init(header: "Start session", title: "Scanning")) {
+                        RedemptionLoadingView(model: .init(header: "Start session", title: "Scanning")) {
                             $tempStep.wrappedValue = .sessionStarted
                         }
                     case .sessionStarted:
-                        JollyfieldCompletedView(model: .init(header: "", title: "Session started", description: "", actionTitle: "Close")) {
+                        RedemptionCompletedView(model: .init(header: "", title: "Session started", description: "", actionTitle: "Close")) {
                             hidden = true
                             $tempStep.wrappedValue = .qrEnd
                         }
                     case .qrEnd:
-                        JollyfieldRedemptionScanView(model: .init(header: "End Session", title: "Scan QR to end your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
+                        RedemptionScanView(model: .init(header: "End Session", title: "Scan QR to end your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
                             $tempStep.wrappedValue = .scanningEnd
                         }
                     case .scanningEnd:
-                        JollyfieldLoadingView(model: .init(header: "End session", title: "Scanning")) {
+                        RedemptionLoadingView(model: .init(header: "End session", title: "Scanning")) {
                             $tempStep.wrappedValue = .sessionEnded
                         }
                         
                     case .sessionEnded:
-                        JollyfieldCompletedView(model: .init(header: "", title: "Session ended!", description: "Remaining time left 0:15 hr", actionTitle: "Okay")) {
+                        RedemptionCompletedView(model: .init(header: "", title: "Session ended!", description: "Remaining time left 0:15 hr", actionTitle: "Okay")) {
                             hidden = true
                             $tempStep.wrappedValue = .qrStart
                         }
@@ -423,20 +428,4 @@ struct JollyfieldRedemptionView: View {
 
 #Preview {
     JollyfieldRedemptionView()
-}
-
-extension TimeInterval {
-    
-    func toString() -> String {
-        
-        let time = NSInteger(self)
-        
-//        let ms = Int((self.truncatingRemainder(dividingBy: 1)) * 1000)
-//        let seconds = time % 60
-        let minutes = (time / 60) % 60
-        let hours = (time / 3600)
-        
-        return String(format: "%0.2d:%0.2d",hours,minutes)
-        
-    }
 }

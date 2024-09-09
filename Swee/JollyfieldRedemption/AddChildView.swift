@@ -88,6 +88,7 @@ struct AddChildView: View {
                                 Spacer()
                                 Image("chevron-down")
                             }
+                            .contentShape(Rectangle())
                             .padding(.vertical, 15)
                             .padding(.leading, 20)
                             .padding(.trailing, 12)
@@ -95,7 +96,6 @@ struct AddChildView: View {
                                 .stroke(style: .init(lineWidth: 1))
                                 .foregroundStyle(Color(hex: "#C8C8C8"))
                             )
-                            .background(.white) // note: without this button taps are ignored
                             .padding(.bottom, 16)
                         }
                         .buttonStyle(EmptyStyle())
@@ -164,7 +164,7 @@ struct AddChildView: View {
                                                 .foregroundStyle(.black.opacity(0.1))
                                         }
                                     }
-                                    .background(.white) // note: without this button taps are ignored
+                                    .contentShape(Rectangle())
                                 }
                                 .buttonStyle(EmptyStyle())
                             }

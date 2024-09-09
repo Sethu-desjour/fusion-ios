@@ -108,103 +108,6 @@ struct ZoomoovRedemptionSetupView: View {
     }
 }
 
-struct ZoomoovRedemptionScanView: View {
-    @Binding var model: ZoomoovRedemptionModel
-    var closure: (() -> Void)?
-    
-    var body: some View {
-        VStack {
-            Text("\(model.type.capitalized) \(model.currentTicket)/\(model.qtyToRedeem)")
-                .font(.custom("Poppins-SemiBold", size: 24))
-                .foregroundStyle(Color.text.black100)
-            Image("qr")
-                .padding(.bottom, 8)
-            Text("Scan QR to start your ride")
-                .font(.custom("Poppins-SemiBold", size: 20))
-                .foregroundStyle(Color.text.black100)
-            Text("Show this QR code at the counter, our staff will scan this QR to mark your presence")
-                .font(.custom("Poppins-Medium", size: 12))
-                .multilineTextAlignment(.center)
-                .foregroundStyle(Color.text.black60)
-                .padding(.bottom, 37)
-            Button {
-                // @todo make request
-                closure?()
-            } label: {
-                HStack {
-                    Text("Next QR")
-                        .font(.custom("Roboto-Bold", size: 16))
-                }
-                .foregroundStyle(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
-                .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(OutlineButton(strokeColor: Color.primary.brand))
-            .padding(.bottom, 16)
-        }
-    }
-}
-
-struct ZoomoovRedemptionLoadingView: View {
-    @Binding var model: ZoomoovRedemptionModel
-    var closure: (() -> Void)?
-    
-    var body: some View {
-        VStack {
-            Image("spinner")
-                .padding(.top, 150)
-                .onTapGesture {
-                    closure?()
-                }
-                .padding(.bottom, 22)
-            Text("Scanning for \(model.type.capitalized) \(model.currentTicket)")
-                .font(.custom("Poppins-SemiBold", size: 20))
-                .multilineTextAlignment(.center)
-                .foregroundStyle(Color.text.black100)
-                .padding(.bottom, 150)
-        }
-        .frame(maxWidth: .infinity)
-    }
-}
-
-struct ZoomoovRedemptionCompletedView: View {
-    @Binding var model: ZoomoovRedemptionModel
-    var closure: (() -> Void)?
-    
-    var body: some View {
-        VStack {
-            Text("\(model.type.capitalized) \(model.currentTicket)/\(model.qtyToRedeem)")
-                .font(.custom("Poppins-SemiBold", size: 24))
-                .foregroundStyle(Color.text.black100)
-                .padding(.bottom, 32)
-            Image("checkout-success")
-                .resizable()
-                .scaledToFill()
-                .frame(width: 164, height: 136)
-            Text("\(model.qtyToRedeem) Coupons redeemed successfully!")
-                .font(.custom("Poppins-SemiBold", size: 20))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 39)
-                .foregroundStyle(Color.text.black100)
-            Button {
-                // @todo make request
-                closure?()
-            } label: {
-                HStack {
-                    Text("Done")
-                        .font(.custom("Roboto-Bold", size: 16))
-                }
-                .foregroundStyle(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
-                .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(OutlineButton(strokeColor: Color.primary.brand))
-            .padding(.top, 44)
-            .padding(.bottom, 16)
-        }
-        .frame(maxWidth: .infinity)
-    }
-}
-
-
 struct ZoomoovRedemptionView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.tabIsShown) private var tabIsShown
@@ -270,11 +173,16 @@ struct ZoomoovRedemptionView: View {
                             $tempStep.wrappedValue = .redemptionQueue
                         }
                     case .redemptionQueue:
-                        ZoomoovRedemptionScanView(model: $tempModel) {
+                        RedemptionScanView(model: .init(header: "\(tempModel.type.capitalized) \(tempModel.currentTicket)/\(tempModel.qtyToRedeem)", 
+                                                                  title: "Scan QR to start your ride",
+                                                                  qr: Image("qr"),
+                                                                  description: "Show this QR code at the counter, our staff will scan this QR to mark your presence",
+                                                                  actionTitle: "Next QR")) {
                             $tempStep.wrappedValue = .loading
                         }
                     case .loading:
-                        ZoomoovRedemptionLoadingView(model: $tempModel) {
+                        RedemptionLoadingView(model: .init(header: "", 
+                                                           title: "Scanning for \(tempModel.type.capitalized) \(tempModel.currentTicket)")) {
                             if tempModel.currentTicket == tempModel.qtyToRedeem {
                                 $tempStep.wrappedValue = .completed
                             } else {
@@ -283,7 +191,10 @@ struct ZoomoovRedemptionView: View {
                             }
                         }
                     case .completed:
-                        ZoomoovRedemptionCompletedView(model: $tempModel) {
+                        RedemptionCompletedView(model: .init(header: "\(tempModel.type.capitalized) \(tempModel.currentTicket)/\(tempModel.qtyToRedeem)",
+                                                             title: "\(tempModel.qtyToRedeem) Coupons redeemed successfully!",
+                                                             description: "",
+                                                             actionTitle: "Done")) {
                             hidden = true
                         }
                     }
