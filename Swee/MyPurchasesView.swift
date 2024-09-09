@@ -43,9 +43,9 @@ struct MyPurchasesView: View {
                 LazyVStack(spacing: 16) {
                     ForEach(purchases, id: \.merchant) { purchase in
                         let view = MerchantPurchasesCard(purchase: purchase)
-                        if purchase.merchant == "Zoomooov" {
+                        if purchase.merchant == "Zoomoov AMK" {
                             NavigationLink(destination: ZoomoovRedemptionView(tickets: [
-                                .init(merchant: "Zoomoov", quantity: 12, description: "Rides", type: "Rides", expirationDate: Date(), colors: Color.gradient.primary),
+                                .init(merchant: "Zoomoov", quantity: 12, description: "Rides", type: "Rides", expirationDate: Date(), colors: Color.gradient.secondary),
                                 .init(merchant: "Zoomoov", quantity: 1, description: "Masks", type: "Mask", expirationDate: Date(), colors: [Color(hex: "#EC048A"), Color(hex: "#F0971C")])
                             ])) {
                                 view

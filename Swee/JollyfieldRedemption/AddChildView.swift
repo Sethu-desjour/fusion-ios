@@ -17,9 +17,12 @@ struct ChildDetailsView: View {
             .font(.custom("Poppins-Medium", size: 18))
             .submitLabel(.done)
             .foregroundStyle(Color.text.black80)
-            .onSubmit {
-                onEdit(name, Calendar.current.isDateInToday(dob) ? child.dob : dob)
-            }
+            .onChange(of: name, perform: { newValue in
+                onEdit(newValue, Calendar.current.isDateInToday(dob) ? child.dob : dob)
+            })
+//            .onSubmit {
+//                onEdit(name, Calendar.current.isDateInToday(dob) ? child.dob : dob)
+//            }
             Rectangle()
                 .fill(Color.text.black10)
                 .frame(height: 1)
@@ -188,9 +191,8 @@ struct AddChildView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        print("children =====", children)
                         onSave(children)
-//                        dismiss()
+                        dismiss()
                     } label: {
                         Text("Save")
                             .font(.custom("Poppins-Medium", size: 16))

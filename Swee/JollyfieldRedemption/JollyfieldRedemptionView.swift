@@ -5,11 +5,145 @@ struct ChildModel: Equatable, Hashable {
     var dob: Date?
 }
 
+struct JollyfieldRedemptionScanView: View {
+    struct Model {
+        let header: String
+        let title: String
+        let qr: Image
+        let description: String
+        let actionTitle: String
+    }
+//    @Binding var model: ZoomoovRedemptionModel
+    var model: Model
+    var closure: (() -> Void)?
+    
+    var body: some View {
+        VStack {
+            Text(model.header)
+                .font(.custom("Poppins-SemiBold", size: 24))
+                .foregroundStyle(Color.text.black100)
+            model.qr
+                .padding(.bottom, 8)
+            Text(model.title)
+                .font(.custom("Poppins-SemiBold", size: 20))
+                .foregroundStyle(Color.text.black100)
+            Text(model.description)
+                .font(.custom("Poppins-Medium", size: 12))
+                .multilineTextAlignment(.center)
+                .foregroundStyle(Color.text.black60)
+                .padding(.bottom, 37)
+            Button {
+                // @todo make request
+                closure?()
+            } label: {
+                HStack {
+                    Text(model.actionTitle)
+                        .font(.custom("Roboto-Bold", size: 16))
+                }
+                .foregroundStyle(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(OutlineButton(strokeColor: Color.primary.brand))
+            .padding(.bottom, 16)
+        }
+    }
+}
+
+struct JollyfieldLoadingView: View {
+    struct Model {
+        let header: String
+        let title: String
+    }
+//    @Binding var model: ZoomoovRedemptionModel
+    var model: Model
+    var closure: (() -> Void)?
+    
+    var body: some View {
+        ZStack(alignment: .top) {
+            Text(model.header)
+                .font(.custom("Poppins-SemiBold", size: 24))
+                .foregroundStyle(Color.text.black100)
+            VStack {
+                Image("spinner")
+                    .padding(.top, 150)
+                    .onTapGesture {
+                        closure?()
+                    }
+                    .padding(.bottom, 22)
+                Text(model.title)
+                    .font(.custom("Poppins-SemiBold", size: 20))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(Color.text.black100)
+                    .padding(.bottom, 150)
+            }
+            .frame(maxWidth: .infinity)
+        }
+    }
+}
+
+struct JollyfieldCompletedView: View {
+    struct Model {
+        let header: String
+        let title: String
+        let description: String
+        let actionTitle: String
+    }
+//    @Binding var model: ZoomoovRedemptionModel
+    var model: Model
+    var closure: (() -> Void)?
+    
+    var body: some View {
+        VStack {
+            Text(model.header)
+                .font(.custom("Poppins-SemiBold", size: 24))
+                .foregroundStyle(Color.text.black100)
+                .padding(.bottom, 32)
+            Image("checkout-success")
+                .resizable()
+                .scaledToFill()
+                .frame(width: 164, height: 136)
+            Text(model.title)
+                .font(.custom("Poppins-SemiBold", size: 20))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 39)
+                .foregroundStyle(Color.text.black100)
+            Button {
+                // @todo make request
+                closure?()
+            } label: {
+                HStack {
+                    Text(model.actionTitle)
+                        .font(.custom("Roboto-Bold", size: 16))
+                }
+                .foregroundStyle(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(OutlineButton(strokeColor: Color.primary.brand))
+            .padding(.top, 44)
+            .padding(.bottom, 16)
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
+
+
 struct JollyfieldRedemptionView: View {
+    enum RedemptionStep {
+        case qrStart
+        case scanningStart
+        case sessionStarted
+        case qrEnd
+        case scanningEnd
+        case sessionEnded
+    }
+    
     @Environment(\.tabIsShown) private var tabIsShown
     @Environment(\.dismiss) private var dismiss
-    @State private var children: [ChildModel] = [.init(name: "Johnny Depp", dob: .now), .init(name: "Enrique Ilesias", dob: .now), .init(name: "Enrque Iglesias", dob: .now), .init(name: "nrique Iglesias", dob: .now)]
+    @State private var children: [ChildModel] = []
     @State private var selectedChildren: Set<ChildModel> = .init()
+    @State private var availableTime: TimeInterval = 5400
+    @State var hidden = true
+    @State var tempStep: RedemptionStep = .qrStart
     
     var indexOfLastSelectedChild: Int {
         let lastChild = children.last { child in
@@ -36,7 +170,7 @@ struct JollyfieldRedemptionView: View {
                 // @todo make request
             } label: {
                 NavigationLink(destination: AddChildView { children in
-                    self.children = children
+                    self.children.append(contentsOf: children)
                 }) {
                     HStack {
                         Text("Add child")
@@ -82,7 +216,7 @@ struct JollyfieldRedemptionView: View {
         
         return RoundedRectangle(cornerRadius: 8)
             .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [6]))
-            .foregroundStyle(Color.black.opacity(0.3))
+            .foregroundStyle(Color.primary.brand)
             .padding(.top, 50)
             .padding(.bottom, cardHeight * CGFloat(multiplier) + cardHeight / 2 + (vPaddingBetweenCards * CGFloat(multiplier)) + heightOfDisclaimer)
             .padding(.horizontal, -16)
@@ -100,6 +234,27 @@ struct JollyfieldRedemptionView: View {
         }
     }
     
+    func buttonOutline(_ isSelected: Bool) -> AnyView {
+        if isSelected {
+            return AnyView(RoundedRectangle(cornerRadius: 8)
+                .foregroundStyle(Color.primary.lighter.opacity(0.5))
+            )
+        } else {
+            return AnyView(RoundedRectangle(cornerRadius: 8)
+                .strokeBorder(style: StrokeStyle(lineWidth: 1))
+                .foregroundStyle(Color.text.black100)
+            )
+        }
+    }
+    
+    var alottedTime: TimeInterval {
+        if selectedChildren.isEmpty {
+            return 0
+        }
+        
+        return availableTime / Double(selectedChildren.count)
+    }
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -108,7 +263,7 @@ struct JollyfieldRedemptionView: View {
                         VStack {
                             VStack {
                                 VStack {
-                                    Text("01:30 Hr")
+                                    Text("\(availableTime.toString()) Hr")
                                         .font(.custom("Roboto-Bold", size: 32))
                                         .foregroundStyle(.white)
                                         .shadow(color: .black.opacity(0.25), radius: 2, x: 1, y: 2)
@@ -146,27 +301,18 @@ struct JollyfieldRedemptionView: View {
                                                         selectedChildren.insert(child)
                                                     }
                                                 } label: {
-                                                    Text("Select child")
+                                                    Text(isSelected ? "Time alotted : \(alottedTime.toString()) Hr" : "Select child")
                                                         .font(.custom("Poppins-SemiBold", size: 16))
-                                                        .foregroundStyle(Color.text.black100)
+                                                        .foregroundStyle(isSelected ? Color.primary.dark : Color.text.black100)
                                                 }
                                                 .frame(maxWidth: .infinity)
                                                 .padding(.vertical, 12)
-                                                .background(RoundedRectangle(cornerRadius: 8)
-                                                    .strokeBorder(style: StrokeStyle(lineWidth: 1))
-                                                    .foregroundStyle(Color.text.black100)
-                                                    )
+                                                .background(buttonOutline(isSelected))
                                                 .buttonStyle(EmptyStyle())
                                             }
                                             .padding()
                                             .background(selectedOutline(isSelected))
                                             .background(.white)
-    //                                        .background(isSelected ? RoundedRectangle(cornerRadius: 8)
-    //                                            .strokeBorder(style: StrokeStyle(lineWidth: 1))
-    //                                            .foregroundStyle(Color.text.black100) : RoundedRectangle(cornerRadius: 12)
-    //                                            .foregroundStyle(.white)
-    //                                            .shadow(color: .black.opacity(0.2), radius: 2, y: 1)
-    //                                        )
                                         }
                                         Text("*Select child to start the session")
                                             .font(.custom("Poppins-Regular", size: 12))
@@ -183,7 +329,7 @@ struct JollyfieldRedemptionView: View {
                     VStack(spacing: 0) {
                         Button {
                             // @todo make request
-                            children.append(contentsOf: [.init(name: "George Lucas", dob: .now), .init(name: "Henry Ford", dob: .now)])
+                            hidden = false
                         } label: {
                             HStack {
                                 Text("Start timer")
@@ -201,6 +347,37 @@ struct JollyfieldRedemptionView: View {
                     .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.text.black10), alignment: .top)
                 }
                 .background(Color.background.white)
+                BottomSheet(hide: $hidden) {
+                    switch $tempStep.wrappedValue {
+                    case .qrStart:
+                        JollyfieldRedemptionScanView(model: .init(header: "Start session", title: "Scan QR to start your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
+                            $tempStep.wrappedValue = .scanningStart
+                        }
+                    case .scanningStart:
+                        JollyfieldLoadingView(model: .init(header: "Start session", title: "Scanning")) {
+                            $tempStep.wrappedValue = .sessionStarted
+                        }
+                    case .sessionStarted:
+                        JollyfieldCompletedView(model: .init(header: "", title: "Session started", description: "", actionTitle: "Close")) {
+                            hidden = true
+                            $tempStep.wrappedValue = .qrEnd
+                        }
+                    case .qrEnd:
+                        JollyfieldRedemptionScanView(model: .init(header: "End Session", title: "Scan QR to end your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
+                            $tempStep.wrappedValue = .scanningEnd
+                        }
+                    case .scanningEnd:
+                        JollyfieldLoadingView(model: .init(header: "End session", title: "Scanning")) {
+                            $tempStep.wrappedValue = .sessionEnded
+                        }
+                        
+                    case .sessionEnded:
+                        JollyfieldCompletedView(model: .init(header: "", title: "Session ended!", description: "Remaining time left 0:15 hr", actionTitle: "Okay")) {
+                            hidden = true
+                            $tempStep.wrappedValue = .qrStart
+                        }
+                    }
+                }
             }
             .onWillAppear({
                 tabIsShown.wrappedValue = false
@@ -226,9 +403,9 @@ struct JollyfieldRedemptionView: View {
                     if children.isEmpty {
                         Text("")
                     } else {
-                        Button {
-                            
-                        } label: {
+                        NavigationLink(destination: AddChildView { children in
+                            self.children.append(contentsOf: children)
+                        }) {
                             Text("Add child")
                                 .font(.custom("Poppins-Medium", size: 16))
                                 .foregroundStyle(Color.primary.brand)
@@ -246,4 +423,20 @@ struct JollyfieldRedemptionView: View {
 
 #Preview {
     JollyfieldRedemptionView()
+}
+
+extension TimeInterval {
+    
+    func toString() -> String {
+        
+        let time = NSInteger(self)
+        
+//        let ms = Int((self.truncatingRemainder(dividingBy: 1)) * 1000)
+//        let seconds = time % 60
+        let minutes = (time / 60) % 60
+        let hours = (time / 3600)
+        
+        return String(format: "%0.2d:%0.2d",hours,minutes)
+        
+    }
 }

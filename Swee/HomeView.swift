@@ -16,6 +16,7 @@ struct HomeView: View {
                 }
                 .padding(.vertical, 20)
                 .padding(.horizontal, 16)
+                .padding(.bottom, 60)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

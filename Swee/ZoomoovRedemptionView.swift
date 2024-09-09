@@ -103,7 +103,7 @@ struct ZoomoovRedemptionSetupView: View {
                 .clipShape(Capsule())
             }
             .padding(.bottom, 16)
-//            .buttonStyle(EmptyStyle())
+            //            .buttonStyle(EmptyStyle())
         }
     }
 }
@@ -212,12 +212,12 @@ struct ZoomoovRedemptionView: View {
     @State var tempQuantity = 1
     @State var tempCurrentRide = 1
     @State var tempStep: ZoomoovRedemptionSteps = .setup
-    @State var tempModel: ZoomoovRedemptionModel = .init(totalQuantity: 4, 
+    @State var tempModel: ZoomoovRedemptionModel = .init(totalQuantity: 4,
                                                          merchant: "Zoomoov",
                                                          type: "rides",
                                                          disclaimer: "Ride cannot be refunded, or anything that the parent should be aware of will take up this space.")
     @State var hidden = true
-
+    
     @State var tickets: [Ticket]
     
     var body: some View {
@@ -259,10 +259,10 @@ struct ZoomoovRedemptionView: View {
                 .onWillAppear({
                     tabIsShown.wrappedValue = false
                 })
-//                .onWillDisappear({
-//                    tabIsShown.wrappedValue = true
-//                })
-            .background(Color.background.pale)
+                //                .onWillDisappear({
+                //                    tabIsShown.wrappedValue = true
+                //                })
+                .background(Color.background.pale)
                 BottomSheet(hide: $hidden) {
                     switch $tempStep.wrappedValue {
                     case .setup:
@@ -323,7 +323,7 @@ struct TicketShape: Shape {
         
         path.move(to: CGPoint(x: rect.minX + notchOffset, y: rect.minY))
         path.addLine(to: CGPoint(x: rect.width, y: 0))
-
+        
         return path
     }
 }
@@ -382,21 +382,21 @@ struct TicketView: View {
             
             HStack(alignment: .bottom) {
                 VStack(alignment: .leading, spacing: -10) {
-                        VStack {
-                            Text("\(ticket.quantity)")
-                                .font(.custom("Poppins-SemiBold", size: 66))
-                                 +
-                            Text(" " + ticket.description)
-                                .font(.custom("Poppins-Bold", size: 24))
-                        }
-                        .addInnerShadow()
+                    VStack {
+                        Text("\(ticket.quantity)")
+                            .font(.custom("Poppins-SemiBold", size: 66))
+                        +
+                        Text(" " + ticket.description)
+                            .font(.custom("Poppins-Bold", size: 24))
+                    }
+                    .addInnerShadow()
                     VStack {
                         Text("Valid until  ")
                             .font(.custom("Poppins-SemiBold", size: 12))
                             .foregroundColor(.white.opacity(0.5)) +
                         Text("\(ticket.expirationDate.formatted(date: .abbreviated, time: .omitted))")
                             .font(.custom("Poppins-SemiBold", size: 12))
-                        .foregroundColor(.white.opacity(0.86))
+                            .foregroundColor(.white.opacity(0.86))
                     }
                     .padding(.leading, 8)
                 }
@@ -408,7 +408,7 @@ struct TicketView: View {
             .padding([.trailing, .bottom], 24)
         }
         .frame(height: ticketHeight + 20)
-//        .padding()
+        //        .padding()
     }
     
 }
