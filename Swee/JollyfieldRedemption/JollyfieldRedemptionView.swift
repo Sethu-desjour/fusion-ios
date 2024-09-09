@@ -139,7 +139,7 @@ struct JollyfieldRedemptionView: View {
     
     @Environment(\.tabIsShown) private var tabIsShown
     @Environment(\.dismiss) private var dismiss
-    @State private var children: [ChildModel] = []
+    @State private var children: [ChildModel] = [.init(name: "Johnny Depp", dob: .now), .init(name: "Charlee Sheen", dob: .now)]
     @State private var selectedChildren: Set<ChildModel> = .init()
     @State private var availableTime: TimeInterval = 5400
     @State var hidden = true
@@ -190,7 +190,7 @@ struct JollyfieldRedemptionView: View {
     
     var dottedOutline: some View {
         
-        if children.isEmpty {
+        if children.isEmpty || sessionOngoing {
             return RoundedRectangle(cornerRadius: 8)
                 .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [6]))
                 .foregroundStyle(Color.black.opacity(0.3))
@@ -223,7 +223,7 @@ struct JollyfieldRedemptionView: View {
     }
     
     func selectedOutline(_ isSelected: Bool) -> AnyView {
-        if isSelected {
+        if isSelected && !sessionOngoing {
             return AnyView(RoundedRectangle(cornerRadius: 12)
                 .strokeBorder(style:  StrokeStyle(lineWidth: 1))
                 .foregroundStyle(Color.primary.brand))
@@ -253,6 +253,10 @@ struct JollyfieldRedemptionView: View {
         }
         
         return availableTime / Double(selectedChildren.count)
+    }
+    
+    var sessionOngoing: Bool {
+        return tempStep == .qrEnd || tempStep == .scanningEnd
     }
     
     var body: some View {
@@ -295,6 +299,10 @@ struct JollyfieldRedemptionView: View {
                                                     .font(.custom("Poppins-Medium", size: 18))
                                                     .foregroundStyle(Color.text.black80)
                                                 Button {
+                                                    if sessionOngoing {
+                                                        return
+                                                    }
+                                                    
                                                     if isSelected {
                                                         selectedChildren.remove(child)
                                                     } else {
@@ -322,6 +330,7 @@ struct JollyfieldRedemptionView: View {
                                         Text("*Select child to start the session")
                                             .font(.custom("Poppins-Regular", size: 12))
                                             .foregroundStyle(Color.text.black60)
+                                            .hidden(sessionOngoing)
                                     }
                                 }
                             }
@@ -332,27 +341,47 @@ struct JollyfieldRedemptionView: View {
                         .padding(.horizontal, 16)
                     }
                     VStack(spacing: 0) {
-                        Button {
-                            // @todo make request
-                            hidden = false
-                        } label: {
-                            HStack {
-                                Text("Start timer")
-                                    .font(.custom("Roboto-Bold", size: 16))
+                        if sessionOngoing {
+                            Button {
+                                // @todo make request
+                                tempStep = .qrEnd
+                                hidden = false
+                            } label: {
+                                HStack {
+                                    Text("End session")
+                                        .font(.custom("Roboto-Bold", size: 16))
+                                }
+                                .foregroundStyle(.red)
+                                .frame(maxWidth: .infinity)
+                                .clipShape(Capsule())
                             }
-                            .foregroundStyle(Color.background.white)
-                            .padding(.vertical, 18)
-                            .frame(maxWidth: .infinity)
-                            .background(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
-                            .clipShape(Capsule())
+                            .buttonStyle(OutlineButton(strokeColor: .red))
+                        } else {
+                            Button {
+                                // @todo make request
+                                if selectedChildren.isEmpty {
+                                    return
+                                }
+                                hidden = false
+                            } label: {
+                                HStack {
+                                    Text("Start timer")
+                                        .font(.custom("Roboto-Bold", size: 16))
+                                }
+                                .foregroundStyle(Color.background.white)
+                                .padding(.vertical, 18)
+                                .frame(maxWidth: .infinity)
+                                .background(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
+                                .clipShape(Capsule())
+                            }
+                            .buttonStyle(EmptyStyle())
                         }
-                        .buttonStyle(EmptyStyle())
                     }
                     .padding([.leading, .trailing, .top], 16)
                     .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.text.black10), alignment: .top)
                 }
                 .background(Color.background.white)
-                BottomSheet(hide: $hidden) {
+                BottomSheet(hide: $hidden, shouldDismissOnBackgroundTap: false) {
                     switch $tempStep.wrappedValue {
                     case .qrStart:
                         RedemptionScanView(model: .init(header: "Start session", title: "Scan QR to start your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
@@ -407,6 +436,19 @@ struct JollyfieldRedemptionView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     if children.isEmpty {
                         Text("")
+                    } else if sessionOngoing {
+                        Button {
+                            // @todo show Help UI
+                        } label: {
+                            HStack(spacing: 4) {
+                                Text("Help")
+                                    .font(.custom("Poppins-Medium", size: 16))
+                                Image(systemName: "questionmark.circle")
+                                    .font(.callout.weight(.medium))
+                            }
+                            .foregroundStyle(Color.primary.brand)
+                            .padding(.bottom, 10)
+                        }
                     } else {
                         NavigationLink(destination: AddChildView { children in
                             self.children.append(contentsOf: children)

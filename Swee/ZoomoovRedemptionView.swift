@@ -123,6 +123,19 @@ struct ZoomoovRedemptionView: View {
     
     @State var tickets: [Ticket]
     
+    var shouldDismissOnTap: Bool {
+        switch tempStep {
+        case .setup:
+            return true
+        case .redemptionQueue:
+            return true
+        case .loading:
+            return false
+        case .completed:
+            return false
+        }
+    }
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -166,7 +179,7 @@ struct ZoomoovRedemptionView: View {
                 //                    tabIsShown.wrappedValue = true
                 //                })
                 .background(Color.background.pale)
-                BottomSheet(hide: $hidden) {
+                BottomSheet(hide: $hidden, shouldDismissOnBackgroundTap: shouldDismissOnTap) {
                     switch $tempStep.wrappedValue {
                     case .setup:
                         ZoomoovRedemptionSetupView(model: $tempModel) {
@@ -196,6 +209,7 @@ struct ZoomoovRedemptionView: View {
                                                              description: "",
                                                              actionTitle: "Done")) {
                             hidden = true
+                            $tempStep.wrappedValue = .setup
                         }
                     }
                 }

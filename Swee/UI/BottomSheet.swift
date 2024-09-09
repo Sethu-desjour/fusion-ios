@@ -2,18 +2,22 @@ import SwiftUI
 
 struct BottomSheet<Content: View>: View {
     @Binding var hide: Bool
+    var shouldDismissOnBackgroundTap: Bool = true
     @ViewBuilder let content: Content
     
     var body: some View {
         ZStack(alignment: .bottom) {
             if !hide {
                 Button {
-                    hide.toggle()
+                    if shouldDismissOnBackgroundTap {
+                        hide.toggle()
+                    }
                 } label: {
                     Color.black.opacity(0.5)
                         .ignoresSafeArea()
 //                        .animation(.easeInOut(duration: 0.2), value: hide)
                 }
+                .buttonStyle(EmptyStyle())
             }
             VStack {
                 content
