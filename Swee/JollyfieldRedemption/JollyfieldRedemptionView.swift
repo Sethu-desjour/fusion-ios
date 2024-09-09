@@ -37,11 +37,14 @@ struct RedemptionScanView: View {
                 closure?()
             } label: {
                 HStack {
+                    Spacer()
                     Text(model.actionTitle)
                         .font(.custom("Roboto-Bold", size: 16))
+                    Spacer()
                 }
                 .foregroundStyle(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
                 .frame(maxWidth: .infinity)
+                .contentShape(Capsule())
             }
             .buttonStyle(OutlineButton(strokeColor: Color.primary.brand))
             .padding(.bottom, 16)
@@ -112,11 +115,14 @@ struct RedemptionCompletedView: View {
                 closure?()
             } label: {
                 HStack {
+                    Spacer()
                     Text(model.actionTitle)
                         .font(.custom("Roboto-Bold", size: 16))
+                    Spacer()
                 }
                 .foregroundStyle(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
                 .frame(maxWidth: .infinity)
+                .contentShape(Capsule())
             }
             .buttonStyle(OutlineButton(strokeColor: Color.primary.brand))
             .padding(.top, 44)
@@ -259,6 +265,10 @@ struct JollyfieldRedemptionView: View {
         return tempStep == .qrEnd || tempStep == .scanningEnd
     }
     
+    var shouldDismissOnTap: Bool {
+        return tempStep == .qrStart || tempStep == .qrEnd
+    }
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -311,7 +321,7 @@ struct JollyfieldRedemptionView: View {
                                                 } label: {
                                                     HStack {
                                                         Spacer()
-                                                        Text(isSelected ? "Time alotted : \(alottedTime.toString()) Hr" : "Select child")
+                                                        Text(isSelected ? "Time \(sessionOngoing ? "remaining" : "alotted") : \(alottedTime.toString()) Hr" : "Select child")
                                                             .font(.custom("Poppins-SemiBold", size: 16))
                                                             .foregroundStyle(isSelected ? Color.primary.dark : Color.text.black100)
                                                         Spacer()
@@ -330,7 +340,7 @@ struct JollyfieldRedemptionView: View {
                                         Text("*Select child to start the session")
                                             .font(.custom("Poppins-Regular", size: 12))
                                             .foregroundStyle(Color.text.black60)
-                                            .hidden(sessionOngoing)
+                                            .hidden(!selectedChildren.isEmpty)
                                     }
                                 }
                             }
@@ -348,12 +358,15 @@ struct JollyfieldRedemptionView: View {
                                 hidden = false
                             } label: {
                                 HStack {
+                                    Spacer()
                                     Text("End session")
                                         .font(.custom("Roboto-Bold", size: 16))
+                                    Spacer()
                                 }
                                 .foregroundStyle(.red)
                                 .frame(maxWidth: .infinity)
                                 .clipShape(Capsule())
+                                .contentShape(Capsule())
                             }
                             .buttonStyle(OutlineButton(strokeColor: .red))
                         } else {
@@ -381,7 +394,7 @@ struct JollyfieldRedemptionView: View {
                     .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.text.black10), alignment: .top)
                 }
                 .background(Color.background.white)
-                BottomSheet(hide: $hidden, shouldDismissOnBackgroundTap: false) {
+                BottomSheet(hide: $hidden, shouldDismissOnBackgroundTap: shouldDismissOnTap) {
                     switch $tempStep.wrappedValue {
                     case .qrStart:
                         RedemptionScanView(model: .init(header: "Start session", title: "Scan QR to start your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
