@@ -74,9 +74,11 @@ struct AuthView: View {
                 Button {
                     // validate and navigate next
                 } label: {
-                    Text("Verify")
-                        .frame(maxWidth: .infinity)
-                        .font(.custom("Roboto-Bold", size: 16))
+                    NavigationLink(destination: OtpView()) {
+                        Text("Verify")
+                            .frame(maxWidth: .infinity)
+                            .font(.custom("Roboto-Bold", size: 16))
+                    }
                     
                 }
                 .disabled(phone.isEmpty)

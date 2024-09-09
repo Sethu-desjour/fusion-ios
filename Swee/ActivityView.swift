@@ -33,8 +33,10 @@ struct PurchasesSection: Hashable {
 }
 
 struct ActivityView: View {
-    @EnvironmentObject private var hideActivityFilterWrapper: ObservableWrapper<Bool, ActivityFiltersNamespace>
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.tabIsShown) private var tabIsShown
+    @Environment(\.bottomSheetData) private var bottomSheetData
+
     @State private var tab = ActivityTab.Purchased
     @State private var purchases: [PurchasesSection] = [
         .init(date: Date(), purchases: [
@@ -176,6 +178,14 @@ struct ActivityView: View {
                 }
             }
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image("back")
+                    }
+                    .padding(.bottom, 15)
+                }
                 ToolbarItem(placement: .principal) {
                     Text("My Activity")
                         .font(.custom("Poppins-Bold", size: 18))
@@ -184,18 +194,25 @@ struct ActivityView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        hideActivityFilterWrapper.prop = false
+                        bottomSheetData.wrappedValue.hidden = false
                     } label: {
                         noData ? Image("cart") : Image("filter")
                     }
                     .padding(.bottom, 15)
                 }
             }
-            .navigationBarTitle("")
-            .navigationBarHidden(false)
             .navigationBarBackButtonHidden(true)
             .navigationBarTitleDisplayMode(.inline)
         }
+        .onWillAppear({
+            bottomSheetData.wrappedValue.view = FiltersView()
+            tabIsShown.wrappedValue = false
+        })
+//        .onWillDisappear({
+//            tabIsShown.wrappedValue = true
+//        })
+        .navigationBarTitle("")
+        .navigationBarHidden(true)
     }
 }
 

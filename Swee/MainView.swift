@@ -13,7 +13,7 @@ enum Tabs: Int, CaseIterable, Identifiable {
         case .home:
             HomeView()
         case .purchases:
-            ActivityView()
+            MyPurchasesView()
         case .alerts:
             CompleteProfileView()
         case .profile:
@@ -50,15 +50,10 @@ enum Tabs: Int, CaseIterable, Identifiable {
     var id: Tabs { self }
 }
 
-enum NotificationUpsellNamespace {}
-enum ActivityFiltersNamespace {}
-
 struct MainView: View {
     @State private var selectedTab: Tabs = .home
     @State private var showTabBar = true
-    
-    @StateObject private var hideNotificationUpsell = ObservableWrapper<Bool, NotificationUpsellNamespace>(true)
-    @StateObject private var hideActivityFilters = ObservableWrapper<Bool, ActivityFiltersNamespace>(true)
+    @State private var bottomSheetData: BottomSheetData = .init(view: FiltersView())
     
     func TabItem(imageName: String, title: String, isActive: Bool) -> some View {
         VStack {
@@ -84,7 +79,6 @@ struct MainView: View {
                             .tag(tab as Tabs?)
                     }
                 }
-                
                 ZStack {
                     VStack(spacing: 0) {
                         HStack {
@@ -107,23 +101,19 @@ struct MainView: View {
                             }
                         }
                         .frame(maxWidth: .infinity)
-                        .background(.ultraThinMaterial)
+                        .background(.ultraThickMaterial)
                         .shadow(color: .black.opacity(0.15), radius: 15, y: 5)
                     }
                 }
                 .hidden(!showTabBar)
-                BottomSheet(hide: $hideNotificationUpsell.prop) {
-                    NotificationUpsell(hide: $hideNotificationUpsell.prop)
-                }
-                BottomSheet(hide: $hideActivityFilters.prop) {
-                    FiltersView()
+                BottomSheet(hide: $bottomSheetData.hidden) {
+                    AnyView(bottomSheetData.view)
                 }
             }
         }
-        .environmentObject(hideNotificationUpsell)
-        .environmentObject(hideActivityFilters)
         .environment(\.tabIsShown, $showTabBar)
         .environment(\.currentTab, $selectedTab)
+        .environment(\.bottomSheetData, $bottomSheetData)
     }
 }
 

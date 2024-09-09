@@ -2,7 +2,7 @@ import SwiftUI
 
 final class AppRootManager: ObservableObject {
     
-    @Published var currentRoot: AppRoots = .home
+    @Published var currentRoot: AppRoots = .onboarding
     
     enum AppRoots {
 //        case splash
