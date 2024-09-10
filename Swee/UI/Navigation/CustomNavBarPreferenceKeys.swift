@@ -33,6 +33,14 @@ struct CustomNavTrailingItemPreferenceKey: PreferenceKey {
     }
 }
 
+struct CustomNavBottomSheetData: PreferenceKey {
+    static var defaultValue: BottomSheetData = .init(view: Text("").equatable, hidden: .constant(true))
+    
+    static func reduce(value: inout BottomSheetData, nextValue: () -> BottomSheetData) {
+        value = nextValue()
+    }
+}
+
 extension View {
     func customNavigationTitle(_ title: String) -> some View {
         preference(key: CustomNavBarTitlePreferenceKey.self, value: title)
@@ -49,13 +57,17 @@ extension View {
     func customNavTrailingItem(@ViewBuilder _ content: () -> some View) -> some View {
         preference(key: CustomNavTrailingItemPreferenceKey.self, value: EquatableViewContainer(view: AnyView(content())))
     }
+    
+    func customBottomSheet(hidden: Binding<Bool>, @ViewBuilder _ content: () -> some View) -> some View {
+        preference(key: CustomNavBottomSheetData.self, value: BottomSheetData(view: content().equatable, hidden: hidden))
+    }
 }
 
 
 struct EquatableViewContainer: Equatable {
     
     let id = UUID().uuidString
-    let view:AnyView
+    let view: AnyView
     
     static func == (lhs: EquatableViewContainer, rhs: EquatableViewContainer) -> Bool {
         return lhs.id == rhs.id

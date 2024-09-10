@@ -109,7 +109,6 @@ struct ZoomoovRedemptionSetupView: View {
 }
 
 struct ZoomoovRedemptionView: View {
-    @Environment(\.dismiss) private var dismiss
     @Environment(\.tabIsShown) private var tabIsShown
     
     @State var tempQuantity = 1
@@ -122,6 +121,41 @@ struct ZoomoovRedemptionView: View {
     @State var hidden = true
     
     @State var tickets: [Ticket]
+    
+    var bottomSheet: any View {
+        switch $tempStep.wrappedValue {
+        case .setup:
+            ZoomoovRedemptionSetupView(model: $tempModel) {
+                $tempStep.wrappedValue = .redemptionQueue
+            }
+        case .redemptionQueue:
+            RedemptionScanView(model: .init(header: "\(tempModel.type.capitalized) \(tempModel.currentTicket)/\(tempModel.qtyToRedeem)",
+                                            title: "Scan QR to start your ride",
+                                            qr: Image("qr"),
+                                            description: "Show this QR code at the counter, our staff will scan this QR to mark your presence",
+                                            actionTitle: "Next QR")) {
+                $tempStep.wrappedValue = .loading
+            }
+        case .loading:
+            RedemptionLoadingView(model: .init(header: "",
+                                               title: "Scanning for \(tempModel.type.capitalized) \(tempModel.currentTicket)")) {
+                if tempModel.currentTicket == tempModel.qtyToRedeem {
+                    $tempStep.wrappedValue = .completed
+                } else {
+                    tempModel.currentTicket += 1
+                    $tempStep.wrappedValue = .redemptionQueue
+                }
+            }
+        case .completed:
+            RedemptionCompletedView(model: .init(header: "\(tempModel.type.capitalized) \(tempModel.currentTicket)/\(tempModel.qtyToRedeem)",
+                                                 title: "\(tempModel.qtyToRedeem) Coupons redeemed successfully!",
+                                                 description: "",
+                                                 actionTitle: "Done")) {
+                hidden = true
+                $tempStep.wrappedValue = .setup
+            }
+        }
+    }
     
     var shouldDismissOnTap: Bool {
         switch tempStep {
@@ -159,42 +193,42 @@ struct ZoomoovRedemptionView: View {
                 tabIsShown.wrappedValue = false
             })
             .background(Color.background.pale)
-            BottomSheet(hide: $hidden, shouldDismissOnBackgroundTap: shouldDismissOnTap) {
-                switch $tempStep.wrappedValue {
-                case .setup:
-                    ZoomoovRedemptionSetupView(model: $tempModel) {
+        }
+        .customNavigationTitle(tickets[0].merchant)
+        .customBottomSheet(hidden: $hidden) {
+            switch $tempStep.wrappedValue {
+            case .setup:
+                ZoomoovRedemptionSetupView(model: $tempModel) {
+                    $tempStep.wrappedValue = .redemptionQueue
+                }
+            case .redemptionQueue:
+                RedemptionScanView(model: .init(header: "\(tempModel.type.capitalized) \(tempModel.currentTicket)/\(tempModel.qtyToRedeem)",
+                                                title: "Scan QR to start your ride",
+                                                qr: Image("qr"),
+                                                description: "Show this QR code at the counter, our staff will scan this QR to mark your presence",
+                                                actionTitle: "Next QR")) {
+                    $tempStep.wrappedValue = .loading
+                }
+            case .loading:
+                RedemptionLoadingView(model: .init(header: "",
+                                                   title: "Scanning for \(tempModel.type.capitalized) \(tempModel.currentTicket)")) {
+                    if tempModel.currentTicket == tempModel.qtyToRedeem {
+                        $tempStep.wrappedValue = .completed
+                    } else {
+                        tempModel.currentTicket += 1
                         $tempStep.wrappedValue = .redemptionQueue
                     }
-                case .redemptionQueue:
-                    RedemptionScanView(model: .init(header: "\(tempModel.type.capitalized) \(tempModel.currentTicket)/\(tempModel.qtyToRedeem)",
-                                                    title: "Scan QR to start your ride",
-                                                    qr: Image("qr"),
-                                                    description: "Show this QR code at the counter, our staff will scan this QR to mark your presence",
-                                                    actionTitle: "Next QR")) {
-                        $tempStep.wrappedValue = .loading
-                    }
-                case .loading:
-                    RedemptionLoadingView(model: .init(header: "",
-                                                       title: "Scanning for \(tempModel.type.capitalized) \(tempModel.currentTicket)")) {
-                        if tempModel.currentTicket == tempModel.qtyToRedeem {
-                            $tempStep.wrappedValue = .completed
-                        } else {
-                            tempModel.currentTicket += 1
-                            $tempStep.wrappedValue = .redemptionQueue
-                        }
-                    }
-                case .completed:
-                    RedemptionCompletedView(model: .init(header: "\(tempModel.type.capitalized) \(tempModel.currentTicket)/\(tempModel.qtyToRedeem)",
-                                                         title: "\(tempModel.qtyToRedeem) Coupons redeemed successfully!",
-                                                         description: "",
-                                                         actionTitle: "Done")) {
-                        hidden = true
-                        $tempStep.wrappedValue = .setup
-                    }
+                }
+            case .completed:
+                RedemptionCompletedView(model: .init(header: "\(tempModel.type.capitalized) \(tempModel.currentTicket)/\(tempModel.qtyToRedeem)",
+                                                     title: "\(tempModel.qtyToRedeem) Coupons redeemed successfully!",
+                                                     description: "",
+                                                     actionTitle: "Done")) {
+                    hidden = true
+                    $tempStep.wrappedValue = .setup
                 }
             }
         }
-        .customNavigationTitle(tickets[0].merchant)
     }
 }
 

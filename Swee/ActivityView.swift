@@ -35,8 +35,8 @@ struct PurchasesSection: Hashable {
 struct ActivityView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.tabIsShown) private var tabIsShown
-    @Environment(\.bottomSheetData) private var bottomSheetData
     
+    @State private var hideBottomSheet: Bool = true
     @State private var tab = ActivityTab.Purchased
     @State private var purchases: [PurchasesSection] = [
         .init(date: Date(), purchases: [
@@ -177,16 +177,18 @@ struct ActivityView: View {
             }
         }
         .onWillAppear({
-            bottomSheetData.wrappedValue.view = FiltersView()
             tabIsShown.wrappedValue = false
         })
         .customNavigationTitle("My Activity")
         .customNavTrailingItem {
             Button {
-                bottomSheetData.wrappedValue.hidden = false
+                hideBottomSheet = false
             } label: {
                 noData ? Image("cart") : Image("filter")
             }
+        }
+        .customBottomSheet(hidden: $hideBottomSheet) {
+            FiltersView()
         }
     }
 }

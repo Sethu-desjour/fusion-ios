@@ -53,7 +53,7 @@ enum Tabs: Int, CaseIterable, Identifiable {
 struct MainView: View {
     @State private var selectedTab: Tabs = .home
     @State private var showTabBar = true
-    @State private var bottomSheetData: BottomSheetData = .init(view: FiltersView())
+//    @State private var bottomSheetData: BottomSheetData = .init(view: FiltersView().equatable)
     
     func TabItem(imageName: String, title: String, isActive: Bool) -> some View {
         VStack {
@@ -109,13 +109,13 @@ struct MainView: View {
                 }
             }
             .hidden(!showTabBar)
-            BottomSheet(hide: $bottomSheetData.hidden) {
-                AnyView(bottomSheetData.view)
-            }
+//            BottomSheet(hide: bottomSheetData.hidden) {
+//                bottomSheetData.view.view
+//            }
         }
         .environment(\.tabIsShown, $showTabBar)
         .environment(\.currentTab, $selectedTab)
-        .environment(\.bottomSheetData, $bottomSheetData)
+//        .environment(\.bottomSheetData, $bottomSheetData)
     }
 }
 

@@ -144,7 +144,6 @@ struct JollyfieldRedemptionView: View {
     }
     
     @Environment(\.tabIsShown) private var tabIsShown
-    @Environment(\.dismiss) private var dismiss
     @State private var children: [ChildModel] = [.init(name: "Johnny Depp", dob: .now), .init(name: "Charlee Sheen", dob: .now)]
     @State private var selectedChildren: Set<ChildModel> = .init()
     @State private var availableTime: TimeInterval = 5400
@@ -393,41 +392,41 @@ struct JollyfieldRedemptionView: View {
                 .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.text.black10), alignment: .top)
             }
             .background(Color.background.white)
-            BottomSheet(hide: $hidden, shouldDismissOnBackgroundTap: shouldDismissOnTap) {
-                switch $tempStep.wrappedValue {
-                case .qrStart:
-                    RedemptionScanView(model: .init(header: "Start session", title: "Scan QR to start your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
-                        $tempStep.wrappedValue = .scanningStart
-                    }
-                case .scanningStart:
-                    RedemptionLoadingView(model: .init(header: "Start session", title: "Scanning")) {
-                        $tempStep.wrappedValue = .sessionStarted
-                    }
-                case .sessionStarted:
-                    RedemptionCompletedView(model: .init(header: "", title: "Session started", description: "", actionTitle: "Close")) {
-                        hidden = true
-                        $tempStep.wrappedValue = .qrEnd
-                    }
-                case .qrEnd:
-                    RedemptionScanView(model: .init(header: "End Session", title: "Scan QR to end your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
-                        $tempStep.wrappedValue = .scanningEnd
-                    }
-                case .scanningEnd:
-                    RedemptionLoadingView(model: .init(header: "End session", title: "Scanning")) {
-                        $tempStep.wrappedValue = .sessionEnded
-                    }
-                    
-                case .sessionEnded:
-                    RedemptionCompletedView(model: .init(header: "", title: "Session ended!", description: "Remaining time left 0:15 hr", actionTitle: "Okay")) {
-                        hidden = true
-                        $tempStep.wrappedValue = .qrStart
-                    }
-                }
-            }
         }
         .onWillAppear({
             tabIsShown.wrappedValue = false
         })
+        .customBottomSheet(hidden: $hidden) {
+            switch $tempStep.wrappedValue {
+            case .qrStart:
+                RedemptionScanView(model: .init(header: "Start session", title: "Scan QR to start your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
+                    $tempStep.wrappedValue = .scanningStart
+                }
+            case .scanningStart:
+                RedemptionLoadingView(model: .init(header: "Start session", title: "Scanning")) {
+                    $tempStep.wrappedValue = .sessionStarted
+                }
+            case .sessionStarted:
+                RedemptionCompletedView(model: .init(header: "", title: "Session started", description: "", actionTitle: "Close")) {
+                    hidden = true
+                    $tempStep.wrappedValue = .qrEnd
+                }
+            case .qrEnd:
+                RedemptionScanView(model: .init(header: "End Session", title: "Scan QR to end your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
+                    $tempStep.wrappedValue = .scanningEnd
+                }
+            case .scanningEnd:
+                RedemptionLoadingView(model: .init(header: "End session", title: "Scanning")) {
+                    $tempStep.wrappedValue = .sessionEnded
+                }
+                
+            case .sessionEnded:
+                RedemptionCompletedView(model: .init(header: "", title: "Session ended!", description: "Remaining time left 0:15 hr", actionTitle: "Okay")) {
+                    hidden = true
+                    $tempStep.wrappedValue = .qrStart
+                }
+            }
+        }
         .customNavigationTitle("Jollyfield")
         .customNavTrailingItem {
             if children.isEmpty {

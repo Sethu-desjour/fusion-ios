@@ -16,6 +16,7 @@ struct CustomNavBarContainerView<Content: View>: View {
     @State private var leadingItem: EquatableViewContainer = EquatableViewContainer(view: AnyView(Text("")))
     @State private var trailingItem: EquatableViewContainer = EquatableViewContainer(view: AnyView(Text("")))
     @State private var title: String = ""
+    @State private var bottomSheetData: BottomSheetData = .init(view: Text("").equatable, hidden: .constant(true))
     
     init(@ViewBuilder content: () -> Content) {
         self.content = content()
@@ -39,6 +40,12 @@ struct CustomNavBarContainerView<Content: View>: View {
         .onPreferenceChange(CustomNavTrailingItemPreferenceKey.self, perform: { value in
             self.trailingItem = value
         })
+    }
+}
+
+extension View {
+    var equatable: EquatableViewContainer {
+        EquatableViewContainer(view: AnyView(self))
     }
 }
 

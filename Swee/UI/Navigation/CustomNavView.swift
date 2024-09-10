@@ -9,21 +9,30 @@ import SwiftUI
 
 struct CustomNavView<Content: View>: View {
     let content: Content
-    
+    @State private var bottomSheetData: BottomSheetData = .init(view: Text("").equatable, hidden: .constant(true))
+
     init(@ViewBuilder content: () -> Content) {
         self.content = content()
     }
     
     var body: some View {
-        NavigationView {
-            CustomNavBarContainerView {
-                content
+        ZStack {
+            NavigationView {
+                CustomNavBarContainerView {
+                    content
+                }
+                .navigationBarHidden(true)
             }
+            .onPreferenceChange(CustomNavBottomSheetData.self, perform: { value in
+                self.bottomSheetData = value
+            })
+            .navigationViewStyle(StackNavigationViewStyle())
+            .navigationBarTitle("")
             .navigationBarHidden(true)
+            BottomSheet(hide: bottomSheetData.hidden) {
+                bottomSheetData.view.view
+            }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
-        .navigationBarTitle("")
-        .navigationBarHidden(true)
     }
 }
 

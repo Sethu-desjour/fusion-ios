@@ -2,8 +2,9 @@ import SwiftUI
 
 struct HomeView: View {
     
-    @Environment(\.bottomSheetData) private var bottomSheetData
+//    @Environment(\.bottomSheetData) private var bottomSheetData
     @Environment(\.tabIsShown) private var tabIsShown
+    @State private var hideBottomSheet: Bool = true
     
     var body: some View {
         CustomNavView {
@@ -19,8 +20,11 @@ struct HomeView: View {
                 .padding(.bottom, 80)
             }
             .ignoresSafeArea()
+            .onChange(of: hideBottomSheet, perform: { newValue in
+                tabIsShown.wrappedValue = hideBottomSheet
+            })
             .onWillAppear({
-                bottomSheetData.wrappedValue.view = NotificationUpsell(hide: bottomSheetData.hidden)
+//                bottomSheetData.wrappedValue.view = NotificationUpsell(hide: bottomSheetData.hidden.wrappedValue).equatable
                 tabIsShown.wrappedValue = true
             })
             .customNavigationBackButtonHidden(true)
@@ -40,11 +44,15 @@ struct HomeView: View {
             }
             .customNavTrailingItem {
                 Button(action: {
-                    bottomSheetData.wrappedValue.hidden = false
+//                    bottomSheetData.wrappedValue.hidden.wrappedValue = false
+                    hideBottomSheet = false
                 }, label: {
                     Image("cart")
                 })
                 .buttonStyle(EmptyStyle())
+            }
+            .customBottomSheet(hidden: $hideBottomSheet) {
+                NotificationUpsell(hide: $hideBottomSheet)
             }
         }
         .introspect(.navigationView(style: .stack), on: .iOS(.v15, .v16, .v17, .v18), customize: { navBar in
