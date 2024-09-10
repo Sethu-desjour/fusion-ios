@@ -71,44 +71,42 @@ struct MainView: View {
     }
     
     var body: some View {
-        NavigationView {
-            ZStack(alignment: .bottom) {
-                TabView(selection: $selectedTab) {
-                    ForEach(Tabs.allCases) { tab in
-                        tab.screen
-                            .tag(tab as Tabs?)
-                    }
+        ZStack(alignment: .bottom) {
+            TabView(selection: $selectedTab) {
+                ForEach(Tabs.allCases) { tab in
+                    tab.screen
+                        .tag(tab as Tabs?)
                 }
-                ZStack {
-                    VStack(spacing: 0) {
-                        HStack {
-                            ForEach((Tabs.allCases), id: \.self) { tab in
-                                Rectangle()
-                                    .fill(selectedTab == tab ? Color.primary.brand : .clear)
-                                    .frame(maxWidth: .infinity, maxHeight: 1)
-                                    .padding([.leading, .trailing], 20)
-                                    .animation(.default, value: selectedTab)
-                            }
+            }
+            ZStack {
+                VStack(spacing: 0) {
+                    HStack {
+                        ForEach((Tabs.allCases), id: \.self) { tab in
+                            Rectangle()
+                                .fill(selectedTab == tab ? Color.primary.brand : .clear)
+                                .frame(maxWidth: .infinity, maxHeight: 1)
+                                .padding([.leading, .trailing], 20)
+                                .animation(.default, value: selectedTab)
                         }
-                        HStack{
-                            ForEach((Tabs.allCases), id: \.self){ item in
-                                Button{
-                                    selectedTab = item
-                                } label: {
-                                    TabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item))
-                                }
-                                .buttonStyle(EmptyStyle())
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-                        .background(.ultraThickMaterial)
-                        .shadow(color: .black.opacity(0.15), radius: 15, y: 5)
                     }
+                    HStack{
+                        ForEach((Tabs.allCases), id: \.self){ item in
+                            Button{
+                                selectedTab = item
+                            } label: {
+                                TabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item))
+                            }
+                            .buttonStyle(EmptyStyle())
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .background(.ultraThickMaterial)
+                    .shadow(color: .black.opacity(0.15), radius: 15, y: 5)
                 }
-                .hidden(!showTabBar)
-                BottomSheet(hide: $bottomSheetData.hidden) {
-                    AnyView(bottomSheetData.view)
-                }
+            }
+            .hidden(!showTabBar)
+            BottomSheet(hide: $bottomSheetData.hidden) {
+                AnyView(bottomSheetData.view)
             }
         }
         .environment(\.tabIsShown, $showTabBar)

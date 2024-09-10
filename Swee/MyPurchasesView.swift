@@ -15,13 +15,13 @@ struct MyPurchasesView: View {
     ]
     
     var body: some View {
-        NavigationView {
+        CustomNavView {
             ScrollView {
                 HStack {
                     Text("My purchases")
                         .font(.custom("Poppins-SemiBold", size: 18))
                     Spacer()
-                    NavigationLink(destination: ActivityView()) {
+                    CustomNavLink(destination: ActivityView()) {
                         HStack {
                             Image("activity")
                             Text("All activity")
@@ -44,52 +44,47 @@ struct MyPurchasesView: View {
                     ForEach(purchases, id: \.merchant) { purchase in
                         let view = MerchantPurchasesCard(purchase: purchase)
                         if purchase.merchant == "Zoomoov AMK" {
-                            NavigationLink(destination: ZoomoovRedemptionView(tickets: [
+                            CustomNavLink(destination: ZoomoovRedemptionView(tickets: [
                                 .init(merchant: "Zoomoov", quantity: 12, description: "Rides", type: "Rides", expirationDate: Date(), colors: Color.gradient.secondary),
                                 .init(merchant: "Zoomoov", quantity: 1, description: "Masks", type: "Mask", expirationDate: Date(), colors: [Color(hex: "#EC048A"), Color(hex: "#F0971C")])
                             ])) {
                                 view
                             }
                         } else {
-                            NavigationLink(destination: JollyfieldRedemptionView()) {
+                            CustomNavLink(destination: JollyfieldRedemptionView()) {
                                 view
                             }
                         }
                     }
                 }
                 .padding(.horizontal, 16)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    VStack(alignment: .leading, spacing: 0) {
-                        Image("logo")
-                        Button {
-                        } label: {
-                            HStack(spacing: 4) {
-                                Image("location")
-                                Text("Singapore")
-                                    .font(.custom("Poppins-Regular", size: 14))
-                                    .foregroundStyle(Color.text.black80)
-                            }
-                        }
-                    }
-                    .padding(.bottom, 15)
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: CheckoutView(), label: {
-                        Image("cart")
-                    })
-                    .buttonStyle(EmptyStyle())
-                    .padding(.bottom, 15)
-                }
+                .padding(.bottom, 60)
             }
             .background(Color.background.pale)
             .onWillAppear({
                 tabIsShown.wrappedValue = true
             })
-//            .onWillDisappear({
-//                tabIsShown.wrappedValue = false
-//            })
+            .customNavigationBackButtonHidden(true)
+            .customNavLeadingItem {
+                VStack(alignment: .leading, spacing: 0) {
+                    Image("logo")
+                    Button {
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image("location")
+                            Text("Singapore")
+                                .font(.custom("Poppins-Regular", size: 14))
+                                .foregroundStyle(Color.text.black80)
+                        }
+                    }
+                }
+            }
+            .customNavTrailingItem {
+                CustomNavLink(destination: CheckoutView(), label: {
+                    Image("cart")
+                })
+                .buttonStyle(EmptyStyle())
+            }
         }
     }
 }
@@ -114,7 +109,7 @@ struct MerchantPurchasesCard: View {
                             Rectangle()
                                 .fill(.black.opacity(0.1))
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
-                    }
+                        }
                     Text(purchase.summary)
                         .font(.custom("Poppins-SemiBold", size: 18))
                         .foregroundStyle(Color.background.white)

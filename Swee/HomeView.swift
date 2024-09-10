@@ -6,7 +6,7 @@ struct HomeView: View {
     @Environment(\.tabIsShown) private var tabIsShown
     
     var body: some View {
-        NavigationView {
+        CustomNavView {
             ScrollView {
                 VStack {
                     BannersCarousel()
@@ -16,43 +16,36 @@ struct HomeView: View {
                 }
                 .padding(.vertical, 20)
                 .padding(.horizontal, 16)
-                .padding(.bottom, 60)
+                .padding(.bottom, 80)
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    VStack(alignment: .leading, spacing: 0) {
-                        Image("logo")
-                        Button {
-                        } label: {
-                            HStack(spacing: 4) {
-                                Image("location")
-                                Text("Singapore")
-                                    .font(.custom("Poppins-Regular", size: 14))
-                                    .foregroundStyle(Color.text.black80)
-                            }
-                        }
-                    }
-                    .padding(.bottom, 15)
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        bottomSheetData.wrappedValue.hidden = false
-                    }, label: {
-                        Image("cart")
-                    })
-                    .buttonStyle(EmptyStyle())
-                    .padding(.bottom, 15)
-//                    NavigationLink(destination: CheckoutView(), label: {
-//                        Image("cart")
-//                    })
-//                    .buttonStyle(EmptyStyle())
-//                    .padding(.bottom, 15)
-                }
-            }
+            .ignoresSafeArea()
             .onWillAppear({
                 bottomSheetData.wrappedValue.view = NotificationUpsell(hide: bottomSheetData.hidden)
                 tabIsShown.wrappedValue = true
             })
+            .customNavigationBackButtonHidden(true)
+            .customNavLeadingItem {
+                VStack(alignment: .leading, spacing: 0) {
+                    Image("logo")
+                    Button {
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image("location")
+                            Text("Singapore")
+                                .font(.custom("Poppins-Regular", size: 14))
+                                .foregroundStyle(Color.text.black80)
+                        }
+                    }
+                }
+            }
+            .customNavTrailingItem {
+                Button(action: {
+                    bottomSheetData.wrappedValue.hidden = false
+                }, label: {
+                    Image("cart")
+                })
+                .buttonStyle(EmptyStyle())
+            }
         }
         .introspect(.navigationView(style: .stack), on: .iOS(.v15, .v16, .v17, .v18), customize: { navBar in
             navBar.tabBarController?.tabBar.isHidden = true
@@ -242,7 +235,7 @@ struct OfferRow: View {
                 Text(model.title)
                     .textStyle(HomeRowTitleStyle())
                 Spacer()
-                NavigationLink(destination: OffersView()) {
+                CustomNavLink(destination: OffersView()) {
                     HStack(spacing: 4) {
                         Text("See all")
                             .font(.custom("Poppins-Regular", size: 14))
@@ -270,15 +263,15 @@ struct OfferCard: View {
     @State var offer: Offer
     
     var mockProduct: ProductDetailModel = .init(id: "id", image: Image("product-detail-img"), title: "Chinese new year", subtitle: "10 Zoomoov rides + 1 Hero mask + 1 Bingo draw", vendor: .Zoomoov, locations: Array(0..<12), price: "S$ 50", originalPrice: "S$ 69",
-                                                        description: """
+                                                description: """
                    Buy our **SUPERHERO** promo to get free rides from our Bingo Draws & Superhero Tuesday!
-
+                   
                    Best promo of 15 Rides, you get 2 **SUPERHERO** masks and 3 **Bingo Draws** (guaranteed 1 free ride minimum each draw)
                    """,
-                                                        redemptionSteps: .init(title: "How to redeem", points: ["Go to the Zoomoov outlet", "Scan the QR code at the counter", "Our staff will provide you the mask if included", "Enjoy the ride"], type: .Numbered), aboutSteps: .init(title: "About package", points: ["Access to all play areas in the zone", "Expiry only after a year", "Free meals and beverages", "Other package benefit will also be listed here", "as different points"], type: .Bullet), tosText: "In no event shall Swee or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out In no event shall Swee or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out ")
+                                                redemptionSteps: .init(title: "How to redeem", points: ["Go to the Zoomoov outlet", "Scan the QR code at the counter", "Our staff will provide you the mask if included", "Enjoy the ride"], type: .Numbered), aboutSteps: .init(title: "About package", points: ["Access to all play areas in the zone", "Expiry only after a year", "Free meals and beverages", "Other package benefit will also be listed here", "as different points"], type: .Bullet), tosText: "In no event shall Swee or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out In no event shall Swee or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out ")
     
     var body: some View {
-        NavigationLink(destination: ProductDetailView(product: mockProduct)) {
+        CustomNavLink(destination: ProductDetailView(product: mockProduct)) {
             VStack {
                 ZStack {
                     offer.image
@@ -332,9 +325,7 @@ struct ExploreView: View {
 struct ExploreCard: View {
     @State var vendor: Vendors
     var body: some View {
-        NavigationLink {
-            MerchantPageView()
-        } label: {
+        CustomNavLink(destination: MerchantPageView(), label: {
             ZStack {
                 Image(vendor == .Jollyfield ? "explore-bg-1" : "explore-bg-2")
                     .resizable()
@@ -352,7 +343,7 @@ struct ExploreCard: View {
                 .padding(.leading, 10)
                 .padding(.trailing, 20)
             }
-        }
+        })
     }
 }
 

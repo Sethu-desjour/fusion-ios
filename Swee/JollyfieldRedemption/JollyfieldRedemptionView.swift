@@ -175,7 +175,7 @@ struct JollyfieldRedemptionView: View {
             Button {
                 // @todo make request
             } label: {
-                NavigationLink(destination: AddChildView { children in
+                CustomNavLink(destination: AddChildView { children in
                     self.children.append(contentsOf: children)
                 }) {
                     HStack {
@@ -270,214 +270,190 @@ struct JollyfieldRedemptionView: View {
     }
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                VStack(spacing: 0) {
-                    ScrollView {
+        ZStack {
+            VStack(spacing: 0) {
+                ScrollView {
+                    VStack {
                         VStack {
                             VStack {
-                                VStack {
-                                    Text("\(availableTime.toString()) Hr")
-                                        .font(.custom("Roboto-Bold", size: 32))
-                                        .foregroundStyle(.white)
-                                        .shadow(color: .black.opacity(0.25), radius: 2, x: 1, y: 2)
-                                    Text("Total Time")
-                                        .font(.custom("Poppins-SemiBold", size: 16))
-                                        .foregroundStyle(.white.opacity(0.6))
-                                        .shadow(color: .black.opacity(0.25), radius: 2, x: 1, y: 2)
-                                }
-                                .frame(maxWidth: children.isEmpty ? nil : .infinity, maxHeight: 100)
-                                .padding(.horizontal, 40)
-                                .padding(.vertical, 21)
-                                .background(RoundedRectangle(cornerRadius: 8)
-                                    .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [6]))
-                                    .foregroundStyle(Color.black.opacity(0.3))
-                                )
-                                .background(RoundedRectangle(cornerRadius: 8)
-                                    .foregroundStyle(Color.primary.brand)
-                                )
-                                .padding(.bottom, 16)
-                                if children.isEmpty {
-                                    emptyUI
-                                } else {
-                                    VStack(alignment: .leading, spacing: 16) {
-                                        ForEach(children.indices, id: \.self) { index in
-                                            let child = children[index]
-                                            let isSelected = selectedChildren.contains(child)
-                                            VStack(alignment: .leading) {
-                                                Text(children[index].name)
-                                                    .font(.custom("Poppins-Medium", size: 18))
-                                                    .foregroundStyle(Color.text.black80)
-                                                Button {
-                                                    if sessionOngoing {
-                                                        return
-                                                    }
-                                                    
-                                                    if isSelected {
-                                                        selectedChildren.remove(child)
-                                                    } else {
-                                                        selectedChildren.insert(child)
-                                                    }
-                                                } label: {
-                                                    HStack {
-                                                        Spacer()
-                                                        Text(isSelected ? "Time \(sessionOngoing ? "remaining" : "alotted") : \(alottedTime.toString()) Hr" : "Select child")
-                                                            .font(.custom("Poppins-SemiBold", size: 16))
-                                                            .foregroundStyle(isSelected ? Color.primary.dark : Color.text.black100)
-                                                        Spacer()
-                                                    }
-                                                    .contentShape(Rectangle())
-                                                }
-                                                .frame(maxWidth: .infinity)
-                                                .padding(.vertical, 12)
-                                                .background(buttonOutline(isSelected))
-                                                .buttonStyle(EmptyStyle())
-                                            }
-                                            .padding()
-                                            .background(selectedOutline(isSelected))
-                                            .background(.white)
-                                        }
-                                        Text("*Select child to start the session")
-                                            .font(.custom("Poppins-Regular", size: 12))
-                                            .foregroundStyle(Color.text.black60)
-                                            .hidden(!selectedChildren.isEmpty)
-                                    }
-                                }
+                                Text("\(availableTime.toString()) Hr")
+                                    .font(.custom("Roboto-Bold", size: 32))
+                                    .foregroundStyle(.white)
+                                    .shadow(color: .black.opacity(0.25), radius: 2, x: 1, y: 2)
+                                Text("Total Time")
+                                    .font(.custom("Poppins-SemiBold", size: 16))
+                                    .foregroundStyle(.white.opacity(0.6))
+                                    .shadow(color: .black.opacity(0.25), radius: 2, x: 1, y: 2)
                             }
-                            .background(dottedOutline)
-                            .animation(.snappy, value: selectedChildren)
-                            .padding(16)
-                        }
-                        .padding(.horizontal, 16)
-                    }
-                    VStack(spacing: 0) {
-                        if sessionOngoing {
-                            Button {
-                                // @todo make request
-                                tempStep = .qrEnd
-                                hidden = false
-                            } label: {
-                                HStack {
-                                    Spacer()
-                                    Text("End session")
-                                        .font(.custom("Roboto-Bold", size: 16))
-                                    Spacer()
-                                }
-                                .foregroundStyle(.red)
-                                .frame(maxWidth: .infinity)
-                                .clipShape(Capsule())
-                                .contentShape(Capsule())
-                            }
-                            .buttonStyle(OutlineButton(strokeColor: .red))
-                        } else {
-                            Button {
-                                // @todo make request
-                                if selectedChildren.isEmpty {
-                                    return
-                                }
-                                hidden = false
-                            } label: {
-                                HStack {
-                                    Text("Start timer")
-                                        .font(.custom("Roboto-Bold", size: 16))
-                                }
-                                .foregroundStyle(Color.background.white)
-                                .padding(.vertical, 18)
-                                .frame(maxWidth: .infinity)
-                                .background(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
-                                .clipShape(Capsule())
-                            }
-                            .buttonStyle(EmptyStyle())
-                        }
-                    }
-                    .padding([.leading, .trailing, .top], 16)
-                    .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.text.black10), alignment: .top)
-                }
-                .background(Color.background.white)
-                BottomSheet(hide: $hidden, shouldDismissOnBackgroundTap: shouldDismissOnTap) {
-                    switch $tempStep.wrappedValue {
-                    case .qrStart:
-                        RedemptionScanView(model: .init(header: "Start session", title: "Scan QR to start your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
-                            $tempStep.wrappedValue = .scanningStart
-                        }
-                    case .scanningStart:
-                        RedemptionLoadingView(model: .init(header: "Start session", title: "Scanning")) {
-                            $tempStep.wrappedValue = .sessionStarted
-                        }
-                    case .sessionStarted:
-                        RedemptionCompletedView(model: .init(header: "", title: "Session started", description: "", actionTitle: "Close")) {
-                            hidden = true
-                            $tempStep.wrappedValue = .qrEnd
-                        }
-                    case .qrEnd:
-                        RedemptionScanView(model: .init(header: "End Session", title: "Scan QR to end your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
-                            $tempStep.wrappedValue = .scanningEnd
-                        }
-                    case .scanningEnd:
-                        RedemptionLoadingView(model: .init(header: "End session", title: "Scanning")) {
-                            $tempStep.wrappedValue = .sessionEnded
-                        }
-                        
-                    case .sessionEnded:
-                        RedemptionCompletedView(model: .init(header: "", title: "Session ended!", description: "Remaining time left 0:15 hr", actionTitle: "Okay")) {
-                            hidden = true
-                            $tempStep.wrappedValue = .qrStart
-                        }
-                    }
-                }
-            }
-            .onWillAppear({
-                tabIsShown.wrappedValue = false
-            })
-            .navigationBarBackButtonHidden(true)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image("back")
-                    }
-                    .padding(.bottom, 10)
-                }
-                ToolbarItem(placement: .principal) {
-                    Text("Jollyfield")
-                        .font(.custom("Poppins-Bold", size: 18))
-                        .foregroundStyle(Color.text.black100)
-                        .padding(.bottom, 10)
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    if children.isEmpty {
-                        Text("")
-                    } else if sessionOngoing {
-                        Button {
-                            // @todo show Help UI
-                        } label: {
-                            HStack(spacing: 4) {
-                                Text("Help")
-                                    .font(.custom("Poppins-Medium", size: 16))
-                                Image(systemName: "questionmark.circle")
-                                    .font(.callout.weight(.medium))
-                            }
-                            .foregroundStyle(Color.primary.brand)
-                            .padding(.bottom, 10)
-                        }
-                    } else {
-                        NavigationLink(destination: AddChildView { children in
-                            self.children.append(contentsOf: children)
-                        }) {
-                            Text("Add child")
-                                .font(.custom("Poppins-Medium", size: 16))
+                            .frame(maxWidth: children.isEmpty ? nil : .infinity, maxHeight: 100)
+                            .padding(.horizontal, 40)
+                            .padding(.vertical, 21)
+                            .background(RoundedRectangle(cornerRadius: 8)
+                                .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [6]))
+                                .foregroundStyle(Color.black.opacity(0.3))
+                            )
+                            .background(RoundedRectangle(cornerRadius: 8)
                                 .foregroundStyle(Color.primary.brand)
-                                .padding(.bottom, 10)
+                            )
+                            .padding(.bottom, 16)
+                            if children.isEmpty {
+                                emptyUI
+                            } else {
+                                VStack(alignment: .leading, spacing: 16) {
+                                    ForEach(children.indices, id: \.self) { index in
+                                        let child = children[index]
+                                        let isSelected = selectedChildren.contains(child)
+                                        VStack(alignment: .leading) {
+                                            Text(children[index].name)
+                                                .font(.custom("Poppins-Medium", size: 18))
+                                                .foregroundStyle(Color.text.black80)
+                                            Button {
+                                                if sessionOngoing {
+                                                    return
+                                                }
+                                                
+                                                if isSelected {
+                                                    selectedChildren.remove(child)
+                                                } else {
+                                                    selectedChildren.insert(child)
+                                                }
+                                            } label: {
+                                                HStack {
+                                                    Spacer()
+                                                    Text(isSelected ? "Time \(sessionOngoing ? "remaining" : "alotted") : \(alottedTime.toString()) Hr" : "Select child")
+                                                        .font(.custom("Poppins-SemiBold", size: 16))
+                                                        .foregroundStyle(isSelected ? Color.primary.dark : Color.text.black100)
+                                                    Spacer()
+                                                }
+                                                .contentShape(Rectangle())
+                                            }
+                                            .frame(maxWidth: .infinity)
+                                            .padding(.vertical, 12)
+                                            .background(buttonOutline(isSelected))
+                                            .buttonStyle(EmptyStyle())
+                                        }
+                                        .padding()
+                                        .background(selectedOutline(isSelected))
+                                        .background(.white)
+                                    }
+                                    Text("*Select child to start the session")
+                                        .font(.custom("Poppins-Regular", size: 12))
+                                        .foregroundStyle(Color.text.black60)
+                                        .hidden(!selectedChildren.isEmpty)
+                                }
+                            }
                         }
+                        .background(dottedOutline)
+                        .animation(.snappy, value: selectedChildren)
+                        .padding(16)
+                    }
+                    .padding(.horizontal, 16)
+                }
+                VStack(spacing: 0) {
+                    if sessionOngoing {
+                        Button {
+                            // @todo make request
+                            tempStep = .qrEnd
+                            hidden = false
+                        } label: {
+                            HStack {
+                                Spacer()
+                                Text("End session")
+                                    .font(.custom("Roboto-Bold", size: 16))
+                                Spacer()
+                            }
+                            .foregroundStyle(.red)
+                            .frame(maxWidth: .infinity)
+                            .clipShape(Capsule())
+                            .contentShape(Capsule())
+                        }
+                        .buttonStyle(OutlineButton(strokeColor: .red))
+                    } else {
+                        Button {
+                            // @todo make request
+                            if selectedChildren.isEmpty {
+                                return
+                            }
+                            hidden = false
+                        } label: {
+                            HStack {
+                                Text("Start timer")
+                                    .font(.custom("Roboto-Bold", size: 16))
+                            }
+                            .foregroundStyle(Color.background.white)
+                            .padding(.vertical, 18)
+                            .frame(maxWidth: .infinity)
+                            .background(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
+                            .clipShape(Capsule())
+                        }
+                        .buttonStyle(EmptyStyle())
+                    }
+                }
+                .padding([.leading, .trailing, .top], 16)
+                .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.text.black10), alignment: .top)
+            }
+            .background(Color.background.white)
+            BottomSheet(hide: $hidden, shouldDismissOnBackgroundTap: shouldDismissOnTap) {
+                switch $tempStep.wrappedValue {
+                case .qrStart:
+                    RedemptionScanView(model: .init(header: "Start session", title: "Scan QR to start your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
+                        $tempStep.wrappedValue = .scanningStart
+                    }
+                case .scanningStart:
+                    RedemptionLoadingView(model: .init(header: "Start session", title: "Scanning")) {
+                        $tempStep.wrappedValue = .sessionStarted
+                    }
+                case .sessionStarted:
+                    RedemptionCompletedView(model: .init(header: "", title: "Session started", description: "", actionTitle: "Close")) {
+                        hidden = true
+                        $tempStep.wrappedValue = .qrEnd
+                    }
+                case .qrEnd:
+                    RedemptionScanView(model: .init(header: "End Session", title: "Scan QR to end your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
+                        $tempStep.wrappedValue = .scanningEnd
+                    }
+                case .scanningEnd:
+                    RedemptionLoadingView(model: .init(header: "End session", title: "Scanning")) {
+                        $tempStep.wrappedValue = .sessionEnded
+                    }
+                    
+                case .sessionEnded:
+                    RedemptionCompletedView(model: .init(header: "", title: "Session ended!", description: "Remaining time left 0:15 hr", actionTitle: "Okay")) {
+                        hidden = true
+                        $tempStep.wrappedValue = .qrStart
                     }
                 }
             }
         }
-        .navigationViewStyle(.stack)
-        .navigationBarTitle("")
-        .navigationBarHidden(true)
+        .onWillAppear({
+            tabIsShown.wrappedValue = false
+        })
+        .customNavigationTitle("Jollyfield")
+        .customNavTrailingItem {
+            if children.isEmpty {
+                Text("")
+            } else if sessionOngoing {
+                Button {
+                    // @todo show Help UI
+                } label: {
+                    HStack(spacing: 4) {
+                        Text("Help")
+                            .font(.custom("Poppins-Medium", size: 16))
+                        Image(systemName: "questionmark.circle")
+                            .font(.callout.weight(.medium))
+                    }
+                    .foregroundStyle(Color.primary.brand)
+                }
+            } else {
+                CustomNavLink(destination: AddChildView { children in
+                    self.children.append(contentsOf: children)
+                }) {
+                    Text("Add child")
+                        .font(.custom("Poppins-Medium", size: 16))
+                        .foregroundStyle(Color.primary.brand)
+                }
+            }
+        }
     }
 }
 

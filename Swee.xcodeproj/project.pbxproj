@@ -63,6 +63,11 @@
 		AFCEC5C42C7C260B00D157BE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5C32C7C260B00D157BE /* HomeView.swift */; };
 		AFCEC5C62C7C26EB00D157BE /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5C52C7C26EB00D157BE /* MainView.swift */; };
 		AFDB90452C8EA256008931DB /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB90442C8EA256008931DB /* TimeInterval.swift */; };
+		AFDB90482C8EDE43008931DB /* CustomNavBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB90472C8EDE42008931DB /* CustomNavBarView.swift */; };
+		AFDB904A2C8EE077008931DB /* CustomNavBarContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB90492C8EE077008931DB /* CustomNavBarContainerView.swift */; };
+		AFDB904C2C8EE190008931DB /* CustomNavView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB904B2C8EE190008931DB /* CustomNavView.swift */; };
+		AFDB904E2C8EE2EC008931DB /* CustomNavLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB904D2C8EE2EC008931DB /* CustomNavLink.swift */; };
+		AFDB90502C8EE471008931DB /* CustomNavBarPreferenceKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB904F2C8EE471008931DB /* CustomNavBarPreferenceKeys.swift */; };
 		AFDF67F72C7E38FB00489D0C /* TextStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67F62C7E38FB00489D0C /* TextStyles.swift */; };
 		AFDF67F92C7F4EA900489D0C /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */; };
 		AFDF67FB2C7F576C00489D0C /* ObservableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67FA2C7F576B00489D0C /* ObservableWrapper.swift */; };
@@ -131,6 +136,11 @@
 		AFCEC5C32C7C260B00D157BE /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		AFCEC5C52C7C26EB00D157BE /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		AFDB90442C8EA256008931DB /* TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
+		AFDB90472C8EDE42008931DB /* CustomNavBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavBarView.swift; sourceTree = "<group>"; };
+		AFDB90492C8EE077008931DB /* CustomNavBarContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavBarContainerView.swift; sourceTree = "<group>"; };
+		AFDB904B2C8EE190008931DB /* CustomNavView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavView.swift; sourceTree = "<group>"; };
+		AFDB904D2C8EE2EC008931DB /* CustomNavLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavLink.swift; sourceTree = "<group>"; };
+		AFDB904F2C8EE471008931DB /* CustomNavBarPreferenceKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavBarPreferenceKeys.swift; sourceTree = "<group>"; };
 		AFDF67F62C7E38FB00489D0C /* TextStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyles.swift; sourceTree = "<group>"; };
 		AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheet.swift; sourceTree = "<group>"; };
 		AFDF67FA2C7F576B00489D0C /* ObservableWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableWrapper.swift; sourceTree = "<group>"; };
@@ -311,6 +321,7 @@
 			children = (
 				AFCEC5BE2C7C0E7900D157BE /* Styles */,
 				AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */,
+				AFDB90462C8EDE32008931DB /* Navigation */,
 				AF82A4642C8432C700E0DD4C /* ObservableScrollView.swift */,
 			);
 			path = UI;
@@ -323,6 +334,18 @@
 				AFDF67F62C7E38FB00489D0C /* TextStyles.swift */,
 			);
 			path = Styles;
+			sourceTree = "<group>";
+		};
+		AFDB90462C8EDE32008931DB /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				AFDB90472C8EDE42008931DB /* CustomNavBarView.swift */,
+				AFDB90492C8EE077008931DB /* CustomNavBarContainerView.swift */,
+				AFDB904B2C8EE190008931DB /* CustomNavView.swift */,
+				AFDB904D2C8EE2EC008931DB /* CustomNavLink.swift */,
+				AFDB904F2C8EE471008931DB /* CustomNavBarPreferenceKeys.swift */,
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -480,6 +503,7 @@
 				AF16A0FD2C86C43A0093CD99 /* MyPurchasesView.swift in Sources */,
 				AF72DFE72C80248200F70387 /* ActivityView.swift in Sources */,
 				AFDF67F72C7E38FB00489D0C /* TextStyles.swift in Sources */,
+				AFDB904A2C8EE077008931DB /* CustomNavBarContainerView.swift in Sources */,
 				AF82A4672C84418200E0DD4C /* ProductDetailView.swift in Sources */,
 				AF82A4652C8432C700E0DD4C /* ObservableScrollView.swift in Sources */,
 				AFDF67FB2C7F576C00489D0C /* ObservableWrapper.swift in Sources */,
@@ -491,10 +515,14 @@
 				AFCEC5BC2C7AD00F00D157BE /* OtpView.swift in Sources */,
 				AF1FAC472C79B0E100654FB7 /* AuthView.swift in Sources */,
 				AFDB90452C8EA256008931DB /* TimeInterval.swift in Sources */,
+				AFDB90502C8EE471008931DB /* CustomNavBarPreferenceKeys.swift in Sources */,
 				AFCEC5C02C7C0E9100D157BE /* ButtonStyles.swift in Sources */,
 				AF1FAC492C79B12A00654FB7 /* View.swift in Sources */,
+				AFDB904C2C8EE190008931DB /* CustomNavView.swift in Sources */,
 				AF80222F2C770C27001274FA /* Colors.swift in Sources */,
 				AFCEC5C42C7C260B00D157BE /* HomeView.swift in Sources */,
+				AFDB904E2C8EE2EC008931DB /* CustomNavLink.swift in Sources */,
+				AFDB90482C8EDE43008931DB /* CustomNavBarView.swift in Sources */,
 				AF80222C2C72F39E001274FA /* OnboardingView.swift in Sources */,
 				AF557FC82C79AAC700AD99A5 /* SweeApp.swift in Sources */,
 			);

@@ -47,125 +47,105 @@ struct MerchantPageView: View {
             Image("merchant-bg")
                 .resizable()
                 .scaledToFill()
-                .frame(height: max(h, size.maxY - 40))
+                .frame(height: max(h, size.maxY - 60))
                 .frame(maxWidth: proxy.size.width)
-                .offset(y: min(0, -minY + topInset))
+                .offset(y: min(0, -minY + topInset + 80))
         }
     }
     
     var body: some View {
-            NavigationView {
+//            NavigationView {
                 GeometryReader { geometry in
                     let insets = geometry.safeAreaInsets
                     ScrollView {
-                        VStack(spacing: 0) {
-                            VStack {
-                                Spacer()
-                                HStack {
-                                    VStack(alignment: .leading, spacing: 0) {
-                                        Text("Zoomoov")
-                                            .font(.custom("Poppins-Bold", size: 24))
-                                            .foregroundStyle(.white)
-                                        Text("24 locations".underline(font: .custom("Poppins-SemiBold", size: 14),
-                                                                      color: .white))
-                                    }
+                        VStack {
+                            VStack(spacing: 0) {
+                                VStack {
                                     Spacer()
-                                    Image("share-system")
-                                    
+                                    HStack {
+                                        VStack(alignment: .leading, spacing: 0) {
+                                            Text("Zoomoov")
+                                                .font(.custom("Poppins-Bold", size: 24))
+                                                .foregroundStyle(.white)
+                                            Text("24 locations".underline(font: .custom("Poppins-SemiBold", size: 14),
+                                                                          color: .white))
+                                        }
+                                        Spacer()
+                                        Image("share-system")
+                                            .foregroundStyle(.white)
+                                    }
+                                    .padding([.leading, .trailing], 16)
                                 }
-                                .padding([.leading, .trailing], 16)
+                                .frame(height: 200)
+                                .frame(maxWidth: .infinity)
+                                .padding(.bottom, 40)
+                                .background(LinearGradient(colors: [.black, .black.opacity(0.2), .clear], startPoint: .bottom, endPoint: .top))
                             }
-                            .frame(height: 200)
-                            .frame(maxWidth: .infinity)
-                            .padding(.bottom, 40)
-                            .background(LinearGradient(colors: [.black, .black.opacity(0.2), .clear], startPoint: .bottom, endPoint: .top))
-                        }
-                        .padding(.bottom, -40)
-                        .onChange(of: size) { newVal in
-                            topInset = insets.top
-                        }
-                        .background { positionDetector }
-                        .background { bgImage }
-                        VStack(alignment: .leading, spacing: 20) {
-                            Text("""
+                            .padding(.bottom, -40)
+                            .onChange(of: size) { newVal in
+                                topInset = insets.top
+                            }
+                            .background { positionDetector }
+                            .background { bgImage }
+                            VStack(alignment: .leading, spacing: 20) {
+                                Text("""
                                  Zoomoov is a vast farming area where characters indulge in farming activities and conjures a farming process – dig, sow, harvest with the emphasis on cooperative teamwork.
                                  There is never a lack of PLAYtime with.
                                  """)
-                            .font(.custom("Poppins-Medium", size: 16))
-                            .foregroundStyle(Color.text.black80)
-                            VStack(alignment: .leading) {
-                                Text("Legendary deals just for today")
-                                    .font(.custom("Poppins-Bold", size: 20))
-                                DealBanner(banner: .init(expiryDate: "06:00 hrs left",
-                                                         title: "Super hero Tuesday",
-                                                         description: "One free ride when you bring Zoomoov hero mask",
-                                                         image: .init("badge-2"),
-                                                         bgColors: [Color(hex:"#3900B1"), Color(hex:"#9936CE"), Color(hex:"#FDC093")],
-                                                         timerColors: [Color(hex: "#FFC107"), Color(hex: "#FFC107", opacity: 0)]))
-                            }
-                            Text("Package just for you")
-                                .font(.custom("Poppins-Bold", size: 20))
-                            LazyVGrid(columns: columns, spacing: 16) {
-                                ForEach(model.offers.indices, id: \.self) { index in
-                                    OfferCard(offer: model.offers[index])
+                                .font(.custom("Poppins-Medium", size: 16))
+                                .foregroundStyle(Color.text.black80)
+                                VStack(alignment: .leading) {
+                                    Text("Legendary deals just for today")
+                                        .font(.custom("Poppins-Bold", size: 20))
+                                    DealBanner(banner: .init(expiryDate: "06:00 hrs left",
+                                                             title: "Super hero Tuesday",
+                                                             description: "One free ride when you bring Zoomoov hero mask",
+                                                             image: .init("badge-2"),
+                                                             bgColors: [Color(hex:"#3900B1"), Color(hex:"#9936CE"), Color(hex:"#FDC093")],
+                                                             timerColors: [Color(hex: "#FFC107"), Color(hex: "#FFC107", opacity: 0)]))
                                 }
-                            }
-                            Text("Nearby location")
-                                .font(.custom("Poppins-Bold", size: 20))
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                LazyHGrid(rows: [.init()], content: {
-                                    ForEach(venueModels.indices, id: \.self) { index in
-                                        VenueCard(model: venueModels[index])
+                                Text("Package just for you")
+                                    .font(.custom("Poppins-Bold", size: 20))
+                                LazyVGrid(columns: columns, spacing: 16) {
+                                    ForEach(model.offers.indices, id: \.self) { index in
+                                        OfferCard(offer: model.offers[index])
                                     }
+                                }
+                                Text("Nearby location")
+                                    .font(.custom("Poppins-Bold", size: 20))
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    LazyHGrid(rows: [.init()], content: {
+                                        ForEach(venueModels.indices, id: \.self) { index in
+                                            VenueCard(model: venueModels[index])
+                                        }
+                                    })
+                                }
+                                .padding(.bottom, 20)
+                                .introspect(.scrollView, on: .iOS(.v15, .v16, .v17, .v18), customize: { scrollView in
+                                    scrollView.clipsToBounds = false
                                 })
                             }
-                            .padding(.bottom, 20)
-                            .introspect(.scrollView, on: .iOS(.v15, .v16, .v17, .v18), customize: { scrollView in
-                                scrollView.clipsToBounds = false
-                            })
+                            .padding([.leading, .trailing, .top], 16)
+                            .background(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
                         }
-                        .padding([.leading, .trailing, .top], 16)
-                        .background(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .padding(.bottom, 30)
                     }
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button {
-                                dismiss()
-                            } label: {
-                                Image("back")
-                            }
-                            .padding(.bottom, 10)
-                        }
-                        ToolbarItem(placement: .principal) {
-                            Text("Zoomoov")
-                                .font(.custom("Poppins-Bold", size: 18))
-                                .foregroundStyle(Color.text.black100)
-                                .padding(.bottom, 10)
-                        }
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button {
+                    .ignoresSafeArea()
+                    .customNavigationTitle("Zoomoov")
+                    .customNavTrailingItem {
+                        Button {
 
-                            } label: {
-                                Image("cart")
-                            }
-                            .buttonStyle(EmptyStyle())
-                            .padding(.bottom, 10)
+                        } label: {
+                            Image("cart")
                         }
+                        .buttonStyle(EmptyStyle())
                     }
                 }
-                .navigationBarBackButtonHidden(true)
-                .navigationBarTitleDisplayMode(.inline)
-            }
-            .onWillAppear({
-                tabIsShown.wrappedValue = false
-            })
-//            .onWillDisappear({
-//                tabIsShown.wrappedValue = true
-//            })
-            .navigationBarTitle("")
-            .navigationBarHidden(true)
-            .edgesIgnoringSafeArea(.bottom)
+                .onWillAppear({
+                    tabIsShown.wrappedValue = false
+                })
+//            }
     }
 }
 
@@ -284,5 +264,7 @@ struct VenueCard: View {
 }
 
 #Preview {
-    MerchantPageView()
+    CustomNavView {
+        MerchantPageView()
+    }
 }
