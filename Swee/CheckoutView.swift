@@ -75,7 +75,7 @@ struct CheckoutView: View {
                         .font(.custom("Poppins-Bold", size: 20))
                     Spacer()
                 }
-                .padding(.horizontal, 16)
+                .padding([.horizontal, .top], 16)
                 LazyVGrid(columns: [.init(.flexible())], spacing: 0) {
                     ForEach(products.indices, id: \.self) { index in
                         let element = products[index]
@@ -133,7 +133,7 @@ struct CheckoutView: View {
                                     .frame(maxWidth: 90)
                                     .padding(.horizontal, 10)
                                     .padding(.vertical, 4)
-//                                    .frame(maxWidth: .infinity, maxHeight: 55)
+                                    //                                    .frame(maxWidth: .infinity, maxHeight: 55)
                                     .clipShape(Capsule())
                                     .overlay(RoundedRectangle(cornerRadius: 24)
                                         .stroke(Color.secondary.brand,
@@ -193,7 +193,7 @@ struct CheckoutView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 6))
                 .padding([.horizontal, .bottom], 16)
             }
-            VStack(spacing: 0) {
+            BottomButtonContainer {
                 Button {
                     // @todo make request
                     showPaymentSuccess = true
@@ -210,28 +210,9 @@ struct CheckoutView: View {
                 }
                 .buttonStyle(EmptyStyle())
             }
-            .padding([.leading, .trailing, .top], 16)
-            .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.text.black10), alignment: .top)
         }
         .background(Color.background.pale)
-        .navigationBarBackButtonHidden(true)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    Image("back")
-                }
-                .padding(.bottom, 15)
-            }
-            ToolbarItem(placement: .principal) {
-                Text("Checkout")
-                    .font(.custom("Poppins-Bold", size: 18))
-                    .foregroundStyle(Color.text.black100)
-                    .padding(.bottom, 15)
-            }
-        }
+        .customNavigationTitle("Checkout")
     }
     
     var successUI: some View {
@@ -262,7 +243,7 @@ struct CheckoutView: View {
     }
     
     var body: some View {
-        NavigationView {
+        VStack {
             if showPaymentSuccess {
                 successUI
             } else {
@@ -273,13 +254,27 @@ struct CheckoutView: View {
             tabIsShown.wrappedValue = false
         })
         .onWillDisappear({
-//            tabIsShown.wrappedValue = true
+            //            tabIsShown.wrappedValue = true
             if showPaymentSuccess {
                 selectedTab.wrappedValue = .purchases
             }
         })
-        .navigationBarTitle("")
-        .navigationBarHidden(true)
+    }
+}
+
+struct BottomButtonContainer<Content: View>: View {
+    let content: Content
+    
+    init(@ViewBuilder _ content: () -> Content) {
+        self.content = content()
+    }
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            content
+        }
+        .padding([.leading, .trailing, .top], 16)
+        .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.text.black10), alignment: .top)
     }
 }
 
@@ -303,7 +298,9 @@ struct SummaryRow: View {
 }
 
 #Preview {
-    CheckoutView()
+    CustomNavView {
+        CheckoutView()
+    }
 }
 
 

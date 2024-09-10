@@ -4,13 +4,13 @@ private struct CurrentTabKey: EnvironmentKey {
     static let defaultValue: Binding<Tabs> = .constant(.home)
 }
 
-struct BottomSheetData {
-    var view: any View
-    var hidden: Bool = true
+struct BottomSheetData: Equatable {
+    var view: EquatableViewContainer
+    var hidden: Binding<Bool> = .constant(true)
 }
 
 struct BottomSheetContentKey: EnvironmentKey {
-    static let defaultValue: Binding<BottomSheetData> = .constant(.init(view: Text("")))
+    static let defaultValue: Binding<BottomSheetData> = .constant(.init(view: EquatableViewContainer(view: AnyView(Text("")))))
 }
 
 private struct TabVisibilityKey: EnvironmentKey {
@@ -31,5 +31,11 @@ extension EnvironmentValues {
     var bottomSheetData: Binding<BottomSheetData> {
         get { self[BottomSheetContentKey.self] }
         set { self[BottomSheetContentKey.self] = newValue }
+    }
+}
+
+extension Binding: Equatable where Value: Equatable {
+    public static func == (lhs: Binding<Value>, rhs: Binding<Value>) -> Bool {
+        lhs.wrappedValue == rhs.wrappedValue
     }
 }
