@@ -75,7 +75,7 @@ struct CheckoutView: View {
                         .font(.custom("Poppins-Bold", size: 20))
                     Spacer()
                 }
-                .padding(.horizontal, 16)
+                .padding([.horizontal, .top], 16)
                 LazyVGrid(columns: [.init(.flexible())], spacing: 0) {
                     ForEach(products.indices, id: \.self) { index in
                         let element = products[index]
@@ -298,7 +298,9 @@ struct SummaryRow: View {
 }
 
 #Preview {
-    CheckoutView()
+    CustomNavView {
+        CheckoutView()
+    }
 }
 
 

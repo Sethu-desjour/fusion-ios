@@ -26,7 +26,7 @@ enum Tabs: Int, CaseIterable, Identifiable {
         case .home:
             return "Home"
         case .purchases:
-            return "My Purchases"
+            return "My Wallet"
         case .alerts:
             return "Alerts"
         case .profile:
@@ -57,17 +57,18 @@ struct MainView: View {
     
     func TabItem(imageName: String, title: String, isActive: Bool) -> some View {
         VStack {
-            Image(imageName)
+            Image(isActive ? "\(imageName)"+"-active" : imageName)
                 .resizable()
                 .renderingMode(.template)
-                .foregroundStyle(Color.text.black60)
+                .foregroundStyle(isActive ? Color.primary.brand : Color.text.black60)
                 .frame(width: 24, height: 24)
             Text(title)
-                .font(isActive ? .custom("Roboto-Bold", size: 12) : .custom("Roboto-Medium", size: 12))
+                .font(isActive ? .custom("Poppins-Medium", size: 12) : .custom("Poppins-SemiBold", size: 12))
                 .foregroundStyle(isActive ? Color.primary.brand : Color.text.black60)
         }
         .animation(.default, value: selectedTab)
-        .frame(maxWidth: 100, maxHeight: 50)
+        .padding(.top, 7)
+        .frame(maxWidth: 100, maxHeight: 60)
     }
     
     var body: some View {
@@ -80,16 +81,17 @@ struct MainView: View {
             }
             ZStack {
                 VStack(spacing: 0) {
-                    HStack {
-                        ForEach((Tabs.allCases), id: \.self) { tab in
-                            Rectangle()
-                                .fill(selectedTab == tab ? Color.primary.brand : .clear)
-                                .frame(maxWidth: .infinity, maxHeight: 1)
-                                .padding([.leading, .trailing], 20)
-                                .animation(.default, value: selectedTab)
-                        }
-                    }
+//                    HStack {
+//                        ForEach((Tabs.allCases), id: \.self) { tab in
+//                            Rectangle()
+//                                .fill(selectedTab == tab ? Color.primary.brand : .clear)
+//                                .frame(maxWidth: .infinity, maxHeight: 1)
+//                                .padding([.leading, .trailing], 20)
+//                                .animation(.default, value: selectedTab)
+//                        }
+//                    }
                     HStack{
+                        Spacer()
                         ForEach((Tabs.allCases), id: \.self){ item in
                             Button{
                                 selectedTab = item
@@ -98,10 +100,12 @@ struct MainView: View {
                             }
                             .buttonStyle(EmptyStyle())
                         }
+                        Spacer()
                     }
                     .frame(maxWidth: .infinity)
                     .background(.ultraThickMaterial)
-                    .shadow(color: .black.opacity(0.15), radius: 15, y: 5)
+                    .compositingGroup()
+                    .shadow(color: .black.opacity(0.15), radius: 2, y: -2)
                 }
             }
             .hidden(!showTabBar)
