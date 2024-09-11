@@ -60,6 +60,7 @@ struct AuthView: View {
                         TextField("Phone number", text: $phone) {
                             UIApplication.shared.endEditing()
                         }
+                        .keyboardType(.numberPad)
                         .padding([.top, .bottom], 17)
                         .padding([.leading, .trailing], 14)
                         .focused($isPhoneFocused)

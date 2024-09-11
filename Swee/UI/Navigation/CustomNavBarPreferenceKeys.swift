@@ -17,6 +17,14 @@ struct CustomNavBarBackButtonHiddenPreferenceKey: PreferenceKey {
     }
 }
 
+struct CustomNavBarHiddenPreferenceKey: PreferenceKey {
+    static var defaultValue: Bool = false
+    
+    static func reduce(value: inout Bool, nextValue: () -> Bool) {
+        value = nextValue()
+    }
+}
+
 struct CustomNavLeadingItemPreferenceKey: PreferenceKey {
     static var defaultValue: EquatableViewContainer = EquatableViewContainer(view: AnyView(Text("")))
     
@@ -48,6 +56,10 @@ extension View {
     
     func customNavigationBackButtonHidden(_ hidden: Bool) -> some View {
         preference(key: CustomNavBarBackButtonHiddenPreferenceKey.self, value: hidden)
+    }
+    
+    func customNavBarHidden(_ hidden: Bool) -> some View {
+        preference(key: CustomNavBarHiddenPreferenceKey.self, value: hidden)
     }
     
     func customNavLeadingItem(@ViewBuilder _ content: () -> some View) -> some View {

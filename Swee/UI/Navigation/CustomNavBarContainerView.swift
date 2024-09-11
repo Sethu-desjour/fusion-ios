@@ -13,6 +13,7 @@ struct CustomNavBarContainerView<Content: View>: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var showBackButton: Bool = true
+    @State private var hideNavBar: Bool = false
     @State private var leadingItem: EquatableViewContainer = EquatableViewContainer(view: AnyView(Text("")))
     @State private var trailingItem: EquatableViewContainer = EquatableViewContainer(view: AnyView(Text("")))
     @State private var title: String = ""
@@ -25,6 +26,7 @@ struct CustomNavBarContainerView<Content: View>: View {
     var body: some View {
         VStack(spacing: 0) {
             CustomNavBarView(showBackButton: showBackButton, leadingItem: leadingItem, trailingItem: trailingItem, title: title)
+                .frame(maxHeight: hideNavBar ? 0 : nil)
             content
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
@@ -33,6 +35,9 @@ struct CustomNavBarContainerView<Content: View>: View {
         })
         .onPreferenceChange(CustomNavBarBackButtonHiddenPreferenceKey.self, perform: { value in
             self.showBackButton = !value
+        })
+        .onPreferenceChange(CustomNavBarHiddenPreferenceKey.self, perform: { value in
+            self.hideNavBar = value
         })
         .onPreferenceChange(CustomNavLeadingItemPreferenceKey.self, perform: { value in
             self.leadingItem = value
