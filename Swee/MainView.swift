@@ -17,7 +17,7 @@ enum Tabs: Int, CaseIterable, Identifiable {
         case .alerts:
             CompleteProfileView()
         case .profile:
-            HomeView()
+            ProfileView()
         }
     }
     
