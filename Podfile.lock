@@ -1,3 +1,16 @@
-PODFILE CHECKSUM: c27c1349cf2c4eee1c002dfd3885d3a65e925d26
+PODS:
+  - SwiftUIIntrospect (1.3.0)
+
+DEPENDENCIES:
+  - SwiftUIIntrospect (~> 1.0)
+
+SPEC REPOS:
+  trunk:
+    - SwiftUIIntrospect
+
+SPEC CHECKSUMS:
+  SwiftUIIntrospect: fee9aa07293ee280373a591e1824e8ddc869ba5d
+
+PODFILE CHECKSUM: def56b29cccdc4454d6354f625e1543958542a30
 
 COCOAPODS: 1.14.3
