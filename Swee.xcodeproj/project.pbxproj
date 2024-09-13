@@ -56,6 +56,7 @@
 		AF82A4672C84418200E0DD4C /* ProductDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF82A4662C84418200E0DD4C /* ProductDetailView.swift */; };
 		AF8B1E182C8729B600B44D75 /* ZoomoovRedemptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8B1E172C8729B600B44D75 /* ZoomoovRedemptionView.swift */; };
 		AF9AC5682C894D5700B16186 /* JollyfieldRedemptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */; };
+		AFA335C82C92676700883CBB /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA335C72C92676700883CBB /* AlertsView.swift */; };
 		AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */; };
 		AFCEC5BC2C7AD00F00D157BE /* OtpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */; };
 		AFCEC5C02C7C0E9100D157BE /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5BF2C7C0E9100D157BE /* ButtonStyles.swift */; };
@@ -130,6 +131,7 @@
 		AF82A4662C84418200E0DD4C /* ProductDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailView.swift; sourceTree = "<group>"; };
 		AF8B1E172C8729B600B44D75 /* ZoomoovRedemptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomoovRedemptionView.swift; sourceTree = "<group>"; };
 		AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JollyfieldRedemptionView.swift; sourceTree = "<group>"; };
+		AFA335C72C92676700883CBB /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
 		AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtpView.swift; sourceTree = "<group>"; };
 		AFCEC5BF2C7C0E9100D157BE /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 				AF16A0FC2C86C43A0093CD99 /* MyPurchasesView.swift */,
 				AF8B1E172C8729B600B44D75 /* ZoomoovRedemptionView.swift */,
 				AFDB2B512C9131AC00BA75DA /* ProfileView.swift */,
+				AFA335C72C92676700883CBB /* AlertsView.swift */,
 				AF9AC5692C8967C000B16186 /* JollyfieldRedemption */,
 				AF16A0F72C8567190093CD99 /* CheckoutView.swift */,
 				AF16A0F92C86B9620093CD99 /* Environment */,
@@ -496,6 +499,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AFCEC5C22C7C111200D157BE /* CompleteProfileView.swift in Sources */,
+				AFA335C82C92676700883CBB /* AlertsView.swift in Sources */,
 				AF72DFE92C81699C00F70387 /* MerchantPageView.swift in Sources */,
 				AFCEC5C62C7C26EB00D157BE /* MainView.swift in Sources */,
 				AFDF67F92C7F4EA900489D0C /* BottomSheet.swift in Sources */,
