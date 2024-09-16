@@ -107,7 +107,7 @@ struct AlertsView: View {
                     }
                 }
             }
-            .onWillAppear {
+            .onAppear {
                 tabIsShown.wrappedValue = true
             }
             .customNavigationBackButtonHidden(true)

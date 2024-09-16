@@ -5,32 +5,67 @@ struct ProfileView: View {
         let title: String
         let description: String?
         let icon: Image
+        let action: () -> Void
         
-        init(title: String, description: String? = nil, icon: Image) {
+        init(title: String, description: String? = nil, icon: Image, action: @escaping () -> Void) {
             self.title = title
             self.description = description
             self.icon = icon
+            self.action = action
         }
     }
     
+    @EnvironmentObject private var api: API
+    @EnvironmentObject private var appRootManager: AppRootManager
+    
     @State private var profileProgress: Double = 0.6
-    @State private var sections: [[RowData]] = [
-        [
-            .init(title: "Location", description: "Singapore", icon: Image("location")),
-            .init(title: "Language", description: "English", icon: Image("globe")),
-            .init(title: "Email ID", description: "Add email ID", icon: Image("mail")),
-            .init(title: "Payment", description: "Add payment", icon: Image("card")),
-            .init(title: "Gender", description: "Add gender", icon: Image("gender")),
-        ],
-        [
-            .init(title: "Child", description: "No info added", icon: Image("person-add")),
-        ],
-        [
-            .init(title: "Help Center", icon: Image("help")),
-            .init(title: "Terms & Condition", icon: Image("receipt")),
-            .init(title: "Rate our app", icon: Image("raiting")),
-        ],
-    ]
+    @State private var sections: [[RowData]] = []
+    
+    func setupSections() {
+        sections = [
+            [
+                .init(title: "Location", description: "Singapore", icon: Image("location")) {
+                    
+                },
+                .init(title: "Language", description: "English", icon: Image("globe")) {
+                    
+                },
+                .init(title: "Email ID", description: "Add email ID", icon: Image("mail")) {
+                    
+                },
+                .init(title: "Payment", description: "Add payment", icon: Image("card")) {
+                    
+                },
+                .init(title: "Gender", description: "Add gender", icon: Image("gender")) {
+                    
+                },
+            ],
+            [
+                .init(title: "Child", description: "No info added", icon: Image("person-add")) {
+                    
+                },
+            ],
+            [
+                .init(title: "Help Center", icon: Image("help")) {
+                    
+                },
+                .init(title: "Terms & Condition", icon: Image("receipt")) {
+                    
+                },
+                .init(title: "Rate our app", icon: Image("raiting")) {
+                    
+                },
+            ],
+            [
+                .init(title: "Logout", icon: Image(systemName: "rectangle.portrait.and.arrow.right")) {
+                    Task {
+                        await api.signOut()
+                        appRootManager.currentRoot = .authentication
+                    }
+                },
+            ],
+        ]
+    }
     
     var body: some View {
         CustomNavView {
@@ -46,12 +81,14 @@ struct ProfileView: View {
                         HStack(spacing: 16) {
                             Image("avatar")
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Johnny Depp")
+                                Text(api.user?.name ?? "")
                                     .font(.custom("Poppins-SemiBold", size: 18))
                                     .foregroundStyle(Color.text.black100)
-                                Text("+65-86445476")
-                                    .font(.custom("Poppins-Medium", size: 14))
-                                    .foregroundStyle(Color.text.black60)
+                                if let phone = api.user?.phone, !phone.isEmpty {
+                                    Text(phone)
+                                        .font(.custom("Poppins-Medium", size: 14))
+                                        .foregroundStyle(Color.text.black60)
+                                }
                                 HStack(alignment: .center, spacing: 3) {
                                     Text("Edit basic info")
                                         .font(.custom("Poppins-Medium", size: 14))
@@ -113,6 +150,9 @@ struct ProfileView: View {
                 }
             }
         }
+        .onAppear(perform: {
+            setupSections()
+        })
     }
     
     struct Row: View {
@@ -152,6 +192,10 @@ struct ProfileView: View {
                 }
                 .padding()
             }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                row.action()
+            }
         }
     }
 }
@@ -183,4 +227,6 @@ struct CircularProgressView: View {
 
 #Preview {
     ProfileView()
+        .environmentObject(AppRootManager())
+        .environmentObject(API())
 }

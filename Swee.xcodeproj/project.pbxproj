@@ -26,6 +26,12 @@
 		AF1FAC602C79CEDD00654FB7 /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC542C79CEDD00654FB7 /* Roboto-ThinItalic.ttf */; };
 		AF1FAC612C79CEDD00654FB7 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC552C79CEDD00654FB7 /* Roboto-Bold.ttf */; };
 		AF1FAC622C79CEDD00654FB7 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC562C79CEDD00654FB7 /* Roboto-Black.ttf */; };
+		AF501F242C942CDF00637042 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF501F232C942CDF00637042 /* GoogleService-Info.plist */; };
+		AF501F272C945D7C00637042 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F262C945D7C00637042 /* API.swift */; };
+		AF501F2A2C945F9C00637042 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F292C945F9C00637042 /* Strings.swift */; };
+		AF501F2C2C94736C00637042 /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F2B2C94736C00637042 /* AsyncButton.swift */; };
+		AF501F2E2C95234C00637042 /* FirebaseAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F2D2C95234C00637042 /* FirebaseAuth.swift */; };
+		AF501F312C96B56D00637042 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F302C96B56D00637042 /* SplashView.swift */; };
 		AF557FC82C79AAC700AD99A5 /* SweeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF557FC72C79AAC700AD99A5 /* SweeApp.swift */; };
 		AF72DFE72C80248200F70387 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72DFE62C80248200F70387 /* ActivityView.swift */; };
 		AF72DFE92C81699C00F70387 /* MerchantPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72DFE82C81699C00F70387 /* MerchantPageView.swift */; };
@@ -101,6 +107,13 @@
 		AF1FAC542C79CEDD00654FB7 /* Roboto-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-ThinItalic.ttf"; sourceTree = "<group>"; };
 		AF1FAC552C79CEDD00654FB7 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		AF1FAC562C79CEDD00654FB7 /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
+		AF501F232C942CDF00637042 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		AF501F262C945D7C00637042 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		AF501F292C945F9C00637042 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		AF501F2B2C94736C00637042 /* AsyncButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncButton.swift; sourceTree = "<group>"; };
+		AF501F2D2C95234C00637042 /* FirebaseAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuth.swift; sourceTree = "<group>"; };
+		AF501F2F2C952FCD00637042 /* Swee.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Swee.entitlements; sourceTree = "<group>"; };
+		AF501F302C96B56D00637042 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		AF557FC72C79AAC700AD99A5 /* SweeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SweeApp.swift; sourceTree = "<group>"; };
 		AF72DFE62C80248200F70387 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		AF72DFE82C81699C00F70387 /* MerchantPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPageView.swift; sourceTree = "<group>"; };
@@ -192,6 +205,7 @@
 		AF170AF42C71C02900544970 = {
 			isa = PBXGroup;
 			children = (
+				AF501F232C942CDF00637042 /* GoogleService-Info.plist */,
 				AF170AFF2C71C02900544970 /* Swee */,
 				AF170AFE2C71C02900544970 /* Products */,
 				78065637F006FEC735843AF7 /* Pods */,
@@ -210,6 +224,7 @@
 		AF170AFF2C71C02900544970 /* Swee */ = {
 			isa = PBXGroup;
 			children = (
+				AF501F2F2C952FCD00637042 /* Swee.entitlements */,
 				AF557FC72C79AAC700AD99A5 /* SweeApp.swift */,
 				AF80222B2C72F39E001274FA /* OnboardingView.swift */,
 				AF7DF73A2C79F2B100C3F347 /* TestView.swift */,
@@ -222,10 +237,13 @@
 				AFDF67FC2C7F5A6C00489D0C /* OffersView.swift */,
 				AF72DFE62C80248200F70387 /* ActivityView.swift */,
 				AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */,
+				AF501F302C96B56D00637042 /* SplashView.swift */,
 				AF16A0FC2C86C43A0093CD99 /* MyPurchasesView.swift */,
 				AF8B1E172C8729B600B44D75 /* ZoomoovRedemptionView.swift */,
 				AFDB2B512C9131AC00BA75DA /* ProfileView.swift */,
 				AFA335C72C92676700883CBB /* AlertsView.swift */,
+				AF501F282C945F8F00637042 /* Constants */,
+				AF501F252C945BB500637042 /* API */,
 				AF9AC5692C8967C000B16186 /* JollyfieldRedemption */,
 				AF16A0F72C8567190093CD99 /* CheckoutView.swift */,
 				AF16A0F92C86B9620093CD99 /* Environment */,
@@ -256,6 +274,23 @@
 				AF1FAC542C79CEDD00654FB7 /* Roboto-ThinItalic.ttf */,
 			);
 			path = Roboto;
+			sourceTree = "<group>";
+		};
+		AF501F252C945BB500637042 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				AF501F262C945D7C00637042 /* API.swift */,
+				AF501F2D2C95234C00637042 /* FirebaseAuth.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		AF501F282C945F8F00637042 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				AF501F292C945F9C00637042 /* Strings.swift */,
+			);
+			path = Constants;
 			sourceTree = "<group>";
 		};
 		AF80222D2C770C12001274FA /* Helpers */ = {
@@ -329,6 +364,7 @@
 				AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */,
 				AFDB90462C8EDE32008931DB /* Navigation */,
 				AF82A4642C8432C700E0DD4C /* ObservableScrollView.swift */,
+				AF501F2B2C94736C00637042 /* AsyncButton.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -431,6 +467,7 @@
 				AF8022472C785E96001274FA /* Poppins-Regular.ttf in Resources */,
 				AF1FAC612C79CEDD00654FB7 /* Roboto-Bold.ttf in Resources */,
 				AF8022512C785E96001274FA /* Poppins-LightItalic.ttf in Resources */,
+				AF501F242C942CDF00637042 /* GoogleService-Info.plist in Resources */,
 				AF1FAC5A2C79CEDD00654FB7 /* Roboto-Light.ttf in Resources */,
 				AF80224C2C785E96001274FA /* Poppins-ExtraBoldItalic.ttf in Resources */,
 				AF1FAC572C79CEDD00654FB7 /* Roboto-LightItalic.ttf in Resources */,
@@ -498,11 +535,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF501F2A2C945F9C00637042 /* Strings.swift in Sources */,
 				AFCEC5C22C7C111200D157BE /* CompleteProfileView.swift in Sources */,
 				AFA335C82C92676700883CBB /* AlertsView.swift in Sources */,
 				AF72DFE92C81699C00F70387 /* MerchantPageView.swift in Sources */,
 				AFCEC5C62C7C26EB00D157BE /* MainView.swift in Sources */,
 				AFDF67F92C7F4EA900489D0C /* BottomSheet.swift in Sources */,
+				AF501F2E2C95234C00637042 /* FirebaseAuth.swift in Sources */,
 				AF16A0FB2C86B96F0093CD99 /* Keys.swift in Sources */,
 				AFDF67FD2C7F5A6C00489D0C /* OffersView.swift in Sources */,
 				AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */,
@@ -513,6 +552,7 @@
 				AFDB904A2C8EE077008931DB /* CustomNavBarContainerView.swift in Sources */,
 				AF82A4672C84418200E0DD4C /* ProductDetailView.swift in Sources */,
 				AF82A4652C8432C700E0DD4C /* ObservableScrollView.swift in Sources */,
+				AF501F312C96B56D00637042 /* SplashView.swift in Sources */,
 				AFDF67FB2C7F576C00489D0C /* ObservableWrapper.swift in Sources */,
 				AF9AC5682C894D5700B16186 /* JollyfieldRedemptionView.swift in Sources */,
 				AF7DF73B2C79F2B100C3F347 /* TestView.swift in Sources */,
@@ -532,6 +572,8 @@
 				AFDB904E2C8EE2EC008931DB /* CustomNavLink.swift in Sources */,
 				AFDB90482C8EDE43008931DB /* CustomNavBarView.swift in Sources */,
 				AF80222C2C72F39E001274FA /* OnboardingView.swift in Sources */,
+				AF501F272C945D7C00637042 /* API.swift in Sources */,
+				AF501F2C2C94736C00637042 /* AsyncButton.swift in Sources */,
 				AF557FC82C79AAC700AD99A5 /* SweeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -675,6 +717,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 9M2L2N97YU;
@@ -710,6 +753,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 9M2L2N97YU;

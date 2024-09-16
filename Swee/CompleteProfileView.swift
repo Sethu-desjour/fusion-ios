@@ -6,6 +6,7 @@ struct CompleteProfileView: View {
     @FocusState private var isKeyboardShowing: Bool
     
     @EnvironmentObject private var appRootManager: AppRootManager
+    @EnvironmentObject var api: API
     
     private var nameFieldActive: Bool {
         return fullName != "" || isKeyboardShowing
@@ -35,21 +36,27 @@ struct CompleteProfileView: View {
                     .padding([.leading, .trailing], 14)
                     .focused($isKeyboardShowing)
                     .font(.custom("Poppins-Regular", size: 14))
+                    .submitLabel(.done)
                     .overlay(RoundedRectangle(cornerRadius: 12)
                         .stroke(nameFieldActive ? Color.primary.brand : Color(hex: "#E7EAEB"),
                                 lineWidth: nameFieldActive ? 2 : 1))
                 }
                 .padding([.bottom], 70)
-                Button {
+                AsyncButton(progressWidth: .infinity) {
                     // validate and navigate next
-                    appRootManager.currentRoot = .home
-                    print(appRootManager.currentRoot)
+                    do {
+                        try await api.completeUser(with: fullName.trimmingCharacters(in: .whitespaces))
+                        appRootManager.currentRoot = .home
+                    } catch(let error) {
+                        print("complete profile error =====", error)
+                        // @todo handle error case
+                    }
                 } label: {
                     Text("Complete")
                         .frame(maxWidth: .infinity)
                         .font(.custom("Roboto-Bold", size: 16))
                 }
-                .disabled(fullName == "")
+                .disabled(fullName.trimmingCharacters(in: .whitespaces) == "")
                 .buttonStyle(PrimaryButton())
                 Spacer()
                 Spacer()
@@ -58,15 +65,6 @@ struct CompleteProfileView: View {
             .padding()
             .ignoresSafeArea(.keyboard)
             .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image("back_auth", bundle: .main)
-                    }
-                }
-            }
         }
         .navigationBarTitle("")
         .navigationBarHidden(true)
@@ -75,4 +73,6 @@ struct CompleteProfileView: View {
 
 #Preview {
     CompleteProfileView()
+        .environmentObject(AppRootManager())
+        .environmentObject(API())
 }

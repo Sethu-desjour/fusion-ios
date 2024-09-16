@@ -61,7 +61,7 @@ struct MyPurchasesView: View {
                 .padding(.bottom, 60)
             }
             .background(Color.background.pale)
-            .onWillAppear({
+            .onAppear(perform: {
                 tabIsShown.wrappedValue = true
             })
             .customNavigationBackButtonHidden(true)

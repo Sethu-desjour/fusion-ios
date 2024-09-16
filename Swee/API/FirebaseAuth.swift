@@ -1,0 +1,273 @@
+import FirebaseCore
+import FirebaseAuth
+import GoogleSignIn
+import AuthenticationServices
+import CryptoKit
+
+enum PhoneError: Error {
+    case wrongCode
+    case tooManyAttempts
+    case other
+}
+
+struct Authentication {
+    private var appleSignIn = AppleSignIn()
+    
+    func verify(phone: String) async -> Result<String, Error> {
+        await withCheckedContinuation { continuation in
+            PhoneAuthProvider.provider()
+                .verifyPhoneNumber(phone, uiDelegate: nil) { verificationID, error in
+                    if let error = error {
+                        continuation.resume(returning: .failure(error))
+                        return
+                    } else if let verificationID = verificationID {
+                        continuation.resume(returning: .success(verificationID))
+                    } else {
+                        continuation.resume(returning: .failure(LocalError(message: "verificationId not found")))
+                    }
+                }
+        }
+    }
+
+    
+    func phoneSignIn(verificationID: String, otp: String) async throws -> String {
+        
+        let credential: PhoneAuthCredential? = PhoneAuthProvider.provider()
+            .credential(withVerificationID: verificationID,
+                        verificationCode: otp)
+        
+        guard let credential = credential else {
+            throw PhoneError.other
+        }
+        
+        return try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, Error>) -> Void in
+            Task {
+                do {
+                    try await Auth.auth().signIn(with: credential)
+                    guard let token = try await Auth.auth().currentUser?.getIDToken() else {
+                        continuation.resume(throwing: PhoneError.other)
+                        return
+                    }
+                    continuation.resume(returning: token)
+                } catch {
+                    guard let authError = error as NSError?, let errorCode = AuthErrorCode(_bridgedNSError: authError) else {
+                        continuation.resume(throwing: PhoneError.other)
+                        return
+                    }
+                    
+                    if case .invalidVerificationCode = errorCode.code {
+                        continuation.resume(throwing: PhoneError.wrongCode)
+                    } else {
+                        continuation.resume(throwing: PhoneError.other)
+                    }
+                }
+            }
+        }
+    }
+    
+    @MainActor
+    func googleSignIn() async throws -> String {
+        guard let clientID = FirebaseApp.app()?.options.clientID else {
+            fatalError("no firbase clientID found")
+        }
+        
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
+        
+        let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        guard let rootViewController = scene?.windows.first?.rootViewController
+        else {
+            throw LocalError(message: "There is no root view controller!")
+        }
+        
+        let result = try await GIDSignIn.sharedInstance.signIn(
+            withPresenting: rootViewController
+        )
+        let user = result.user
+        guard let idToken = user.idToken?.tokenString else {
+            throw LocalError(message: "Unexpected error occurred, please retry")
+        }
+        
+        let credential = GoogleAuthProvider.credential(
+            withIDToken: idToken, accessToken: user.accessToken.tokenString
+        )
+        try await Auth.auth().signIn(with: credential)
+        guard let token = try await Auth.auth().currentUser?.getIDToken() else {
+            throw LocalError(message: "Couldn't get token on Google Auth")
+        }
+        
+        return token
+    }
+    
+    func logout() async throws {
+        //        // Google logout
+//        GIDSignIn.sharedInstance.signOut()
+//        try Auth.auth().signOut()
+        do {
+            try Auth.auth().signOut()
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
+        }
+    }
+    
+    func appleSignIn() async throws -> String {
+        return try await withCheckedThrowingContinuation { continuation in
+            appleSignIn.callback = { result in
+                switch result {
+                case .success(let auth):
+                    guard let appleIDCredentials = auth.credential as? ASAuthorizationAppleIDCredential else {
+                        continuation.resume(throwing: LocalError(message: "AppleAuthorization failed: AppleID credential not available"))
+                        return
+                    }
+                    Task {
+                        do {
+                            let token = try await Authentication().appleAuth(
+                                appleIDCredentials,
+                                nonce: appleSignIn.nonce
+                            )
+                            
+                            continuation.resume(returning: token)
+                        } catch {
+                            continuation.resume(throwing: LocalError(message: "AppleAuthorization failed: \(error)"))
+                        }
+                    }
+                case .failure(let error):
+                    switch error {
+                    case .canceled:
+                        // @todo handle this case separately
+                        continuation.resume(throwing: LocalError(message: "User cancelled the interaction"))
+                    case .error(let error):
+                        continuation.resume(throwing: LocalError(message: "AppleAuthorization failed: \(error)"))
+                    }
+                    
+                }
+            }
+            
+            appleSignIn.performRequests()
+        }
+    }
+    
+    fileprivate func appleAuth(
+        _ appleIDCredential: ASAuthorizationAppleIDCredential,
+        nonce: String?
+    ) async throws -> String {
+        guard let nonce = nonce else {
+            fatalError("Invalid state: A login callback was received, but no login request was sent.")
+        }
+        
+        guard let appleIDToken = appleIDCredential.identityToken else {
+            throw LocalError(message: "Unable to fetch identity token")
+        }
+        
+        guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+            throw LocalError(message: "Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+        }
+        
+        // 2.
+        let credentials = OAuthProvider.appleCredential(withIDToken: idTokenString,
+                                                        rawNonce: nonce,
+                                                        fullName: appleIDCredential.fullName)
+        
+        do { // 3.
+            try await Auth.auth().signIn(with: credentials)
+            guard let token = try await Auth.auth().currentUser?.getIDToken() else {
+                throw LocalError(message: "Couldn't get token on Google Auth")
+            }
+            
+            return token
+        }
+        catch {
+            print("FirebaseAuthError: appleAuth(appleIDCredential:nonce:) failed. \(error)")
+            throw error
+        }
+    }
+}
+
+enum AuthError: Error {
+    case canceled
+    case error(Error)
+//    case message(String)
+}
+
+typealias AppleAuthCallback = (Result<ASAuthorization, AuthError>) -> Void
+
+final class AppleSignIn: NSObject {
+    var callback: AppleAuthCallback
+    
+    fileprivate static var currentNonce: String?
+    
+    var nonce: String? {
+        Self.currentNonce ?? nil
+    }
+    
+    init(callback: @escaping AppleAuthCallback = { _ in }) {
+        self.callback = callback
+    }
+    
+    func performRequests() {
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        Self.currentNonce = randomNonceString()
+        request.requestedScopes = [.fullName, .email]
+        request.nonce = sha256(Self.currentNonce!)
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+    
+    private func randomNonceString(length: Int = 32) -> String {
+        precondition(length > 0)
+        var randomBytes = [UInt8](repeating: 0, count: length)
+        let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
+        if errorCode != errSecSuccess {
+            fatalError(
+                "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+            )
+        }
+        
+        let charset: [Character] =
+        Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        
+        let nonce = randomBytes.map { byte in
+            // Pick a random character from the set, wrapping around if needed.
+            charset[Int(byte) % charset.count]
+        }
+        
+        return String(nonce)
+    }
+    
+    private func sha256(_ input: String) -> String {
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap {
+            return String(format: "%02x", $0)
+        }.joined()
+        
+        return hashString
+    }
+}
+
+extension AppleSignIn: ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        UIApplication.shared.windows.first!
+    }
+}
+
+extension AppleSignIn: ASAuthorizationControllerDelegate {
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        if let err = error as? ASAuthorizationError {
+            if err.code == .canceled || err.code == .unknown {
+                callback(.failure(.canceled))
+            } else {
+                callback(.failure(.error(err)))
+            }
+        } else {
+            callback(.failure(.error(error)))
+        }
+    }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        callback(.success(authorization))
+    }
+}

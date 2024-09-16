@@ -23,8 +23,7 @@ struct HomeView: View {
             .onChange(of: hideBottomSheet, perform: { newValue in
                 tabIsShown.wrappedValue = hideBottomSheet
             })
-            .onWillAppear({
-//                bottomSheetData.wrappedValue.view = NotificationUpsell(hide: bottomSheetData.hidden.wrappedValue).equatable
+            .onAppear(perform: {
                 tabIsShown.wrappedValue = true
             })
             .customNavigationBackButtonHidden(true)
