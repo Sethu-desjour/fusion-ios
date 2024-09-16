@@ -1,11 +1,18 @@
 import SwiftUI
+import AuthenticationServices
+import FirebaseAuth
 
 struct AuthView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var api: API
+    @EnvironmentObject private var appRootManager: AppRootManager
     
     @State private var phone: String = ""
     @State private var code: String = "🇸🇬 +65"
     @FocusState var isPhoneFocused: Bool
+    @State private var goToOTP: Bool = false
+    @State private var verificationID: String = ""
+    
     private var phoneFieldActive: Bool {
         return phone != "" && isPhoneFocused
     }
@@ -31,6 +38,11 @@ struct AuthView: View {
     var body: some View {
         NavigationView {
             VStack {
+                NavigationLink(isActive: $goToOTP) {
+                    OtpView(countryCode:"+65", phoneNumber: phone, verificationID: verificationID)
+                } label: {
+                    
+                }
                 Spacer()
                 Text("Enter your phone number")
                     .font(.custom("Poppins-SemiBold", size: 24))
@@ -52,6 +64,7 @@ struct AuthView: View {
                         .padding([.top, .bottom], 17)
                         .padding([.leading, .trailing], 10)
                         .frame(width: 82)
+                        .disabled(true)
                         .focused($isPhoneFocused)
                         .font(.custom("Poppins-Regular", size: 14))
                         .overlay(RoundedRectangle(cornerRadius: 12)
@@ -68,18 +81,39 @@ struct AuthView: View {
                         .overlay(RoundedRectangle(cornerRadius: 12)
                             .stroke(phoneFieldActive ? Color.primary.brand : Color(hex: "#E7EAEB"),
                                     lineWidth: phoneFieldActive ? 2 : 1))
+                        .toolbar {
+                            ToolbarItemGroup(placement: .keyboard) {
+                                HStack {
+                                    Spacer()
+                                    Button("Done") {
+                                        isPhoneFocused = false
+                                    }
+                                    .foregroundStyle(Color.primary.brand)
+                                    .font(.custom("Poppins-Bold", size: 16))
+                                }
+                            }
+                        }
                     }
                 }
                 Spacer()
                 Spacer()
-                Button {
-                    // validate and navigate next
-                } label: {
-                    NavigationLink(destination: OtpView()) {
-                        Text("Verify")
-                            .frame(maxWidth: .infinity)
-                            .font(.custom("Roboto-Bold", size: 16))
+                AsyncButton(progressWidth: .infinity) {
+                    // @todo validate and navigate next
+                    let result = await Authentication().verify(phone: "+65" + phone)
+                    switch result {
+                    case .success(let verificationId):
+                        UserDefaults.standard.set(verificationId, forKey: "authVerificationID")
+                        self.verificationID = verificationId
+                        goToOTP = true
+                        print("verificationID ====", verificationId)
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                        // @todo handle error
                     }
+                } label: {
+                    Text("Verify")
+                        .frame(maxWidth: .infinity)
+                        .font(.custom("Roboto-Bold", size: 16))
                     
                 }
                 .disabled(phone.isEmpty)
@@ -100,27 +134,45 @@ struct AuthView: View {
                 }
                 HStack(spacing: 12) {
                     Button {
-                        
-                    } label: {
-                        NavigationLink(destination: OtpView()) {
-                            HStack {
-                                Image("apple")
-                                Text("Apple")
+                        Task {
+                            do {
+                                let token = try await Authentication().appleSignIn()
+                                try await api.signIn(with: token)
+                                await MainActor.run {
+                                    appRootManager.currentRoot = .home
+                                }
+                            } catch {
+                                print("AppleAuthorization failed: \(error)")
+                                // @todo handle error
                             }
-                            .frame(maxWidth: .infinity)
                         }
+                    } label: {
+                        HStack {
+                            Image("apple")
+                            Text("Apple")
+                        }
+                        .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(SocialButton())
                     Button {
-                        
-                    } label: {
-                        NavigationLink(destination: OtpView()) {
-                            HStack {
-                                Image("google")
-                                Text("Google")
+                        Task {
+                            do {
+                                let token = try await Authentication().googleSignIn()
+                                try await api.signIn(with: token)
+                                await MainActor.run {
+                                    appRootManager.currentRoot = .home
+                                }
+                            } catch(let error) {
+                                print("google auth error ====", error)
+                                // @todo handle error
                             }
-                            .frame(maxWidth: .infinity)
                         }
+                    } label: {
+                        HStack {
+                            Image("google")
+                            Text("Google")
+                        }
+                        .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(SocialButton())
                 }
@@ -137,15 +189,15 @@ struct AuthView: View {
             .padding()
             .ignoresSafeArea(.keyboard)
             .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image("back_auth", bundle: .main)
-                    }
-                }
-            }
+//            .toolbar {
+//                ToolbarItem(placement: .navigationBarLeading) {
+//                    Button {
+//                        dismiss()
+//                    } label: {
+//                        Image("back_auth", bundle: .main)
+//                    }
+//                }
+//            }
         }
         .navigationBarTitle("")
         .navigationBarHidden(true)
@@ -154,4 +206,5 @@ struct AuthView: View {
 
 #Preview {
     AuthView()
+        .environmentObject(AppRootManager())
 }

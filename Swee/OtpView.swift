@@ -1,22 +1,41 @@
 import SwiftUI
+import FirebaseAuth
+
+struct LocalError: Error {
+    let message: String?
+}
+
+private let numberOfCharsInOTP = 6
 
 struct OtpView: View {
     @Environment(\.dismiss) private var dismiss
-    @State var otpText: String = ""
+    @EnvironmentObject var api: API
+    @EnvironmentObject private var appRootManager: AppRootManager
+    
+    @State var countryCode: String
+    @State var phoneNumber: String
+    @State var verificationID: String
+    
+    @State private var otpText: String = ""
+    @State private var goToCompleteProfile: Bool = false
     @FocusState private var isKeyboardShowing: Bool
-    @State var timeRemaining = 0
+    @State private var timeRemaining = 0
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @State var showError: Bool = false
+    @State private var errorMessage: String = ""
+    @State private var showError: Bool = false
     
     var body: some View {
         NavigationView {
             VStack {
+                NavigationLink(isActive: $goToCompleteProfile) {
+                    CompleteProfileView()
+                } label: {}
                 Spacer()
                 Text("Enter your OTP")
                     .font(.custom("Poppins-SemiBold", size: 24))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 8)
-                Text("We’ve sent an SMS with an OTP to your phone +65-86445476")
+                Text("We’ve sent an SMS with an OTP to your phone \(countryCode)-\(phoneNumber)")
                     .font(.custom("Poppins-Regular", size: 14))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .foregroundStyle(Color.text.black60)
@@ -27,7 +46,7 @@ struct OtpView: View {
                         .font(.custom("Poppins-Medium", size: 16))
                     
                     HStack(spacing: 15) {
-                        ForEach(0..<5, id: \.self) { index in
+                        ForEach(0..<numberOfCharsInOTP, id: \.self) { index in
                             OTPTextBox(otpText: $otpText,
                                        showError: $showError,
                                        isKeyboardShowing: $isKeyboardShowing,
@@ -35,7 +54,7 @@ struct OtpView: View {
                         }
                     }
                     .background {
-                        TextField("", text: $otpText.limit(5))
+                        TextField("", text: $otpText.limit(numberOfCharsInOTP))
                             .keyboardType(.numberPad)
                             .textContentType(.oneTimeCode)
                             .frame(width: 1, height: 1)
@@ -51,23 +70,50 @@ struct OtpView: View {
                         isKeyboardShowing.toggle()
                     }
                 }
-                Text(showError ? "Wrong code, please try again" : "")
+                Text(showError ? errorMessage : "")
                     .font(.custom("Poppins-Regular", size: 16))
                     .foregroundStyle(Color.secondary.brand)
                     .padding([.bottom, .top], 10)
                     .frame(height: 40)
-                Button {
+                AsyncButton(progressWidth: .infinity) {
                     // validate and navigate next
                     //                showError = true
-                } label: {
-                    NavigationLink(destination: CompleteProfileView()) {
-                        Text("Login")
-                            .frame(maxWidth: .infinity)
-                            .font(.custom("Roboto-Bold", size: 16))
+                    isKeyboardShowing = false
+                    do {
+                        let token = try await Authentication().phoneSignIn(verificationID: verificationID, otp: otpText)
+                        
+                        print("token ====", token)
+//                        UserDefaults.standard.set(token, forKey: Keys.authToken)
+                        
+                        let result = try await api.signIn(with: token)
+                        switch result {
+                        case .loggedIn:
+                            appRootManager.currentRoot = .home
+                        case .withoutName:
+                            goToCompleteProfile = true
+                        }
+                    } catch {
+                        defer {
+                            showError = true
+                        }
+                        print("phone auth error ======", error)
+                        guard let phoneError = error as? PhoneError else {
+                            errorMessage = "Something went wrong"
+                            return
+                        }
+                        
+                        if case .wrongCode = phoneError {
+                            errorMessage = "Wrong code, please try again"
+                        } else {
+                            errorMessage = "Something went wrong. Please try again"
+                        }
                     }
-                    
+                } label: {
+                    Text("Login")
+                        .frame(maxWidth: .infinity)
+                        .font(.custom("Roboto-Bold", size: 16))
                 }
-                .disabled(otpText.count != 5)
+                .disabled(otpText.count != numberOfCharsInOTP)
                 .buttonStyle(PrimaryButton())
                 Spacer()
                 Spacer()
@@ -77,6 +123,16 @@ struct OtpView: View {
             .ignoresSafeArea(.keyboard)
             .navigationBarBackButtonHidden(true)
             .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    HStack {
+                        Spacer()
+                        Button("Done") {
+                            isKeyboardShowing = false
+                        }
+                        .foregroundStyle(Color.primary.brand)
+                        .font(.custom("Poppins-Bold", size: 16))
+                    }
+                }
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
                         dismiss()
@@ -87,6 +143,18 @@ struct OtpView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         if timeRemaining == 0 {
+                            Task {
+                                let result = await Authentication().verify(phone: countryCode + phoneNumber)
+                                switch result {
+                                case .success(let verificationId):
+                                    UserDefaults.standard.set(verificationId, forKey: "authVerificationID")
+                                    self.verificationID = verificationId
+                                    print("verificationID ====", verificationId)
+                                case .failure(let error):
+                                    print(error.localizedDescription)
+                                    // @todo handle error
+                                }
+                            }
                             timeRemaining = 20
                         }
                     } label: {
@@ -112,9 +180,12 @@ struct OtpView: View {
                                     }
                                 })
                         }
-                        
                     }
+                    .disabled(timeRemaining > 0)
                 }
+            }
+            .onWillAppear {
+                print("received === \(verificationID)")
             }
         }
         .navigationBarTitle("")
@@ -145,7 +216,7 @@ struct OTPTextBox: View {
     }
     
     var borderColor: Color {
-        if otpText.count == 5 && showError {
+        if otpText.count == numberOfCharsInOTP && showError {
             return Color.secondary.brand
         }
         return isActive ? Color.primary.brand : .text.black20
@@ -182,5 +253,6 @@ extension Binding where Value == String {
 }
 
 #Preview {
-    OtpView()
+    OtpView(countryCode: "+65", phoneNumber: "86446585", verificationID: "fakeID")
+        .environmentObject(AppRootManager())
 }

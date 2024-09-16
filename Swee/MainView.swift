@@ -109,6 +109,7 @@ struct MainView: View {
                 }
             }
             .hidden(!showTabBar)
+            .animation(.snappy(duration: 0.2), value: showTabBar)
 //            BottomSheet(hide: bottomSheetData.hidden) {
 //                bottomSheetData.view.view
 //            }
