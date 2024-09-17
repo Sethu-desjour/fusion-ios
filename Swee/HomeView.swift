@@ -2,28 +2,55 @@ import SwiftUI
 
 struct HomeView: View {
     
+    @EnvironmentObject private var api: API
+    @StateObject private var viewModel = HomeViewModel()
+    
 //    @Environment(\.bottomSheetData) private var bottomSheetData
     @Environment(\.tabIsShown) private var tabIsShown
     @State private var hideBottomSheet: Bool = true
     
+    func section(at index: Int) -> any View {
+        let section = viewModel.sections[index]
+        switch section.content {
+        case .bannerCarousel(let banners):
+            return BannersCarousel(banners: banners)
+        case .packages(let packages):
+            return PackagesCarousel(model: PackageCarouselModel(title: section.title ?? "", offers: packages))
+        case .merchants(let merchants):
+            return MerchantList(model: .init(title: section.title ?? "", merchants: merchants))
+        case .bannerStatic:
+            return VStack {}
+        }
+    }
+    
     var body: some View {
         CustomNavView {
-            ScrollView {
-                VStack {
-                    BannersCarousel()
-                    OfferRow()
-                    ExploreView()
-                    ReferalCard()
+            VStack {
+                if viewModel.sections.isEmpty {
+                    ZStack {
+                        ProgressView()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    ScrollView {
+                        VStack {
+                            ForEach(viewModel.sections.indices, id: \.self) { index in
+                                section(at: index).equatable.view
+                            }
+                        }
+                        .padding(.vertical, 20)
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 80)
+                    }
+                    .ignoresSafeArea()
                 }
-                .padding(.vertical, 20)
-                .padding(.horizontal, 16)
-                .padding(.bottom, 80)
             }
-            .ignoresSafeArea()
             .onChange(of: hideBottomSheet, perform: { newValue in
                 tabIsShown.wrappedValue = hideBottomSheet
             })
             .onAppear(perform: {
+                viewModel.api = api
+                viewModel.fetch()
                 tabIsShown.wrappedValue = true
             })
             .customNavigationBackButtonHidden(true)
@@ -61,16 +88,16 @@ struct HomeView: View {
 }
 
 
-struct BannerModel {
+struct Banner {
     let title: String
     let description: String
-    let buttonTitle: String
+    let buttonTitle: String?
     let backgroundImage: Image
     let badgeImage: Image
 }
 
 struct BannersView: View {
-    @Binding var bannerModels: [BannerModel]
+    @Binding var bannerModels: [Banner]
     @Binding var page: Int
     @State private var contentOffset: CGFloat = 0
     
@@ -79,7 +106,7 @@ struct BannersView: View {
         ObservableScrollView(.horizontal, showIndicators: false, contentOffset: $contentOffset) {
             LazyHGrid(rows: [.init()]) {
                 ForEach(bannerModels.indices, id: \.self) { index in
-                    Banner(banner: bannerModels[index])
+                    BannerView(banner: bannerModels[index])
                 }
             }
             .onChange(of: contentOffset) { newValue in
@@ -100,33 +127,34 @@ struct BannersView: View {
 
 struct BannersCarousel: View {
     @State var page: Int = 0
-    @State var banners: [BannerModel] = [
-        .init(title: "Complete your profile to win rewards",
-              description: "Free 20 mins ride for every sign up",
-              buttonTitle: "Complete",
-              backgroundImage: .init("banner-bg-1"),
-              badgeImage: .init("badge-1")),
-        .init(title: "Super hero Tuesday",
-              description: "One free ride when you bring Zoomoov hero mask",
-              buttonTitle: "View",
-              backgroundImage: .init("banner-bg-2"),
-              badgeImage: .init("badge-2")),
-        .init(title: "Super hero Tuesday",
-              description: "One free ride when you bring Zoomoov hero mask",
-              buttonTitle: "View",
-              backgroundImage: .init("banner-bg-2"),
-              badgeImage: .init("badge-2")),
-        .init(title: "Super hero Tuesday",
-              description: "One free ride when you bring Zoomoov hero mask",
-              buttonTitle: "View",
-              backgroundImage: .init("banner-bg-2"),
-              badgeImage: .init("badge-2")),
-        .init(title: "Super hero Tuesday",
-              description: "One free ride when you bring Zoomoov hero mask",
-              buttonTitle: "View",
-              backgroundImage: .init("banner-bg-2"),
-              badgeImage: .init("badge-2"))
-    ]
+    @State var banners: [Banner]
+//    @State var banners: [Banner] = [
+//        .init(title: "Complete your profile to win rewards",
+//              description: "Free 20 mins ride for every sign up",
+//              buttonTitle: "Complete",
+//              backgroundImage: .init("banner-bg-1"),
+//              badgeImage: .init("badge-1")),
+//        .init(title: "Super hero Tuesday",
+//              description: "One free ride when you bring Zoomoov hero mask",
+//              buttonTitle: "View",
+//              backgroundImage: .init("banner-bg-2"),
+//              badgeImage: .init("badge-2")),
+//        .init(title: "Super hero Tuesday",
+//              description: "One free ride when you bring Zoomoov hero mask",
+//              buttonTitle: "View",
+//              backgroundImage: .init("banner-bg-2"),
+//              badgeImage: .init("badge-2")),
+//        .init(title: "Super hero Tuesday",
+//              description: "One free ride when you bring Zoomoov hero mask",
+//              buttonTitle: "View",
+//              backgroundImage: .init("banner-bg-2"),
+//              badgeImage: .init("badge-2")),
+//        .init(title: "Super hero Tuesday",
+//              description: "One free ride when you bring Zoomoov hero mask",
+//              buttonTitle: "View",
+//              backgroundImage: .init("banner-bg-2"),
+//              badgeImage: .init("badge-2"))
+//    ]
     
     var body: some View {
         VStack {
@@ -149,8 +177,8 @@ struct BannersCarousel: View {
     }
 }
 
-struct Banner: View {
-    @State var banner: BannerModel
+struct BannerView: View {
+    @State var banner: Banner
     
     var body: some View {
         ZStack {
@@ -172,13 +200,15 @@ struct Banner: View {
                     .foregroundColor(Color.background.white)
                 Spacer()
                 HStack(alignment: .bottom) {
-                    HStack {
-                        Text(banner.buttonTitle)
-                            .font(.custom("Poppins-Medium", size: 10))
-                            .foregroundStyle(Color.background.white)
-                        Image("circled-arrow-right")
+                    if let buttonTitle = banner.buttonTitle {
+                        HStack {
+                            Text(buttonTitle)
+                                .font(.custom("Poppins-Medium", size: 10))
+                                .foregroundStyle(Color.background.white)
+                            Image("circled-arrow-right")
+                        }
+                        .padding(.bottom, 8)
                     }
-                    .padding(.bottom, 8)
                     Spacer()
                     banner.badgeImage
                 }
@@ -206,8 +236,8 @@ extension Vendors {
     }
 }
 
-struct Offer {
-    let vendor: Vendors
+struct Package {
+    let merchant: String
     let image: Image // will be changed to URL
     let title: String
     let description: String
@@ -217,21 +247,22 @@ struct Offer {
     
 }
 
-struct OfferRowModel {
+struct PackageCarouselModel {
     let title: String
-    let offers: [Offer]
+    let offers: [Package]
 }
 
-struct OfferRow: View {
-    @State var model: OfferRowModel = OfferRowModel(title: "Package just for you",
-                                                    offers: [
-                                                        .init(vendor: .Zoomoov, image: .init("offer-1"), title: "10 Zoomoov Rides 10 Zoomoov Rides", description: "Get 3 rides free", price: 50, originalPrice: 69),
-                                                        .init(vendor: .Jollyfield, image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
-                                                        .init(vendor: .Zoomoov, image: .init("offer-1"), title: "10 Zoomoov Rides 10 Zoomoov Rides", description: "Get 3 rides free", price: 50, originalPrice: 69),
-                                                        .init(vendor: .Jollyfield, image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
-                                                    ])
+struct PackagesCarousel: View {
+    @State var model: PackageCarouselModel
+//    @State var model: PackageCarouselModel = PackageCarouselModel(title: "Package just for you",
+//                                                    offers: [
+//                                                        .init(merchant: "Zoomoov", image: .init("offer-1"), title: "10 Zoomoov Rides 10 Zoomoov Rides", description: "Get 3 rides free", price: 50, originalPrice: 69),
+//                                                        .init(merchant: "Jollyfield", image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
+//                                                        .init(merchant: "Zoomoov", image: .init("offer-1"), title: "10 Zoomoov Rides 10 Zoomoov Rides", description: "Get 3 rides free", price: 50, originalPrice: 69),
+//                                                        .init(merchant: "Jollyfield", image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
+//                                                    ])
     
-    var columns: [GridItem] = [
+    private let columns: [GridItem] = [
         GridItem(.flexible()),
         GridItem(.flexible()),
     ]
@@ -254,7 +285,7 @@ struct OfferRow: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHGrid(rows: [.init()], spacing: 16) {
                     ForEach(model.offers.indices, id: \.self) { index in
-                        OfferCard(offer: model.offers[index])
+                        PackageCard(offer: model.offers[index])
                             .frame(width: 165)
                     }
                 }
@@ -266,8 +297,8 @@ struct OfferRow: View {
     }
 }
 
-struct OfferCard: View {
-    @State var offer: Offer
+struct PackageCard: View {
+    @State var offer: Package
     
     var mockProduct: ProductDetailModel = .init(id: "id", image: Image("product-detail-img"), title: "Chinese new year", subtitle: "10 Zoomoov rides + 1 Hero mask + 1 Bingo draw", vendor: .Zoomoov, locations: Array(0..<12), price: "S$ 50", originalPrice: "S$ 69",
                                                 description: """
@@ -315,33 +346,47 @@ struct OfferCard: View {
     }
 }
 
-struct ExploreView: View {
+struct Merchant {
+    let name: String
+    let bgImage: Image
+    let storeImage: Image
+}
+
+struct MerchantListModel {
+    let title: String
+    let merchants: [Merchant]
+}
+
+struct MerchantList: View {
+    @State var model: MerchantListModel
+    
     var body: some View {
         VStack {
-            Text("Explore")
+            Text(model.title)
                 .textStyle(HomeRowTitleStyle())
                 .frame(maxWidth: .infinity, alignment: .leading)
             VStack(spacing: 8) {
-                ExploreCard(vendor: .Zoomoov)
-                ExploreCard(vendor: .Jollyfield)
+                ForEach(model.merchants.indices, id: \.self) { index in
+                    MerchantCard(merchant: model.merchants[index])
+                }
             }
         }
     }
 }
 
-struct ExploreCard: View {
-    @State var vendor: Vendors
+struct MerchantCard: View {
+    @State var merchant: Merchant
     var body: some View {
         CustomNavLink(destination: MerchantPageView(), label: {
             ZStack {
-                Image(vendor == .Jollyfield ? "explore-bg-1" : "explore-bg-2")
+                merchant.bgImage
                     .resizable()
                     .scaledToFill()
                     .frame(minWidth: 0)
                     .edgesIgnoringSafeArea(.all)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                 HStack {
-                    Text(vendor.toString())
+                    Text(merchant.name)
                         .font(.custom("Poppins-Bold", size: 20))
                         .foregroundStyle(.white)
                     Spacer()

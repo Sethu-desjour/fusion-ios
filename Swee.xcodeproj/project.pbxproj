@@ -32,6 +32,9 @@
 		AF501F2C2C94736C00637042 /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F2B2C94736C00637042 /* AsyncButton.swift */; };
 		AF501F2E2C95234C00637042 /* FirebaseAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F2D2C95234C00637042 /* FirebaseAuth.swift */; };
 		AF501F312C96B56D00637042 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F302C96B56D00637042 /* SplashView.swift */; };
+		AF501F332C97EB4A00637042 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F322C97EB4A00637042 /* HomeViewModel.swift */; };
+		AF501F362C980FCB00637042 /* HomeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F352C980FCB00637042 /* HomeSection.swift */; };
+		AF501F382C9813D300637042 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F372C9813D300637042 /* MockURLProtocol.swift */; };
 		AF557FC82C79AAC700AD99A5 /* SweeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF557FC72C79AAC700AD99A5 /* SweeApp.swift */; };
 		AF72DFE72C80248200F70387 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72DFE62C80248200F70387 /* ActivityView.swift */; };
 		AF72DFE92C81699C00F70387 /* MerchantPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72DFE82C81699C00F70387 /* MerchantPageView.swift */; };
@@ -114,6 +117,9 @@
 		AF501F2D2C95234C00637042 /* FirebaseAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAuth.swift; sourceTree = "<group>"; };
 		AF501F2F2C952FCD00637042 /* Swee.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Swee.entitlements; sourceTree = "<group>"; };
 		AF501F302C96B56D00637042 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		AF501F322C97EB4A00637042 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		AF501F352C980FCB00637042 /* HomeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSection.swift; sourceTree = "<group>"; };
+		AF501F372C9813D300637042 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
 		AF557FC72C79AAC700AD99A5 /* SweeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SweeApp.swift; sourceTree = "<group>"; };
 		AF72DFE62C80248200F70387 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		AF72DFE82C81699C00F70387 /* MerchantPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPageView.swift; sourceTree = "<group>"; };
@@ -232,6 +238,7 @@
 				AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */,
 				AFCEC5C32C7C260B00D157BE /* HomeView.swift */,
 				AF82A4662C84418200E0DD4C /* ProductDetailView.swift */,
+				AF501F322C97EB4A00637042 /* HomeViewModel.swift */,
 				AFCEC5C52C7C26EB00D157BE /* MainView.swift */,
 				AF72DFE82C81699C00F70387 /* MerchantPageView.swift */,
 				AFDF67FC2C7F5A6C00489D0C /* OffersView.swift */,
@@ -242,6 +249,7 @@
 				AF8B1E172C8729B600B44D75 /* ZoomoovRedemptionView.swift */,
 				AFDB2B512C9131AC00BA75DA /* ProfileView.swift */,
 				AFA335C72C92676700883CBB /* AlertsView.swift */,
+				AF501F342C980FBD00637042 /* Models */,
 				AF501F282C945F8F00637042 /* Constants */,
 				AF501F252C945BB500637042 /* API */,
 				AF9AC5692C8967C000B16186 /* JollyfieldRedemption */,
@@ -280,6 +288,7 @@
 			isa = PBXGroup;
 			children = (
 				AF501F262C945D7C00637042 /* API.swift */,
+				AF501F372C9813D300637042 /* MockURLProtocol.swift */,
 				AF501F2D2C95234C00637042 /* FirebaseAuth.swift */,
 			);
 			path = API;
@@ -291,6 +300,14 @@
 				AF501F292C945F9C00637042 /* Strings.swift */,
 			);
 			path = Constants;
+			sourceTree = "<group>";
+		};
+		AF501F342C980FBD00637042 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				AF501F352C980FCB00637042 /* HomeSection.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		AF80222D2C770C12001274FA /* Helpers */ = {
@@ -557,15 +574,18 @@
 				AF9AC5682C894D5700B16186 /* JollyfieldRedemptionView.swift in Sources */,
 				AF7DF73B2C79F2B100C3F347 /* TestView.swift in Sources */,
 				AF8B1E182C8729B600B44D75 /* ZoomoovRedemptionView.swift in Sources */,
+				AF501F332C97EB4A00637042 /* HomeViewModel.swift in Sources */,
 				AF16A0F82C8567190093CD99 /* CheckoutView.swift in Sources */,
 				AF82A4632C819B8500E0DD4C /* String.swift in Sources */,
 				AFCEC5BC2C7AD00F00D157BE /* OtpView.swift in Sources */,
 				AF1FAC472C79B0E100654FB7 /* AuthView.swift in Sources */,
+				AF501F382C9813D300637042 /* MockURLProtocol.swift in Sources */,
 				AFDB90452C8EA256008931DB /* TimeInterval.swift in Sources */,
 				AFDB90502C8EE471008931DB /* CustomNavBarPreferenceKeys.swift in Sources */,
 				AFCEC5C02C7C0E9100D157BE /* ButtonStyles.swift in Sources */,
 				AF1FAC492C79B12A00654FB7 /* View.swift in Sources */,
 				AFDB2B522C9131AC00BA75DA /* ProfileView.swift in Sources */,
+				AF501F362C980FCB00637042 /* HomeSection.swift in Sources */,
 				AFDB904C2C8EE190008931DB /* CustomNavView.swift in Sources */,
 				AF80222F2C770C27001274FA /* Colors.swift in Sources */,
 				AFCEC5C42C7C260B00D157BE /* HomeView.swift in Sources */,

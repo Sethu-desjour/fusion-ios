@@ -4,15 +4,15 @@ struct OffersView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.tabIsShown) private var tabIsShown
     
-    @State var model: OfferRowModel = OfferRowModel(title: "Package just for you",
+    @State var model: PackageCarouselModel = PackageCarouselModel(title: "Package just for you",
                                                     offers: [
-                                                        .init(vendor: .Zoomoov, image: .init("offer-1"), title: "10 Zoomoov Rides", description: "Get 3 rides free", price: 50, originalPrice: 69),
-                                                        .init(vendor: .Jollyfield, image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
-                                                        .init(vendor: .Jollyfield, image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
-                                                        .init(vendor: .Jollyfield, image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
-                                                        .init(vendor: .Jollyfield, image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
-                                                        .init(vendor: .Zoomoov, image: .init("offer-1"), title: "10 Zoomoov Rides", description: "Get 3 rides free", price: 50, originalPrice: 69),
-                                                        .init(vendor: .Jollyfield, image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
+                                                        .init(merchant: "Zoomoov", image: .init("offer-1"), title: "10 Zoomoov Rides", description: "Get 3 rides free", price: 50, originalPrice: 69),
+                                                        .init(merchant: "Jollyfield", image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
+                                                        .init(merchant: "Jollyfield", image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
+                                                        .init(merchant: "Jollyfield", image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
+                                                        .init(merchant: "Jollyfield", image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
+                                                        .init(merchant: "Jollyfield", image: .init("offer-1"), title: "10 Zoomoov Rides", description: "Get 3 rides free", price: 50, originalPrice: 69),
+                                                        .init(merchant: "Jollyfield", image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
                                                         
                                                     ])
     
@@ -27,7 +27,7 @@ struct OffersView: View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(model.offers.indices, id: \.self) { index in
-                    OfferCard(offer: model.offers[index])
+                    PackageCard(offer: model.offers[index])
                 }
             }
             .padding([.leading, .trailing, .top], 16)
