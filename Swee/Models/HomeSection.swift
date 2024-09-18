@@ -1,3 +1,4 @@
+import SwiftUI
 import Foundation
 
 // MARK: - HomeSectionType Enum
@@ -9,7 +10,7 @@ enum HomeSectionType: String, Codable {
 }
 
 // MARK: - HomeSection Struct
-struct HomeSectionModel: Codable {
+struct HomeSectionModel: Decodable {
     let id: UUID
     let title: String?
     let type: HomeSectionType
@@ -19,11 +20,13 @@ struct HomeSectionModel: Codable {
 }
 
 // MARK: - Banner Struct
-struct BannerModel: Codable {
+struct BannerModel: Decodable {
     let id: UUID
     let name: String
     let description: String?
     let iconURL: URL?
+    let backgroundURL: URL?
+    let backgroundColors: [Color]?
     let linkURL: URL?
     let ctaText: String?
     @DecodableDate var createdAt: Date
@@ -34,8 +37,19 @@ struct BannerModel: Codable {
         case ctaText = "cta_text"
         case iconURL = "icon_url"
         case linkURL = "link_url"
+        case backgroundColors = "background_colors"
+        case backgroundURL = "background_photo_url"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
+    }
+}
+
+extension Color: Decodable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let hexString = try container.decode(String.self)
+        
+        self = Color(hex: hexString)
     }
 }
 
@@ -46,12 +60,13 @@ enum MerchantStatus: String, Codable {
 }
 
 // MARK: - Merchant Struct
-struct MerchantModel: Codable {
+struct MerchantModel: Decodable {
     let id: UUID
     let name: String
     let description: String?
     let photoURL: URL?
-    let bgPhotoURL: URL?
+    let backgroundURL: URL?
+    let backgroundColors: [Color]?
     let countryCode: String
     let status: MerchantStatus
     @DecodableDate var createdAt: Date
@@ -60,9 +75,10 @@ struct MerchantModel: Codable {
     private enum CodingKeys: String, CodingKey {
         case id, name, description
         case photoURL = "photo_url"
-        case bgPhotoURL = "background_photo_url"
         case countryCode = "country_code"
         case status
+        case backgroundColors = "background_colors"
+        case backgroundURL = "background_photo_url"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
     }

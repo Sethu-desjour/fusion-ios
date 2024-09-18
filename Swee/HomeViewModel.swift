@@ -7,7 +7,7 @@ class HomeViewModel: ObservableObject {
         case bannerCarousel([Banner])
         case packages([Package])
         case merchants([Merchant])
-        case bannerStatic
+        case bannerStatic([Banner])
     }
     
     struct Section {
@@ -27,7 +27,6 @@ class HomeViewModel: ObservableObject {
             do {
                 let sectionsModels = try await self.api.homeSections()
                 loadedData = true
-                print("sections ======", sectionsModels)
                 let sections: [Section] = sectionsModels.map { model in
                     switch model.type {
                     case .bannerCarousel:
@@ -37,8 +36,7 @@ class HomeViewModel: ObservableObject {
                     case .merchantList:
                             .init(title: model.title, content: .merchants(model.merchants.toMerchants()))
                     case .bannerStatic:
-                        // @todo figure out what this is
-                            .init(content: .bannerStatic)
+                            .init(content: .bannerStatic(model.banners.toBanners()))
                     }
                 }
                 await MainActor.run {
@@ -88,11 +86,18 @@ fileprivate extension Optional where Wrapped == [MerchantModel] {
 
 fileprivate extension BannerModel {
     func toBanner() -> Banner {
-        .init(title: name,
-              description: description  ?? "",
-              buttonTitle: ctaText,
-              backgroundImage: .init("banner-bg-1"),
-              badgeImage: .init("badge-1"))
+        var background: Banner.Background
+        if let backgroundURL = backgroundURL {
+            background = .image(backgroundURL)
+        } else {
+            background = .gradient(backgroundColors ?? [])
+        }
+        
+        return Banner(title: name,
+                      description: description  ?? "",
+                      buttonTitle: ctaText,
+                      background: background,
+                      badgeImage: iconURL)
     }
 }
 
@@ -100,17 +105,20 @@ fileprivate extension PackageModel {
     func toPackage() -> Package {
         .init(merchant: "Zoomoov",
               image: .init("offer-1"),
-              title: name, 
+              imageURL: photoURL,
+              title: name,
               description: description ?? "",
               price: priceCents.toPrice(),
-              originalPrice: originalPriceCents.toPrice())
+              originalPrice: originalPriceCents.toPrice(),
+              currency: currencyCode)
     }
 }
 
 fileprivate extension MerchantModel {
     func toMerchant() -> Merchant {
         .init(name: name,
-              bgImage: Image("explore-bg-1"),
+              backgroundImage: backgroundURL,
+              backgroundColors: backgroundColors ?? [],
               storeImage: Image("merchant-bg"))
     }
 }

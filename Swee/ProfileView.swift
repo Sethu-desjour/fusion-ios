@@ -142,7 +142,7 @@ struct ProfileView: View {
                                 .shadow(color: .black.opacity(0.2), radius: 2, y: 1)
                             )
                         }
-                        ReferalCard()
+                        ReferalCard(banner: .init(title: "Refer a friend and earn rewards ✨", description: "Enjoy a free Zoomoov ride for each friend who signs up through your referral, and your friend gets a free ride too!", buttonTitle: "Share", background: .image(URL(string: "https://i.ibb.co/LpYWLfQ/referal-bg-3x.png")!), badgeImage: URL(string: "https://i.ibb.co/qkHf8XZ/badge-1-3x.png")))
                     }
                     .padding()
                     .padding(.bottom, 60)

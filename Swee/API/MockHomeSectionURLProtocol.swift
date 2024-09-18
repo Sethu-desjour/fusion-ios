@@ -5,7 +5,7 @@ class MockHomeSectionURLProtocol: URLProtocol {
     
     override class func canInit(with request: URLRequest) -> Bool {
         // Intercept the specific request you want to mock
-        return request.url?.absoluteString == "http://fusion-core-1579679958.ap-southeast-1.elb.amazonaws.com/v1/home_sections"
+        return request.url?.absoluteString == "\(Strings.baseURL)/home_sections"
     }
     
     override class func canonicalRequest(for request: URLRequest) -> URLRequest {
@@ -25,8 +25,10 @@ class MockHomeSectionURLProtocol: URLProtocol {
                 "id": "e2b9692e-6e7f-4b85-b8d5-979b88a0babc",
                 "name": "Zoomoov Challenge",
                 "description": "Complete 10 rides to get a free ride!",
-                "icon_url": "https://example.com/banner1.jpg",
+                "icon_url": "https://i.ibb.co/qkHf8XZ/badge-1-3x.png",
+                "background_photo_url": "https://i.ibb.co/ygmXXG4/banner-bg-1-3x.png",
                 "link_url": "https://example.com/promo1",
+                "cta_text": "Complete",
                 "created_at": "2023-09-01T10:00:00Z",
                 "updated_at": "2023-09-10T10:00:00Z"
               },
@@ -34,8 +36,14 @@ class MockHomeSectionURLProtocol: URLProtocol {
                 "id": "ac84d0c2-61ba-40e3-b4a4-9d5284aeb6f5",
                 "name": "Mega Sale",
                 "description": "Biggest sale of the year, up to 50% off!",
-                "icon_url": "https://example.com/banner2.jpg",
+                "icon_url": "https://i.ibb.co/svVR0JX/badge-2-3x.png",
+                "background_colors": [
+                            "#FDC093",
+                            "#9936CE",
+                            "#3900B1"
+                        ],
                 "link_url": "https://example.com/sale",
+                "cta_text": "View",
                 "created_at": "2023-09-05T08:00:00Z",
                 "updated_at": "2023-09-10T08:00:00Z"
               }
@@ -52,6 +60,7 @@ class MockHomeSectionURLProtocol: URLProtocol {
                 "description": "4 Rides Special Package",
                 "currency_code": "SGD",
                 "price_cents": 10000,
+                "merchant_name": "Zoomooov",
                 "original_price_cents": 20000,
                 "status": "AVAILABLE",
                 "details": {},
@@ -69,7 +78,7 @@ class MockHomeSectionURLProtocol: URLProtocol {
                     "updated_at": "2023-01-01T10:00:00Z"
                   }
                 ],
-                "photo_url": "https://example.com/package1.jpg",
+                "photo_url": "https://i.ibb.co/7zZQ2Fs/offer-2-3x.png",
                 "created_at": "2023-09-01T10:00:00Z",
                 "updated_at": "2023-09-10T10:00:00Z"
               }
@@ -86,6 +95,7 @@ class MockHomeSectionURLProtocol: URLProtocol {
                 "description": "5 Rides at a Special Price",
                 "currency_code": "SGD",
                 "price_cents": 15000,
+                "merchant_name": "Jollyfield",
                 "original_price_cents": 25000,
                 "status": "AVAILABLE",
                 "details": {},
@@ -103,7 +113,7 @@ class MockHomeSectionURLProtocol: URLProtocol {
                     "updated_at": "2023-02-01T10:00:00Z"
                   }
                 ],
-                "photo_url": "https://example.com/package2.jpg",
+                "photo_url": "https://i.ibb.co/C8tTtpn/offer-1-3x.png",
                 "created_at": "2023-12-01T10:00:00Z",
                 "updated_at": "2023-12-10T10:00:00Z"
               }
@@ -118,7 +128,13 @@ class MockHomeSectionURLProtocol: URLProtocol {
                 "id": "7a50d881-936b-4f18-96be-9372f1d89f0f",
                 "name": "Zoomoov",
                 "description": "A fun activity for kids.",
-                "photo_url": "https://example.com/merchant1.jpg",
+                "photo_url": "https://i.ibb.co/30myxjJ/explore-bg-2-3x.png",
+                "background_photo_url": "https://i.ibb.co/30myxjJ/explore-bg-2-3x.png",
+                "background_colors": [
+                    "#80DBD5",
+                    "#00B7AA",
+                    "#008980"
+                ],
                 "country_code": "SG",
                 "status": "LIVE",
                 "created_at": "2023-01-01T10:00:00Z",
@@ -128,14 +144,37 @@ class MockHomeSectionURLProtocol: URLProtocol {
                 "id": "ed9b8f6a-d5c8-4824-abc7-e2e9a995839d",
                 "name": "Toy Kingdom",
                 "description": "The best toys for all ages.",
-                "photo_url": "https://example.com/merchant2.jpg",
+                "photo_url": "https://i.ibb.co/m5YrgtG/explore-bg-1-3x.png",
+                "background_photo_url": "https://i.ibb.co/m5YrgtG/explore-bg-1-3x.png",
+                "background_colors": [
+                    "#F57A5B",
+                    "#F09819"
+                ],
                 "country_code": "SG",
                 "status": "LIVE",
                 "created_at": "2023-02-01T10:00:00Z",
                 "updated_at": "2023-09-10T10:00:00Z"
               }
             ]
-          }
+          },
+          {
+            "banners": [
+                {
+                    "background_photo_url": "https://i.ibb.co/LpYWLfQ/referal-bg-3x.png",
+                    "created_at": "2024-09-17T14:43:11.505729Z",
+                    "cta_text": "Share",
+                    "description": "Enjoy a free Zoomoov ride for each friend who signs up through your referral, and your friend gets a free ride too!",
+                    "id": "011b9cf9-6e54-4ec6-8eaf-722a7721208c",
+                    "link_url": "https://example.com",
+                    "name": "Refer a friend and earn rewards ✨",
+                    "icon_url": "https://i.ibb.co/qkHf8XZ/badge-1-3x.png",
+                    "updated_at": "2024-09-17T14:43:11.505729Z"
+                }
+            ],
+            "id": "10b40ef1-5319-43cf-9965-aedf5fad9d20",
+            "total_count": 1,
+            "type": "BANNER_STATIC"
+           }
         ]
         """
         let data = mockJSON.data(using: .utf8)

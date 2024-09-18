@@ -34,7 +34,7 @@
 		AF501F312C96B56D00637042 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F302C96B56D00637042 /* SplashView.swift */; };
 		AF501F332C97EB4A00637042 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F322C97EB4A00637042 /* HomeViewModel.swift */; };
 		AF501F362C980FCB00637042 /* HomeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F352C980FCB00637042 /* HomeSection.swift */; };
-		AF501F382C9813D300637042 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F372C9813D300637042 /* MockURLProtocol.swift */; };
+		AF501F382C9813D300637042 /* MockHomeSectionURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F372C9813D300637042 /* MockHomeSectionURLProtocol.swift */; };
 		AF557FC82C79AAC700AD99A5 /* SweeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF557FC72C79AAC700AD99A5 /* SweeApp.swift */; };
 		AF72DFE72C80248200F70387 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72DFE62C80248200F70387 /* ActivityView.swift */; };
 		AF72DFE92C81699C00F70387 /* MerchantPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72DFE82C81699C00F70387 /* MerchantPageView.swift */; };
@@ -119,7 +119,7 @@
 		AF501F302C96B56D00637042 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		AF501F322C97EB4A00637042 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		AF501F352C980FCB00637042 /* HomeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSection.swift; sourceTree = "<group>"; };
-		AF501F372C9813D300637042 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
+		AF501F372C9813D300637042 /* MockHomeSectionURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHomeSectionURLProtocol.swift; sourceTree = "<group>"; };
 		AF557FC72C79AAC700AD99A5 /* SweeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SweeApp.swift; sourceTree = "<group>"; };
 		AF72DFE62C80248200F70387 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		AF72DFE82C81699C00F70387 /* MerchantPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPageView.swift; sourceTree = "<group>"; };
@@ -288,7 +288,7 @@
 			isa = PBXGroup;
 			children = (
 				AF501F262C945D7C00637042 /* API.swift */,
-				AF501F372C9813D300637042 /* MockURLProtocol.swift */,
+				AF501F372C9813D300637042 /* MockHomeSectionURLProtocol.swift */,
 				AF501F2D2C95234C00637042 /* FirebaseAuth.swift */,
 			);
 			path = API;
@@ -579,7 +579,7 @@
 				AF82A4632C819B8500E0DD4C /* String.swift in Sources */,
 				AFCEC5BC2C7AD00F00D157BE /* OtpView.swift in Sources */,
 				AF1FAC472C79B0E100654FB7 /* AuthView.swift in Sources */,
-				AF501F382C9813D300637042 /* MockURLProtocol.swift in Sources */,
+				AF501F382C9813D300637042 /* MockHomeSectionURLProtocol.swift in Sources */,
 				AFDB90452C8EA256008931DB /* TimeInterval.swift in Sources */,
 				AFDB90502C8EE471008931DB /* CustomNavBarPreferenceKeys.swift in Sources */,
 				AFCEC5C02C7C0E9100D157BE /* ButtonStyles.swift in Sources */,

@@ -148,7 +148,7 @@ class API: ObservableObject {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         let config = URLSessionConfiguration.default
-//        config.protocolClasses = [MockHomeSectionURLProtocol.self]
+        config.protocolClasses = [MockHomeSectionURLProtocol.self]
         let session = URLSession(configuration: config)
         
         let (data, response) = try await session.data(for: request)
