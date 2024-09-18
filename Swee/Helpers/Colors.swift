@@ -2,15 +2,17 @@ import SwiftUI
 
 extension Color {
     struct primary {
-        static let brand = Color(hex:"#00B7AA")
-        static let dark = Color(hex:"#008980")
-        static let light = Color(hex:"#005C55")
-        static let lighter = Color(hex:"#80DBD5")
+        static let brand = Color(hex:"#FF7BA9")
+        static let dark = Color(hex:"#EF739E")
+        static let darker = Color(hex:"#34775C")
+        static let light = Color(hex:"#FFBDD6")
+        static let lighter = Color(hex:"#FFDEEB")
     }
     
     struct secondary {
-        static let brand = Color(hex:"#F57A5B")
-        static let dark = Color(hex:"#DC6E52")
+        static let brand = Color(hex:"#07CE8C")
+        static let dark = Color(hex:"#4DB28A")
+        static let darker = Color(hex:"#4DB28A")
         static let light = Color(hex:"#B75C44")
         static let lighter = Color(hex:"#F9BCAD")
     }
@@ -30,9 +32,10 @@ extension Color {
     }
     
     struct gradient {
-        static let primary: [Color] = [Color(hex: "#80DBD5"), Color(hex: "#00B7AA"), Color(hex: "#008980")]
-        static let secondary: [Color] = [Color(hex: "#F57A5B"), Color(hex: "#F09819")]
-        static let primaryDark: [Color] = [Color(hex: "#03959A"), Color(hex: "#01AA8F")]
+        static let primary: [Color] = [Color(hex: "#FFBDD6"), Color(hex: "#FF7BA9"), Color(hex: "#BF5C7F")]
+        static let secondary: [Color] = [Color(hex: "#67EEB8"), Color(hex: "#07CE8C"), Color(hex: "#34775C")]
+        static let primaryDark: [Color] = [Color(hex: "#FFDEEB"), Color(hex: "#BF5C7F")]
+        static let secondaryDark: [Color] = [Color(hex: "#B3F7DB"), Color(hex: "#34775C")]
     }
 }
 
