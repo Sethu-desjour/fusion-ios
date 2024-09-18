@@ -1,10 +1,8 @@
 import Foundation
 
-// Custom URLProtocol to intercept and mock responses
 class MockHomeSectionURLProtocol: URLProtocol {
     
     override class func canInit(with request: URLRequest) -> Bool {
-        // Intercept the specific request you want to mock
         return request.url?.absoluteString == "\(Strings.baseURL)/home_sections"
     }
     
@@ -13,7 +11,6 @@ class MockHomeSectionURLProtocol: URLProtocol {
     }
     
     override func startLoading() {
-        // Create a mock response
         let mockJSON = """
         [
           {
@@ -179,7 +176,6 @@ class MockHomeSectionURLProtocol: URLProtocol {
         """
         let data = mockJSON.data(using: .utf8)
         
-        // Create a HTTP response and pass it back to the client
         let response = HTTPURLResponse(url: request.url!,
                                        statusCode: 200,
                                        httpVersion: nil,
@@ -187,7 +183,7 @@ class MockHomeSectionURLProtocol: URLProtocol {
         self.client?.urlProtocol(self, didReceive: response!, cacheStoragePolicy: .notAllowed)
         self.client?.urlProtocol(self, didLoad: data!)
         
-        // Inform that the loading is finished
+
         self.client?.urlProtocolDidFinishLoading(self)
     }
     
@@ -195,17 +191,3 @@ class MockHomeSectionURLProtocol: URLProtocol {
         // Required to be implemented but can be left empty
     }
 }
-
-//// Register the MockURLProtocol in your app
-//let config = URLSessionConfiguration.default
-//config.protocolClasses = [MockURLProtocol.self]
-//let session = URLSession(configuration: config)
-//
-//let url = URL(string: "https://example.com/api/endpoint")!
-//let request = URLRequest(url: url)
-//
-//session.dataTask(with: request) { data, response, error in
-//    if let data = data {
-//        print(String(data: data, encoding: .utf8)!)
-//    }
-//}.resume()
