@@ -1,30 +1,66 @@
 import SwiftUI
+import SDWebImageSwiftUI
+import SDWebImage
+import SkeletonUI
 
 struct HomeView: View {
+    
+    @EnvironmentObject private var api: API
+    @StateObject private var viewModel = HomeViewModel()
     
 //    @Environment(\.bottomSheetData) private var bottomSheetData
     @Environment(\.tabIsShown) private var tabIsShown
     @State private var hideBottomSheet: Bool = true
     
+    func section(at index: Int) -> any View {
+        let section = viewModel.sections[index]
+        switch section.content {
+        case .bannerCarousel(let banners):
+            return BannersCarousel(banners: banners)
+        case .packages(let packages):
+            return PackagesCarousel(model: PackageCarouselModel(title: section.title ?? "", packages: packages))
+        case .merchants(let merchants):
+            return MerchantList(model: .init(title: section.title ?? "", merchants: merchants))
+        case .bannerStatic(let banners):
+            if banners.isEmpty {
+                return VStack {}
+            }
+            return ReferalCard(banner: banners[0])
+        }
+    }
+    
     var body: some View {
         CustomNavView {
-            ScrollView {
-                VStack {
-                    BannersCarousel()
-                    OfferRow()
-                    ExploreView()
-                    ReferalCard()
+            VStack {
+                if viewModel.sections.isEmpty {
+                    ZStack {
+                        ProgressView()
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    ScrollView {
+                        VStack {
+                            ForEach(viewModel.sections.indices, id: \.self) { index in
+                                section(at: index).equatable.view
+                            }
+                        }
+                        .padding(.vertical, 20)
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 80)
+                    }
+                    .ignoresSafeArea()
                 }
-                .padding(.vertical, 20)
-                .padding(.horizontal, 16)
-                .padding(.bottom, 80)
             }
-            .ignoresSafeArea()
             .onChange(of: hideBottomSheet, perform: { newValue in
                 tabIsShown.wrappedValue = hideBottomSheet
             })
             .onAppear(perform: {
+                viewModel.api = api
+                viewModel.fetch()
                 tabIsShown.wrappedValue = true
+//                Uncomment to keep the images loading indefinately
+//                SDImageCachesManager.shared.caches = []
+//                SDWebImageManager.defaultImageCache = SDImageCachesManager.shared
             })
             .customNavigationBackButtonHidden(true)
             .customNavLeadingItem {
@@ -61,16 +97,21 @@ struct HomeView: View {
 }
 
 
-struct BannerModel {
+struct Banner {
+    enum Background {
+        case image(URL)
+        case gradient([Color])
+    }
+    
     let title: String
     let description: String
-    let buttonTitle: String
-    let backgroundImage: Image
-    let badgeImage: Image
+    let buttonTitle: String?
+    let background: Background
+    let badgeImage: URL?
 }
 
 struct BannersView: View {
-    @Binding var bannerModels: [BannerModel]
+    @Binding var bannerModels: [Banner]
     @Binding var page: Int
     @State private var contentOffset: CGFloat = 0
     
@@ -79,7 +120,7 @@ struct BannersView: View {
         ObservableScrollView(.horizontal, showIndicators: false, contentOffset: $contentOffset) {
             LazyHGrid(rows: [.init()]) {
                 ForEach(bannerModels.indices, id: \.self) { index in
-                    Banner(banner: bannerModels[index])
+                    BannerView(banner: bannerModels[index])
                 }
             }
             .onChange(of: contentOffset) { newValue in
@@ -100,33 +141,7 @@ struct BannersView: View {
 
 struct BannersCarousel: View {
     @State var page: Int = 0
-    @State var banners: [BannerModel] = [
-        .init(title: "Complete your profile to win rewards",
-              description: "Free 20 mins ride for every sign up",
-              buttonTitle: "Complete",
-              backgroundImage: .init("banner-bg-1"),
-              badgeImage: .init("badge-1")),
-        .init(title: "Super hero Tuesday",
-              description: "One free ride when you bring Zoomoov hero mask",
-              buttonTitle: "View",
-              backgroundImage: .init("banner-bg-2"),
-              badgeImage: .init("badge-2")),
-        .init(title: "Super hero Tuesday",
-              description: "One free ride when you bring Zoomoov hero mask",
-              buttonTitle: "View",
-              backgroundImage: .init("banner-bg-2"),
-              badgeImage: .init("badge-2")),
-        .init(title: "Super hero Tuesday",
-              description: "One free ride when you bring Zoomoov hero mask",
-              buttonTitle: "View",
-              backgroundImage: .init("banner-bg-2"),
-              badgeImage: .init("badge-2")),
-        .init(title: "Super hero Tuesday",
-              description: "One free ride when you bring Zoomoov hero mask",
-              buttonTitle: "View",
-              backgroundImage: .init("banner-bg-2"),
-              badgeImage: .init("badge-2"))
-    ]
+    @State var banners: [Banner]
     
     var body: some View {
         VStack {
@@ -149,17 +164,26 @@ struct BannersCarousel: View {
     }
 }
 
-struct Banner: View {
-    @State var banner: BannerModel
+struct BannerView: View {
+    @State var banner: Banner
     
     var body: some View {
         ZStack {
-            banner.backgroundImage
-                .resizable()
-                .scaledToFill()
-                .frame(minWidth: 0)
-                .edgesIgnoringSafeArea(.all)
+            switch banner.background {
+            case .image(let url):
+                WebImage(url: url) { image in
+                    image.resizable()
+                        .scaledToFit()
+                } placeholder: {
+                    Color.white
+                        .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+//                        .frame(width: 70, height: 70)
+                }
                 .clipShape(RoundedRectangle(cornerRadius: 12))
+            case .gradient(let array):
+                LinearGradient(colors: array, startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
             VStack {
                 Text(banner.title)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -172,15 +196,27 @@ struct Banner: View {
                     .foregroundColor(Color.background.white)
                 Spacer()
                 HStack(alignment: .bottom) {
-                    HStack {
-                        Text(banner.buttonTitle)
-                            .font(.custom("Poppins-Medium", size: 10))
-                            .foregroundStyle(Color.background.white)
-                        Image("circled-arrow-right")
+                    if let buttonTitle = banner.buttonTitle {
+                        HStack {
+                            Text(buttonTitle)
+                                .font(.custom("Poppins-Medium", size: 10))
+                                .foregroundStyle(Color.background.white)
+                            Image("circled-arrow-right")
+                        }
+                        .padding(.bottom, 8)
                     }
-                    .padding(.bottom, 8)
                     Spacer()
-                    banner.badgeImage
+                    WebImage(url: banner.badgeImage) { image in
+                        image.resizable()
+                            .scaledToFit()
+                    } placeholder: {
+                        Color.white
+                            .skeleton(with: true, shape: .circle)
+                            .frame(width: 70, height: 70)
+                    }
+                    .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                    .clipShape(RoundedRectangle(cornerRadius: 4))
+                    .frame(width: 70, height: 70)
                 }
             }
             .padding(16)
@@ -206,32 +242,26 @@ extension Vendors {
     }
 }
 
-struct Offer {
-    let vendor: Vendors
+struct Package {
+    let merchant: String
     let image: Image // will be changed to URL
+    let imageURL: URL?
     let title: String
     let description: String
     let price: Double
     let originalPrice: Double?
-    
-    
+    let currency: String
 }
 
-struct OfferRowModel {
+struct PackageCarouselModel {
     let title: String
-    let offers: [Offer]
+    let packages: [Package]
 }
 
-struct OfferRow: View {
-    @State var model: OfferRowModel = OfferRowModel(title: "Package just for you",
-                                                    offers: [
-                                                        .init(vendor: .Zoomoov, image: .init("offer-1"), title: "10 Zoomoov Rides 10 Zoomoov Rides", description: "Get 3 rides free", price: 50, originalPrice: 69),
-                                                        .init(vendor: .Jollyfield, image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
-                                                        .init(vendor: .Zoomoov, image: .init("offer-1"), title: "10 Zoomoov Rides 10 Zoomoov Rides", description: "Get 3 rides free", price: 50, originalPrice: 69),
-                                                        .init(vendor: .Jollyfield, image: .init("offer-2"), title: "8 Hours of playtime", description: "Get 30 minutes free", price: 50, originalPrice: 69),
-                                                    ])
+struct PackagesCarousel: View {
+    @State var model: PackageCarouselModel
     
-    var columns: [GridItem] = [
+    private let columns: [GridItem] = [
         GridItem(.flexible()),
         GridItem(.flexible()),
     ]
@@ -242,19 +272,21 @@ struct OfferRow: View {
                 Text(model.title)
                     .textStyle(HomeRowTitleStyle())
                 Spacer()
-                CustomNavLink(destination: OffersView()) {
-                    HStack(spacing: 4) {
-                        Text("See all")
-                            .font(.custom("Poppins-Regular", size: 14))
-                            .foregroundStyle(Color.text.black60)
-                        Image("chevron-right")
+                if model.packages.count > 2 {
+                    CustomNavLink(destination: OffersView()) {
+                        HStack(spacing: 4) {
+                            Text("See all")
+                                .font(.custom("Poppins-Regular", size: 14))
+                                .foregroundStyle(Color.text.black60)
+                            Image("chevron-right")
+                        }
                     }
                 }
             }
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHGrid(rows: [.init()], spacing: 16) {
-                    ForEach(model.offers.indices, id: \.self) { index in
-                        OfferCard(offer: model.offers[index])
+                    ForEach(model.packages.indices, id: \.self) { index in
+                        PackageCard(package: model.packages[index])
                             .frame(width: 165)
                     }
                 }
@@ -266,8 +298,9 @@ struct OfferRow: View {
     }
 }
 
-struct OfferCard: View {
-    @State var offer: Offer
+struct PackageCard: View {
+    @State var package: Package
+    @State private var imageLoaded = false
     
     var mockProduct: ProductDetailModel = .init(id: "id", image: Image("product-detail-img"), title: "Chinese new year", subtitle: "10 Zoomoov rides + 1 Hero mask + 1 Bingo draw", vendor: .Zoomoov, locations: Array(0..<12), price: "S$ 50", originalPrice: "S$ 69",
                                                 description: """
@@ -281,31 +314,42 @@ struct OfferCard: View {
         CustomNavLink(destination: ProductDetailView(product: mockProduct)) {
             VStack {
                 ZStack {
-                    offer.image
-                        .resizable()
-                        .scaledToFill()
-                        .frame(minWidth: 0)
-                        .edgesIgnoringSafeArea(.all)
-                        .clipShape(RoundedRectangle(cornerRadius: 4))
+                    WebImage(url: package.imageURL) { image in
+                        image.resizable() // Control layout like SwiftUI.AsyncImage, you must use this modifier or the view will use the image bitmap size
+                    } placeholder: {
+                        Color.white
+                            .skeleton(with: true, shape: .rounded(.radius(4, style: .circular)))
+                            .frame(height: 140)
+                    }
+                    .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                    .scaledToFill()
+                    .frame(minWidth: 0)
+                    .edgesIgnoringSafeArea(.all)
+                    .clipShape(RoundedRectangle(cornerRadius: 4))
                 }
                 .frame(maxWidth: .infinity, maxHeight: 140)
-                Text(offer.title)
+                Text(package.title)
                     .font(.custom("Poppins-SemiBold", size: 16))
                     .foregroundStyle(Color.text.black100)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .lineLimit(1)
-                Text(offer.description)
-                    .font(.custom("Poppins-SemiBold", size: 12))
-                    .foregroundStyle(Color.text.black80)
+                Text(package.merchant)
+                    .font(.custom("Poppins-Medium", size: 12))
+                    .foregroundStyle(Color.text.black60)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .lineLimit(1)
+                Text(package.description)
+                    .font(.custom("Poppins-Medium", size: 12))
+                    .foregroundStyle(Color.text.black60)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .lineLimit(1)
                 HStack {
-                    if let price = offer.originalPrice {
-                        Text("SGD \(String(format: "%.2f", price))".strikethroughText())
+                    if let price = package.originalPrice {
+                        Text("\(package.currency) \(String(format: "%.2f", price))".strikethroughText())
                             .font(.custom("Poppins-Medium", size: 10))
                             .foregroundStyle(Color.text.black40)
                     }
-                    Text("SGD \(String(format: "%.2f", offer.price))")
+                    Text("\(package.currency) \(String(format: "%.2f", package.price))")
                         .font(.custom("Poppins-SemiBold", size: 12))
                     Spacer()
                 }
@@ -315,33 +359,54 @@ struct OfferCard: View {
     }
 }
 
-struct ExploreView: View {
+struct Merchant {
+    let name: String
+    let backgroundImage: URL?
+    let backgroundColors: [Color]
+    let storeImage: Image
+}
+
+struct MerchantListModel {
+    let title: String
+    let merchants: [Merchant]
+}
+
+struct MerchantList: View {
+    @State var model: MerchantListModel
+    
     var body: some View {
         VStack {
-            Text("Explore")
+            Text(model.title)
                 .textStyle(HomeRowTitleStyle())
                 .frame(maxWidth: .infinity, alignment: .leading)
             VStack(spacing: 8) {
-                ExploreCard(vendor: .Zoomoov)
-                ExploreCard(vendor: .Jollyfield)
+                ForEach(model.merchants.indices, id: \.self) { index in
+                    MerchantCard(merchant: model.merchants[index])
+                }
             }
         }
     }
 }
 
-struct ExploreCard: View {
-    @State var vendor: Vendors
+struct MerchantCard: View {
+    @State var merchant: Merchant
     var body: some View {
         CustomNavLink(destination: MerchantPageView(), label: {
             ZStack {
-                Image(vendor == .Jollyfield ? "explore-bg-1" : "explore-bg-2")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(minWidth: 0)
-                    .edgesIgnoringSafeArea(.all)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                WebImage(url: merchant.backgroundImage) { image in
+                    image.resizable()
+                } placeholder: {
+                    Color.white
+                        .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                        .frame(maxHeight: 90)
+                }
+                .transition(.fade(duration: 0.5))
+                .scaledToFill()
+                .frame(minWidth: 0)
+                .edgesIgnoringSafeArea(.all)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
                 HStack {
-                    Text(vendor.toString())
+                    Text(merchant.name)
                         .font(.custom("Poppins-Bold", size: 20))
                         .foregroundStyle(.white)
                     Spacer()
@@ -355,20 +420,36 @@ struct ExploreCard: View {
 }
 
 struct ReferalCard: View {
+    @State var banner: Banner
     @State private var show = false
+
+    var background: any View {
+        switch banner.background {
+        case .image(let url):
+            WebImage(url: url) { image in
+                image.resizable()
+                    .scaledToFill()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } placeholder: {
+                Color.white
+                    .skeleton(with: true, shape: .rounded(.radius(12, style: .continuous)))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .frame(height: 290)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+        case .gradient(let array):
+            LinearGradient(colors: array, startPoint: .topLeading, endPoint: .bottomTrailing)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
+    }
     
     var body: some View {
         ZStack {
-            Image("referal-bg")
-                .resizable()
-                .scaledToFill()
-                .frame(minWidth: 0)
-                .edgesIgnoringSafeArea(.all)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+            background.equatable.view
             GeometryReader { metrics in
                 VStack(spacing: 8) {
                     HStack {
-                        Text("Refer a friend and earn rewards ✨")
+                        Text(banner.title)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .font(.custom("Roboto-Bold", size: 24))
                             .foregroundColor(Color.background.white)
@@ -377,7 +458,7 @@ struct ReferalCard: View {
                     }
                     HStack {
                         VStack {
-                            Text("Enjoy a free Zoomoov ride for each friend who signs up through your referral, and your friend gets a free ride too!")
+                            Text(banner.description)
                                 .frame(maxWidth: metrics.size.width * 0.60, alignment: .leading)
                                 .font(.custom("Roboto-Bold", size: 12))
                                 .foregroundColor(Color.background.white)
@@ -390,7 +471,7 @@ struct ReferalCard: View {
                             ZStack {
                                 HStack {
                                     Image("share")
-                                    Text("Share")
+                                    Text(banner.buttonTitle)
                                         .font(.custom("Roboto-Bold", size: 14))
                                         .foregroundStyle(.black)
                                 }
@@ -408,7 +489,17 @@ struct ReferalCard: View {
                         .frame(maxWidth: .infinity)
                         VStack() {
                             Spacer()
-                            Image("referal-gift")
+                            WebImage(url: banner.badgeImage) { image in
+                                image.resizable()
+                                    .scaledToFit()
+                            } placeholder: {
+                                Color.white
+                                    .skeleton(with: true, shape: .circle)
+                                    .frame(width: 110, height: 110)
+                            }
+                            .transition(.fade(duration: 0.5)) // Fade Transition with duration
+                            .clipShape(RoundedRectangle(cornerRadius: 4))
+                            .frame(width: 110, height: 110)
                         }
                         .frame(maxWidth: metrics.size.width * 0.40, alignment: .bottomTrailing)
                         .padding([.bottom], 10)

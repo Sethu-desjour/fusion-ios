@@ -48,3 +48,12 @@ extension Color {
         self.init(red: redValue, green: greenValue, blue: blueValue, opacity: opacity)
     }
 }
+
+extension Color: Decodable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let hexString = try container.decode(String.self)
+        
+        self = Color(hex: hexString)
+    }
+}

@@ -43,6 +43,9 @@ class API: ObservableObject {
     @discardableResult
     func signIn(with token: String) async throws -> SignInResponse {
         UserDefaults.standard.setValue(token, forKey: Keys.authToken)
+        
+        print("token =====", token)
+        
         let url = "/users/me?token="
         
         guard let url = URL(string: Strings.baseURL + url + token) else {
@@ -124,6 +127,46 @@ class API: ObservableObject {
             let user = try JSONDecoder().decode(User.self, from: data)
             await MainActor.run {
                 self.user = user
+            }
+        } catch {
+            throw LocalError(message: "Incorrect server data")
+        }
+    }
+    
+    func homeSections() async throws -> [HomeSectionModel] {
+        let url = "/home_sections"
+        
+        guard let token = UserDefaults.standard.string(forKey: Keys.authToken) else {
+            throw LocalError(message: "Token not found")
+        }
+        
+        guard let url = URL(string: Strings.baseURL + url) else {
+            throw LocalError(message: "Can't form Complete profile URL")
+        }
+        
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let config = URLSessionConfiguration.default
+        config.protocolClasses = [MockHomeSectionURLProtocol.self]
+        let session = URLSession(configuration: config)
+        
+        let (data, response) = try await session.data(for: request)
+        
+        guard let response = response as? HTTPURLResponse else {
+            throw LocalError(message: "Invalid response")
+        }
+        
+        print("data =======", String(data: data, encoding: String.Encoding.utf8))
+        
+        guard response.statusCode == 200 else {
+            throw LocalError(message: "Something went wrong")
+        }
+        
+        do {
+            let homeSections = try JSONDecoder().decode([HomeSectionModel].self, from: data)
+            return await MainActor.run {
+                return homeSections
             }
         } catch {
             throw LocalError(message: "Incorrect server data")
