@@ -64,8 +64,10 @@ struct HomeView: View {
             })
             .customNavigationBackButtonHidden(true)
             .customNavLeadingItem {
-                VStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 5) {
                     Image("logo")
+                        .resizable()
+                        .frame(width: 60, height: 18)
                     Button {
                     } label: {
                         HStack(spacing: 4) {
@@ -83,6 +85,7 @@ struct HomeView: View {
                     hideBottomSheet = false
                 }, label: {
                     Image("cart")
+                        .foregroundStyle(Color.text.black60)
                 })
                 .buttonStyle(EmptyStyle())
             }
@@ -197,7 +200,7 @@ struct BannerView: View {
                 Spacer()
                 HStack(alignment: .bottom) {
                     if let buttonTitle = banner.buttonTitle {
-                        HStack {
+                        HStack(spacing: 4) {
                             Text(buttonTitle)
                                 .font(.custom("Poppins-Medium", size: 10))
                                 .foregroundStyle(Color.background.white)
@@ -568,9 +571,8 @@ struct NotificationUpsell: View {
                     .frame(maxWidth: .infinity)
                     .font(.custom("Roboto-Bold", size: 16))
                     .foregroundColor(Color.text.black80)
-                
             }
-            .buttonStyle(OutlineButton())
+            .padding()
         }
     }
 }
@@ -584,4 +586,5 @@ struct HomeRowTitleStyle: ViewModifier {
 
 #Preview {
     HomeView()
+        .environmentObject(API())
 }

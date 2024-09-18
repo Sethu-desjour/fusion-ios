@@ -68,8 +68,8 @@ struct AuthView: View {
                         .focused($isPhoneFocused)
                         .font(.custom("Poppins-Regular", size: 14))
                         .overlay(RoundedRectangle(cornerRadius: 12)
-                            .stroke(codeFieldActive ? Color.primary.brand : Color(hex: "#E7EAEB"),
-                                    lineWidth: codeFieldActive ? 2 : 1))
+                            .stroke(codeFieldActive ? Color.text.black100 : Color(hex: "#E7EAEB"),
+                                    lineWidth: 1))
                         TextField("Phone number", text: $phone) {
                             UIApplication.shared.endEditing()
                         }
@@ -79,8 +79,8 @@ struct AuthView: View {
                         .focused($isPhoneFocused)
                         .font(.custom("Poppins-Regular", size: 14))
                         .overlay(RoundedRectangle(cornerRadius: 12)
-                            .stroke(phoneFieldActive ? Color.primary.brand : Color(hex: "#E7EAEB"),
-                                    lineWidth: phoneFieldActive ? 2 : 1))
+                            .stroke(phoneFieldActive ? Color.text.black100 : Color(hex: "#E7EAEB"),
+                                    lineWidth: 1))
                         .toolbar {
                             ToolbarItemGroup(placement: .keyboard) {
                                 HStack {
@@ -189,15 +189,6 @@ struct AuthView: View {
             .padding()
             .ignoresSafeArea(.keyboard)
             .navigationBarBackButtonHidden(true)
-//            .toolbar {
-//                ToolbarItem(placement: .navigationBarLeading) {
-//                    Button {
-//                        dismiss()
-//                    } label: {
-//                        Image("back_auth", bundle: .main)
-//                    }
-//                }
-//            }
         }
         .navigationBarTitle("")
         .navigationBarHidden(true)
