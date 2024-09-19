@@ -66,22 +66,12 @@ struct MyPurchasesView: View {
             })
             .customNavigationBackButtonHidden(true)
             .customNavLeadingItem {
-                VStack(alignment: .leading, spacing: 0) {
-                    Image("logo")
-                    Button {
-                    } label: {
-                        HStack(spacing: 4) {
-                            Image("location")
-                            Text("Singapore")
-                                .font(.custom("Poppins-Regular", size: 14))
-                                .foregroundStyle(Color.text.black80)
-                        }
-                    }
-                }
+                LogoNavItem()
             }
             .customNavTrailingItem {
                 CustomNavLink(destination: CheckoutView(), label: {
                     Image("cart")
+                        .foregroundStyle(Color.text.black60)
                 })
                 .buttonStyle(EmptyStyle())
             }

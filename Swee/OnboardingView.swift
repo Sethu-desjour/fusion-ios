@@ -12,14 +12,14 @@ struct OnboardingView: View {
     @State private var page = 0
     @State private var pages: [Page] = [
         .init(image: .init("onboarding-img-1", bundle: .main),
-              title: "Choose package",
-              description: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit."),
+              title: "Quick Bookings",
+              description: "Skip the lines! Reserve rides and play sessions effortlessly through the app"),
         .init(image: .init("onboarding-img-2", bundle: .main),
-              title: "Make Payment",
-              description: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit."),
+              title: "Track Playtime",
+              description: "Monitor and manage your child's play history and favorite activities all in one place"),
         .init(image: .init("onboarding-img-3", bundle: .main),
-              title: "Enjoy your order",
-              description: "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit."),
+              title: "Exclusive Offers & Rewards",
+              description: "Unlock app-only discounts, promotions, and rewards. Enjoy more playtime while saving on every booking!"),
     ]
     
     private var nextTextView: some View {
@@ -62,7 +62,7 @@ struct OnboardingView: View {
                             Text(pages[index].title)
                                 .font(.custom("Poppins-SemiBold", size: 24))
                                 .foregroundStyle(Color.text.black100)
-                                .padding(.bottom)
+                                .padding(.bottom, 2)
                             Text(pages[index].description)
                                 .multilineTextAlignment(.center)
                                 .font(.custom("Poppins-SemiBold", size: 14))

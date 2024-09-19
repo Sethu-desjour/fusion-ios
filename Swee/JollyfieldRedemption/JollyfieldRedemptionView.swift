@@ -1,8 +1,13 @@
 import SwiftUI
 
 struct ChildModel: Equatable, Hashable {
+    let id = UUID().uuidString
     var name: String = ""
     var dob: Date?
+    
+    var isValid: Bool {
+        !name.isEmpty && dob != nil
+    }
 }
 
 struct RedemptionScanView: View {
@@ -145,6 +150,7 @@ struct JollyfieldRedemptionView: View {
     
     @Environment(\.tabIsShown) private var tabIsShown
     @State private var children: [ChildModel] = [.init(name: "Johnny Depp", dob: .now), .init(name: "Charlee Sheen", dob: .now)]
+//    @State private var children: [ChildModel] = []
     @State private var selectedChildren: Set<ChildModel> = .init()
     @State private var availableTime: TimeInterval = 5400
     @State var hidden = true
@@ -171,25 +177,20 @@ struct JollyfieldRedemptionView: View {
                 .padding(.horizontal, 28)
                 .foregroundStyle(Color.text.black60)
                 .multilineTextAlignment(.center)
-            Button {
-                // @todo make request
-            } label: {
-                CustomNavLink(destination: AddChildView { children in
-                    self.children.append(contentsOf: children)
-                }) {
-                    HStack {
-                        Text("Add child")
-                            .font(.custom("Roboto-Bold", size: 16))
-                        Image("plus")
-                    }
-                    .foregroundStyle(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .frame(maxWidth: .infinity)
+            CustomNavLink(destination: AddChildView(children: children) { children in
+                self.children = children
+            }) {
+                HStack {
+                    Text("Add child")
+                        .font(.custom("Roboto-Bold", size: 16))
+                    Image("plus")
                 }
+                .foregroundStyle(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .frame(maxWidth: .infinity)
             }
-            .buttonStyle(OutlineButton(strokeColor: Color.primary.brand, cornerRadius: 30))
             .padding(.top, 24)
             .padding(.horizontal, 28)
-            .padding(.bottom, 40)
+            .padding(.bottom, 60)
         }
     }
     
@@ -294,7 +295,16 @@ struct JollyfieldRedemptionView: View {
                             .background(RoundedRectangle(cornerRadius: 8)
                                 .foregroundStyle(Color.primary.brand)
                             )
+                            HStack(spacing: 0) {
+                                Text("Valid until ")
+                                    .foregroundStyle(Color.text.black60)
+                                    .font(.custom("Poppins-Medium", size: 12))
+                                Text("\(Date().formatted(date: .abbreviated, time: .omitted))")
+                                    .foregroundStyle(Color.text.black100)
+                                    .font(.custom("Poppins-Medium", size: 12))
+                            }
                             .padding(.bottom, 16)
+
                             if children.isEmpty {
                                 emptyUI
                             } else {
@@ -399,7 +409,7 @@ struct JollyfieldRedemptionView: View {
         .customBottomSheet(hidden: $hidden) {
             switch $tempStep.wrappedValue {
             case .qrStart:
-                RedemptionScanView(model: .init(header: "Start session", title: "Scan QR to start your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
+                RedemptionScanView(model: .init(header: "Start session", title: "Check - in", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Refresh")) {
                     $tempStep.wrappedValue = .scanningStart
                 }
             case .scanningStart:
@@ -407,12 +417,12 @@ struct JollyfieldRedemptionView: View {
                     $tempStep.wrappedValue = .sessionStarted
                 }
             case .sessionStarted:
-                RedemptionCompletedView(model: .init(header: "", title: "Session started", description: "", actionTitle: "Close")) {
+                RedemptionCompletedView(model: .init(header: "", title: "Session started!", description: "", actionTitle: "Okay")) {
                     hidden = true
                     $tempStep.wrappedValue = .qrEnd
                 }
             case .qrEnd:
-                RedemptionScanView(model: .init(header: "End Session", title: "Scan QR to end your ride", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Verify")) {
+                RedemptionScanView(model: .init(header: "End Session", title: "Check - out", qr: Image("qr"), description: "Show this QR code at the counter, our staff will scan this QR to end your session", actionTitle: "Refresh")) {
                     $tempStep.wrappedValue = .scanningEnd
                 }
             case .scanningEnd:
@@ -444,8 +454,8 @@ struct JollyfieldRedemptionView: View {
                     .foregroundStyle(Color.primary.brand)
                 }
             } else {
-                CustomNavLink(destination: AddChildView { children in
-                    self.children.append(contentsOf: children)
+                CustomNavLink(destination: AddChildView(children: children) { children in
+                    self.children = children
                 }) {
                     Text("Add child")
                         .font(.custom("Poppins-Medium", size: 16))
@@ -457,5 +467,7 @@ struct JollyfieldRedemptionView: View {
 }
 
 #Preview {
-    JollyfieldRedemptionView()
+    CustomNavView {
+        JollyfieldRedemptionView()
+    }
 }

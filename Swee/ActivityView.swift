@@ -3,6 +3,15 @@ import SwiftUI
 enum ActivityTab {
     case Purchased
     case Redeemed
+    
+    var emptyDescription: String {
+        switch self {
+        case .Purchased:
+            "You have not made any purchases yet"
+        case .Redeemed:
+            "You have not redeemed anything yet"
+        }
+    }
 }
 
 
@@ -35,6 +44,7 @@ struct PurchasesSection: Hashable {
 struct ActivityView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.tabIsShown) private var tabIsShown
+    @Environment(\.currentTab) private var currentTab
     
     @State private var hideBottomSheet: Bool = true
     @State private var tab = ActivityTab.Purchased
@@ -61,6 +71,52 @@ struct ActivityView: View {
     
     var noData: Bool {
         return purchases.isEmpty && redemptions.isEmpty
+    }
+    
+    func emptyUI(description: String) -> some View {
+        VStack(spacing: 0) {
+            Spacer()
+            Image("empty-activity")
+            Text("It's empty here")
+                .font(.custom("Poppins-SemiBold", size: 24))
+                .padding(.horizontal, 44)
+                .foregroundStyle(Color.text.black100)
+                .multilineTextAlignment(.center)
+                .padding(.top, 24)
+            Text(description)
+                .font(.custom("Poppins-Regular", size: 14))
+                .padding([.leading, .trailing], 16)
+                .foregroundStyle(Color.text.black60)
+                .multilineTextAlignment(.center)
+                .padding(.top, 8)
+            Button {
+                dismiss()
+                currentTab.wrappedValue = .home
+            } label: {
+                HStack {
+                    Text("Start Exploring")
+                        .font(.custom("Roboto-Bold", size: 16))
+                }
+                .foregroundStyle(Color.background.white)
+                .padding(.vertical, 14)
+                .frame(maxWidth: .infinity)
+                .background(LinearGradient(colors: Color.gradient.primaryDark, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .clipShape(Capsule())
+            }
+            .padding(.horizontal, 22)
+            .padding(.top, 60)
+            Spacer()
+            Spacer()
+        }
+    }
+    
+    var currentTabIsEmpty: Bool {
+        switch tab {
+        case .Purchased:
+            purchases.isEmpty
+        case .Redeemed:
+            redemptions.isEmpty
+        }
     }
     
     var body: some View {
@@ -105,75 +161,56 @@ struct ActivityView: View {
                         .padding()
                     }
                     .frame(height: 80)
-                    List {
-                        if tab == .Purchased {
-                            ForEach(Array(purchases.enumerated()), id: \.offset) { sectionIndex, section in
-                                Section {
-                                    ForEach(Array(section.purchases.enumerated()), id: \.offset) { index, purchase in
-                                        PurchaseRow(purchase: purchase, hideDivider: index == 0)
+                    if currentTabIsEmpty {
+                        emptyUI(description: tab.emptyDescription)
+                    } else {
+                        List {
+                            if tab == .Purchased {
+                                ForEach(Array(purchases.enumerated()), id: \.offset) { sectionIndex, section in
+                                    Section {
+                                        ForEach(Array(section.purchases.enumerated()), id: \.offset) { index, purchase in
+                                            PurchaseRow(purchase: purchase, hideDivider: index == 0)
+                                        }
+                                        
+                                    } header: {
+                                        ActivitySectionHeader(date: section.date)
                                     }
                                     
-                                } header: {
-                                    ActivitySectionHeader(date: section.date)
                                 }
-                                
-                            }
-                            .listRowSeparator(.hidden, edges: .all)
-                        } else {
-                            ForEach(Array(redemptions.enumerated()), id: \.offset) { sectionIndex, section in
-                                Section {
-                                    ForEach(Array(section.redemptions.enumerated()), id: \.offset) { index, redemption in
-                                        RedemptionRow(redemption: redemption, hideDivider: index == 0)
+                                .listRowSeparator(.hidden, edges: .all)
+                            } else {
+                                ForEach(Array(redemptions.enumerated()), id: \.offset) { sectionIndex, section in
+                                    Section {
+                                        ForEach(Array(section.redemptions.enumerated()), id: \.offset) { index, redemption in
+                                            RedemptionRow(redemption: redemption, hideDivider: index == 0)
+                                        }
+                                    } header: {
+                                        ActivitySectionHeader(date: section.date)
                                     }
-                                } header: {
-                                    ActivitySectionHeader(date: section.date)
+                                    
                                 }
-                                
+                                .listRowSeparator(.hidden, edges: .all)
                             }
+                            HStack {
+                                Rectangle()
+                                    .fill(Color.text.black10)
+                                    .frame(height: 1)
+                                Text("End of Actvity".uppercased())
+                                    .font(.custom("Poppins-Medium", size: 10))
+                                    .foregroundStyle(Color.text.black40)
+                                Rectangle()
+                                    .fill(Color.text.black10)
+                                    .frame(height: 1)
+                            }
+                            .padding(.top, 20)
+                            .padding([.leading, .trailing], -10)
                             .listRowSeparator(.hidden, edges: .all)
                         }
-                        HStack {
-                            Rectangle()
-                                .fill(Color.text.black10)
-                                .frame(height: 1)
-                            Text("End of Actvity".uppercased())
-                                .font(.custom("Poppins-Medium", size: 10))
-                                .foregroundStyle(Color.text.black40)
-                            Rectangle()
-                                .fill(Color.text.black10)
-                                .frame(height: 1)
-                        }
-                        .padding(.top, 20)
-                        .padding([.leading, .trailing], -10)
-                        .listRowSeparator(.hidden, edges: .all)
+                        .listStyle(.inset)
                     }
-                    .listStyle(.inset)
                 }
             } else {
-                VStack {
-                    Spacer()
-                    Image("empty-activity")
-                    Text("You have not made any actions yet")
-                        .font(.custom("Poppins-Reegular", size: 20))
-                        .padding([.leading, .trailing], 44)
-                        .foregroundStyle(Color.text.black80)
-                        .multilineTextAlignment(.center)
-                        .padding(.top, 56)
-                    Button {
-                        
-                    } label: {
-                        Text("Start Exploring")
-                            .foregroundStyle(LinearGradient(colors: Color.gradient.primary,
-                                                            startPoint: .topLeading,
-                                                            endPoint: .bottomTrailing))
-                            .padding([.trailing, .leading], 20)
-                            .font(.custom("Roboto-Bold", size: 16))
-                    }
-                    .padding(.top, 16)
-                    .buttonStyle(OutlineButton(strokeColor: .primary.brand))
-                    Spacer()
-                    Spacer()
-                }
+               emptyUI(description: "You have not made any actions yet")
             }
         }
         .onWillAppear({
@@ -221,7 +258,7 @@ struct FiltersView: View {
         }
     }
     
-    @State private var vendorFilters: Set<Vendors> = [.Zoomoov, .Jollyfield]
+//    @State private var vendorFilters: Set<Vendors> = [.Zoomoov, .Jollyfield]
     @State private var dateFilter: DateFilters = .Anytime
     
     var body: some View {
@@ -245,24 +282,24 @@ struct FiltersView: View {
                 .frame(height: 1)
                 .padding(.bottom)
                 .padding([.leading, .trailing], -20)
-            VStack(spacing: 8) {
-                Text("By Merchant")
-                    .font(.custom("Poppins-SemiBold", size: 16))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                VStack(spacing: 2) {
-                    ForEach(Vendors.allCases, id: \.self) { vendor in
-                        FilterRow(title: vendor.toString(),
-                                  selected: vendorFilters.contains(vendor)) {
-                            if vendorFilters.contains(vendor) {
-                                vendorFilters.remove(vendor)
-                            } else {
-                                vendorFilters.insert(vendor)
-                            }
-                        }
-                    }
-                }
-            }
-            .padding(.bottom)
+//            VStack(spacing: 8) {
+//                Text("By Merchant")
+//                    .font(.custom("Poppins-SemiBold", size: 16))
+//                    .frame(maxWidth: .infinity, alignment: .leading)
+//                VStack(spacing: 2) {
+//                    ForEach(Vendors.allCases, id: \.self) { vendor in
+//                        FilterRow(title: vendor.toString(),
+//                                  selected: vendorFilters.contains(vendor)) {
+//                            if vendorFilters.contains(vendor) {
+//                                vendorFilters.remove(vendor)
+//                            } else {
+//                                vendorFilters.insert(vendor)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//            .padding(.bottom)
             VStack(spacing: 8) {
                 Text("By Date")
                     .font(.custom("Poppins-SemiBold", size: 16))
@@ -408,5 +445,7 @@ struct RedemptionRow: View {
 }
 
 #Preview {
-    ActivityView()
+    CustomNavView {
+        ActivityView()
+    }
 }

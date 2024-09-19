@@ -26,7 +26,7 @@ struct OtpView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing: 0) {
                 NavigationLink(isActive: $goToCompleteProfile) {
                     CompleteProfileView()
                 } label: {}
@@ -70,11 +70,16 @@ struct OtpView: View {
                         isKeyboardShowing.toggle()
                     }
                 }
-                Text(showError ? errorMessage : "")
-                    .font(.custom("Poppins-Regular", size: 16))
-                    .foregroundStyle(Color.secondary.brand)
-                    .padding([.bottom, .top], 10)
-                    .frame(height: 40)
+                HStack(spacing: 0) {
+                    Text(showError ? errorMessage : "")
+                        .font(.custom("Poppins-Regular", size: 12))
+                        .foregroundStyle(.red)
+                        .padding(.leading, 15)
+                        .padding(.bottom, 16)
+                        .frame(height: 40)
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity)
                 AsyncButton(progressWidth: .infinity) {
                     // validate and navigate next
                     //                showError = true
@@ -217,14 +222,15 @@ struct OTPTextBox: View {
     
     var borderColor: Color {
         if otpText.count == numberOfCharsInOTP && showError {
-            return Color.secondary.brand
+            return .red
         }
-        return isActive ? Color.primary.brand : .text.black20
+        return isActive ? Color.text.black100 : .text.black20
     }
     
     var body: some View {
         ZStack {
             TextField("", text: $boxText)
+                .foregroundStyle(showError ? Color.red : Color.text.black100)
                 .onChange(of: otpText) { newValue in
                     boxText = text
                 }

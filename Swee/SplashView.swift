@@ -9,19 +9,23 @@ struct SplashView: View {
     var body: some View {
         NavigationView {
             ZStack {
+                Color.background.pale
                 NavigationLink(isActive: $goToCompleteProfile) {
                     CompleteProfileView()
                 } label: {}
                 Image("splash_logo")
-                VStack {
+                    .resizable()
+                    .frame(width: 190, height: 70)
+                VStack(spacing: 0) {
                     Spacer()
                     Image("splash_bg")
                         .resizable()
-                        .frame(height: 200)
+                        .scaledToFit()
+                        .ignoresSafeArea()
                 }
-                .ignoresSafeArea()
             }
             .navigationBarHidden(true)
+            .ignoresSafeArea()
             .onAppear {
                 guard let token = UserDefaults.standard.string(forKey: Keys.authToken) else {
                     appRootManager.currentRoot = .authentication

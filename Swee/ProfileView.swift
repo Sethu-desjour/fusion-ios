@@ -4,13 +4,17 @@ struct ProfileView: View {
     struct RowData {
         let title: String
         let description: String?
-        let icon: Image
+        let leadingIcon: Image?
+        let trailingIcon: Image?
         let action: () -> Void
-        
-        init(title: String, description: String? = nil, icon: Image, action: @escaping () -> Void) {
+        let tint: Color?
+
+        init(title: String, description: String? = nil, leadingIcon: Image? = nil, trailingIcon: Image = Image("forward"), tint: Color? = nil, action: @escaping () -> Void) {
             self.title = title
             self.description = description
-            self.icon = icon
+            self.leadingIcon = leadingIcon
+            self.trailingIcon = trailingIcon
+            self.tint = tint
             self.action = action
         }
     }
@@ -24,44 +28,49 @@ struct ProfileView: View {
     func setupSections() {
         sections = [
             [
-                .init(title: "Location", description: "Singapore", icon: Image("location")) {
+                .init(title: "Location", description: "Singapore", leadingIcon: Image("location")) {
                     
                 },
-                .init(title: "Language", description: "English", icon: Image("globe")) {
+                .init(title: "Language", description: "English", leadingIcon: Image("globe")) {
                     
                 },
-                .init(title: "Email ID", description: "Add email ID", icon: Image("mail")) {
+                .init(title: "Email ID", description: "Add email ID", leadingIcon: Image("mail")) {
                     
                 },
-                .init(title: "Payment", description: "Add payment", icon: Image("card")) {
+                .init(title: "Payment", description: "Add payment", leadingIcon: Image("card")) {
                     
                 },
-                .init(title: "Gender", description: "Add gender", icon: Image("gender")) {
-                    
-                },
-            ],
-            [
-                .init(title: "Child", description: "No info added", icon: Image("person-add")) {
+                .init(title: "Gender", description: "Add gender", leadingIcon: Image("gender")) {
                     
                 },
             ],
             [
-                .init(title: "Help Center", icon: Image("help")) {
-                    
-                },
-                .init(title: "Terms & Condition", icon: Image("receipt")) {
-                    
-                },
-                .init(title: "Rate our app", icon: Image("raiting")) {
+                .init(title: "Child", description: "No info added", leadingIcon: Image("person-add")) {
                     
                 },
             ],
             [
-                .init(title: "Logout", icon: Image(systemName: "rectangle.portrait.and.arrow.right")) {
+                .init(title: "Help Center", leadingIcon: Image("help")) {
+                    
+                },
+                .init(title: "Terms & Condition", leadingIcon: Image("receipt")) {
+                    
+                },
+                .init(title: "Rate our app", leadingIcon: Image("raiting")) {
+                    
+                },
+            ],
+            [
+                .init(title: "Logout", trailingIcon: Image("logout")) {
                     Task {
                         await api.signOut()
                         appRootManager.currentRoot = .authentication
                     }
+                },
+            ],
+            [
+                .init(title: "Delete profile", trailingIcon: Image("delete"), tint: .red) {
+                    
                 },
             ],
         ]
@@ -163,32 +172,35 @@ struct ProfileView: View {
             VStack(spacing: 0) {
                 if !hideDivider {
                     Divider()
-                        .background(Color.text.black10)
+                        .background(row.tint != nil ? row.tint! : Color.text.black10)
                         .padding(.horizontal, 16)
                 }
                 HStack(spacing: 0) {
-                    row.icon
-                        .resizable()
-                        .frame(width: 24, height: 24)
-                        .foregroundStyle(Color.text.black60)
-                        .padding(.trailing, 10)
+                    if let leadingIcon = row.leadingIcon {
+                        leadingIcon
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                            .foregroundStyle(row.tint != nil ? row.tint! : Color.text.black60)
+                            .padding(.trailing, 10)
+                    }
                     VStack(alignment: .leading) {
                         Text(row.title)
                             .font(.custom("Poppins-Medium", size: 14))
-                            .foregroundStyle(Color.text.black80)
+                            .foregroundStyle(row.tint != nil ? row.tint! : Color.text.black80)
                         if let description = row.description {
                             Text(description)
                                 .font(.custom("Poppins-Medium", size: 12))
-                                .foregroundStyle(Color.text.black40)
+                                .foregroundStyle(row.tint != nil ? row.tint! : Color.text.black40)
                         }
                     }
                     Spacer()
-                    Image("back")
-                        .resizable()
-                        .frame(width: 24, height: 24)
-                        .rotationEffect(.degrees(180))
-                        .padding(.top, 1)
-                        .foregroundStyle(Color.text.black40)
+                    if let trailingIcon = row.trailingIcon {
+                        trailingIcon
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                            .foregroundStyle(row.tint != nil ? row.tint! : Color.text.black40)
+                    }
+                    
                 }
                 .padding()
             }
