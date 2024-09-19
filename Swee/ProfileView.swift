@@ -199,8 +199,6 @@ struct ProfileView: View {
                             .resizable()
                             .frame(width: 24, height: 24)
                             .foregroundStyle(row.tint != nil ? row.tint! : Color.text.black40)
-                        //                            .rotationEffect(.degrees(180))
-                        //                            .padding(.top, 1)
                     }
                     
                 }
