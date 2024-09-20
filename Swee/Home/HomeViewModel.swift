@@ -1,17 +1,18 @@
 import SwiftUI
 import Combine
 
+enum HomeSectionContent {
+    case bannerCarousel([Banner])
+    case packages([Package])
+    case merchants([Merchant])
+    case bannerStatic([Banner])
+}
+
 class HomeViewModel: ObservableObject {
-    enum SectionContent {
-        case bannerCarousel([Banner])
-        case packages([Package])
-        case merchants([Merchant])
-        case bannerStatic([Banner])
-    }
-    
     struct Section {
+        let id: UUID
         var title: String?
-        let content: SectionContent
+        let content: HomeSectionContent
     }
     
     var api: API = API()
@@ -29,13 +30,13 @@ class HomeViewModel: ObservableObject {
                 let sections: [Section] = sectionsModels.map { model in
                     switch model.type {
                     case .bannerCarousel:
-                            .init(title: model.title, content: .bannerCarousel(model.banners.toBanners()))
+                            .init(id: model.id, title: model.title, content: .bannerCarousel(model.banners.toBanners()))
                     case .packageCarousel:
-                            .init(title: model.title, content: .packages(model.packages.toPackages()))
+                            .init(id: model.id, title: model.title, content: .packages(model.packages.toPackages()))
                     case .merchantList:
-                            .init(title: model.title, content: .merchants(model.merchants.toMerchants()))
+                            .init(id: model.id, title: model.title, content: .merchants(model.merchants.toMerchants()))
                     case .bannerStatic:
-                            .init(content: .bannerStatic(model.banners.toBanners()))
+                            .init(id: model.id, content: .bannerStatic(model.banners.toBanners()))
                     }
                 }
                 await MainActor.run {

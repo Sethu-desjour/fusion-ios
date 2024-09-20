@@ -1,0 +1,53 @@
+import SwiftUI
+
+struct SeeAllView: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.tabIsShown) private var tabIsShown
+    
+    @StateObject private var viewModel = SeeAllViewModel()
+    @State var sectionID: UUID
+    
+    var columns: [GridItem] = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+    ]
+    
+    var body: some View {
+        //            VStack(spacing: 0) {
+        //                Divider()
+        ScrollView {
+            if viewModel.loadedData {
+                LazyVGrid(columns: columns, spacing: 16) {
+                    ForEach(viewModel.packages.indices, id: \.self) { index in
+                        PackageCard(package: viewModel.packages[index])
+                    }
+                }
+                .padding([.leading, .trailing, .top], 16)
+            } else {
+                LazyVGrid(columns: columns, spacing: 16) {
+                    ForEach(0...4, id: \.self) { index in
+                        PackageCard.skeleton.equatable.view
+                    }
+                }
+                .padding([.leading, .trailing, .top], 16)
+            }
+        }
+        .customNavigationTitle("Packages just for you")
+        .customNavTrailingItem {
+            Button {
+                // handle tap
+            } label: {
+                Image("cart")
+            }
+            .buttonStyle(EmptyStyle())
+        }
+        .onAppear(perform: {
+            viewModel.fetch(with: sectionID)
+            tabIsShown.wrappedValue = false
+        })
+    }
+}
+
+#Preview {
+    SeeAllView(sectionID: .init(uuidString: "5B752D23-23CD-4EBC-B7D4-4B62E570D0A8")!)
+}
