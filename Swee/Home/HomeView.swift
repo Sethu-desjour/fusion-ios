@@ -17,7 +17,7 @@ struct HomeView: View {
         case .bannerCarousel(let banners):
             return BannersCarousel(banners: banners)
         case .packages(let packages):
-            return PackagesCarousel(model: PackageCarouselModel(title: section.title ?? "", packages: packages))
+            return PackagesCarousel(model: PackageCarouselModel(sectionID: section.id, title: section.title ?? "", packages: packages))
         case .merchants(let merchants):
             return MerchantList(model: .init(title: section.title ?? "", merchants: merchants))
         case .bannerStatic(let banners):
@@ -217,6 +217,7 @@ extension Vendors {
 }
 
 struct PackageCarouselModel {
+    let sectionID: UUID
     let title: String
     let packages: [Package]
 }
@@ -236,7 +237,7 @@ struct PackagesCarousel: View {
                     .textStyle(HomeRowTitleStyle())
                 Spacer()
                 if model.packages.count > 2 {
-                    CustomNavLink(destination: OffersView()) {
+                    CustomNavLink(destination: SeeAllView(sectionID: model.sectionID, title: model.title)) {
                         HStack(spacing: 4) {
                             Text("See all")
                                 .font(.custom("Poppins-Regular", size: 14))

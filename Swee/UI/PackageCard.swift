@@ -64,9 +64,28 @@ struct PackageCard: View {
 
 extension PackageCard: Skeletonable {
     static var skeleton: any View {
-        Color.white
-            .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
-            .frame(maxWidth: .infinity)
-            .frame(height: 140)
+        VStack(alignment: .leading) {
+            Color.white
+                .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                .frame(maxWidth: .infinity)
+                .frame(height: 140)
+            Text("")
+                .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                .frame(maxWidth: 140)
+                .frame(height: 15)
+            Text("")
+                .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                .frame(maxWidth: 140)
+                .frame(height: 10)
+            Text("")
+                .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                .frame(maxWidth: 80)
+                .frame(height: 10)
+        }
     }
+}
+
+#Preview {
+    PackageCard.skeleton
+        .frame(maxWidth: 160)
 }
