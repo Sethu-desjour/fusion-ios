@@ -6,6 +6,7 @@ struct MerchantStoreModel: Codable {
     let photoURL: URL?
     let email: String?
     let phoneNumber: String?
+    let address: String?
     let lat: Double
     let lon: Double
     let distance: String?
@@ -16,6 +17,7 @@ struct MerchantStoreModel: Codable {
         case id, name
         case photoURL = "photo_url"
         case email
+        case address
         case phoneNumber = "phone_number"
         case lat, lon, distance
         case createdAt = "created_at"

@@ -78,6 +78,34 @@ class MockHomeSectionURLProtocol: URLProtocol {
                 "photo_url": "https://i.ibb.co/7zZQ2Fs/offer-2-3x.png",
                 "created_at": "2023-09-01T10:00:00Z",
                 "updated_at": "2023-09-10T10:00:00Z"
+              },
+              {
+                "id": "f1b3a1bc-7fa9-4a7f-b481-6f8b7679dcb9",
+                "name": "Chinese New Year",
+                "description": "4 Rides Special Package",
+                "currency_code": "SGD",
+                "price_cents": 10000,
+                "merchant_name": "Zoomooov",
+                "original_price_cents": 20000,
+                "status": "AVAILABLE",
+                "details": {},
+                "stores": [
+                  {
+                    "id": "c2bf1bb5-c5b4-498e-8c6e-2b31d8edff64",
+                    "name": "Jurong Point Mall",
+                    "photo_url": "https://example.com/store1.jpg",
+                    "email": "store1@example.com",
+                    "phone_number": "+6591234567",
+                    "lat": 1.3456,
+                    "lon": 103.1234,
+                    "distance": "0.5 km",
+                    "created_at": "2023-01-01T10:00:00Z",
+                    "updated_at": "2023-01-01T10:00:00Z"
+                  }
+                ],
+                "photo_url": "https://i.ibb.co/7zZQ2Fs/offer-2-3x.png",
+                "created_at": "2023-09-01T10:00:00Z",
+                "updated_at": "2023-09-10T10:00:00Z"
               }
             ]
           },
@@ -86,6 +114,34 @@ class MockHomeSectionURLProtocol: URLProtocol {
             "title": "Limited Time Offers",
             "type": "PACKAGE_CAROUSEL",
             "packages": [
+              {
+                "id": "a3c2be4f-b7f8-47b2-9df7-79f8ba1ed9d1",
+                "name": "Christmas Special",
+                "description": "5 Rides at a Special Price",
+                "currency_code": "SGD",
+                "price_cents": 15000,
+                "merchant_name": "Jollyfield",
+                "original_price_cents": 25000,
+                "status": "AVAILABLE",
+                "details": {},
+                "stores": [
+                  {
+                    "id": "1fc1d30a-54a1-4e2e-95c3-c1e4e16eb2d9",
+                    "name": "Orchard Mall",
+                    "photo_url": "https://example.com/store2.jpg",
+                    "email": "store2@example.com",
+                    "phone_number": "+6598765432",
+                    "lat": 1.3000,
+                    "lon": 103.8000,
+                    "distance": "1.0 km",
+                    "created_at": "2023-02-01T10:00:00Z",
+                    "updated_at": "2023-02-01T10:00:00Z"
+                  }
+                ],
+                "photo_url": "https://i.ibb.co/C8tTtpn/offer-1-3x.png",
+                "created_at": "2023-12-01T10:00:00Z",
+                "updated_at": "2023-12-10T10:00:00Z"
+              },
               {
                 "id": "a3c2be4f-b7f8-47b2-9df7-79f8ba1ed9d1",
                 "name": "Christmas Special",
@@ -122,10 +178,10 @@ class MockHomeSectionURLProtocol: URLProtocol {
             "type": "MERCHANT_LIST",
             "merchants": [
               {
-                "id": "7a50d881-936b-4f18-96be-9372f1d89f0f",
+                "id": "5b752d23-23cd-4ebc-b7d4-4b62e570d0a8",
                 "name": "Zoomoov",
-                "description": "A fun activity for kids.",
-                "photo_url": "https://i.ibb.co/30myxjJ/explore-bg-2-3x.png",
+                "description": "ZOOMOOV is a vast farming area where characters indulge in farming activities and conjures a farming process – dig, sow, harvest with the emphasis on cooperative teamwork. There is never a lack of PLAYtime with. is a vast farming area where characters indulge in farming activities and conjures a farming process – dig, sow, harvest with the emphasis on cooperative teamwork. There is never a lack of PLAYtime with.",
+                "photo_url": "https://i.ibb.co/RP6nfNQ/merchant-bg-3x.png",
                 "background_photo_url": "https://i.ibb.co/30myxjJ/explore-bg-2-3x.png",
                 "background_colors": [
                     "#80DBD5",
@@ -138,10 +194,10 @@ class MockHomeSectionURLProtocol: URLProtocol {
                 "updated_at": "2023-09-01T10:00:00Z"
               },
               {
-                "id": "ed9b8f6a-d5c8-4824-abc7-e2e9a995839d",
-                "name": "Toy Kingdom",
-                "description": "The best toys for all ages.",
-                "photo_url": "https://i.ibb.co/m5YrgtG/explore-bg-1-3x.png",
+                "id": "5135d718-666b-4068-b38b-18a7d5eca583",
+                "name": "Jollyfields",
+                "description": "Jollyfields is a vast farming area where characters indulge in farming activities and conjures a farming process – dig, sow, harvest with the emphasis on cooperative teamwork. There is never a lack of PLAYtime with.",
+                "photo_url": "https://i.ibb.co/NT1zRJr/jollyfield.png",
                 "background_photo_url": "https://i.ibb.co/m5YrgtG/explore-bg-1-3x.png",
                 "background_colors": [
                     "#F57A5B",

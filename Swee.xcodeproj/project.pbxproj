@@ -32,6 +32,17 @@
 		AF2F85C82C9AA324004B0B31 /* MerchantStoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85C72C9AA324004B0B31 /* MerchantStoreModel.swift */; };
 		AF2F85CA2C9AA340004B0B31 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85C92C9AA340004B0B31 /* Date.swift */; };
 		AF2F85CC2C9BB7F1004B0B31 /* LogoNavItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85CB2C9BB7F1004B0B31 /* LogoNavItem.swift */; };
+		AF2F85CE2C9C138B004B0B31 /* MockProductsURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85CD2C9C138B004B0B31 /* MockProductsURLProtocol.swift */; };
+		AF2F85D22C9C1760004B0B31 /* MerchantPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85D12C9C1760004B0B31 /* MerchantPageViewModel.swift */; };
+		AF2F85D42C9C24C6004B0B31 /* MockMerchantStoresURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85D32C9C24C6004B0B31 /* MockMerchantStoresURLProtocol.swift */; };
+		AF2F85D72C9C4629004B0B31 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85D62C9C4629004B0B31 /* Package.swift */; };
+		AF2F85D92C9C4652004B0B31 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85D82C9C4652004B0B31 /* Banner.swift */; };
+		AF2F85DB2C9C467B004B0B31 /* Merchant.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85DA2C9C467B004B0B31 /* Merchant.swift */; };
+		AF2F85DD2C9C46B5004B0B31 /* MerchantStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85DC2C9C46B5004B0B31 /* MerchantStore.swift */; };
+		AF2F85E02C9C52CC004B0B31 /* PackageCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85DF2C9C52CC004B0B31 /* PackageCard.swift */; };
+		AF2F85E22C9C5310004B0B31 /* Skeletonable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85E12C9C5310004B0B31 /* Skeletonable.swift */; };
+		AF2F85E42C9C5337004B0B31 /* MerchantCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85E32C9C5337004B0B31 /* MerchantCard.swift */; };
+		AF2F85E62C9C5354004B0B31 /* ReferalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85E52C9C5354004B0B31 /* ReferalCard.swift */; };
 		AF501F242C942CDF00637042 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF501F232C942CDF00637042 /* GoogleService-Info.plist */; };
 		AF501F272C945D7C00637042 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F262C945D7C00637042 /* API.swift */; };
 		AF501F2A2C945F9C00637042 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F292C945F9C00637042 /* Strings.swift */; };
@@ -122,6 +133,17 @@
 		AF2F85C72C9AA324004B0B31 /* MerchantStoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantStoreModel.swift; sourceTree = "<group>"; };
 		AF2F85C92C9AA340004B0B31 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		AF2F85CB2C9BB7F1004B0B31 /* LogoNavItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoNavItem.swift; sourceTree = "<group>"; };
+		AF2F85CD2C9C138B004B0B31 /* MockProductsURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockProductsURLProtocol.swift; sourceTree = "<group>"; };
+		AF2F85D12C9C1760004B0B31 /* MerchantPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPageViewModel.swift; sourceTree = "<group>"; };
+		AF2F85D32C9C24C6004B0B31 /* MockMerchantStoresURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMerchantStoresURLProtocol.swift; sourceTree = "<group>"; };
+		AF2F85D62C9C4629004B0B31 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		AF2F85D82C9C4652004B0B31 /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
+		AF2F85DA2C9C467B004B0B31 /* Merchant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Merchant.swift; sourceTree = "<group>"; };
+		AF2F85DC2C9C46B5004B0B31 /* MerchantStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantStore.swift; sourceTree = "<group>"; };
+		AF2F85DF2C9C52CC004B0B31 /* PackageCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageCard.swift; sourceTree = "<group>"; };
+		AF2F85E12C9C5310004B0B31 /* Skeletonable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skeletonable.swift; sourceTree = "<group>"; };
+		AF2F85E32C9C5337004B0B31 /* MerchantCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantCard.swift; sourceTree = "<group>"; };
+		AF2F85E52C9C5354004B0B31 /* ReferalCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferalCard.swift; sourceTree = "<group>"; };
 		AF501F232C942CDF00637042 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AF501F262C945D7C00637042 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		AF501F292C945F9C00637042 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
@@ -248,11 +270,10 @@
 				AF7DF73A2C79F2B100C3F347 /* TestView.swift */,
 				AF1FAC462C79B0E100654FB7 /* AuthView.swift */,
 				AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */,
-				AFCEC5C32C7C260B00D157BE /* HomeView.swift */,
+				AF2F85CF2C9C1747004B0B31 /* Home */,
 				AF82A4662C84418200E0DD4C /* ProductDetailView.swift */,
-				AF501F322C97EB4A00637042 /* HomeViewModel.swift */,
 				AFCEC5C52C7C26EB00D157BE /* MainView.swift */,
-				AF72DFE82C81699C00F70387 /* MerchantPageView.swift */,
+				AF2F85D02C9C174F004B0B31 /* MerchantPage */,
 				AFDF67FC2C7F5A6C00489D0C /* OffersView.swift */,
 				AF72DFE62C80248200F70387 /* ActivityView.swift */,
 				AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */,
@@ -296,11 +317,43 @@
 			path = Roboto;
 			sourceTree = "<group>";
 		};
+		AF2F85CF2C9C1747004B0B31 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				AFCEC5C32C7C260B00D157BE /* HomeView.swift */,
+				AF501F322C97EB4A00637042 /* HomeViewModel.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		AF2F85D02C9C174F004B0B31 /* MerchantPage */ = {
+			isa = PBXGroup;
+			children = (
+				AF72DFE82C81699C00F70387 /* MerchantPageView.swift */,
+				AF2F85D12C9C1760004B0B31 /* MerchantPageViewModel.swift */,
+			);
+			path = MerchantPage;
+			sourceTree = "<group>";
+		};
+		AF2F85D52C9C4616004B0B31 /* Raw */ = {
+			isa = PBXGroup;
+			children = (
+				AF501F352C980FCB00637042 /* HomeSectionModel.swift */,
+				AF2F85C12C9AA26D004B0B31 /* BannerModel.swift */,
+				AF2F85C32C9AA2B4004B0B31 /* MerchantModel.swift */,
+				AF2F85C52C9AA30E004B0B31 /* PackageModel.swift */,
+				AF2F85C72C9AA324004B0B31 /* MerchantStoreModel.swift */,
+			);
+			path = Raw;
+			sourceTree = "<group>";
+		};
 		AF501F252C945BB500637042 /* API */ = {
 			isa = PBXGroup;
 			children = (
 				AF501F262C945D7C00637042 /* API.swift */,
 				AF501F372C9813D300637042 /* MockHomeSectionURLProtocol.swift */,
+				AF2F85CD2C9C138B004B0B31 /* MockProductsURLProtocol.swift */,
+				AF2F85D32C9C24C6004B0B31 /* MockMerchantStoresURLProtocol.swift */,
 				AF501F2D2C95234C00637042 /* FirebaseAuth.swift */,
 			);
 			path = API;
@@ -317,11 +370,11 @@
 		AF501F342C980FBD00637042 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				AF501F352C980FCB00637042 /* HomeSectionModel.swift */,
-				AF2F85C12C9AA26D004B0B31 /* BannerModel.swift */,
-				AF2F85C32C9AA2B4004B0B31 /* MerchantModel.swift */,
-				AF2F85C52C9AA30E004B0B31 /* PackageModel.swift */,
-				AF2F85C72C9AA324004B0B31 /* MerchantStoreModel.swift */,
+				AF2F85D62C9C4629004B0B31 /* Package.swift */,
+				AF2F85D82C9C4652004B0B31 /* Banner.swift */,
+				AF2F85DA2C9C467B004B0B31 /* Merchant.swift */,
+				AF2F85DC2C9C46B5004B0B31 /* MerchantStore.swift */,
+				AF2F85D52C9C4616004B0B31 /* Raw */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -395,11 +448,15 @@
 			isa = PBXGroup;
 			children = (
 				AFCEC5BE2C7C0E7900D157BE /* Styles */,
-				AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */,
-				AF2F85CB2C9BB7F1004B0B31 /* LogoNavItem.swift */,
 				AFDB90462C8EDE32008931DB /* Navigation */,
+				AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */,
+				AF2F85DF2C9C52CC004B0B31 /* PackageCard.swift */,
+				AF2F85CB2C9BB7F1004B0B31 /* LogoNavItem.swift */,
+				AF2F85E12C9C5310004B0B31 /* Skeletonable.swift */,
 				AF82A4642C8432C700E0DD4C /* ObservableScrollView.swift */,
 				AF501F2B2C94736C00637042 /* AsyncButton.swift */,
+				AF2F85E32C9C5337004B0B31 /* MerchantCard.swift */,
+				AF2F85E52C9C5354004B0B31 /* ReferalCard.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -572,17 +629,21 @@
 			files = (
 				AF501F2A2C945F9C00637042 /* Strings.swift in Sources */,
 				AFCEC5C22C7C111200D157BE /* CompleteProfileView.swift in Sources */,
+				AF2F85E22C9C5310004B0B31 /* Skeletonable.swift in Sources */,
 				AFA335C82C92676700883CBB /* AlertsView.swift in Sources */,
 				AF72DFE92C81699C00F70387 /* MerchantPageView.swift in Sources */,
+				AF2F85E42C9C5337004B0B31 /* MerchantCard.swift in Sources */,
 				AFCEC5C62C7C26EB00D157BE /* MainView.swift in Sources */,
 				AF2F85C42C9AA2B4004B0B31 /* MerchantModel.swift in Sources */,
 				AFDF67F92C7F4EA900489D0C /* BottomSheet.swift in Sources */,
 				AF501F2E2C95234C00637042 /* FirebaseAuth.swift in Sources */,
 				AF2F85C22C9AA26D004B0B31 /* BannerModel.swift in Sources */,
+				AF2F85E62C9C5354004B0B31 /* ReferalCard.swift in Sources */,
 				AF16A0FB2C86B96F0093CD99 /* Keys.swift in Sources */,
 				AFDF67FD2C7F5A6C00489D0C /* OffersView.swift in Sources */,
 				AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */,
 				AF78C2C42C89681400F8F8DB /* AddChildView.swift in Sources */,
+				AF2F85DD2C9C46B5004B0B31 /* MerchantStore.swift in Sources */,
 				AF16A0FD2C86C43A0093CD99 /* MyPurchasesView.swift in Sources */,
 				AF72DFE72C80248200F70387 /* ActivityView.swift in Sources */,
 				AFDF67F72C7E38FB00489D0C /* TextStyles.swift in Sources */,
@@ -599,11 +660,14 @@
 				AF501F332C97EB4A00637042 /* HomeViewModel.swift in Sources */,
 				AF16A0F82C8567190093CD99 /* CheckoutView.swift in Sources */,
 				AF82A4632C819B8500E0DD4C /* String.swift in Sources */,
+				AF2F85DB2C9C467B004B0B31 /* Merchant.swift in Sources */,
+				AF2F85CE2C9C138B004B0B31 /* MockProductsURLProtocol.swift in Sources */,
 				AFCEC5BC2C7AD00F00D157BE /* OtpView.swift in Sources */,
 				AF1FAC472C79B0E100654FB7 /* AuthView.swift in Sources */,
 				AF501F382C9813D300637042 /* MockHomeSectionURLProtocol.swift in Sources */,
 				AF2F85C82C9AA324004B0B31 /* MerchantStoreModel.swift in Sources */,
 				AFDB90452C8EA256008931DB /* TimeInterval.swift in Sources */,
+				AF2F85D72C9C4629004B0B31 /* Package.swift in Sources */,
 				AFDB90502C8EE471008931DB /* CustomNavBarPreferenceKeys.swift in Sources */,
 				AFCEC5C02C7C0E9100D157BE /* ButtonStyles.swift in Sources */,
 				AF1FAC492C79B12A00654FB7 /* View.swift in Sources */,
@@ -611,12 +675,16 @@
 				AF501F362C980FCB00637042 /* HomeSectionModel.swift in Sources */,
 				AFDB904C2C8EE190008931DB /* CustomNavView.swift in Sources */,
 				AF80222F2C770C27001274FA /* Colors.swift in Sources */,
+				AF2F85D22C9C1760004B0B31 /* MerchantPageViewModel.swift in Sources */,
+				AF2F85D42C9C24C6004B0B31 /* MockMerchantStoresURLProtocol.swift in Sources */,
 				AFCEC5C42C7C260B00D157BE /* HomeView.swift in Sources */,
 				AFDB904E2C8EE2EC008931DB /* CustomNavLink.swift in Sources */,
+				AF2F85D92C9C4652004B0B31 /* Banner.swift in Sources */,
 				AF2F85C62C9AA30E004B0B31 /* PackageModel.swift in Sources */,
 				AFDB90482C8EDE43008931DB /* CustomNavBarView.swift in Sources */,
 				AF80222C2C72F39E001274FA /* OnboardingView.swift in Sources */,
 				AF501F272C945D7C00637042 /* API.swift in Sources */,
+				AF2F85E02C9C52CC004B0B31 /* PackageCard.swift in Sources */,
 				AF501F2C2C94736C00637042 /* AsyncButton.swift in Sources */,
 				AF557FC82C79AAC700AD99A5 /* SweeApp.swift in Sources */,
 			);
@@ -763,11 +831,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 9M2L2N97YU;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Swee/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Green;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -799,11 +868,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 9M2L2N97YU;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Swee/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Green;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

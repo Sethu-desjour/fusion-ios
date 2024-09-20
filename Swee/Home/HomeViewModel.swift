@@ -1,7 +1,6 @@
 import SwiftUI
 import Combine
 
-// ViewModel that handles data fetching
 class HomeViewModel: ObservableObject {
     enum SectionContent {
         case bannerCarousel([Banner])
@@ -49,7 +48,7 @@ class HomeViewModel: ObservableObject {
     }
 }
 
-fileprivate extension Optional where Wrapped == [BannerModel] {
+extension Optional where Wrapped == [BannerModel] {
     func toBanners() -> [Banner] {
         switch self {
         case .none:
@@ -61,7 +60,7 @@ fileprivate extension Optional where Wrapped == [BannerModel] {
 }
 
 
-fileprivate extension Optional where Wrapped == [PackageModel] {
+extension Optional where Wrapped == [PackageModel] {
     func toPackages() -> [Package] {
         switch self {
         case .none:
@@ -73,7 +72,7 @@ fileprivate extension Optional where Wrapped == [PackageModel] {
 }
 
 
-fileprivate extension Optional where Wrapped == [MerchantModel] {
+extension Optional where Wrapped == [MerchantModel] {
     func toMerchants() -> [Merchant] {
         switch self {
         case .none:
@@ -84,7 +83,7 @@ fileprivate extension Optional where Wrapped == [MerchantModel] {
     }
 }
 
-fileprivate extension BannerModel {
+extension BannerModel {
     func toBanner() -> Banner {
         var background: Banner.Background
         if let backgroundURL = backgroundURL {
@@ -101,10 +100,9 @@ fileprivate extension BannerModel {
     }
 }
 
-fileprivate extension PackageModel {
+extension PackageModel {
     func toPackage() -> Package {
-        .init(merchant: "Zoomoov",
-              image: .init("offer-1"),
+        .init(merchant: merchantName,
               imageURL: photoURL,
               title: name,
               description: description ?? "",
@@ -114,12 +112,14 @@ fileprivate extension PackageModel {
     }
 }
 
-fileprivate extension MerchantModel {
+extension MerchantModel {
     func toMerchant() -> Merchant {
-        .init(name: name,
+        .init(id: id,
+              name: name,
+              description: description,
               backgroundImage: backgroundURL,
               backgroundColors: backgroundColors ?? [],
-              storeImage: Image("merchant-bg"))
+              storeImageURL: photoURL)
     }
 }
 
