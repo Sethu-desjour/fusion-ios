@@ -103,8 +103,8 @@ struct AlertsView: View {
                     ForEach(alerts.indices, id: \.self) { index in
                         row(at: index).equatable.view
                     }
-                    CustomNavLink(isActive: $goToMerchant, destination: MerchantPageView()) {
-                    }
+//                    CustomNavLink(isActive: $goToMerchant, destination: MerchantPageView()) {
+//                    }
                 }
             }
             .onAppear {

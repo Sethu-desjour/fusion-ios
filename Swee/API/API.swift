@@ -1,4 +1,5 @@
 import Foundation
+import CoreLocation
 
 struct User: Identifiable, Codable {
     let id: String
@@ -148,7 +149,7 @@ class API: ObservableObject {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         let config = URLSessionConfiguration.default
-        config.protocolClasses = [MockHomeSectionURLProtocol.self]
+//        config.protocolClasses = [MockHomeSectionURLProtocol.self]
         let session = URLSession(configuration: config)
         
         let (data, response) = try await session.data(for: request)
@@ -167,6 +168,90 @@ class API: ObservableObject {
             let homeSections = try JSONDecoder().decode([HomeSectionModel].self, from: data)
             return await MainActor.run {
                 return homeSections
+            }
+        } catch {
+            throw LocalError(message: "Incorrect server data")
+        }
+    }
+    
+    func packagesForMerchant(_ id: String) async throws -> [PackageModel] {
+        let url = "/merchants/\(id.lowercased())/packages"
+        
+        guard let token = UserDefaults.standard.string(forKey: Keys.authToken) else {
+            throw LocalError(message: "Token not found")
+        }
+        
+        guard let url = URL(string: Strings.baseURL + url) else {
+            throw LocalError(message: "Can't form Complete profile URL")
+        }
+        
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let config = URLSessionConfiguration.default
+//        config.protocolClasses = [MockProductsURLProtocol.self]
+        let session = URLSession(configuration: config)
+        
+        let (data, response) = try await session.data(for: request)
+        
+        guard let response = response as? HTTPURLResponse else {
+            throw LocalError(message: "Invalid response")
+        }
+        
+        print("data =======", String(data: data, encoding: String.Encoding.utf8))
+        
+        guard response.statusCode == 200 else {
+            throw LocalError(message: "Something went wrong")
+        }
+        
+        do {
+            let packages = try JSONDecoder().decode([PackageModel].self, from: data)
+            return await MainActor.run {
+                return packages
+            }
+        } catch {
+            throw LocalError(message: "Incorrect server data")
+        }
+    }
+    
+    func storesForMerchant(_ id: String, location: CLLocationCoordinate2D? = nil) async throws -> [MerchantStoreModel] {
+        var url = "/merchants/\(id.lowercased())/stores"
+        
+        if let location = location {
+            url = url + "?lat=\(location.latitude)&lon=\(location.longitude)"
+        }
+        
+        guard let token = UserDefaults.standard.string(forKey: Keys.authToken) else {
+            throw LocalError(message: "Token not found")
+        }
+        
+        guard let url = URL(string: Strings.baseURL + url) else {
+            throw LocalError(message: "Can't form Complete profile URL")
+        }
+        
+        var request = URLRequest(url: url)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let config = URLSessionConfiguration.default
+//        config.protocolClasses = [MockMerchantStoresURLProtocol.self]
+        let session = URLSession(configuration: config)
+        
+        let (data, response) = try await session.data(for: request)
+        
+        guard let response = response as? HTTPURLResponse else {
+            throw LocalError(message: "Invalid response")
+        }
+        
+        print("data =======", String(data: data, encoding: String.Encoding.utf8))
+        
+        guard response.statusCode == 200 else {
+            throw LocalError(message: "Something went wrong")
+        }
+        
+        do {
+            let stores = try JSONDecoder().decode([MerchantStoreModel].self, from: data)
+            return await MainActor.run {
+                return stores
             }
         } catch {
             throw LocalError(message: "Incorrect server data")
