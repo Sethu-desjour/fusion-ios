@@ -237,7 +237,7 @@ struct PackagesCarousel: View {
                     .textStyle(HomeRowTitleStyle())
                 Spacer()
                 if model.packages.count > 2 {
-                    CustomNavLink(destination: SeeAllView(sectionID: model.sectionID)) {
+                    CustomNavLink(destination: SeeAllView(sectionID: model.sectionID, title: model.title)) {
                         HStack(spacing: 4) {
                             Text("See all")
                                 .font(.custom("Poppins-Regular", size: 14))

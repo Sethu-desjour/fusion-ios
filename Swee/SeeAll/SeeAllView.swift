@@ -6,6 +6,7 @@ struct SeeAllView: View {
     
     @StateObject private var viewModel = SeeAllViewModel()
     @State var sectionID: UUID
+    @State var title: String
     
     var columns: [GridItem] = [
         GridItem(.flexible()),
@@ -32,7 +33,7 @@ struct SeeAllView: View {
                 .padding([.leading, .trailing, .top], 16)
             }
         }
-        .customNavigationTitle("Packages just for you")
+        .customNavigationTitle(title)
         .customNavTrailingItem {
             Button {
                 // handle tap
@@ -49,5 +50,5 @@ struct SeeAllView: View {
 }
 
 #Preview {
-    SeeAllView(sectionID: .init(uuidString: "5B752D23-23CD-4EBC-B7D4-4B62E570D0A8")!)
+    SeeAllView(sectionID: .init(uuidString: "5B752D23-23CD-4EBC-B7D4-4B62E570D0A8")!, title: "Packages just for you")
 }
