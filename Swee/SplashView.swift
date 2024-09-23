@@ -13,9 +13,12 @@ struct SplashView: View {
                 NavigationLink(isActive: $goToCompleteProfile) {
                     CompleteProfileView()
                 } label: {}
-                Image("splash_logo")
-                    .resizable()
-                    .frame(width: 190, height: 70)
+                VStack(spacing: 30) {
+                    Image("splash_logo")
+                        .resizable()
+                        .frame(width: 190, height: 70)
+                    ProgressView()
+                }
                 VStack(spacing: 0) {
                     Spacer()
                     Image("splash_bg")
