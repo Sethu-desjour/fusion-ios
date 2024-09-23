@@ -11,7 +11,7 @@ struct MerchantPageView: View {
     @EnvironmentObject private var api: API
     
     @State var merchant: Merchant
-    @State var viewModel = MerchantPageViewModel()
+    @StateObject var viewModel = MerchantPageViewModel()
     
     var columns: [GridItem] = [
         GridItem(.flexible()),

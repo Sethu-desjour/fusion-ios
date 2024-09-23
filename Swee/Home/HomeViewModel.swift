@@ -103,13 +103,17 @@ extension BannerModel {
 
 extension PackageModel {
     func toPackage() -> Package {
-        .init(merchant: merchantName,
+        .init(id: id,
+              merchant: merchantName,
               imageURL: photoURL,
               title: name,
               description: description ?? "",
+              summary: productSummary,
               price: priceCents.toPrice(),
               originalPrice: originalPriceCents.toPrice(),
-              currency: currencyCode)
+              currency: currencyCode,
+              details: details ?? [],
+              tos: tos)
     }
 }
 
