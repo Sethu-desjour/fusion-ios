@@ -35,12 +35,7 @@ struct SeeAllView: View {
         }
         .customNavigationTitle(title)
         .customNavTrailingItem {
-            Button {
-                // handle tap
-            } label: {
-                Image("cart")
-            }
-            .buttonStyle(EmptyStyle())
+            CartButton()
         }
         .onAppear(perform: {
             viewModel.fetch(with: sectionID)

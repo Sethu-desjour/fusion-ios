@@ -1,49 +1,23 @@
 import SwiftUI
 import SDWebImageSwiftUI
-
-//struct ListModel {
-//    enum Option {
-//        case Bullet, Numbered
-//    }
-//    let title: String
-//    let points: [String]
-//    let type: Option
-//}
-
-//struct ProductDetailModel {
-//    let id: String
-//    let image: Image
-//    let title: String
-//    let subtitle: String
-//    let vendor: Vendors
-//    let locations: [Int] // will replace with location model once there's a design for it
-//    let price: String
-//    let originalPrice: String?
-//    let description: LocalizedStringKey
-//    let redemptionSteps: ListModel
-//    let aboutSteps: ListModel
-//    let tosText: String
-//}
+import MarkdownUI
 
 struct PackageDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.tabIsShown) private var tabIsShown
     @EnvironmentObject private var api: API
+    @EnvironmentObject private var cart: Cart
     @State private var isExpanded: Bool = false
     @State var package: Package
-    @State private var quantity: Int = 0
-    @StateObject private var viewModel = PackageDetailViewModel()
     
-//    init(package: Package) {
-//        self.package = package
-//        self.viewModel =
-//    }
+    @State private var hideBottomSheet = true
+    @StateObject private var viewModel = PackageDetailViewModel()
     
     var lowerButton: some View {
         VStack(spacing: 0) {
-            if quantity == 0 {
-                Button {
-                    quantity += 1
+            if viewModel.quantity == 0 {
+                AsyncButton(progressWidth: .infinity) {
+                    await viewModel.addToCart()
                 } label: {
                     HStack {
                         Text("Add to cart")
@@ -52,31 +26,36 @@ struct PackageDetailView: View {
                             .resizable()
                             .frame(width: 16, height: 16)
                     }
-                    .foregroundStyle(Color.background.white)
-                    .frame(maxWidth: .infinity, maxHeight: 55)
-                    .background(Color.primary.brand)
-                    .clipShape(Capsule())
+                    .frame(maxWidth: .infinity)
                 }
-                .buttonStyle(EmptyStyle())
+                .buttonStyle(PrimaryButton())
             } else {
                 HStack {
                     Spacer()
-                    Button {
-                        if quantity == 0 {
-                            return
-                        }
-                        quantity -= 1
+                    AsyncButton {
+                        await viewModel.decreaseQuantity()
+//                        if quantity == 0 {
+//                            return
+//                        }
+//                        
+//                        if quantity == 1 {
+//                            try? await cart.deletePackage(package.id)
+//                            return
+//                        }
+//                        Task {
+//                            try? await cart.changeQuantity(package.id, quantity: quantity - 1)
+//                        }
                     } label: {
                         Image("minus")
                     }
                     .tint(.white)
                     Spacer()
-                    Text("\(quantity)")
+                    Text("\(viewModel.quantity)")
                         .font(.custom("Roboto-Bold", size: 24))
                         .foregroundStyle(.white)
                     Spacer()
                     Button {
-                        quantity += 1
+                        viewModel.increaseQuantity()
                     } label: {
                         Image("plus")
                     }
@@ -88,7 +67,7 @@ struct PackageDetailView: View {
                 .clipShape(Capsule())
             }
         }
-        .animation(.default, value: quantity)
+        .animation(.default, value: viewModel.quantity)
         .padding([.leading, .trailing, .top], 16)
         .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.text.black10), alignment: .top)
     }
@@ -130,6 +109,9 @@ struct PackageDetailView: View {
                                     .foregroundStyle(Color.text.black60)
                                 Image("chevron-right")
                             }
+                            .onTapGesture {
+                                hideBottomSheet = false
+                            }
                         }
                     }
                     .animation(.default, value: viewModel.stores.count)
@@ -158,40 +140,14 @@ struct PackageDetailView: View {
                                 .font(.custom("Poppins-Bold", size: 18))
                                 .foregroundStyle(Color.text.black100)
                                 .padding(.vertical, 8)
-                            Text(viewModel.package.details[detail].content)
-                                .font(.custom("Poppins-Medium", size: 16))
-                                .foregroundStyle(Color.text.black60)
+                            Markdown(viewModel.package.details[detail].content)
+                                .markdownTextStyle {
+                                    FontFamily(.custom("Poppins-Medium"))
+                                    FontSize(16)
+                                    ForegroundColor(Color.text.black60)
+                                }
                         }
                     }
-//                    VStack(alignment: .leading) {
-//                        
-//                        ForEach(package.redemptionSteps.points.indices, id: \.self) { index in
-//                            HStack(alignment: .top) {
-//                                Text("\(index + 1).")
-//                                Text(package.redemptionSteps.points[index])
-//                            }
-//                            .frame(maxWidth: .infinity, alignment: .leading)
-//                            .font(.custom("Poppins-Medium", size: 16))
-//                            .foregroundStyle(Color.text.black60)
-//                        }
-//                    }
-//                    Rectangle()
-//                        .frame(height: 1)
-//                        .foregroundStyle(.black.opacity(0.15))
-//                    VStack(alignment: .leading) {
-//                        Text(package.aboutSteps.title)
-//                            .font(.custom("Poppins-Bold", size: 18))
-//                            .foregroundStyle(Color.text.black100)
-//                        ForEach(package.aboutSteps.points.indices, id: \.self) { index in
-//                            HStack(alignment: .top) {
-//                                Text(" • ")
-//                                Text(package.aboutSteps.points[index])
-//                            }
-//                            .frame(maxWidth: .infinity, alignment: .leading)
-//                            .font(.custom("Poppins-Regular", size: 16))
-//                            .foregroundStyle(Color.text.black60)
-//                        }
-//                    }
                     if let tos = package.tos {
                         ZStack {
                             VStack(alignment: .leading) {
@@ -228,45 +184,21 @@ struct PackageDetailView: View {
                 .padding([.horizontal, .top], 16)
             }
             lowerButton
-            
+                .padding(.bottom, 40)
         }
+        .ignoresSafeArea(edges: .bottom)
         .customNavigationTitle(package.title)
         .customNavTrailingItem {
-            Button {
-                
-            } label: {
-                ZStack {
-                    Image("cart")
-                    if quantity > 0 {
-                        VStack(alignment: .trailing, spacing: 0) {
-                            HStack(spacing: 0) {
-                                Spacer()
-                                Text("\(quantity)")
-                                    .font(.custom("Roboto-Regular", size: 12))
-                                    .foregroundStyle(.white)
-                                    .padding(6)
-                                    .background(
-                                        Circle()
-                                            .foregroundStyle(Color(hex: "#DA1E28"))
-                                    )
-                                    .padding(.trailing, -4)
-                                    .padding(.top, -12)
-                            }
-                            Spacer()
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }
-                }
-                .animation(.default, value: quantity)
-                .frame(width: 40, height: 24)
-                //                        .background(.green)
-            }
-            .buttonStyle(EmptyStyle())
+            CartButton()
+        }
+        .customBottomSheet(hidden: $hideBottomSheet) {
+            StoresView(stores: viewModel.stores)
         }
         .onAppear(perform: {
             tabIsShown.wrappedValue = false
             viewModel.package = package
             viewModel.api = api
+            viewModel.cart = cart
             viewModel.fetch()
         })
     }

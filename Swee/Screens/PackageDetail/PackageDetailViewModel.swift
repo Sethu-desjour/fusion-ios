@@ -3,15 +3,19 @@ import Combine
 
 class PackageDetailViewModel: ObservableObject {
     var api: API = API()
+    var cart: Cart = Cart()
     @State private var loadedData = false
-    @Published var package: Package = .init(id: .init(uuidString: "4cc469ee-7337-4644-b335-0cb6990a42c2")!, merchant: "Zoomoov", imageURL: nil, title: "Chinese New Year", description: "Some description", summary: "Some summary", price: 1000, originalPrice: 2000, currency: "SGD", details: [], tos: nil)
+    @Published var package: Package = .empty
     @Published var stores: [MerchantStore] = []
+    var quantity: Int {
+        cart.quantity(for: package)
+    }
     
-//    init(loadedData: Bool = false, package: Package, stores: [MerchantStore] = []) {
-//        self.loadedData = loadedData
-//        self.package = package
-//        self.stores = stores
-//    }
+    //    init(loadedData: Bool = false, package: Package, stores: [MerchantStore] = []) {
+    //        self.loadedData = loadedData
+    //        self.package = package
+    //        self.stores = stores
+    //    }
     
     func fetch() {
         guard !loadedData else {
@@ -39,6 +43,31 @@ class PackageDetailViewModel: ObservableObject {
             } catch {
                 // @todo parse error and show error screen
             }
+        }
+    }
+    
+    func addToCart() async {
+        try? await cart.addPackage(package.id)
+    }
+    
+    func decreaseQuantity() async {
+        if quantity == 0 {
+            return
+        }
+        
+        if quantity == 1 {
+            try? await cart.deletePackage(package.id)
+            return
+        }
+        
+        Task {
+            try? await cart.changeQuantity(package.id, quantity: quantity - 1)
+        }
+    }
+    
+    func increaseQuantity() {
+        Task {
+            try? await cart.changeQuantity(package.id, quantity: quantity + 1)
         }
     }
 }

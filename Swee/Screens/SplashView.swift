@@ -3,6 +3,7 @@ import SwiftUI
 struct SplashView: View {
     @EnvironmentObject private var appRootManager: AppRootManager
     @EnvironmentObject private var api: API
+    @EnvironmentObject private var cart: Cart
     
     @State private var goToCompleteProfile = false
     
@@ -31,12 +32,18 @@ struct SplashView: View {
             .ignoresSafeArea()
             .onAppear {
                 guard let token = UserDefaults.standard.string(forKey: Keys.authToken) else {
-                    appRootManager.currentRoot = .authentication
+                    Task {
+                        try? await cart.refresh()
+                        await MainActor.run {
+                            appRootManager.currentRoot = .authentication
+                        }
+                    }
                     return
                 }
                 Task {
                     do {
                         let result = try await api.signIn(with: token)
+                        try? await cart.refresh()
                         await MainActor.run {
                             switch result {
                             case .loggedIn:

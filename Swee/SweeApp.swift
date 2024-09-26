@@ -15,11 +15,13 @@ final class AppRootManager: ObservableObject {
     }
 }
 
+
 @main
 struct SweeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject private var appRootManager = AppRootManager()
     var api = API()
+    var cart = Cart()
     
     var body: some Scene {
         WindowGroup {
@@ -35,8 +37,12 @@ struct SweeApp: App {
                     MainView()
                 }
             }
+            .onAppear(perform: {
+                cart.api = api
+            })
             .environmentObject(appRootManager)
             .environmentObject(api)
+            .environmentObject(cart)
         }
     }
 }

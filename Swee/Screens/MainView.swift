@@ -13,7 +13,7 @@ enum Tabs: Int, CaseIterable, Identifiable {
         case .home:
             HomeView()
         case .purchases:
-            MyPurchasesView()
+            MyWalletView()
         case .alerts:
             AlertsView()
         case .profile:

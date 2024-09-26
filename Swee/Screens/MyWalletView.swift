@@ -7,7 +7,7 @@ struct MerchantPurchases {
     let colors: [Color]
 }
 
-struct MyPurchasesView: View {
+struct MyWalletView: View {
     @Environment(\.tabIsShown) private var tabIsShown
     @State var purchases: [MerchantPurchases] = [
         .init(image: Image("purhcase-1"), merchant: "Zoomoov AMK", summary: "24 Rides + 12 masks", colors: Color.gradient.secondary),
@@ -69,11 +69,7 @@ struct MyPurchasesView: View {
                 LogoNavItem()
             }
             .customNavTrailingItem {
-                CustomNavLink(destination: CheckoutView(), label: {
-                    Image("cart")
-                        .foregroundStyle(Color.text.black60)
-                })
-                .buttonStyle(EmptyStyle())
+                CartButton()
             }
         }
     }
@@ -121,5 +117,5 @@ struct MerchantPurchasesCard: View {
 }
 
 #Preview {
-    MyPurchasesView()
+    MyWalletView()
 }

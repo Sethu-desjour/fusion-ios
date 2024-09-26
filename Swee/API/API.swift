@@ -111,13 +111,78 @@ class API: ObservableObject {
     func packageStores(for id: UUID) async throws -> [MerchantStoreModel] {
         try await request(with: "/packages/\(id.uuidString.lowercased())/stores")
     }
+    
+    func latestCart() async throws -> CartModel {
+        try await request(with: "/carts/latest") { data, response in
+            guard response.statusCode == 200 else {
+                throw LocalError(message: "Something went wrong")
+            }
+            
+            return nil
+        }
+    }
+    
+    @discardableResult
+    func addPackageToCart(_ id: UUID, quantity: Int = 1) async throws -> CartItem {
+        struct NewCartItem: Encodable {
+            let packageID: String
+            let quantity: Int
+            
+            private enum CodingKeys: String, CodingKey {
+                case packageID = "package_id"
+                case quantity
+            }
+        }
+        
+        let url = "/carts/latest/items"
+        let jsonData = try JSONEncoder().encode(NewCartItem(packageID: id.uuidString.lowercased(), quantity: quantity))
+        
+        return try await request(with: url, method: .POST(jsonData)) { data, response in
+            guard response.statusCode == 200 else {
+                throw LocalError(message: "Something went wrong")
+            }
+            
+            do {
+                let item = try JSONDecoder().decode(CartItem.self, from: data)
+                return await MainActor.run {
+                    return item
+                }
+            } catch {
+                throw LocalError(message: "Incorrect server data")
+            }
+        }
+    }
+    
+    func changeQuantityInCart(for id: UUID, quantity: Int) async throws {
+        let url = "/carts/latest/items/\(id.uuidString.lowercased())"
+        let jsonData = try JSONEncoder().encode(["quantity": quantity])
+        
+        try await request(with: url, method: .PUT(jsonData)) { [weak self] data, response in
+            guard response.statusCode == 200 else {
+                throw LocalError(message: "Something went wrong")
+            }
+            if response.statusCode == 404 {
+                try await self?.addPackageToCart(id, quantity: quantity)
+            }
+        }
+    }
+    
+    func deletePackageFromCart(_ id: UUID) async throws {
+        let url = "/carts/latest/items/\(id.uuidString.lowercased())"
+        
+        try await request(with: url, method: .DELETE) { data, response in
+            guard response.statusCode == 204 else {
+                throw LocalError(message: "Something went wrong")
+            }
+        }
+    }
 }
 
 extension API {
     fileprivate enum Method {
         case GET
         case POST(Data)
-        case PUT
+        case PUT(Data)
         case DELETE
     }
     
@@ -142,8 +207,10 @@ extension API {
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = jsonData
-        case .PUT:
+        case .PUT(let jsonData):
             request.httpMethod = "PUT"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = jsonData
         case .DELETE:
             request.httpMethod = "DELETE"
         }

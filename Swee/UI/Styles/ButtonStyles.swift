@@ -18,17 +18,9 @@ struct PrimaryButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()
-            .background(isEnabled ?
-                        AnyShapeStyle(LinearGradient(gradient: .init(colors: Color.gradient.primary),
-                                                                 startPoint: .topLeading,
-                                                                 endPoint: .bottomTrailing))
-                        : AnyShapeStyle(Color.primary.brand.opacity(0.5)))
+            .background(Color.primary.brand.opacity(isEnabled ? 1 : 0.5))
             .foregroundStyle(.white)
             .clipShape(Capsule())
-            .overlay(RoundedRectangle(cornerRadius: 24)
-                .stroke(Color.primary.brand,
-                        lineWidth: isEnabled ? 1 : 0)
-            )
     }
 }
 

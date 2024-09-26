@@ -16,6 +16,7 @@ class HomeViewModel: ObservableObject {
     }
     
     var api: API = API()
+    var cart: Cart = Cart()
     @State private var loadedData = false
     @Published var sections: [Section] = []
     
@@ -42,6 +43,7 @@ class HomeViewModel: ObservableObject {
                 await MainActor.run {
                     self.sections = sections
                 }
+                try? await cart.refresh()
             } catch {
                 // @todo parse error and show error screen
             }

@@ -1,62 +1,53 @@
 import SwiftUI
+import SDWebImageSwiftUI
 
-struct Product {
-    let id: String
-    let title: String
-    let description: String
-    let priceString: String
-    let price: Double
-    let image: Image
-    let validity: String
+
+extension CartItem {
+    func priceString(currencyCode: String) -> String {
+        return "\(currencyCode) \(String(format: "%.2f", Double(totalPriceCents / 100)))"
+    }
 }
 
-struct CheckoutProduct {
-    let product: Product
-    let quantity: Int
+struct BlinkViewModifier: ViewModifier {
+    
+    let duration: Double
+    @State private var blinking: Bool = false
+    
+    func body(content: Content) -> some View {
+        content
+            .opacity(blinking ? 0 : 1)
+            .animation(.easeOut(duration: duration).repeatForever())
+            .onAppear {
+                withAnimation {
+                    blinking = true
+                }
+            }
+    }
+}
+
+extension View {
+    func blinking(duration: Double = 0.75) -> some View {
+        modifier(BlinkViewModifier(duration: duration))
+    }
 }
 
 struct CheckoutView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.tabIsShown) private var tabIsShown
     @Environment(\.currentTab) private var selectedTab
-    
-    @State var products: [CheckoutProduct] = [
-        .init(product: .init(id: "1", title: "Merchant 1", description: "10 Zoomoov rides + 1 Hero mask + 1 bingo draw", priceString: "S$ 125", price: 125, image: Image("product-1"), validity: "Validity - 1 year"), quantity: 2),
-        .init(product: .init(id: "2", title: "Package name", description: "10 Zoomoov rides + 1 Hero mask + 1 bingo draw", priceString: "S$ 125", price: 125, image: Image("product-2"), validity: "Validity - 1 year"), quantity: 1),
-    ]
+    @Environment(\.navView) private var navView
+    @EnvironmentObject private var cart: Cart
+    @StateObject private var viewModel = CheckoutViewModel()
     
     @State private var text: String = ""
     @State private var showPaymentSuccess: Bool = false
     
-    enum QuantityChange {
-        case increase, decrease
-    }
-    
-    func changeQuantity(for product: CheckoutProduct, at index: Int, change: QuantityChange) {
-        if change == .decrease && product.quantity == 1 {
-            products.remove(at: index)
-            return
-        }
-        
-        let newProduct: CheckoutProduct = .init(product: product.product, quantity: change == .decrease ? product.quantity - 1 : product.quantity + 1)
-        
-        if let index = products.firstIndex(where: { element in
-            element.product.id == product.product.id
-        }) {
-            products[index] = newProduct
-        }
-    }
-    
     var quantity: Int {
-        return products.reduce(0) { sum, prod in
-            return sum + prod.quantity
-        }
+        return cart.quantity
     }
     
     var cartTotal: Double {
-        return products.reduce(0) { sum, prod in
-            return sum + prod.product.price * Double(prod.quantity)
-        }
+        return Double(cart.priceCents / 100)
     }
     
     var gst: Double {
@@ -64,7 +55,7 @@ struct CheckoutView: View {
     }
     
     var finalTotal: Double {
-        return cartTotal + gst
+        return Double(cart.totalPriceCents / 100)
     }
     
     var mainUI: some View {
@@ -77,24 +68,27 @@ struct CheckoutView: View {
                 }
                 .padding([.horizontal, .top], 16)
                 LazyVGrid(columns: [.init(.flexible())], spacing: 0) {
-                    ForEach(products.indices, id: \.self) { index in
-                        let element = products[index]
-                        let product = element.product
+                    ForEach(cart.packages.sorted(by: { $0.createdAt > $1.createdAt }), id: \.id) { element in
                         HStack {
-                            product.image
-                                .resizable()
-                                .scaledToFill()
-                                .clipShape(RoundedRectangle(cornerRadius: 6))
-                                .padding(.trailing, 16)
-                                .frame(width: 127, height: 145)
+                            WebImage(url: element.packageDetails?.photoURL) { image in
+                                image.resizable()
+                            } placeholder: {
+                                Color.white
+                                    .skeleton(with: true, shape: .rounded(.radius(4, style: .circular)))
+//                                    .frame(width: 127, height: 145)
+                            }
+                            .transition(.fade(duration: 0.5))
+                            .scaledToFill()
+                            .frame(minWidth: 0)
+                            .edgesIgnoringSafeArea(.all)
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                            .padding(.trailing, 16)
+                            .frame(width: 127, height: 145)
                             VStack(alignment: .leading) {
-                                Text(product.title)
+                                Text(element.packageDetails?.name)
                                     .foregroundStyle(Color.text.black100)
                                     .font(.custom("Poppins-SemiBold", size: 16))
-                                Text(product.description)
-                                    .foregroundStyle(Color.text.black80)
-                                    .font(.custom("Poppins-Medium", size: 12))
-                                Text(product.validity)
+                                Text(element.packageDetails?.productSummary)
                                     .foregroundStyle(Color.text.black80)
                                     .font(.custom("Poppins-Medium", size: 12))
                                 Text("\(element.quantity) x Qty")
@@ -102,13 +96,21 @@ struct CheckoutView: View {
                                     .font(.custom("Poppins-Medium", size: 12))
                                 Spacer()
                                 HStack {
-                                    Text(product.priceString)
-                                        .foregroundStyle(Color.text.black100)
-                                        .font(.custom("Poppins-SemiBold", size: 14))
+                                    if cart.inProgress {
+                                        Text(element.priceString(currencyCode: cart.currencyCode))
+                                            .foregroundStyle(Color.text.black100)
+                                            .font(.custom("Poppins-SemiBold", size: 14))
+                                            .blinking()
+//                                            .skeleton(with: cart.inProgress, size: CGSize(width: CGFloat.infinity, height: 20), shape: .rounded(.radius(4, style: .circular)))
+                                    } else {
+                                        Text(element.priceString(currencyCode: cart.currencyCode))
+                                            .foregroundStyle(Color.text.black100)
+                                            .font(.custom("Poppins-SemiBold", size: 14))
+                                    }
                                     Spacer()
                                     HStack {
-                                        Button {
-                                            changeQuantity(for: element, at: index, change: .decrease)
+                                        AsyncButton {
+                                            await viewModel.decreaseQuantity(for: element)
                                         } label: {
                                             Image("minus")
                                                 .resizable()
@@ -122,7 +124,7 @@ struct CheckoutView: View {
                                             .lineLimit(1)
                                         Spacer()
                                         Button {
-                                            changeQuantity(for: element, at: index, change: .increase)
+                                            viewModel.increaseQuantity(for: element)
                                         } label: {
                                             Image("plus")
                                                 .resizable()
@@ -133,7 +135,6 @@ struct CheckoutView: View {
                                     .frame(maxWidth: 90)
                                     .padding(.horizontal, 10)
                                     .padding(.vertical, 4)
-                                    //                                    .frame(maxWidth: .infinity, maxHeight: 55)
                                     .clipShape(Capsule())
                                     .overlay(RoundedRectangle(cornerRadius: 24)
                                         .stroke(Color.secondary.brand,
@@ -177,15 +178,27 @@ struct CheckoutView: View {
                         )
                     }
                     .padding(.bottom, 24)
-                    SummaryRow(title: "Total amount", price: cartTotal)
+                    SummaryRow(title: "Total amount", price: cartTotal, currency: cart.currencyCode, blinking: cart.inProgress)
                         .padding(.bottom, 4)
-                    SummaryRow(title: "GST 18%", price: gst)
-                        .padding(.bottom, 19)
+                    if let fees = cart.fees {
+                        ForEach(fees.indices, id: \.self) { index in
+                            let fee = fees[index]
+                            SummaryRow(title: "\(fee.name) \(fee.rateMilli / 1000)%",
+                                       price: Double(fee.amountCents / 100),
+                                       currency: cart.currencyCode,
+                                       blinking: cart.inProgress)
+                                .padding(.bottom, 19)
+                        }
+                    }
                     Rectangle()
                         .fill(.black.opacity(0.05))
                         .frame(height: 1)
                         .padding(.bottom, 8)
-                    SummaryRow(title: "Total", price: finalTotal, allBold: true)
+                    SummaryRow(title: "Total",
+                               price: finalTotal,
+                               allBold: true,
+                               currency: cart.currencyCode,
+                               blinking: cart.inProgress)
                 }
                 .padding(16)
                 .frame(maxWidth: .infinity)
@@ -203,14 +216,14 @@ struct CheckoutView: View {
                             .font(.custom("Roboto-Bold", size: 16))
                     }
                     .foregroundStyle(Color.background.white)
-                    .padding(.vertical, 18)
                     .frame(maxWidth: .infinity)
-                    .background(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .clipShape(Capsule())
                 }
-                .buttonStyle(EmptyStyle())
+                .buttonStyle(PrimaryButton())
             }
+            .padding(.bottom, 40)
         }
+        .animation(.default, value: cart.updatedAt)
+        .ignoresSafeArea(edges: .bottom)
         .background(Color.background.pale)
         .customNavigationTitle("Checkout")
     }
@@ -227,9 +240,42 @@ struct CheckoutView: View {
                 .padding(.bottom, 57)
             Button {
                 dismiss()
+                selectedTab.wrappedValue = .purchases
             } label: {
                 HStack {
                     Text("View my purchases")
+                        .font(.custom("Roboto-Bold", size: 16))
+                }
+                .foregroundStyle(Color.background.white)
+                .frame(maxWidth: .infinity, maxHeight: 55)
+                .background(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .clipShape(Capsule())
+            }
+            .buttonStyle(EmptyStyle())
+        }
+        .padding(.horizontal, 24)
+    }
+    
+    var emptyUI: some View {
+        VStack {
+            Image("checkout-success")
+            Text("Your cart is empty")
+                .font(.custom("Poppins-Medium", size: 24))
+            Text("Your cart is currently empty. Add a package to see the items here")
+                .font(.custom("Poppins-Medium", size: 16))
+                .multilineTextAlignment(.center)
+                .foregroundStyle(Color.text.black40)
+                .padding(.bottom, 57)
+            Button {
+                if selectedTab.wrappedValue == .home {
+                    navView.wrappedValue?.popToRootViewController(animated: true)
+                } else {
+                    dismiss()
+                    selectedTab.wrappedValue = .home
+                }
+            } label: {
+                HStack {
+                    Text("Explore packages")
                         .font(.custom("Roboto-Bold", size: 16))
                 }
                 .foregroundStyle(Color.background.white)
@@ -246,18 +292,16 @@ struct CheckoutView: View {
         VStack {
             if showPaymentSuccess {
                 successUI
+            } else if cart.packages.isEmpty {
+                emptyUI
             } else {
                 mainUI
             }
         }
-        .onWillAppear({
+        .onAppear(perform: {
+            viewModel.cart = cart
+            viewModel.fetch()
             tabIsShown.wrappedValue = false
-        })
-        .onWillDisappear({
-            //            tabIsShown.wrappedValue = true
-            if showPaymentSuccess {
-                selectedTab.wrappedValue = .purchases
-            }
         })
     }
 }
@@ -282,6 +326,8 @@ struct SummaryRow: View {
     var title: String
     var price: Double
     var allBold: Bool = false
+    var currency: String
+    var blinking: Bool = false
     
     var body: some View {
         HStack {
@@ -289,10 +335,22 @@ struct SummaryRow: View {
                 .font(allBold ? .custom("Poppins-SemiBold", size: 18) : .custom("Poppins-Medium", size: 16))
                 .foregroundStyle(allBold ? Color.text.black100 : Color.text.black60)
             Spacer()
-            Text("S$ ")
-                .font(.custom("Poppins-SemiBold", size: 16))
-            + Text("\(price, specifier: "%.2f")")
-                .font(.custom(allBold ? "Poppins-Bold" : "Poppins-Regular", size: 16))
+            if blinking {
+                HStack {
+                    Text("\(currency) ")
+                        .font(.custom("Poppins-SemiBold", size: 16))
+                    + Text("\(price, specifier: "%.2f")")
+                        .font(.custom(allBold ? "Poppins-Bold" : "Poppins-Regular", size: 16))
+                }
+                .blinking()
+            } else {
+                HStack {
+                    Text("\(currency) ")
+                        .font(.custom("Poppins-SemiBold", size: 16))
+                    + Text("\(price, specifier: "%.2f")")
+                        .font(.custom(allBold ? "Poppins-Bold" : "Poppins-Regular", size: 16))
+                }
+            }
         }
     }
 }

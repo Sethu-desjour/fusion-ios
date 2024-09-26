@@ -7,9 +7,11 @@ import SkeletonUI
 struct HomeView: View {
     
     @EnvironmentObject private var api: API
+    @EnvironmentObject private var cart: Cart
     @StateObject private var viewModel = HomeViewModel()
     @Environment(\.tabIsShown) private var tabIsShown
     @State private var hideBottomSheet: Bool = true
+    @State private var navView: UINavigationController? = nil
     
     func section(at index: Int) -> any View {
         let section = viewModel.sections[index]
@@ -55,6 +57,7 @@ struct HomeView: View {
             })
             .onAppear(perform: {
                 viewModel.api = api
+                viewModel.cart = cart
                 viewModel.fetch()
                 tabIsShown.wrappedValue = true
 //  NOTE: Uncomment to keep the images loading indefinately
@@ -66,20 +69,23 @@ struct HomeView: View {
                 LogoNavItem()
             }
             .customNavTrailingItem {
-                Button(action: {
-                    hideBottomSheet = false
-                }, label: {
-                    Image("cart")
-                        .foregroundStyle(Color.text.black60)
-                })
-                .buttonStyle(EmptyStyle())
+                CartButton()
+//                Button(action: {
+//                    hideBottomSheet = false
+//                }, label: {
+//                    Image("cart")
+//                        .foregroundStyle(Color.text.black60)
+//                })
+//                .buttonStyle(EmptyStyle())
             }
             .customBottomSheet(hidden: $hideBottomSheet) {
                 NotificationUpsell(hide: $hideBottomSheet)
             }
         }
-        .introspect(.navigationView(style: .stack), on: .iOS(.v15, .v16, .v17, .v18), customize: { navBar in
-            navBar.tabBarController?.tabBar.isHidden = true
+        .environment(\.navView, $navView)
+        .introspect(.navigationView(style: .stack), on: .iOS(.v15, .v16, .v17, .v18), customize: { navView in
+            self.navView = navView
+            navView.tabBarController?.tabBar.isHidden = true
         })
     }
 }

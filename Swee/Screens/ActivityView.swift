@@ -218,10 +218,14 @@ struct ActivityView: View {
         })
         .customNavigationTitle("My Activity")
         .customNavTrailingItem {
-            Button {
-                hideBottomSheet = false
-            } label: {
-                noData ? Image("cart") : Image("filter")
+            if noData {
+                CartButton()
+            } else {
+                Button {
+                    hideBottomSheet = false
+                } label: {
+                    Image("filter")
+                }
             }
         }
         .customBottomSheet(hidden: $hideBottomSheet) {
