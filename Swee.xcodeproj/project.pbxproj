@@ -46,6 +46,7 @@
 		AF3022C62CA18C62006DBCAD /* Cart.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022C52CA18C62006DBCAD /* Cart.swift */; };
 		AF3022C82CA2B51B006DBCAD /* CartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022C72CA2B51B006DBCAD /* CartButton.swift */; };
 		AF3022CB2CA2BA03006DBCAD /* CheckoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022CA2CA2BA03006DBCAD /* CheckoutViewModel.swift */; };
+		AF3022CD2CA5584E006DBCAD /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022CC2CA5584E006DBCAD /* LocationManager.swift */; };
 		AF501F242C942CDF00637042 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF501F232C942CDF00637042 /* GoogleService-Info.plist */; };
 		AF501F272C945D7C00637042 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F262C945D7C00637042 /* API.swift */; };
 		AF501F2A2C945F9C00637042 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F292C945F9C00637042 /* Strings.swift */; };
@@ -156,6 +157,7 @@
 		AF3022C52CA18C62006DBCAD /* Cart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cart.swift; sourceTree = "<group>"; };
 		AF3022C72CA2B51B006DBCAD /* CartButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartButton.swift; sourceTree = "<group>"; };
 		AF3022CA2CA2BA03006DBCAD /* CheckoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutViewModel.swift; sourceTree = "<group>"; };
+		AF3022CC2CA5584E006DBCAD /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		AF501F232C942CDF00637042 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AF501F262C945D7C00637042 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		AF501F292C945F9C00637042 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 			isa = PBXGroup;
 			children = (
 				AF3022C52CA18C62006DBCAD /* Cart.swift */,
+				AF3022CC2CA5584E006DBCAD /* LocationManager.swift */,
 			);
 			path = Singletons;
 			sourceTree = "<group>";
@@ -752,6 +755,7 @@
 				AF501F362C980FCB00637042 /* HomeSectionModel.swift in Sources */,
 				AFDB904C2C8EE190008931DB /* CustomNavView.swift in Sources */,
 				AF80222F2C770C27001274FA /* Colors.swift in Sources */,
+				AF3022CD2CA5584E006DBCAD /* LocationManager.swift in Sources */,
 				AF2F85D22C9C1760004B0B31 /* MerchantPageViewModel.swift in Sources */,
 				AF2F85D42C9C24C6004B0B31 /* MockMerchantStoresURLProtocol.swift in Sources */,
 				AFDD17342C9DBFEC00DC8DB8 /* SeeAllViewModel.swift in Sources */,
@@ -917,6 +921,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Swee/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Green;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To show you nearby offers and stores";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -954,6 +959,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Swee/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Green;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To show you nearby offers and stores";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

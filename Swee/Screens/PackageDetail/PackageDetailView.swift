@@ -34,17 +34,6 @@ struct PackageDetailView: View {
                     Spacer()
                     AsyncButton {
                         await viewModel.decreaseQuantity()
-//                        if quantity == 0 {
-//                            return
-//                        }
-//                        
-//                        if quantity == 1 {
-//                            try? await cart.deletePackage(package.id)
-//                            return
-//                        }
-//                        Task {
-//                            try? await cart.changeQuantity(package.id, quantity: quantity - 1)
-//                        }
                     } label: {
                         Image("minus")
                     }

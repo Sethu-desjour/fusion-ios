@@ -3,6 +3,7 @@ import Combine
 
 class MerchantPageViewModel: ObservableObject {
     var api: API = API()
+    var locationManager = LocationManager()
     @State private var loadedData = false
     @Published var packages: [Package] = []
     @Published var stores: [MerchantStore] = []
@@ -24,7 +25,7 @@ class MerchantPageViewModel: ObservableObject {
             }
             
             do {
-                let storeModels = try await self.api.storesForMerchant(id)
+                let storeModels = try await self.api.storesForMerchant(id, location: locationManager.lastKnownLocation)
                 loadedData = true
                 
                 await MainActor.run {

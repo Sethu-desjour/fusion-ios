@@ -78,16 +78,19 @@ class Cart: ObservableObject {
     @Published private(set) var fees: [FeeModel]? = []
     @Published private(set) var updatedAt: Date = .now
     var inProgress = false
-    var debounce_timer: Timer?
+    var stopRefresh = false
+//    var debounceTimer: Timer?
     
     func refresh() async throws {
         operationQueue.maxConcurrentOperationCount = 1
         let cart = try await self.api.latestCart()
-//        guard !inProgress else {
-//            print("Cancelled refresh")
-//            return
-//        }
         await MainActor.run {
+            if stopRefresh {
+                return
+            }
+//            if let timer = debounceTimer, timer.isValid {
+//                return
+//            }
             packages = cart.items
             currencyCode = cart.currencyCode
             priceCents = cart.priceCents
@@ -104,6 +107,7 @@ class Cart: ObservableObject {
         }) else {
             return
         }
+        inProgress = true
         do {
             let item = try await self.api.addPackageToCart(id, quantity: quantity)
             await MainActor.run {
@@ -128,6 +132,7 @@ class Cart: ObservableObject {
         let item = packages[index]
         await MainActor.run {
             packages[index] = .init(id: item.id, packageId: item.packageId, packageDetails: item.packageDetails, quantity: quantity, totalPriceCents: item.totalPriceCents, createdAt: item.createdAt)
+            stopRefresh = true
         }
         
 //        let operation = BlockOperation()
@@ -136,15 +141,16 @@ class Cart: ObservableObject {
                 do {
                     try await self.api.changeQuantityInCart(for: item.id, quantity: quantity)
                     await MainActor.run {
-                        debounce_timer?.invalidate()
-                        debounce_timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { _ in
-                            print ("Debounce this...")
+                        stopRefresh = false
+//                        debounceTimer?.invalidate()
+//                        debounceTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { _ in
+//                            print ("Debounce this...")
                             Task {
                                 self.inProgress = false
                                 try? await self.refresh()
                             }
                         }
-                    }
+//                    }
                 } catch {
                     await MainActor.run {
                         self.inProgress = false
@@ -175,7 +181,7 @@ class Cart: ObservableObject {
                 try? await self.refresh()
             }
         } catch {
-            inProgress = true
+            inProgress = false
             // @todo maybe show some kind of notification that request failed
         }
     }

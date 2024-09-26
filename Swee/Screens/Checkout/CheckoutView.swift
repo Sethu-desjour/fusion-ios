@@ -16,7 +16,7 @@ struct BlinkViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .opacity(blinking ? 0 : 1)
-            .animation(.easeOut(duration: duration).repeatForever())
+            .animation(.easeOut(duration: duration).repeatForever(), value: blinking)
             .onAppear {
                 withAnimation {
                     blinking = true
@@ -42,27 +42,11 @@ struct CheckoutView: View {
     @State private var text: String = ""
     @State private var showPaymentSuccess: Bool = false
     
-    var quantity: Int {
-        return cart.quantity
-    }
-    
-    var cartTotal: Double {
-        return Double(cart.priceCents / 100)
-    }
-    
-    var gst: Double {
-        return cartTotal * 0.18
-    }
-    
-    var finalTotal: Double {
-        return Double(cart.totalPriceCents / 100)
-    }
-    
     var mainUI: some View {
         VStack(spacing: 0) {
             ScrollView {
                 HStack {
-                    Text("\(quantity) Items")
+                    Text("\(viewModel.quantity) Items")
                         .font(.custom("Poppins-Bold", size: 20))
                     Spacer()
                 }
@@ -178,7 +162,7 @@ struct CheckoutView: View {
                         )
                     }
                     .padding(.bottom, 24)
-                    SummaryRow(title: "Total amount", price: cartTotal, currency: cart.currencyCode, blinking: cart.inProgress)
+                    SummaryRow(title: "Total amount", price: viewModel.cartTotal, currency: cart.currencyCode, blinking: cart.inProgress)
                         .padding(.bottom, 4)
                     if let fees = cart.fees {
                         ForEach(fees.indices, id: \.self) { index in
@@ -195,7 +179,7 @@ struct CheckoutView: View {
                         .frame(height: 1)
                         .padding(.bottom, 8)
                     SummaryRow(title: "Total",
-                               price: finalTotal,
+                               price: viewModel.finalTotal,
                                allBold: true,
                                currency: cart.currencyCode,
                                blinking: cart.inProgress)

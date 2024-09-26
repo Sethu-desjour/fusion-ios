@@ -8,6 +8,7 @@ struct NetworkError {
 
 class API: ObservableObject {
     @Published var user: User?
+    @Published var sendToAuth: Bool = false
     
     enum SignInResponse: Codable {
         case loggedIn
@@ -187,7 +188,7 @@ extension API {
     }
     
     fileprivate func performRequest<U: URLProtocol>(
-        with url: String,
+        with urlString: String,
         method: Method = .GET,
         mockProtocol: U.Type? = nil
     ) async throws -> (Data, HTTPURLResponse) {
@@ -195,7 +196,7 @@ extension API {
             throw LocalError(message: "Token not found")
         }
 
-        guard let url = URL(string: Strings.baseURL + url) else {
+        guard let url = URL(string: Strings.baseURL + urlString) else {
             throw LocalError(message: "Can't form Complete profile URL")
         }
 
@@ -227,6 +228,20 @@ extension API {
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw LocalError(message: "Invalid response")
+        }
+        
+        if httpResponse.statusCode == 403 {
+            // @todo try to reauthenticate
+            do {
+                let token = try await Authentication().reauthenticate()
+                UserDefaults.standard.set(token, forKey: Keys.authToken)
+                return try await performRequest(with: urlString, method: method, mockProtocol: mockProtocol)
+            } catch {
+                await signOut()
+                await MainActor.run {
+                    sendToAuth = true
+                }
+            }
         }
 
         return (data, httpResponse)
@@ -264,7 +279,7 @@ extension API {
         mockProtocol: U.Type? = nil
     ) async throws {
         let (data, response) = try await performRequest(with: url, method: method, mockProtocol: mockProtocol)
-
+        
         if let intercept = intercept {
             _ = try await intercept(data, response)
         }

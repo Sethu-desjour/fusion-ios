@@ -5,6 +5,18 @@ class CheckoutViewModel: ObservableObject {
     var cart: Cart = Cart()
     @State private var loadedData = false
 
+    var quantity: Int {
+        return cart.quantity
+    }
+    
+    var cartTotal: Double {
+        return Double(cart.priceCents / 100)
+    }
+    
+    var finalTotal: Double {
+        return Double(cart.totalPriceCents / 100)
+    }
+    
     func fetch() {
         Task {
             do {

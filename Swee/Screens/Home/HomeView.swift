@@ -8,6 +8,7 @@ struct HomeView: View {
     
     @EnvironmentObject private var api: API
     @EnvironmentObject private var cart: Cart
+    @EnvironmentObject private var locationManager: LocationManager
     @StateObject private var viewModel = HomeViewModel()
     @Environment(\.tabIsShown) private var tabIsShown
     @State private var hideBottomSheet: Bool = true
@@ -60,6 +61,7 @@ struct HomeView: View {
                 viewModel.cart = cart
                 viewModel.fetch()
                 tabIsShown.wrappedValue = true
+                locationManager.checkLocationAuthorization()
 //  NOTE: Uncomment to keep the images loading indefinately
 //                SDImageCachesManager.shared.caches = []
 //                SDWebImageManager.defaultImageCache = SDImageCachesManager.shared

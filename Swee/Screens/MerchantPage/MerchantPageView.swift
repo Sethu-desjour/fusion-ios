@@ -9,6 +9,7 @@ struct MerchantPageView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.tabIsShown) private var tabIsShown
     @EnvironmentObject private var api: API
+    @EnvironmentObject private var locationManager: LocationManager
     
     @State var merchant: Merchant
     @StateObject var viewModel = MerchantPageViewModel()
@@ -154,6 +155,7 @@ struct MerchantPageView: View {
             }
         }
         .onAppear(perform: {
+            viewModel.locationManager = locationManager
             viewModel.api = api
             viewModel.fetch(with: merchant.id.uuidString)
             tabIsShown.wrappedValue = false
