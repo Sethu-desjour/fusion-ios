@@ -101,6 +101,15 @@ class Cart: ObservableObject {
         }
     }
     
+    func reset() {
+        packages = []
+        inProgress = false
+        priceCents = 0
+        totalPriceCents = 0
+        fees = []
+        
+    }
+    
     func addPackage(_ id: UUID, quantity: Int = 1) async throws {
         guard !packages.contains(where: { item in
             item.packageId == id

@@ -152,7 +152,7 @@ struct OtpView: View {
                                 let result = await Authentication().verify(phone: countryCode + phoneNumber)
                                 switch result {
                                 case .success(let verificationId):
-                                    UserDefaults.standard.set(verificationId, forKey: "authVerificationID")
+                                    UserDefaults.standard.set(verificationId, forKey: Keys.authVerificationID)
                                     self.verificationID = verificationId
                                     print("verificationID ====", verificationId)
                                 case .failure(let error):

@@ -6,6 +6,7 @@ struct AsyncButton<S: View>: View {
 
     @State private var task: Task<Void, Never>?
     @State var progressWidth: CGFloat?
+    var progressTint: Color?
 
     var body: some View {
         Button {
@@ -20,7 +21,7 @@ struct AsyncButton<S: View>: View {
             if task != nil {
                 ProgressView()
                     .frame(maxWidth: progressWidth)
-                    .tint(Color.white)
+                    .tint(progressTint)
             } else {
                 label
             }
@@ -28,9 +29,10 @@ struct AsyncButton<S: View>: View {
         .animation(.default, value: task)
     }
 
-    init(progressWidth: CGFloat? = nil, action: @escaping () async -> Void, @ViewBuilder label: @escaping () -> S) {
+    init(progressWidth: CGFloat? = nil, progressTint: Color = .white, action: @escaping () async -> Void, @ViewBuilder label: @escaping () -> S) {
         self.progressWidth = progressWidth
         self.action = action
         self.label = label()
+        self.progressTint = progressTint
     }
 }

@@ -44,6 +44,7 @@ struct SweeApp: App {
             .onChange(of: api.sendToAuth, perform: { newValue in
                 // @todo probably show alert
                 if newValue {
+                    cart.reset()
                     appRootManager.currentRoot = .authentication
                 }
             })

@@ -18,34 +18,36 @@ class HomeViewModel: ObservableObject {
     var api: API = API()
     var cart: Cart = Cart()
     @State private var loadedData = false
+    @Published var showError = false
     @Published var sections: [Section] = []
     
-    func fetch() {
+    func fetch() async throws {
         guard !loadedData else {
             return
         }
-        Task {
-            do {
-                let sectionsModels = try await self.api.homeSections()
-                loadedData = true
-                let sections: [Section] = sectionsModels.map { model in
-                    switch model.type {
-                    case .bannerCarousel:
-                            .init(id: model.id, title: model.title, content: .bannerCarousel(model.banners.toBanners()))
-                    case .packageCarousel:
-                            .init(id: model.id, title: model.title, content: .packages(model.packages.toPackages()))
-                    case .merchantList:
-                            .init(id: model.id, title: model.title, content: .merchants(model.merchants.toMerchants()))
-                    case .bannerStatic:
-                            .init(id: model.id, content: .bannerStatic(model.banners.toBanners()))
-                    }
+        do {
+            let sectionsModels = try await api.homeSections()
+            loadedData = true
+            let sections: [Section] = sectionsModels.map { model in
+                switch model.type {
+                case .bannerCarousel:
+                        .init(id: model.id, title: model.title, content: .bannerCarousel(model.banners.toBanners()))
+                case .packageCarousel:
+                        .init(id: model.id, title: model.title, content: .packages(model.packages.toPackages()))
+                case .merchantList:
+                        .init(id: model.id, title: model.title, content: .merchants(model.merchants.toMerchants()))
+                case .bannerStatic:
+                        .init(id: model.id, content: .bannerStatic(model.banners.toBanners()))
                 }
-                await MainActor.run {
-                    self.sections = sections
-                }
-                try? await cart.refresh()
-            } catch {
-                // @todo parse error and show error screen
+            }
+            await MainActor.run {
+                showError = false
+                self.sections = sections
+            }
+            try? await cart.refresh()
+        } catch {
+            await MainActor.run {
+                showError = true
             }
         }
     }

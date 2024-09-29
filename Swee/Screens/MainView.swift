@@ -1,4 +1,5 @@
 import SwiftUI
+import SDWebImageSwiftUI
 
 enum Tabs: Int, CaseIterable, Identifiable {
     
@@ -81,15 +82,6 @@ struct MainView: View {
             }
             ZStack {
                 VStack(spacing: 0) {
-//                    HStack {
-//                        ForEach((Tabs.allCases), id: \.self) { tab in
-//                            Rectangle()
-//                                .fill(selectedTab == tab ? Color.primary.brand : .clear)
-//                                .frame(maxWidth: .infinity, maxHeight: 1)
-//                                .padding([.leading, .trailing], 20)
-//                                .animation(.default, value: selectedTab)
-//                        }
-//                    }
                     HStack{
                         Spacer()
                         ForEach((Tabs.allCases), id: \.self){ item in
@@ -109,6 +101,11 @@ struct MainView: View {
                 }
             }
             .hidden(!showTabBar)
+            .onAppear(perform: {
+                //  NOTE: Uncomment to keep the images loading indefinately
+//                SDImageCachesManager.shared.caches = []
+//                SDWebImageManager.defaultImageCache = SDImageCachesManager.shared
+            })
             .animation(.snappy(duration: 0.2), value: showTabBar)
 //            BottomSheet(hide: bottomSheetData.hidden) {
 //                bottomSheetData.view.view

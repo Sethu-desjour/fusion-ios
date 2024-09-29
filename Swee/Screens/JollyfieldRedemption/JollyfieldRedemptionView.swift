@@ -293,7 +293,7 @@ struct JollyfieldRedemptionView: View {
                                 .foregroundStyle(Color.black.opacity(0.3))
                             )
                             .background(RoundedRectangle(cornerRadius: 8)
-                                .foregroundStyle(Color.primary.brand)
+                                .foregroundStyle(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
                             )
                             HStack(spacing: 0) {
                                 Text("Valid until ")
@@ -388,14 +388,11 @@ struct JollyfieldRedemptionView: View {
                             HStack {
                                 Text("Start timer")
                                     .font(.custom("Roboto-Bold", size: 16))
+                                Image("timer")
                             }
-                            .foregroundStyle(Color.background.white)
-                            .padding(.vertical, 18)
                             .frame(maxWidth: .infinity)
-                            .background(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
-                            .clipShape(Capsule())
                         }
-                        .buttonStyle(EmptyStyle())
+                        .buttonStyle(PrimaryButton())
                     }
                 }
                 .padding([.leading, .trailing, .top], 16)

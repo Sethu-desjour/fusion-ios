@@ -120,9 +120,11 @@ struct OnboardingView: View {
             }
             .navigationBarTitle("")
             .navigationBarHidden(true)
+            .onAppear(perform: {
+                UserDefaults.standard.set(true, forKey: Keys.onboardingFlagKey)
+            })
         }
     }
-    
 }
 
 #Preview {

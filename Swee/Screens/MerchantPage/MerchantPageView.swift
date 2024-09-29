@@ -107,7 +107,11 @@ struct MerchantPageView: View {
 //                        }
                         Text("Packages just for you")
                             .font(.custom("Poppins-Bold", size: 20))
-                        if viewModel.packages.isEmpty {
+                        if viewModel.showError {
+                            ContentErrorView {
+                                try? await viewModel.fetch(with: merchant.id.uuidString)
+                            }
+                        } else if viewModel.packages.isEmpty {
                             HStack(spacing: 16) {
                                 PackageCard.skeleton.equatable.view
                                 PackageCard.skeleton.equatable.view
@@ -157,7 +161,9 @@ struct MerchantPageView: View {
         .onAppear(perform: {
             viewModel.locationManager = locationManager
             viewModel.api = api
-            viewModel.fetch(with: merchant.id.uuidString)
+            Task {
+                try? await viewModel.fetch(with: merchant.id.uuidString)
+            }
             tabIsShown.wrappedValue = false
         })
     }

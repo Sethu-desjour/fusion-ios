@@ -52,7 +52,7 @@ struct CheckoutView: View {
                 }
                 .padding([.horizontal, .top], 16)
                 LazyVGrid(columns: [.init(.flexible())], spacing: 0) {
-                    ForEach(cart.packages.sorted(by: { $0.createdAt > $1.createdAt }), id: \.id) { element in
+                    ForEach(cart.packages, id: \.id) { element in
                         HStack {
                             WebImage(url: element.packageDetails?.photoURL) { image in
                                 image.resizable()
@@ -213,69 +213,41 @@ struct CheckoutView: View {
     }
     
     var successUI: some View {
-        VStack {
-            Image("checkout-success")
-            Text("Payment success")
-                .font(.custom("Poppins-Medium", size: 24))
-            Text("2 Rides have been added to your purchase") // @todo compute this
-                .font(.custom("Poppins-Medium", size: 16))
-                .multilineTextAlignment(.center)
-                .foregroundStyle(Color.text.black40)
-                .padding(.bottom, 57)
-            Button {
-                dismiss()
-                selectedTab.wrappedValue = .purchases
-            } label: {
-                HStack {
-                    Text("View my purchases")
-                        .font(.custom("Roboto-Bold", size: 16))
-                }
-                .foregroundStyle(Color.background.white)
-                .frame(maxWidth: .infinity, maxHeight: 55)
-                .background(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
-                .clipShape(Capsule())
-            }
-            .buttonStyle(EmptyStyle())
+        StateView(image: .success,
+                  title: "Payment success",
+                  description: "2 Rides have been added to your purchase",
+                  buttonTitle: "View my purchases") {
+            dismiss()
+            selectedTab.wrappedValue = .purchases
         }
-        .padding(.horizontal, 24)
     }
     
     var emptyUI: some View {
-        VStack {
-            Image("checkout-success")
-            Text("Your cart is empty")
-                .font(.custom("Poppins-Medium", size: 24))
-            Text("Your cart is currently empty. Add a package to see the items here")
-                .font(.custom("Poppins-Medium", size: 16))
-                .multilineTextAlignment(.center)
-                .foregroundStyle(Color.text.black40)
-                .padding(.bottom, 57)
-            Button {
-                if selectedTab.wrappedValue == .home {
-                    navView.wrappedValue?.popToRootViewController(animated: true)
-                } else {
-                    dismiss()
-                    selectedTab.wrappedValue = .home
-                }
-            } label: {
-                HStack {
-                    Text("Explore packages")
-                        .font(.custom("Roboto-Bold", size: 16))
-                }
-                .foregroundStyle(Color.background.white)
-                .frame(maxWidth: .infinity, maxHeight: 55)
-                .background(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
-                .clipShape(Capsule())
+        StateView(image: .success,
+                  title: "Your cart is empty",
+                  description: "Your cart is currently empty. Add a package to see the items here",
+                  buttonTitle: "Explore packages") {
+            if selectedTab.wrappedValue == .home {
+                navView.wrappedValue?.popToRootViewController(animated: true)
+            } else {
+                dismiss()
+                selectedTab.wrappedValue = .home
             }
-            .buttonStyle(EmptyStyle())
         }
-        .padding(.horizontal, 24)
+    }
+    
+    var errorUI: some View {
+        StateView.error {
+            try? await viewModel.fetch()
+        }
     }
     
     var body: some View {
         VStack {
             if showPaymentSuccess {
                 successUI
+            } else if viewModel.showError {
+                errorUI
             } else if cart.packages.isEmpty {
                 emptyUI
             } else {
@@ -284,7 +256,9 @@ struct CheckoutView: View {
         }
         .onAppear(perform: {
             viewModel.cart = cart
-            viewModel.fetch()
+            Task {
+                try? await viewModel.fetch()
+            }
             tabIsShown.wrappedValue = false
         })
     }

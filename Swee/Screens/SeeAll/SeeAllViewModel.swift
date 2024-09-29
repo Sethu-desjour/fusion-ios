@@ -7,26 +7,25 @@ class SeeAllViewModel: ObservableObject {
     // NOTE: only handling Packages for now since we don't have designs for
     // how See All page will look for other home view models
     @Published var packages: [Package] = []
+    @Published private(set) var showError = false
     
-    func fetch(with id: UUID) {
-        guard !loadedData else {
-            return
-        }
-        Task {
-            do {
-                let section = try await self.api.homeSection(for: id)
-                await MainActor.run {
-                    loadedData = true
-                    switch section.type {
-                    case .packageCarousel:
-                        self.packages = section.packages.toPackages()
-                    case .bannerCarousel, .bannerStatic, .merchantList:
-                        // @todo show error state
-                        print("Wrong models returned in See All")
-                    }
+    func fetch(with id: UUID) async throws {
+        do {
+            let section = try await self.api.homeSection(for: id)
+            await MainActor.run {
+                loadedData = true
+                showError = false
+                switch section.type {
+                case .packageCarousel:
+                    self.packages = section.packages.toPackages()
+                case .bannerCarousel, .bannerStatic, .merchantList:
+                    // @todo show error state
+                    print("Wrong models returned in See All")
                 }
-            } catch {
-                // @todo parse error and show error screen
+            }
+        } catch {
+            await MainActor.run {
+                showError = true
             }
         }
     }

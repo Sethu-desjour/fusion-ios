@@ -47,6 +47,8 @@
 		AF3022C82CA2B51B006DBCAD /* CartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022C72CA2B51B006DBCAD /* CartButton.swift */; };
 		AF3022CB2CA2BA03006DBCAD /* CheckoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022CA2CA2BA03006DBCAD /* CheckoutViewModel.swift */; };
 		AF3022CD2CA5584E006DBCAD /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022CC2CA5584E006DBCAD /* LocationManager.swift */; };
+		AF3022CF2CA66CC6006DBCAD /* StateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022CE2CA66CC6006DBCAD /* StateView.swift */; };
+		AF3022D12CA9850D006DBCAD /* ContentErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022D02CA9850D006DBCAD /* ContentErrorView.swift */; };
 		AF501F242C942CDF00637042 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF501F232C942CDF00637042 /* GoogleService-Info.plist */; };
 		AF501F272C945D7C00637042 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F262C945D7C00637042 /* API.swift */; };
 		AF501F2A2C945F9C00637042 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F292C945F9C00637042 /* Strings.swift */; };
@@ -158,6 +160,8 @@
 		AF3022C72CA2B51B006DBCAD /* CartButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartButton.swift; sourceTree = "<group>"; };
 		AF3022CA2CA2BA03006DBCAD /* CheckoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutViewModel.swift; sourceTree = "<group>"; };
 		AF3022CC2CA5584E006DBCAD /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		AF3022CE2CA66CC6006DBCAD /* StateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateView.swift; sourceTree = "<group>"; };
+		AF3022D02CA9850D006DBCAD /* ContentErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentErrorView.swift; sourceTree = "<group>"; };
 		AF501F232C942CDF00637042 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AF501F262C945D7C00637042 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		AF501F292C945F9C00637042 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
@@ -501,9 +505,11 @@
 				AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */,
 				AF2F85DF2C9C52CC004B0B31 /* PackageCard.swift */,
 				AF2F85CB2C9BB7F1004B0B31 /* LogoNavItem.swift */,
+				AF3022D02CA9850D006DBCAD /* ContentErrorView.swift */,
 				AF2F85E12C9C5310004B0B31 /* Skeletonable.swift */,
 				AFDD173F2CA1846E00DC8DB8 /* StoresView.swift */,
 				AF3022C72CA2B51B006DBCAD /* CartButton.swift */,
+				AF3022CE2CA66CC6006DBCAD /* StateView.swift */,
 				AF82A4642C8432C700E0DD4C /* ObservableScrollView.swift */,
 				AF501F2B2C94736C00637042 /* AsyncButton.swift */,
 				AF2F85E32C9C5337004B0B31 /* MerchantCard.swift */,
@@ -724,6 +730,7 @@
 				AF72DFE72C80248200F70387 /* ActivityView.swift in Sources */,
 				AFDF67F72C7E38FB00489D0C /* TextStyles.swift in Sources */,
 				AF2F85CC2C9BB7F1004B0B31 /* LogoNavItem.swift in Sources */,
+				AF3022CF2CA66CC6006DBCAD /* StateView.swift in Sources */,
 				AFDD17362CA0FD2900DC8DB8 /* PackageDetailModel.swift in Sources */,
 				AFDB904A2C8EE077008931DB /* CustomNavBarContainerView.swift in Sources */,
 				AF82A4672C84418200E0DD4C /* PackageDetailView.swift in Sources */,
@@ -742,6 +749,7 @@
 				AF3022C62CA18C62006DBCAD /* Cart.swift in Sources */,
 				AFCEC5BC2C7AD00F00D157BE /* OtpView.swift in Sources */,
 				AF1FAC472C79B0E100654FB7 /* AuthView.swift in Sources */,
+				AF3022D12CA9850D006DBCAD /* ContentErrorView.swift in Sources */,
 				AF501F382C9813D300637042 /* MockHomeSectionURLProtocol.swift in Sources */,
 				AF2F85C82C9AA324004B0B31 /* MerchantStoreModel.swift in Sources */,
 				AFDB90452C8EA256008931DB /* TimeInterval.swift in Sources */,
@@ -915,7 +923,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 9M2L2N97YU;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -953,7 +961,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 9M2L2N97YU;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;

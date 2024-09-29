@@ -23,34 +23,61 @@ struct HomeView: View {
             return PackagesCarousel(model: PackageCarouselModel(sectionID: section.id, title: section.title ?? "", packages: packages))
         case .merchants(let merchants):
             return MerchantList(model: .init(title: section.title ?? "", merchants: merchants))
+                .padding(.horizontal, 16)
         case .bannerStatic(let banners):
             if banners.isEmpty {
                 return EmptyView()
             }
             return ReferalCard(banner: banners[0])
+                    .padding(.horizontal, 16)
         }
+    }
+    
+    var skeletonUI: some View {
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 30) {
+                BannersView
+                    .skeleton.equatable.view
+                PackagesCarousel
+                    .skeleton.equatable.view
+                PackagesCarousel
+                    .skeleton.equatable.view
+                Spacer()
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(.vertical, 20)
+            .padding(.leading, 16)
+        }
+        .introspect(.scrollView, on: .iOS(.v15, .v16, .v17, .v18), customize: { scrollView in
+            scrollView.isUserInteractionEnabled = false
+        })
+    }
+    
+    var mainUI: some View {
+        ScrollView {
+            VStack(spacing: 16) {
+                ForEach(viewModel.sections.indices, id: \.self) { index in
+                    section(at: index).equatable.view
+                }
+            }
+            .padding(.vertical, 20)
+//                        .padding(.horizontal, 16)
+            .padding(.bottom, 80)
+        }
+        .ignoresSafeArea()
     }
     
     var body: some View {
         CustomNavView {
             VStack {
-                if viewModel.sections.isEmpty {
-                    ZStack {
-                        ProgressView()
+                if viewModel.showError {
+                    StateView.error {
+                        try? await viewModel.fetch()
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else if viewModel.sections.isEmpty {
+                   skeletonUI
                 } else {
-                    ScrollView {
-                        VStack {
-                            ForEach(viewModel.sections.indices, id: \.self) { index in
-                                section(at: index).equatable.view
-                            }
-                        }
-                        .padding(.vertical, 20)
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 80)
-                    }
-                    .ignoresSafeArea()
+                    mainUI
                 }
             }
             .onChange(of: hideBottomSheet, perform: { newValue in
@@ -59,12 +86,11 @@ struct HomeView: View {
             .onAppear(perform: {
                 viewModel.api = api
                 viewModel.cart = cart
-                viewModel.fetch()
+                Task {
+                    try? await viewModel.fetch()
+                }
                 tabIsShown.wrappedValue = true
                 locationManager.checkLocationAuthorization()
-//  NOTE: Uncomment to keep the images loading indefinately
-//                SDImageCachesManager.shared.caches = []
-//                SDWebImageManager.defaultImageCache = SDImageCachesManager.shared
             })
             .customNavigationBackButtonHidden(true)
             .customNavLeadingItem {
@@ -105,6 +131,7 @@ struct BannersView: View {
                     BannerView(banner: bannerModels[index])
                 }
             }
+            .padding(.horizontal, 16)
             .onChange(of: contentOffset) { newValue in
                 var offset = newValue
                 offset.negate()
@@ -115,9 +142,22 @@ struct BannersView: View {
                 page = min(Int(offset / 210) + 1, bannerModels.count - 1)
             }
         }
-        .introspect(.scrollView, on: .iOS(.v15, .v16, .v17, .v18), customize: { scrollView in
-            scrollView.clipsToBounds = false
-        })
+//        .introspect(.scrollView, on: .iOS(.v15, .v16, .v17, .v18), customize: { scrollView in
+//            scrollView.clipsToBounds = false
+//        })
+    }
+}
+
+extension BannersView: Skeletonable {
+    static var skeleton: any View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHGrid(rows: [.init()]) {
+                ForEach(0...3, id: \.self) { index in
+                    BannerView
+                        .skeleton.equatable.view
+                }
+            }
+        }
     }
 }
 
@@ -142,7 +182,6 @@ struct BannersCarousel: View {
                 }
             })
         }
-        
     }
 }
 
@@ -207,6 +246,14 @@ struct BannerView: View {
     }
 }
 
+extension BannerView: Skeletonable {
+    static var skeleton: any View {
+        Color.white
+            .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+            .frame(width: 210, height: 190)
+    }
+}
+
 
 enum Vendors: CaseIterable {
     case Zoomoov
@@ -255,6 +302,7 @@ struct PackagesCarousel: View {
                     }
                 }
             }
+            .padding(.horizontal, 16)
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHGrid(rows: [.init()], spacing: 16) {
                     ForEach(model.packages.indices, id: \.self) { index in
@@ -262,13 +310,54 @@ struct PackagesCarousel: View {
                             .frame(width: 165)
                     }
                 }
+                .padding(.horizontal, 16)
             }
-            .introspect(.scrollView, on: .iOS(.v15, .v16, .v17, .v18), customize: { scrollView in
-                scrollView.clipsToBounds = false
-            })
+//            .introspect(.scrollView, on: .iOS(.v15, .v16, .v17, .v18), customize: { scrollView in
+//                scrollView.clipsToBounds = false
+//            })
         }
     }
 }
+
+extension PackagesCarousel: Skeletonable {
+    static var skeleton: any View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text("")
+                .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                .frame(maxWidth: 200)
+                .frame(height: 20)
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHGrid(rows: [.init()], spacing: 16) {
+                    ForEach(0...2, id: \.self) { index in
+                        PackageCard
+                            .skeleton
+                            .frame(width: 165)
+                            .equatable.view
+                    }
+                }
+                .frame(maxHeight: 200)
+            }
+        }
+//        .frame(maxHeight: 400)
+    }
+}
+
+#Preview(body: {
+    ScrollView {
+        VStack(spacing: 30) {
+            BannersView
+                .skeleton.equatable.view
+            PackagesCarousel
+                .skeleton.equatable.view
+            PackagesCarousel
+                .skeleton.equatable.view
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.vertical, 20)
+        .padding(.horizontal, 16)
+    }
+})
 
 struct MerchantListModel {
     let title: String

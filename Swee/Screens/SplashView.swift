@@ -31,9 +31,13 @@ struct SplashView: View {
             .navigationBarHidden(true)
             .ignoresSafeArea()
             .onAppear {
+                let onboardingSeen = UserDefaults.standard.bool(forKey: Keys.onboardingFlagKey)
+                if !onboardingSeen {
+                    appRootManager.currentRoot = .onboarding
+                    return
+                }
                 guard let token = UserDefaults.standard.string(forKey: Keys.authToken) else {
                     Task {
-                        try? await cart.refresh()
                         await MainActor.run {
                             appRootManager.currentRoot = .authentication
                         }

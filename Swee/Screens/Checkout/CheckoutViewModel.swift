@@ -4,7 +4,8 @@ import Combine
 class CheckoutViewModel: ObservableObject {
     var cart: Cart = Cart()
     @State private var loadedData = false
-
+    @Published var showError = false
+    
     var quantity: Int {
         return cart.quantity
     }
@@ -17,13 +18,16 @@ class CheckoutViewModel: ObservableObject {
         return Double(cart.totalPriceCents / 100)
     }
     
-    func fetch() {
-        Task {
-            do {
-                try await cart.refresh()
+    func fetch() async throws {
+        do {
+            try await cart.refresh()
+            await MainActor.run {
+                showError = false
                 loadedData = true
-            } catch {
-                // @todo parse error and show error screen
+            }
+        } catch {
+            await MainActor.run {
+                showError = true
             }
         }
     }

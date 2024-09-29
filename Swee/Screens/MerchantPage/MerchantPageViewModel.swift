@@ -4,36 +4,38 @@ import Combine
 class MerchantPageViewModel: ObservableObject {
     var api: API = API()
     var locationManager = LocationManager()
-    @State private var loadedData = false
+    @State private(set) var loadedData = false
+    @Published private(set) var showError = false
     @Published var packages: [Package] = []
     @Published var stores: [MerchantStore] = []
     
-    func fetch(with id: String) {
+    func fetch(with id: String) async throws {
         guard !loadedData else {
             return
         }
-        Task {
-            do {
-                let packageModels = try await self.api.packagesForMerchant(id)
-                loadedData = true
-                
-                await MainActor.run {
-                    self.packages = packageModels.map { $0.toPackage() }
-                }
-            } catch {
-                // @todo parse error and show error screen
-            }
+        
+        do {
+            let packageModels = try await self.api.packagesForMerchant(id)
+            loadedData = true
             
-            do {
-                let storeModels = try await self.api.storesForMerchant(id, location: locationManager.lastKnownLocation)
-                loadedData = true
-                
-                await MainActor.run {
-                    self.stores = storeModels.map { $0.toStore() }
-                }
-            } catch {
-                // @todo parse error and show error screen
+            await MainActor.run {
+                showError = false
+                self.packages = packageModels.map { $0.toPackage() }
             }
+        } catch {
+            await MainActor.run {
+                showError = true
+            }
+        }
+        
+        do {
+            let storeModels = try await self.api.storesForMerchant(id, location: locationManager.lastKnownLocation)
+            
+            await MainActor.run {
+                self.stores = storeModels.map { $0.toStore() }
+            }
+        } catch {
+            // @todo parse error and show error screen
         }
     }
 }

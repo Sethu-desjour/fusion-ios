@@ -53,9 +53,10 @@ struct ReferalCard: View {
                             ZStack {
                                 HStack {
                                     Image("share")
+                                        .foregroundStyle(Color.primary.brand)
                                     Text(banner.buttonTitle)
                                         .font(.custom("Roboto-Bold", size: 14))
-                                        .foregroundStyle(.black)
+                                        .foregroundStyle(Color.primary.brand)
                                 }
                                 .padding([.top, .bottom], 8)
                                 .padding(.leading, 8)

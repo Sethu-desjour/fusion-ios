@@ -80,7 +80,7 @@ struct ProfileView: View {
         CustomNavView {
             ZStack(alignment: .top) {
                 VStack {
-                    LinearGradient(colors: [Color.primary.lighter, Color.white, Color.white], startPoint: .init(x: 0.5, y: 0), endPoint: .bottomLeading)
+                    LinearGradient(colors: [Color.secondary.brand, Color.white, Color.white], startPoint: .init(x: 0.5, y: 0), endPoint: .bottomLeading)
                         .frame(maxWidth: .infinity, maxHeight: 500)
                     Spacer()
                 }
@@ -135,7 +135,7 @@ struct ProfileView: View {
                         }
                         .frame(maxWidth: .infinity)
                         .padding(16)
-                        .background(LinearGradient(colors: Color.gradient.primaryDark, startPoint: .topLeading, endPoint: .bottomTrailing))
+                        .background(LinearGradient(colors: Color.gradient.secondary, startPoint: .topLeading, endPoint: .bottomTrailing))
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                         
                         ForEach(sections.indices, id: \.self) { sectionIndex in

@@ -6,4 +6,6 @@ struct Strings {
 
 struct Keys {
     static let authToken: String = "AuthTokenKey"
+    static let authVerificationID: String = "AuthVerificationID"
+    static let onboardingFlagKey: String = "OnboardingFlagKey"
 }

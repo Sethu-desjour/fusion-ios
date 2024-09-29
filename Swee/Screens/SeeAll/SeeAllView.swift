@@ -14,23 +14,29 @@ struct SeeAllView: View {
     ]
     
     var body: some View {
-        //            VStack(spacing: 0) {
-        //                Divider()
-        ScrollView {
-            if viewModel.loadedData {
-                LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(viewModel.packages.indices, id: \.self) { index in
-                        PackageCard(package: viewModel.packages[index])
-                    }
+        VStack(spacing: 0) {
+            if viewModel.showError {
+                StateView.error {
+                    try? await viewModel.fetch(with: sectionID)
                 }
-                .padding([.leading, .trailing, .top], 16)
             } else {
-                LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(0...4, id: \.self) { index in
-                        PackageCard.skeleton.equatable.view
+                ScrollView {
+                    if viewModel.loadedData {
+                        LazyVGrid(columns: columns, spacing: 16) {
+                            ForEach(viewModel.packages.indices, id: \.self) { index in
+                                PackageCard(package: viewModel.packages[index])
+                            }
+                        }
+                        .padding([.leading, .trailing, .top], 16)
+                    } else {
+                        LazyVGrid(columns: columns, spacing: 16) {
+                            ForEach(0...4, id: \.self) { index in
+                                PackageCard.skeleton.equatable.view
+                            }
+                        }
+                        .padding([.leading, .trailing, .top], 16)
                     }
                 }
-                .padding([.leading, .trailing, .top], 16)
             }
         }
         .customNavigationTitle(title)
@@ -38,7 +44,9 @@ struct SeeAllView: View {
             CartButton()
         }
         .onAppear(perform: {
-            viewModel.fetch(with: sectionID)
+            Task {
+                try? await viewModel.fetch(with: sectionID)
+            }
             tabIsShown.wrappedValue = false
         })
     }

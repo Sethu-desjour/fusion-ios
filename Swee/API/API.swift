@@ -23,13 +23,22 @@ class API: ObservableObject {
         
         let url = "/users/me?token=" + token
         
-        return try await request(with: url) { data, response in
+        return try await request(with: url, reauthenticate: false) { data, response in
             if response.statusCode == 404 {
                 let convertedString = String(data: data, encoding: String.Encoding.utf8)
                 if let stringResponse = convertedString, stringResponse.contains("DATA_NOT_FOUND") {
                     return .withoutName
                 } else {
                     throw LocalError(message: "Something went wrong")
+                }
+            }
+            
+            if response.statusCode == 403 {
+                do {
+                    let token = try await Authentication().reauthenticate()
+                    return try await self.signIn(with: token)
+                } catch {
+                    throw LocalError(message: "Failed to reauthenticate")
                 }
             }
             
@@ -51,6 +60,7 @@ class API: ObservableObject {
     
     func signOut() async {
         UserDefaults.standard.removeObject(forKey: Keys.authToken)
+//        cart.reset()
         try? await Authentication().logout()
     }
     
@@ -190,7 +200,8 @@ extension API {
     fileprivate func performRequest<U: URLProtocol>(
         with urlString: String,
         method: Method = .GET,
-        mockProtocol: U.Type? = nil
+        mockProtocol: U.Type? = nil,
+        reauthenticate: Bool = true
     ) async throws -> (Data, HTTPURLResponse) {
         guard let token = UserDefaults.standard.string(forKey: Keys.authToken) else {
             throw LocalError(message: "Token not found")
@@ -230,16 +241,20 @@ extension API {
             throw LocalError(message: "Invalid response")
         }
         
-        if httpResponse.statusCode == 403 {
-            // @todo try to reauthenticate
-            do {
-                let token = try await Authentication().reauthenticate()
-                UserDefaults.standard.set(token, forKey: Keys.authToken)
-                return try await performRequest(with: urlString, method: method, mockProtocol: mockProtocol)
-            } catch {
-                await signOut()
-                await MainActor.run {
-                    sendToAuth = true
+        if reauthenticate {
+            if httpResponse.statusCode == 403 {
+                // @todo try to reauthenticate
+                print("reauthenticating....")
+                do {
+                    let token = try await Authentication().reauthenticate()
+                    UserDefaults.standard.set(token, forKey: Keys.authToken)
+                    return try await performRequest(with: urlString, method: method, mockProtocol: mockProtocol)
+                } catch {
+                    print("reauthentication failed")
+                    await signOut()
+                    await MainActor.run {
+                        sendToAuth = true
+                    }
                 }
             }
         }
@@ -250,6 +265,7 @@ extension API {
     fileprivate func request<T: Decodable, U: URLProtocol>(
         with url: String,
         method: Method = .GET,
+        reauthenticate: Bool = true,
         intercept: ((Data, HTTPURLResponse) async throws -> T?)? = { data, response in
             guard response.statusCode == 200 else {
                 throw LocalError(message: "Something went wrong")
@@ -258,7 +274,10 @@ extension API {
         },
         mockProtocol: U.Type? = nil
     ) async throws -> T {
-        let (data, response) = try await performRequest(with: url, method: method, mockProtocol: mockProtocol)
+        let (data, response) = try await performRequest(with: url, 
+                                                        method: method, 
+                                                        mockProtocol: mockProtocol,
+                                                        reauthenticate: reauthenticate)
 
         if let intercept = intercept, let decision = try await intercept(data, response) {
             return decision
@@ -270,6 +289,7 @@ extension API {
     fileprivate func request<U: URLProtocol>(
         with url: String,
         method: Method = .GET,
+        reauthenticate: Bool = true,
         intercept: ((Data, HTTPURLResponse) async throws -> Void?)? = { data, response in
             guard response.statusCode == 200 else {
                 throw LocalError(message: "Something went wrong")
@@ -278,7 +298,10 @@ extension API {
         },
         mockProtocol: U.Type? = nil
     ) async throws {
-        let (data, response) = try await performRequest(with: url, method: method, mockProtocol: mockProtocol)
+        let (data, response) = try await performRequest(with: url,
+                                                        method: method,
+                                                        mockProtocol: mockProtocol,
+                                                        reauthenticate: reauthenticate)
         
         if let intercept = intercept {
             _ = try await intercept(data, response)
