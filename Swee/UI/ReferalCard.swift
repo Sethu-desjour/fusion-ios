@@ -53,9 +53,10 @@ struct ReferalCard: View {
                             ZStack {
                                 HStack {
                                     Image("share")
+                                        .foregroundStyle(Color.primary.brand)
                                     Text(banner.buttonTitle)
                                         .font(.custom("Roboto-Bold", size: 14))
-                                        .foregroundStyle(.black)
+                                        .foregroundStyle(Color.primary.brand)
                                 }
                                 .padding([.top, .bottom], 8)
                                 .padding(.leading, 8)
@@ -69,19 +70,22 @@ struct ReferalCard: View {
                             .padding([.bottom], 24)
                         }
                         .frame(maxWidth: .infinity)
+                        
                         VStack() {
                             Spacer()
-                            WebImage(url: banner.badgeImage) { image in
-                                image.resizable()
-                                    .scaledToFit()
-                            } placeholder: {
-                                Color.white
-                                    .skeleton(with: true, shape: .circle)
-                                    .frame(width: 110, height: 110)
+                            if let badgeURL = banner.badgeImage {
+                                WebImage(url: badgeURL) { image in
+                                    image.resizable()
+                                        .scaledToFit()
+                                } placeholder: {
+                                    Color.white
+                                        .skeleton(with: true, shape: .circle)
+                                        .frame(width: 110, height: 110)
+                                }
+                                .transition(.fade(duration: 0.5))
+                                .clipShape(RoundedRectangle(cornerRadius: 4))
+                                .frame(width: 110, height: 110)
                             }
-                            .transition(.fade(duration: 0.5))
-                            .clipShape(RoundedRectangle(cornerRadius: 4))
-                            .frame(width: 110, height: 110)
                         }
                         .frame(maxWidth: metrics.size.width * 0.40, alignment: .bottomTrailing)
                         .padding([.bottom], 10)

@@ -15,11 +15,14 @@ final class AppRootManager: ObservableObject {
     }
 }
 
+
 @main
 struct SweeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject private var appRootManager = AppRootManager()
-    var api = API()
+    @StateObject var api = API()
+    @StateObject var cart = Cart()
+    @StateObject var locationManager = LocationManager()
     
     var body: some Scene {
         WindowGroup {
@@ -35,8 +38,20 @@ struct SweeApp: App {
                     MainView()
                 }
             }
+            .onAppear(perform: {
+                cart.api = api
+            })
+            .onChange(of: api.sendToAuth, perform: { newValue in
+                // @todo probably show alert
+                if newValue {
+                    cart.reset()
+                    appRootManager.currentRoot = .authentication
+                }
+            })
             .environmentObject(appRootManager)
             .environmentObject(api)
+            .environmentObject(cart)
+            .environmentObject(locationManager)
         }
     }
 }

@@ -12,9 +12,9 @@ extension Color {
     struct secondary {
         static let brand = Color(hex:"#07CE8C")
         static let dark = Color(hex:"#4DB28A")
-        static let darker = Color(hex:"#4DB28A")
-        static let light = Color(hex:"#B75C44")
-        static let lighter = Color(hex:"#F9BCAD")
+        static let darker = Color(hex:"#34775C")
+        static let light = Color(hex:"#67EEB8")
+        static let lighter = Color(hex:"#B3F7DB")
     }
     
     struct background {

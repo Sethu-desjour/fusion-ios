@@ -28,7 +28,7 @@ struct Authentication {
                 }
         }
     }
-
+    
     
     func phoneSignIn(verificationID: String, otp: String) async throws -> String {
         
@@ -40,27 +40,21 @@ struct Authentication {
             throw PhoneError.other
         }
         
-        return try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, Error>) -> Void in
-            Task {
-                do {
-                    try await Auth.auth().signIn(with: credential)
-                    guard let token = try await Auth.auth().currentUser?.getIDToken() else {
-                        continuation.resume(throwing: PhoneError.other)
-                        return
-                    }
-                    continuation.resume(returning: token)
-                } catch {
-                    guard let authError = error as NSError?, let errorCode = AuthErrorCode(_bridgedNSError: authError) else {
-                        continuation.resume(throwing: PhoneError.other)
-                        return
-                    }
-                    
-                    if case .invalidVerificationCode = errorCode.code {
-                        continuation.resume(throwing: PhoneError.wrongCode)
-                    } else {
-                        continuation.resume(throwing: PhoneError.other)
-                    }
-                }
+        do {
+            try await Auth.auth().signIn(with: credential)
+            guard let token = try await Auth.auth().currentUser?.getIDToken() else {
+                throw PhoneError.other
+            }
+            return token
+        } catch {
+            guard let authError = error as NSError?, let errorCode = AuthErrorCode(_bridgedNSError: authError) else {
+                throw PhoneError.other
+            }
+            
+            if case .invalidVerificationCode = errorCode.code {
+                throw PhoneError.wrongCode
+            } else {
+                throw PhoneError.other
             }
         }
     }
@@ -99,10 +93,24 @@ struct Authentication {
         return token
     }
     
+    func reauthenticate() async throws -> String {
+        do {
+            let result = try await Auth.auth().currentUser?.getIDTokenResult(forcingRefresh: true)
+            guard let token = result?.token else {
+                throw LocalError(message: "Didn't get a new token")
+            }
+            
+            return token
+        } catch {
+            print("reauthentication failed =====", error )
+            throw error
+        }
+    }
+    
     func logout() async throws {
         //        // Google logout
-//        GIDSignIn.sharedInstance.signOut()
-//        try Auth.auth().signOut()
+        //        GIDSignIn.sharedInstance.signOut()
+        //        try Auth.auth().signOut()
         do {
             try Auth.auth().signOut()
         } catch let signOutError as NSError {
@@ -186,7 +194,7 @@ struct Authentication {
 enum AuthError: Error {
     case canceled
     case error(Error)
-//    case message(String)
+    //    case message(String)
 }
 
 typealias AppleAuthCallback = (Result<ASAuthorization, AuthError>) -> Void
