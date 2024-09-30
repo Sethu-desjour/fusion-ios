@@ -40,7 +40,7 @@ struct CheckoutView: View {
     @StateObject private var viewModel = CheckoutViewModel()
     
     @State private var text: String = ""
-    @State private var showPaymentSuccess: Bool = false
+//    @State private var showPaymentSuccess: Bool = false
     
     var mainUI: some View {
         VStack(spacing: 0) {
@@ -191,9 +191,9 @@ struct CheckoutView: View {
                 .padding([.horizontal, .bottom], 16)
             }
             BottomButtonContainer {
-                Button {
-                    // @todo make request
-                    showPaymentSuccess = true
+                AsyncButton(progressWidth: .infinity) {
+                    try? await viewModel.checkout()
+//                    showPaymentSuccess = true
                 } label: {
                     HStack {
                         Text("Proceed to payment")
@@ -202,6 +202,7 @@ struct CheckoutView: View {
                     .foregroundStyle(Color.background.white)
                     .frame(maxWidth: .infinity)
                 }
+                .disabled(cart.inProgress)
                 .buttonStyle(PrimaryButton())
             }
             .padding(.bottom, 40)
@@ -242,16 +243,28 @@ struct CheckoutView: View {
         }
     }
     
+    var failedPaymentUI: some View {
+        StateView(image: .custom("cart-error"),
+                  title: "Transaction failed",
+                  description: "We are unable to complete the transaction, please try again.",
+                  buttonTitle: "Retry payment") {
+            try? await viewModel.checkout()
+        }
+    }
+    
     var body: some View {
         VStack {
-            if showPaymentSuccess {
-                successUI
-            } else if viewModel.showError {
-                errorUI
-            } else if cart.packages.isEmpty {
-                emptyUI
-            } else {
+            switch viewModel.state {
+            case .loaded:
                 mainUI
+            case .empty:
+                emptyUI
+            case .error:
+                errorUI
+            case .paymentSucceeded:
+                successUI
+            case .paymentFailed:
+                failedPaymentUI
             }
         }
         .onAppear(perform: {

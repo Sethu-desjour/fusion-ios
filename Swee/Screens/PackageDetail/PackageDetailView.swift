@@ -123,21 +123,27 @@ struct PackageDetailView: View {
                             FontSize(16)
                             ForegroundColor(Color.text.black60)
                         }
-                    ForEach(viewModel.package.details.indices, id: \.self) { detail in
-                        VStack(alignment: .leading) {
-                            Rectangle()
-                                .frame(height: 1)
-                                .foregroundStyle(.black.opacity(0.15))
-                            Text(viewModel.package.details[detail].title)
-                                .font(.custom("Poppins-Bold", size: 18))
-                                .foregroundStyle(Color.text.black100)
-                                .padding(.vertical, 8)
-                            Markdown(viewModel.package.details[detail].content)
-                                .markdownTextStyle {
-                                    FontFamily(.custom("Poppins-Medium"))
-                                    FontSize(16)
-                                    ForegroundColor(Color.text.black60)
-                                }
+                    if viewModel.showError {
+                        ContentErrorView {
+                            try? await viewModel.fetch()
+                        }
+                    } else {
+                        ForEach(viewModel.package.details.indices, id: \.self) { detail in
+                            VStack(alignment: .leading) {
+                                Rectangle()
+                                    .frame(height: 1)
+                                    .foregroundStyle(.black.opacity(0.15))
+                                Text(viewModel.package.details[detail].title)
+                                    .font(.custom("Poppins-Bold", size: 18))
+                                    .foregroundStyle(Color.text.black100)
+                                    .padding(.vertical, 8)
+                                Markdown(viewModel.package.details[detail].content)
+                                    .markdownTextStyle {
+                                        FontFamily(.custom("Poppins-Medium"))
+                                        FontSize(16)
+                                        ForegroundColor(Color.text.black60)
+                                    }
+                            }
                         }
                     }
                     if let tos = package.tos {
@@ -191,7 +197,9 @@ struct PackageDetailView: View {
             viewModel.package = package
             viewModel.api = api
             viewModel.cart = cart
-            viewModel.fetch()
+            Task {
+                try? await viewModel.fetch()
+            }
         })
     }
 }

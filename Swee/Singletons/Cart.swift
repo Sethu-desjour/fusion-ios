@@ -77,6 +77,7 @@ class Cart: ObservableObject {
     @Published private(set) var totalPriceCents: Int64 = 0
     @Published private(set) var fees: [FeeModel]? = []
     @Published private(set) var updatedAt: Date = .now
+    private var id: UUID = .init()
     var inProgress = false
     var stopRefresh = false
     var refreshingPackageID: UUID? = nil
@@ -92,6 +93,7 @@ class Cart: ObservableObject {
 //            if let timer = debounceTimer, timer.isValid {
 //                return
 //            }
+            id = cart.id
             packages = cart.items
             currencyCode = cart.currencyCode
             priceCents = cart.priceCents
@@ -196,6 +198,20 @@ class Cart: ObservableObject {
             inProgress = false
             // @todo maybe show some kind of notification that request failed
         }
+    }
+    
+    func checkout() async throws {
+        do {
+            // @todo handle all order states
+            let order = try await api.createOrder(for: id)
+            print("successful order ====", order)
+            await MainActor.run {
+                reset()
+            }
+        } catch {
+            throw error
+        }
+        
     }
 
     func quantity(for package: Package) -> Int {

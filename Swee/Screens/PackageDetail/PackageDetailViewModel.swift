@@ -4,39 +4,38 @@ import Combine
 class PackageDetailViewModel: ObservableObject {
     var api: API = API()
     var cart: Cart = Cart()
-    @State private var loadedData = false
+    @State private(set) var loadedData = false
+    private(set) var showError = false
     @Published var package: Package = .empty
     @Published var stores: [MerchantStore] = []
     var quantity: Int {
         cart.quantity(for: package)
     }
     
-    func fetch() {
+    func fetch() async throws {
         guard !loadedData else {
             return
         }
-        Task {
-            do {
-                let package = try await self.api.packageDetails(for: package.id)
-                loadedData = true
-                
-                await MainActor.run {
-                    self.package = package.toPackage()
-                }
-            } catch {
-                // @todo parse error and show error screen
-            }
+        do {
+            let package = try await api.packageDetails(for: package.id)
+            loadedData = true
             
-            do {
-                let storeModels = try await self.api.packageStores(for: package.id)
-                loadedData = true
-                
-                await MainActor.run {
-                    self.stores = storeModels.map { $0.toStore() }
-                }
-            } catch {
-                // @todo parse error and show error screen
+            await MainActor.run {
+                self.package = package.toPackage()
+                showError = false
             }
+        } catch {
+            await MainActor.run {
+                showError = true
+            }
+        }
+        
+        guard let storeModels = try? await api.packageStores(for: package.id) else {
+            return
+        }
+        
+        await MainActor.run {
+            self.stores = storeModels.map { $0.toStore() }
         }
     }
     

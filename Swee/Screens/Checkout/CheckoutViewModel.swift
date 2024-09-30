@@ -2,9 +2,18 @@ import SwiftUI
 import Combine
 
 class CheckoutViewModel: ObservableObject {
+    enum State {
+        case loaded
+        case empty
+        case error
+        case paymentSucceeded
+        case paymentFailed
+    }
+    
     var cart: Cart = Cart()
-    @State private var loadedData = false
-    @Published var showError = false
+    private var loadedData = false
+    private var showError = false
+    @Published private(set) var state: State = .loaded
     
     var quantity: Int {
         return cart.quantity
@@ -22,11 +31,13 @@ class CheckoutViewModel: ObservableObject {
         do {
             try await cart.refresh()
             await MainActor.run {
+                state = cart.packages.isEmpty ? .empty : .loaded
                 showError = false
                 loadedData = true
             }
         } catch {
             await MainActor.run {
+                state = .error
                 showError = true
             }
         }
@@ -54,6 +65,19 @@ class CheckoutViewModel: ObservableObject {
         }
         Task {
             try? await cart.changeQuantity(packageId, quantity: item.quantity + 1)
+        }
+    }
+    
+    func checkout() async throws {
+        do {
+            try await cart.checkout()
+            await MainActor.run {
+                state = .paymentSucceeded
+            }
+        } catch {
+            await MainActor.run {
+                state = .paymentFailed
+            }
         }
     }
 }
