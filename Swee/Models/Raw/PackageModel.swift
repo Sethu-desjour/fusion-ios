@@ -23,7 +23,6 @@ struct PackageModel: Codable {
     let originalPriceCents: Int?
     let status: Status
     let details: [Details]?
-//    let details: [String: Any]?
     let stores: [MerchantStoreModel]?
     let photoURL: URL?
     let tos: String?
@@ -38,7 +37,6 @@ struct PackageModel: Codable {
         case originalPriceCents = "original_price_cents"
         case merchantName = "merchant_name"
         case merchantID = "merchant_id"
-//        case details
         case status, stores, details
         case photoURL = "photo_url"
         case tos = "terms_and_conditions"

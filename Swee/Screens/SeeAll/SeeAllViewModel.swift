@@ -19,7 +19,7 @@ class SeeAllViewModel: ObservableObject {
                 case .packageCarousel:
                     self.packages = section.packages.toPackages()
                 case .bannerCarousel, .bannerStatic, .merchantList:
-                    // @todo show error state
+                    showError = true
                     print("Wrong models returned in See All")
                 }
             }

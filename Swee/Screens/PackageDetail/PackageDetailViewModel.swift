@@ -11,12 +11,6 @@ class PackageDetailViewModel: ObservableObject {
         cart.quantity(for: package)
     }
     
-    //    init(loadedData: Bool = false, package: Package, stores: [MerchantStore] = []) {
-    //        self.loadedData = loadedData
-    //        self.package = package
-    //        self.stores = stores
-    //    }
-    
     func fetch() {
         guard !loadedData else {
             return

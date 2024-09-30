@@ -79,6 +79,7 @@ class Cart: ObservableObject {
     @Published private(set) var updatedAt: Date = .now
     var inProgress = false
     var stopRefresh = false
+    var refreshingPackageID: UUID? = nil
 //    var debounceTimer: Timer?
     
     func refresh() async throws {
@@ -98,6 +99,7 @@ class Cart: ObservableObject {
             fees = cart.fees
             updatedAt = cart.updatedAt
             inProgress = false
+            refreshingPackageID = nil
         }
     }
     
@@ -132,6 +134,7 @@ class Cart: ObservableObject {
     }
     
     func changeQuantity(_ packageId: UUID, quantity: Int) async throws {
+        refreshingPackageID = packageId
         inProgress = true
         let oldItems = packages
         guard let index = packages.firstIndex(where: { $0.packageId == packageId }) else {

@@ -80,7 +80,7 @@ struct CheckoutView: View {
                                     .font(.custom("Poppins-Medium", size: 12))
                                 Spacer()
                                 HStack {
-                                    if cart.inProgress {
+                                    if cart.inProgress && cart.refreshingPackageID == element.packageId {
                                         Text(element.priceString(currencyCode: cart.currencyCode))
                                             .foregroundStyle(Color.text.black100)
                                             .font(.custom("Poppins-SemiBold", size: 14))

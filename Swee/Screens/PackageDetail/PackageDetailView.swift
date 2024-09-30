@@ -117,9 +117,12 @@ struct PackageDetailView: View {
                                 .foregroundStyle(Color.text.black60)
                         }
                     }
-                    Text(package.description)
-                        .font(.custom("Poppins-Medium", size: 16))
-                        .foregroundStyle(Color.text.black60)
+                    Markdown(package.description)
+                        .markdownTextStyle {
+                            FontFamily(.custom("Poppins-Medium"))
+                            FontSize(16)
+                            ForegroundColor(Color.text.black60)
+                        }
                     ForEach(viewModel.package.details.indices, id: \.self) { detail in
                         VStack(alignment: .leading) {
                             Rectangle()
