@@ -1,4 +1,5 @@
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct MerchantPurchases {
     let image: Image
@@ -9,10 +10,8 @@ struct MerchantPurchases {
 
 struct MyWalletView: View {
     @Environment(\.tabIsShown) private var tabIsShown
-    @State var purchases: [MerchantPurchases] = [
-        .init(image: Image("purhcase-1"), merchant: "Zoomoov AMK", summary: "24 Rides + 12 masks", colors: Color.gradient.secondary),
-        .init(image: Image("purhcase-2"), merchant: "Jollyfield Bugis+", summary: "01:30 hrs left", colors: Color.gradient.primary)
-    ]
+    @EnvironmentObject private var api: API
+    @StateObject private var viewModel = MyWalletViewModel()
     
     var body: some View {
         CustomNavView {
@@ -40,28 +39,44 @@ struct MyWalletView: View {
                 }
                 .padding(.top, 8)
                 .padding(.horizontal, 16)
-                LazyVStack(spacing: 16) {
-                    ForEach(purchases, id: \.merchant) { purchase in
-                        let view = MerchantPurchasesCard(purchase: purchase)
-                        if purchase.merchant == "Zoomoov AMK" {
-                            CustomNavLink(destination: ZoomoovRedemptionView(tickets: [
-                                .init(merchant: "Zoomoov", quantity: 12, description: "Rides", type: "Rides", expirationDate: Date(), colors: Color.gradient.secondary),
-                                .init(merchant: "Zoomoov", quantity: 1, description: "Masks", type: "Mask", expirationDate: Date(), colors: [Color(hex: "#EC048A"), Color(hex: "#F0971C")])
-                            ])) {
-                                view
-                            }
-                        } else {
-                            CustomNavLink(destination: JollyfieldRedemptionView()) {
-                                view
+                if viewModel.showError {
+                    StateView.error {
+                        try? await viewModel.fetch()
+                    }
+                } else if !viewModel.loadedData, viewModel.merchants.isEmpty {
+                    VStack(spacing: 16) {
+                        MerchantPurchasesCard.skeleton.equatable.view
+                        MerchantPurchasesCard.skeleton.equatable.view
+                    }
+                    .padding(.horizontal, 16)
+                } else {
+                    LazyVStack(spacing: 16) {
+                        ForEach(viewModel.merchants, id: \.id) { merchant in
+                            let view = MerchantPurchasesCard(merchant: merchant)
+                            if merchant.name.lowercased() == "zoomoov" {
+                                CustomNavLink(destination: ZoomoovRedemptionView(tickets: [
+                                    .init(merchant: "Zoomoov", quantity: 12, description: "Rides", type: "Rides", expirationDate: Date(), colors: Color.gradient.secondary),
+                                    .init(merchant: "Zoomoov", quantity: 1, description: "Masks", type: "Mask", expirationDate: Date(), colors: [Color(hex: "#EC048A"), Color(hex: "#F0971C")])
+                                ])) {
+                                    view
+                                }
+                            } else {
+                                CustomNavLink(destination: JollyfieldRedemptionView()) {
+                                    view
+                                }
                             }
                         }
                     }
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 60)
                 }
-                .padding(.horizontal, 16)
-                .padding(.bottom, 60)
             }
             .background(Color.background.pale)
             .onAppear(perform: {
+                viewModel.api = api
+                Task {
+                    try? await viewModel.fetch()
+                }
                 tabIsShown.wrappedValue = true
             })
             .customNavigationBackButtonHidden(true)
@@ -76,17 +91,22 @@ struct MyWalletView: View {
 }
 
 struct MerchantPurchasesCard: View {
-    var purchase: MerchantPurchases
+    var merchant: MyWalletMerchant
     
     var body: some View {
         VStack {
-            purchase.image
-                .resizable()
-                .scaledToFit()
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+            WebImage(url: merchant.photoURL) { image in
+                image.resizable()
+                    .scaledToFit()
+            } placeholder: {
+                Color.white
+                    .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                        .frame(height: 154)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 12))
             HStack {
                 VStack(alignment: .leading) {
-                    Text(purchase.merchant)
+                    Text(merchant.name)
                         .font(.custom("Poppins-Bold", size: 12))
                         .foregroundStyle(.white)
                         .padding([.top, .bottom], 4)
@@ -96,7 +116,7 @@ struct MerchantPurchasesCard: View {
                                 .fill(.black.opacity(0.1))
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
                         }
-                    Text(purchase.summary)
+                    Text(merchant.purchaseSummary)
                         .font(.custom("Poppins-SemiBold", size: 18))
                         .foregroundStyle(Color.background.white)
                 }
@@ -111,9 +131,36 @@ struct MerchantPurchasesCard: View {
             }
         }
         .padding(16)
-        .background(LinearGradient(colors: purchase.colors, startPoint: .topLeading, endPoint: .bottomTrailing))
+        .background(LinearGradient(colors: merchant.bgColors, startPoint: .topLeading, endPoint: .bottomTrailing))
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
+}
+
+extension MerchantPurchasesCard: Skeletonable {
+    static var skeleton: any View {
+        ZStack {
+            Color.white
+            .skeleton(with: true, shape: .rounded(.radius(16, style: .circular)))
+                .frame(height: 300)
+            VStack(alignment: .leading, spacing: 16)  {
+                Color.white
+                    .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                    .frame(width: 320, height: 154)
+                Text("")
+                    .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                    .frame(width: 100, height: 20)
+                Text("")
+                    .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                    .frame(width: 170, height: 20)
+            }
+        }
+        .frame(height: 300)
+    }
+}
+
+#Preview {
+    MerchantPurchasesCard
+        .skeleton
 }
 
 #Preview {

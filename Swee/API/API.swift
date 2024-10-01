@@ -194,7 +194,7 @@ class API: ObservableObject {
             guard response.statusCode == 201 else {
                 throw APIError.wrongCode
             }
-            
+                
             return nil
         }
     }
@@ -205,7 +205,11 @@ class API: ObservableObject {
         return try await request(with: url)
     }
     
-    
+    func walletMerchants() async throws -> [WalletMerchantCompactModel] {
+        let url = "/wallet/merchants"
+        
+        return try await request(with: url)
+    }
 }
 
 extension API {
