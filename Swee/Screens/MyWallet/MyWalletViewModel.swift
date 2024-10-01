@@ -23,6 +23,7 @@ struct Purchase {
     let type: ProductType
     let remainingValue: Int
     let status: PurchaseStatus
+    let note: String?
     let expiresAt: Date
 }
 
@@ -43,6 +44,7 @@ extension PurchaseModel {
               type: productType,
               remainingValue: remainingValue,
               status: status,
+              note: productNotes,
               expiresAt: expiresAt)
     }
 }

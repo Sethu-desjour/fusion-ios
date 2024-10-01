@@ -22,11 +22,12 @@ struct ZoomoovRedemptionModel {
     var currentTicket: Int = 1
     let merchant: String
     let type: String
-    let disclaimer: String
+    let disclaimer: String?
 }
 
 struct ZoomoovRedemptionSetupView: View {
     @Binding var model: ZoomoovRedemptionModel
+//    var purchase: Purchase
     var closure: (() -> Void)? = nil
     
     var body: some View {
@@ -78,9 +79,11 @@ struct ZoomoovRedemptionSetupView: View {
                 Text("Note:")
                     .font(.custom("Poppins-Bold", size: 18))
                     .foregroundStyle(Color.text.black100)
-                Text(model.disclaimer)
-                    .font(.custom("Poppins-Medium", size: 14))
-                    .foregroundStyle(Color.text.black80)
+                if let disclaimer = model.disclaimer {
+                    Text(disclaimer)
+                        .font(.custom("Poppins-Medium", size: 14))
+                        .foregroundStyle(Color.text.black80)
+                }
             }
             .frame(maxWidth: .infinity)
             .padding(16)
@@ -107,6 +110,49 @@ struct ZoomoovRedemptionSetupView: View {
     }
 }
 
+struct ZoomoovBottomSheet: View {
+    @State var step: ZoomoovRedemptionSteps = .setup
+    @Binding var model: ZoomoovRedemptionModel
+    var onComplete: () -> Void
+    
+    var body: some View {
+        switch step {
+        case .setup:
+            ZoomoovRedemptionSetupView(model: $model) {
+                step = .redemptionQueue
+            }
+        case .redemptionQueue:
+            RedemptionScanView(model: .init(header: "\(model.type.capitalized) \(model.currentTicket)/\(model.qtyToRedeem)",
+                                            title: "Scan QR to start your ride",
+                                            qr: Image("qr"),
+                                            description: "Show this QR code at the counter, our staff will scan this QR to mark your presence",
+                                            actionTitle: "Next QR")) {
+                step = .loading
+            }
+        case .loading:
+            RedemptionLoadingView(model: .init(header: "",
+                                               title: "Scanning for \(model.type.capitalized) \(model.currentTicket)")) {
+                if model.currentTicket == model.qtyToRedeem {
+                    step = .completed
+                } else {
+                    model.currentTicket += 1
+                    step = .redemptionQueue
+                }
+            }
+        case .completed:
+            RedemptionCompletedView(model: .init(header: "\(model.type.capitalized) \(model.currentTicket)/\(model.qtyToRedeem)",
+                                                 title: "\(model.qtyToRedeem) Coupons redeemed successfully!",
+                                                 description: "",
+                                                 actionTitle: "Done")) {
+//                hidden = true
+//                step = .setup
+                onComplete()
+            }
+        }
+        
+    }
+}
+
 struct ZoomoovRedemptionView: View {
     @Environment(\.tabIsShown) private var tabIsShown
     @EnvironmentObject private var api: API
@@ -115,63 +161,26 @@ struct ZoomoovRedemptionView: View {
     
     @State var tempQuantity = 1
     @State var tempCurrentRide = 1
-    @State var tempStep: ZoomoovRedemptionSteps = .setup
-    @State var tempModel: ZoomoovRedemptionModel = .init(totalQuantity: 4,
-                                                         merchant: "Zoomoov",
-                                                         type: "rides",
-                                                         disclaimer: "Ride cannot be refunded, or anything that the parent should be aware of will take up this space.")
+    @State var step: ZoomoovRedemptionSteps = .setup
+    @State var currentRedemption: ZoomoovRedemptionModel = .init(totalQuantity: 10,
+                                                                 merchant: "Zoomoov",
+                                                                 type: "rides",
+                                                                 disclaimer: "Ride cannot be refunded, or anything that the parent should be aware of will take up this space.")
     
     @State var hidden = true
     
-//    @State var tickets: [Ticket]
-    
-    var bottomSheet: any View {
-        switch $tempStep.wrappedValue {
-        case .setup:
-            ZoomoovRedemptionSetupView(model: $tempModel) {
-                $tempStep.wrappedValue = .redemptionQueue
-            }
-        case .redemptionQueue:
-            RedemptionScanView(model: .init(header: "\(tempModel.type.capitalized) \(tempModel.currentTicket)/\(tempModel.qtyToRedeem)",
-                                            title: "Scan QR to start your ride",
-                                            qr: Image("qr"),
-                                            description: "Show this QR code at the counter, our staff will scan this QR to mark your presence",
-                                            actionTitle: "Next QR")) {
-                $tempStep.wrappedValue = .loading
-            }
-        case .loading:
-            RedemptionLoadingView(model: .init(header: "",
-                                               title: "Scanning for \(tempModel.type.capitalized) \(tempModel.currentTicket)")) {
-                if tempModel.currentTicket == tempModel.qtyToRedeem {
-                    $tempStep.wrappedValue = .completed
-                } else {
-                    tempModel.currentTicket += 1
-                    $tempStep.wrappedValue = .redemptionQueue
-                }
-            }
-        case .completed:
-            RedemptionCompletedView(model: .init(header: "\(tempModel.type.capitalized) \(tempModel.currentTicket)/\(tempModel.qtyToRedeem)",
-                                                 title: "\(tempModel.qtyToRedeem) Coupons redeemed successfully!",
-                                                 description: "",
-                                                 actionTitle: "Done")) {
-                hidden = true
-                $tempStep.wrappedValue = .setup
-            }
-        }
-    }
-    
-    var shouldDismissOnTap: Bool {
-        switch tempStep {
-        case .setup:
-            return true
-        case .redemptionQueue:
-            return true
-        case .loading:
-            return false
-        case .completed:
-            return false
-        }
-    }
+//    var shouldDismissOnTap: Bool {
+//        switch tempStep {
+//        case .setup:
+//            return true
+//        case .redemptionQueue:
+//            return true
+//        case .loading:
+//            return false
+//        case .completed:
+//            return false
+//        }
+//    }
     
     var body: some View {
         ZStack {
@@ -182,8 +191,17 @@ struct ZoomoovRedemptionView: View {
                             Text(product.name)
                                 .font(.custom("Poppins-SemiBold", size: 20))
                             ForEach(product.purchases, id: \.id) { purchase in
-                                TicketView(ticket: .init(merchant: merchant.name, quantity: purchase.remainingValue, type: product.name, expirationDate: purchase.expiresAt, colors: Color.gradient.secondary /*merchant.bgColors*/)) // @todo change back to using the merchant colors
+                                TicketView(ticket: .init(merchant: merchant.name, 
+                                                         quantity: purchase.remainingValue,
+                                                         type: product.name,
+                                                         expirationDate: purchase.expiresAt,
+                                                         colors: Color.gradient.secondary /*merchant.bgColors*/)) // @todo change back to using the merchant colors
                                     .onTapGesture {
+                                        currentRedemption = .init(totalQuantity: purchase.remainingValue, 
+                                                                  merchant: merchant.name,
+                                                                  type: product.name,
+                                                                  disclaimer: purchase.note)
+                                        print("redemption ====", currentRedemption)
                                         hidden = false
                                     }
                             }
@@ -206,37 +224,8 @@ struct ZoomoovRedemptionView: View {
         }
         .customNavigationTitle(merchant.name)
         .customBottomSheet(hidden: $hidden) {
-            switch $tempStep.wrappedValue {
-            case .setup:
-                ZoomoovRedemptionSetupView(model: $tempModel) {
-                    $tempStep.wrappedValue = .redemptionQueue
-                }
-            case .redemptionQueue:
-                RedemptionScanView(model: .init(header: "\(tempModel.type.capitalized) \(tempModel.currentTicket)/\(tempModel.qtyToRedeem)",
-                                                title: "Scan QR to start your ride",
-                                                qr: Image("qr"),
-                                                description: "Show this QR code at the counter, our staff will scan this QR to mark your presence",
-                                                actionTitle: "Next QR")) {
-                    $tempStep.wrappedValue = .loading
-                }
-            case .loading:
-                RedemptionLoadingView(model: .init(header: "",
-                                                   title: "Scanning for \(tempModel.type.capitalized) \(tempModel.currentTicket)")) {
-                    if tempModel.currentTicket == tempModel.qtyToRedeem {
-                        $tempStep.wrappedValue = .completed
-                    } else {
-                        tempModel.currentTicket += 1
-                        $tempStep.wrappedValue = .redemptionQueue
-                    }
-                }
-            case .completed:
-                RedemptionCompletedView(model: .init(header: "\(tempModel.type.capitalized) \(tempModel.currentTicket)/\(tempModel.qtyToRedeem)",
-                                                     title: "\(tempModel.qtyToRedeem) Coupons redeemed successfully!",
-                                                     description: "",
-                                                     actionTitle: "Done")) {
-                    hidden = true
-                    $tempStep.wrappedValue = .setup
-                }
+            ZoomoovBottomSheet(model: $currentRedemption) {
+                hidden = true
             }
         }
     }
