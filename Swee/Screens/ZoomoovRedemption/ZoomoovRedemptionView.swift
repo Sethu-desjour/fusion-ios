@@ -3,7 +3,6 @@ import SwiftUI
 struct Ticket: Hashable {
     let merchant: String
     let quantity: Int
-    let description: String
     let type: String
     let expirationDate: Date
     let colors: [Color]
@@ -110,6 +109,9 @@ struct ZoomoovRedemptionSetupView: View {
 
 struct ZoomoovRedemptionView: View {
     @Environment(\.tabIsShown) private var tabIsShown
+    @EnvironmentObject private var api: API
+    @StateObject private var viewModel = ZoomoovRedemptionViewModel()
+    @State var merchant: MyWalletMerchant
     
     @State var tempQuantity = 1
     @State var tempCurrentRide = 1
@@ -118,9 +120,10 @@ struct ZoomoovRedemptionView: View {
                                                          merchant: "Zoomoov",
                                                          type: "rides",
                                                          disclaimer: "Ride cannot be refunded, or anything that the parent should be aware of will take up this space.")
+    
     @State var hidden = true
     
-    @State var tickets: [Ticket]
+//    @State var tickets: [Ticket]
     
     var bottomSheet: any View {
         switch $tempStep.wrappedValue {
@@ -174,14 +177,16 @@ struct ZoomoovRedemptionView: View {
         ZStack {
             ScrollView {
                 VStack(spacing: 24) {
-                    ForEach(tickets, id: \.self) { ticket in
+                    ForEach(viewModel.merchant.products, id: \.id) { product in
                         VStack(alignment: .leading, spacing: 0) {
-                            Text(ticket.type)
+                            Text(product.name)
                                 .font(.custom("Poppins-SemiBold", size: 20))
-                            TicketView(ticket: ticket)
-                                .onTapGesture {
-                                    hidden = false
-                                }
+                            ForEach(product.purchases, id: \.id) { purchase in
+                                TicketView(ticket: .init(merchant: merchant.name, quantity: purchase.remainingValue, type: product.name, expirationDate: purchase.expiresAt, colors: Color.gradient.secondary /*merchant.bgColors*/)) // @todo change back to using the merchant colors
+                                    .onTapGesture {
+                                        hidden = false
+                                    }
+                            }
                         }
                     }
                 }
@@ -189,12 +194,17 @@ struct ZoomoovRedemptionView: View {
                 .navigationBarBackButtonHidden(true)
                 .navigationBarTitleDisplayMode(.inline)
             }
-            .onWillAppear({
+            .onAppear(perform: {
+                viewModel.api = api
+                viewModel.merchant = merchant
+                Task {
+                    try? await viewModel.fetch()
+                }
                 tabIsShown.wrappedValue = false
             })
             .background(Color.background.pale)
         }
-        .customNavigationTitle(tickets[0].merchant)
+        .customNavigationTitle(merchant.name)
         .customBottomSheet(hidden: $hidden) {
             switch $tempStep.wrappedValue {
             case .setup:
@@ -323,7 +333,7 @@ struct TicketView: View {
                         Text("\(ticket.quantity)")
                             .font(.custom("Poppins-SemiBold", size: 66))
                         +
-                        Text(" " + ticket.description)
+                        Text(" " + ticket.type)
                             .font(.custom("Poppins-Bold", size: 24))
                     }
                     .addInnerShadow()
@@ -350,12 +360,12 @@ struct TicketView: View {
     
 }
 
-#Preview {
-    CustomNavView {
-        ZoomoovRedemptionView(tickets: [
-            .init(merchant: "Zoomoov", quantity: 12, description: "Rides", type: "Rides", expirationDate: Date(), colors: Color.gradient.primary),
-            .init(merchant: "Zoomoov", quantity: 1, description: "Masks", type: "Mask", expirationDate: Date(), colors: [Color(hex: "#EC048A"), Color(hex: "#F0971C")])
-        ]
-        )
-    }
-}
+//#Preview {
+//    CustomNavView {
+//        ZoomoovRedemptionView(tickets: [
+//            .init(merchant: "Zoomoov", quantity: 12, description: "Rides", type: "Rides", expirationDate: Date(), colors: Color.gradient.primary),
+//            .init(merchant: "Zoomoov", quantity: 1, description: "Masks", type: "Mask", expirationDate: Date(), colors: [Color(hex: "#EC048A"), Color(hex: "#F0971C")])
+//        ]
+//        )
+//    }
+//}

@@ -54,10 +54,7 @@ struct MyWalletView: View {
                         ForEach(viewModel.merchants, id: \.id) { merchant in
                             let view = MerchantPurchasesCard(merchant: merchant)
                             if merchant.name.lowercased() == "zoomoov" {
-                                CustomNavLink(destination: ZoomoovRedemptionView(tickets: [
-                                    .init(merchant: "Zoomoov", quantity: 12, description: "Rides", type: "Rides", expirationDate: Date(), colors: Color.gradient.secondary),
-                                    .init(merchant: "Zoomoov", quantity: 1, description: "Masks", type: "Mask", expirationDate: Date(), colors: [Color(hex: "#EC048A"), Color(hex: "#F0971C")])
-                                ])) {
+                                CustomNavLink(destination: ZoomoovRedemptionView(merchant: merchant)) {
                                     view
                                 }
                             } else {

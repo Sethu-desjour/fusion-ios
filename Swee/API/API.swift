@@ -205,8 +205,14 @@ class API: ObservableObject {
         return try await request(with: url)
     }
     
-    func walletMerchants() async throws -> [WalletMerchantCompactModel] {
+    func walletMerchants() async throws -> [WalletMerchantModel] {
         let url = "/wallet/merchants"
+        
+        return try await request(with: url)
+    }
+    
+    func walletMerchant(for id: UUID) async throws -> WalletMerchantModel {
+        let url = "/wallet/merchants/\(id.uuidString.lowercased())"
         
         return try await request(with: url)
     }

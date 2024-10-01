@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AF0558372CABA1F000ABEBA3 /* WalletMerchantCompactModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558362CABA1F000ABEBA3 /* WalletMerchantCompactModel.swift */; };
+		AF0558372CABA1F000ABEBA3 /* WalletMerchantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558362CABA1F000ABEBA3 /* WalletMerchantModel.swift */; };
+		AF13C84F2CABB83000496B0C /* ZoomoovRedemptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C84E2CABB83000496B0C /* ZoomoovRedemptionViewModel.swift */; };
+		AF13C8512CABB99000496B0C /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C8502CABB99000496B0C /* PurchaseModel.swift */; };
 		AF16A0F82C8567190093CD99 /* CheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0F72C8567190093CD99 /* CheckoutView.swift */; };
 		AF16A0FB2C86B96F0093CD99 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0FA2C86B96F0093CD99 /* Keys.swift */; };
 		AF16A0FD2C86C43A0093CD99 /* MyWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0FC2C86C43A0093CD99 /* MyWalletView.swift */; };
@@ -123,7 +125,9 @@
 /* Begin PBXFileReference section */
 		669376952C1EE713F9129744 /* Pods_Swee.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Swee.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		917C3D03CF12F5C5F725DBA2 /* Pods-Swee.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swee.debug.xcconfig"; path = "Target Support Files/Pods-Swee/Pods-Swee.debug.xcconfig"; sourceTree = "<group>"; };
-		AF0558362CABA1F000ABEBA3 /* WalletMerchantCompactModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletMerchantCompactModel.swift; sourceTree = "<group>"; };
+		AF0558362CABA1F000ABEBA3 /* WalletMerchantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletMerchantModel.swift; sourceTree = "<group>"; };
+		AF13C84E2CABB83000496B0C /* ZoomoovRedemptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomoovRedemptionViewModel.swift; sourceTree = "<group>"; };
+		AF13C8502CABB99000496B0C /* PurchaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseModel.swift; sourceTree = "<group>"; };
 		AF16A0F72C8567190093CD99 /* CheckoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutView.swift; sourceTree = "<group>"; };
 		AF16A0FA2C86B96F0093CD99 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		AF16A0FC2C86C43A0093CD99 /* MyWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWalletView.swift; sourceTree = "<group>"; };
@@ -268,6 +272,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		AF13C84D2CABB81F00496B0C /* ZoomoovRedemption */ = {
+			isa = PBXGroup;
+			children = (
+				AF8B1E172C8729B600B44D75 /* ZoomoovRedemptionView.swift */,
+				AF13C84E2CABB83000496B0C /* ZoomoovRedemptionViewModel.swift */,
+			);
+			path = ZoomoovRedemption;
+			sourceTree = "<group>";
+		};
 		AF16A0F92C86B9620093CD99 /* Environment */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,7 +379,8 @@
 				AF3022D22CAA4894006DBCAD /* OrderModel.swift */,
 				AF3022D42CAA48C7006DBCAD /* OrderItemModel.swift */,
 				AF3022D62CAA48D7006DBCAD /* OrderItemSnapshotModel.swift */,
-				AF0558362CABA1F000ABEBA3 /* WalletMerchantCompactModel.swift */,
+				AF0558362CABA1F000ABEBA3 /* WalletMerchantModel.swift */,
+				AF13C8502CABB99000496B0C /* PurchaseModel.swift */,
 			);
 			path = Raw;
 			sourceTree = "<group>";
@@ -388,7 +402,7 @@
 				AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */,
 				AF501F302C96B56D00637042 /* SplashView.swift */,
 				AF3022D82CAA75CE006DBCAD /* MyWallet */,
-				AF8B1E172C8729B600B44D75 /* ZoomoovRedemptionView.swift */,
+				AF13C84D2CABB81F00496B0C /* ZoomoovRedemption */,
 				AFDB2B512C9131AC00BA75DA /* ProfileView.swift */,
 				AFA335C72C92676700883CBB /* AlertsView.swift */,
 			);
@@ -795,6 +809,8 @@
 				AFDD17342C9DBFEC00DC8DB8 /* SeeAllViewModel.swift in Sources */,
 				AFCEC5C42C7C260B00D157BE /* HomeView.swift in Sources */,
 				AFDB904E2C8EE2EC008931DB /* CustomNavLink.swift in Sources */,
+				AF13C8512CABB99000496B0C /* PurchaseModel.swift in Sources */,
+				AF13C84F2CABB83000496B0C /* ZoomoovRedemptionViewModel.swift in Sources */,
 				AF3022C82CA2B51B006DBCAD /* CartButton.swift in Sources */,
 				AF2F85D92C9C4652004B0B31 /* Banner.swift in Sources */,
 				AF2F85C62C9AA30E004B0B31 /* PackageModel.swift in Sources */,
@@ -803,7 +819,7 @@
 				AF80222C2C72F39E001274FA /* OnboardingView.swift in Sources */,
 				AF501F272C945D7C00637042 /* API.swift in Sources */,
 				AF2F85E02C9C52CC004B0B31 /* PackageCard.swift in Sources */,
-				AF0558372CABA1F000ABEBA3 /* WalletMerchantCompactModel.swift in Sources */,
+				AF0558372CABA1F000ABEBA3 /* WalletMerchantModel.swift in Sources */,
 				AFDD17402CA1846E00DC8DB8 /* StoresView.swift in Sources */,
 				AF501F2C2C94736C00637042 /* AsyncButton.swift in Sources */,
 				AF557FC82C79AAC700AD99A5 /* SweeApp.swift in Sources */,

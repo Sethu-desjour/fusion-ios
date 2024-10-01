@@ -13,6 +13,7 @@ class CheckoutViewModel: ObservableObject {
     var cart: Cart = Cart()
     private var loadedData = false
     private var showError = false
+    private var cancellables = Set<AnyCancellable>()
     @Published private(set) var state: State = .loaded
     
     var quantity: Int {
@@ -28,10 +29,17 @@ class CheckoutViewModel: ObservableObject {
     }
     
     func fetch() async throws {
+        self.cart.$packages.sink { items in
+            Task {
+                await MainActor.run { [weak self] in
+                    self?.state = items.isEmpty ? .empty : .loaded
+                }
+            }
+        }
+        .store(in: &cancellables)
         do {
             try await cart.refresh()
             await MainActor.run {
-                state = cart.packages.isEmpty ? .empty : .loaded
                 showError = false
                 loadedData = true
             }
