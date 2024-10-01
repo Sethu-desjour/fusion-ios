@@ -17,6 +17,9 @@
 		AF13C85B2CAFCAE200496B0C /* Purchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C85A2CAFCAE200496B0C /* Purchase.swift */; };
 		AF13C85D2CAFCB1000496B0C /* PurchaseProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C85C2CAFCB1000496B0C /* PurchaseProduct.swift */; };
 		AF13C85F2CAFCB2900496B0C /* WalletMerchant.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C85E2CAFCB2900496B0C /* WalletMerchant.swift */; };
+		AF0558312CAABC2100ABEBA3 /* EditNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558302CAABC2100ABEBA3 /* EditNameView.swift */; };
+		AF0558332CAABFF500ABEBA3 /* EditPhoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558322CAABFF500ABEBA3 /* EditPhoneView.swift */; };
+		AF0558352CAAC2DA00ABEBA3 /* EditOtpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558342CAAC2DA00ABEBA3 /* EditOtpView.swift */; };
 		AF16A0F82C8567190093CD99 /* CheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0F72C8567190093CD99 /* CheckoutView.swift */; };
 		AF16A0FB2C86B96F0093CD99 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0FA2C86B96F0093CD99 /* Keys.swift */; };
 		AF16A0FD2C86C43A0093CD99 /* MyWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0FC2C86C43A0093CD99 /* MyWalletView.swift */; };
@@ -63,6 +66,7 @@
 		AF3022D52CAA48C7006DBCAD /* OrderItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022D42CAA48C7006DBCAD /* OrderItemModel.swift */; };
 		AF3022D72CAA48D7006DBCAD /* OrderItemSnapshotModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022D62CAA48D7006DBCAD /* OrderItemSnapshotModel.swift */; };
 		AF3022DA2CAA75EF006DBCAD /* MyWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022D92CAA75EF006DBCAD /* MyWalletViewModel.swift */; };
+		AF3022DD2CAAA00E006DBCAD /* EditBasicInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022DC2CAAA00E006DBCAD /* EditBasicInfoView.swift */; };
 		AF501F242C942CDF00637042 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF501F232C942CDF00637042 /* GoogleService-Info.plist */; };
 		AF501F272C945D7C00637042 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F262C945D7C00637042 /* API.swift */; };
 		AF501F2A2C945F9C00637042 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F292C945F9C00637042 /* Strings.swift */; };
@@ -142,6 +146,9 @@
 		AF13C85A2CAFCAE200496B0C /* Purchase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purchase.swift; sourceTree = "<group>"; };
 		AF13C85C2CAFCB1000496B0C /* PurchaseProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseProduct.swift; sourceTree = "<group>"; };
 		AF13C85E2CAFCB2900496B0C /* WalletMerchant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletMerchant.swift; sourceTree = "<group>"; };
+		AF0558302CAABC2100ABEBA3 /* EditNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNameView.swift; sourceTree = "<group>"; };
+		AF0558322CAABFF500ABEBA3 /* EditPhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPhoneView.swift; sourceTree = "<group>"; };
+		AF0558342CAAC2DA00ABEBA3 /* EditOtpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOtpView.swift; sourceTree = "<group>"; };
 		AF16A0F72C8567190093CD99 /* CheckoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutView.swift; sourceTree = "<group>"; };
 		AF16A0FA2C86B96F0093CD99 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		AF16A0FC2C86C43A0093CD99 /* MyWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWalletView.swift; sourceTree = "<group>"; };
@@ -190,6 +197,7 @@
 		AF3022D42CAA48C7006DBCAD /* OrderItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItemModel.swift; sourceTree = "<group>"; };
 		AF3022D62CAA48D7006DBCAD /* OrderItemSnapshotModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItemSnapshotModel.swift; sourceTree = "<group>"; };
 		AF3022D92CAA75EF006DBCAD /* MyWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWalletViewModel.swift; sourceTree = "<group>"; };
+		AF3022DC2CAAA00E006DBCAD /* EditBasicInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBasicInfoView.swift; sourceTree = "<group>"; };
 		AF501F232C942CDF00637042 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AF501F262C945D7C00637042 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		AF501F292C945F9C00637042 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
@@ -419,7 +427,7 @@
 				AF501F302C96B56D00637042 /* SplashView.swift */,
 				AF3022D82CAA75CE006DBCAD /* MyWallet */,
 				AF13C84D2CABB81F00496B0C /* ZoomoovRedemption */,
-				AFDB2B512C9131AC00BA75DA /* ProfileView.swift */,
+				AF3022DB2CAA9FF7006DBCAD /* Profile */,
 				AFA335C72C92676700883CBB /* AlertsView.swift */,
 			);
 			path = Screens;
@@ -450,6 +458,18 @@
 				AF3022D92CAA75EF006DBCAD /* MyWalletViewModel.swift */,
 			);
 			path = MyWallet;
+				sourceTree = "<group>";
+		};
+		AF3022DB2CAA9FF7006DBCAD /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				AFDB2B512C9131AC00BA75DA /* ProfileView.swift */,
+				AF3022DC2CAAA00E006DBCAD /* EditBasicInfoView.swift */,
+				AF0558302CAABC2100ABEBA3 /* EditNameView.swift */,
+				AF0558322CAABFF500ABEBA3 /* EditPhoneView.swift */,
+				AF0558342CAAC2DA00ABEBA3 /* EditOtpView.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		AF501F252C945BB500637042 /* API */ = {
@@ -766,6 +786,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF0558352CAAC2DA00ABEBA3 /* EditOtpView.swift in Sources */,
 				AF501F2A2C945F9C00637042 /* Strings.swift in Sources */,
 				AFCEC5C22C7C111200D157BE /* CompleteProfileView.swift in Sources */,
 				AFDD173B2CA139D100DC8DB8 /* PackageDetailViewModel.swift in Sources */,
@@ -817,12 +838,15 @@
 				AF3022D12CA9850D006DBCAD /* ContentErrorView.swift in Sources */,
 				AF501F382C9813D300637042 /* MockHomeSectionURLProtocol.swift in Sources */,
 				AF2F85C82C9AA324004B0B31 /* MerchantStoreModel.swift in Sources */,
+				AF0558312CAABC2100ABEBA3 /* EditNameView.swift in Sources */,
 				AFDB90452C8EA256008931DB /* TimeInterval.swift in Sources */,
 				AF3022DA2CAA75EF006DBCAD /* MyWalletViewModel.swift in Sources */,
 				AFDD17382CA1221D00DC8DB8 /* User.swift in Sources */,
 				AF2F85D72C9C4629004B0B31 /* Package.swift in Sources */,
+				AF3022DD2CAAA00E006DBCAD /* EditBasicInfoView.swift in Sources */,
 				AFDB90502C8EE471008931DB /* CustomNavBarPreferenceKeys.swift in Sources */,
 				AFCEC5C02C7C0E9100D157BE /* ButtonStyles.swift in Sources */,
+				AF0558332CAABFF500ABEBA3 /* EditPhoneView.swift in Sources */,
 				AF1FAC492C79B12A00654FB7 /* View.swift in Sources */,
 				AF3022CB2CA2BA03006DBCAD /* CheckoutViewModel.swift in Sources */,
 				AFDB2B522C9131AC00BA75DA /* ProfileView.swift in Sources */,
@@ -1001,6 +1025,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Swee/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Green;
+				INFOPLIST_KEY_NSCameraUsageDescription = "To change your avatar and upload images";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To show you nearby offers and stores";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -1039,6 +1064,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Swee/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Green;
+				INFOPLIST_KEY_NSCameraUsageDescription = "To change your avatar and upload images";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To show you nearby offers and stores";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
