@@ -5,7 +5,7 @@ struct LocalError: Error {
     let message: String?
 }
 
-private let numberOfCharsInOTP = 6
+let numberOfCharsInOTP = 6
 
 struct OtpView: View {
     @Environment(\.dismiss) private var dismiss

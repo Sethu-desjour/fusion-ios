@@ -98,16 +98,18 @@ struct ProfileView: View {
                                         .font(.custom("Poppins-Medium", size: 14))
                                         .foregroundStyle(Color.text.black60)
                                 }
-                                HStack(alignment: .center, spacing: 3) {
-                                    Text("Edit basic info")
-                                        .font(.custom("Poppins-Medium", size: 14))
-                                    Image("back")
-                                        .resizable()
-                                        .frame(width: 18, height: 18)
-                                        .rotationEffect(.degrees(180))
-                                        .padding(.top, 1)
+                                CustomNavLink(destination: EditBasicInfoView()) {
+                                    HStack(alignment: .center, spacing: 3) {
+                                        Text("Edit basic info")
+                                            .font(.custom("Poppins-Medium", size: 14))
+                                        Image("back")
+                                            .resizable()
+                                            .frame(width: 18, height: 18)
+                                            .rotationEffect(.degrees(180))
+                                            .padding(.top, 1)
+                                    }
+                                    .foregroundStyle(Color.primary.brand)
                                 }
-                                .foregroundStyle(Color.primary.brand)
                             }
                             Spacer()
                         }
