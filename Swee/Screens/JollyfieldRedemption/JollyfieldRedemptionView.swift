@@ -14,13 +14,13 @@ struct RedemptionScanView: View {
     struct Model {
         let header: String
         let title: String
-        let qr: Image
+        let qr: Image?
         let description: String
         let actionTitle: String
     }
     //    @Binding var model: ZoomoovRedemptionModel
     var model: Model
-    var closure: (() -> Void)?
+    var closure: () async throws -> Void
     
     var body: some View {
         VStack {
@@ -37,9 +37,8 @@ struct RedemptionScanView: View {
                 .multilineTextAlignment(.center)
                 .foregroundStyle(Color.text.black60)
                 .padding(.bottom, 37)
-            Button {
-                // @todo make request
-                closure?()
+            AsyncButton(progressWidth: .infinity, progressTint: Color.secondary.brand) {
+                try? await closure()
             } label: {
                 HStack {
                     Spacer()

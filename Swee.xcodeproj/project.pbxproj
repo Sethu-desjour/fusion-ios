@@ -10,6 +10,7 @@
 		AF0558372CABA1F000ABEBA3 /* WalletMerchantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558362CABA1F000ABEBA3 /* WalletMerchantModel.swift */; };
 		AF13C84F2CABB83000496B0C /* ZoomoovRedemptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C84E2CABB83000496B0C /* ZoomoovRedemptionViewModel.swift */; };
 		AF13C8512CABB99000496B0C /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C8502CABB99000496B0C /* PurchaseModel.swift */; };
+		AF13C8532CAC10C900496B0C /* RedemptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C8522CAC10C800496B0C /* RedemptionModel.swift */; };
 		AF16A0F82C8567190093CD99 /* CheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0F72C8567190093CD99 /* CheckoutView.swift */; };
 		AF16A0FB2C86B96F0093CD99 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0FA2C86B96F0093CD99 /* Keys.swift */; };
 		AF16A0FD2C86C43A0093CD99 /* MyWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0FC2C86C43A0093CD99 /* MyWalletView.swift */; };
@@ -128,6 +129,7 @@
 		AF0558362CABA1F000ABEBA3 /* WalletMerchantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletMerchantModel.swift; sourceTree = "<group>"; };
 		AF13C84E2CABB83000496B0C /* ZoomoovRedemptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomoovRedemptionViewModel.swift; sourceTree = "<group>"; };
 		AF13C8502CABB99000496B0C /* PurchaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseModel.swift; sourceTree = "<group>"; };
+		AF13C8522CAC10C800496B0C /* RedemptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionModel.swift; sourceTree = "<group>"; };
 		AF16A0F72C8567190093CD99 /* CheckoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutView.swift; sourceTree = "<group>"; };
 		AF16A0FA2C86B96F0093CD99 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		AF16A0FC2C86C43A0093CD99 /* MyWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWalletView.swift; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 				AF3022D62CAA48D7006DBCAD /* OrderItemSnapshotModel.swift */,
 				AF0558362CABA1F000ABEBA3 /* WalletMerchantModel.swift */,
 				AF13C8502CABB99000496B0C /* PurchaseModel.swift */,
+				AF13C8522CAC10C800496B0C /* RedemptionModel.swift */,
 			);
 			path = Raw;
 			sourceTree = "<group>";
@@ -808,6 +811,7 @@
 				AF2F85D42C9C24C6004B0B31 /* MockMerchantStoresURLProtocol.swift in Sources */,
 				AFDD17342C9DBFEC00DC8DB8 /* SeeAllViewModel.swift in Sources */,
 				AFCEC5C42C7C260B00D157BE /* HomeView.swift in Sources */,
+				AF13C8532CAC10C900496B0C /* RedemptionModel.swift in Sources */,
 				AFDB904E2C8EE2EC008931DB /* CustomNavLink.swift in Sources */,
 				AF13C8512CABB99000496B0C /* PurchaseModel.swift in Sources */,
 				AF13C84F2CABB83000496B0C /* ZoomoovRedemptionViewModel.swift in Sources */,

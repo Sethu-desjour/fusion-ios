@@ -10,25 +10,27 @@ struct Ticket: Hashable {
 
 enum ZoomoovRedemptionSteps {
     case setup
-    case redemptionQueue
+    case redemptionQueue(Redemption)
     case loading
     // case error @todo maybe?
     case completed
 }
 
 struct ZoomoovRedemptionModel {
+    let purchaseId: UUID
     var totalQuantity: Int
     var qtyToRedeem: Int = 1
     var currentTicket: Int = 1
     let merchant: String
     let type: String
     let disclaimer: String?
+    let productType: ProductType
 }
 
 struct ZoomoovRedemptionSetupView: View {
     @Binding var model: ZoomoovRedemptionModel
 //    var purchase: Purchase
-    var closure: (() -> Void)? = nil
+    var closure: () async throws -> Void
     
     var body: some View {
         VStack {
@@ -90,20 +92,19 @@ struct ZoomoovRedemptionSetupView: View {
             .background(RoundedRectangle(cornerRadius: 12)
                 .foregroundStyle(Color.background.pale))
             .padding(.bottom, 37)
-            Button {
-                // @todo make request
-                closure?()
+            AsyncButton(progressWidth: .infinity) {
+                try? await closure()
             } label: {
                 HStack {
                     Text("Redeem now")
                         .font(.custom("Roboto-Bold", size: 16))
                 }
-                .foregroundStyle(Color.background.white)
-                .padding(.vertical, 18)
-                .frame(maxWidth: .infinity)
-                .background(LinearGradient(colors: Color.gradient.primaryDark, startPoint: .topLeading, endPoint: .bottomTrailing))
-                .clipShape(Capsule())
             }
+            .foregroundStyle(Color.background.white)
+            .padding(.vertical, 18)
+            .frame(maxWidth: .infinity)
+            .background(Color.secondary.brand)
+            .clipShape(Capsule())
             .padding(.bottom, 16)
             //            .buttonStyle(EmptyStyle())
         }
@@ -111,23 +112,90 @@ struct ZoomoovRedemptionSetupView: View {
 }
 
 struct ZoomoovBottomSheet: View {
+    @EnvironmentObject var api: API
     @State var step: ZoomoovRedemptionSteps = .setup
     @Binding var model: ZoomoovRedemptionModel
+    private var successfulScans: Int {
+        redemptions.filter { $0.status == .success }.count
+    }
+    @State private var redemptions: [Redemption] = []
+    
     var onComplete: () -> Void
+    
+    func poll(for redemption: Redemption) {
+        print("polling for \(redemption.id.uuidString.lowercased()).....")
+        Task {
+            let status = try await checkRedemptionStatus(for: redemption.id)
+            guard status != .success else {
+                print("poll successful for \(redemption.id.uuidString.lowercased())")
+                return
+            }
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            poll(for: redemption)
+        }
+    }
+    
+    func checkRedemptionStatus(for id: UUID) async throws -> RedemptionStatus {
+        let redemptionUpdate = try await api.checkRedemptionStatus(for: id)
+        await MainActor.run {
+            if redemptionUpdate.status == .success, let index = redemptions.firstIndex(where: { $0.id == id }) {
+                redemptions[index] = redemptionUpdate.toRedemption()
+                goToNextRedemption()
+            }
+        }
+        
+        return redemptionUpdate.status
+    }
+    
+    func goToNextRedemption() {
+        if let nextRedemption = redemptions.first(where: { $0.status != .success }) {
+            step = .redemptionQueue(nextRedemption)
+            poll(for: nextRedemption)
+        } else {
+            step = .completed
+        }
+    }
     
     var body: some View {
         switch step {
         case .setup:
             ZoomoovRedemptionSetupView(model: $model) {
-                step = .redemptionQueue
+                do {
+                    let redemptions = try await api.startRedemptions(for: model.purchaseId,
+                                                                     quantity: model.qtyToRedeem)
+                    .map { $0.toRedemption() }
+                    await MainActor.run {
+                        self.redemptions = redemptions
+                        guard !redemptions.isEmpty else {
+                            // @todo show error screen
+                            return
+                        }
+                        goToNextRedemption()
+                    }
+                } catch {
+                    print("error =======", error)
+                    // @todo show error screen
+                }
             }
-        case .redemptionQueue:
-            RedemptionScanView(model: .init(header: "\(model.type.capitalized) \(model.currentTicket)/\(model.qtyToRedeem)",
-                                            title: "Scan QR to start your ride",
-                                            qr: Image("qr"),
-                                            description: "Show this QR code at the counter, our staff will scan this QR to mark your presence",
+        case .redemptionQueue(let redemption):
+            RedemptionScanView(model: .init(header: "\(model.type.capitalized) \(successfulScans + 1)/\(model.qtyToRedeem)",
+                                            title: model.productType == .coupon ? "Scan QR to start your ride" : "Scar QR to get a mask", // @todo this should be optimized from BE
+                                            qr: redemption.qrCodeImage,
+                                            description: model.productType == .coupon ? "Show this QR code at the counter, our staff will scan this QR to mark your presence" : "Show this QR code at the counter, our staff will scan this QR to provide you the mask", // @todo this as well
                                             actionTitle: "Next QR")) {
-                step = .loading
+                
+                do {
+                    // @todo NEEDS TO BE DELETED
+//                    try? await api.DEBUGchangeRedemptionStatus(for: redemption.id, merchantId: .init())
+                    // @todo NEEDS TO BE DELETED
+                    
+                    let status = try await checkRedemptionStatus(for: redemption.id)
+                    guard status != .success else { return }
+                    // @todo what do we show when it hasn't been scanned yet?
+                } catch {
+                    // @todo show error screen
+                }
+//                step = .loading
             }
         case .loading:
             RedemptionLoadingView(model: .init(header: "",
@@ -136,17 +204,16 @@ struct ZoomoovBottomSheet: View {
                     step = .completed
                 } else {
                     model.currentTicket += 1
-                    step = .redemptionQueue
+//                    step = .redemptionQueue
                 }
             }
         case .completed:
-            RedemptionCompletedView(model: .init(header: "\(model.type.capitalized) \(model.currentTicket)/\(model.qtyToRedeem)",
+            RedemptionCompletedView(model: .init(header: "\(model.type.capitalized) \(successfulScans)/\(model.qtyToRedeem)",
                                                  title: "\(model.qtyToRedeem) Coupons redeemed successfully!",
                                                  description: "",
                                                  actionTitle: "Done")) {
-//                hidden = true
-//                step = .setup
                 onComplete()
+                step = .setup
             }
         }
         
@@ -159,13 +226,13 @@ struct ZoomoovRedemptionView: View {
     @StateObject private var viewModel = ZoomoovRedemptionViewModel()
     @State var merchant: MyWalletMerchant
     
-    @State var tempQuantity = 1
-    @State var tempCurrentRide = 1
     @State var step: ZoomoovRedemptionSteps = .setup
-    @State var currentRedemption: ZoomoovRedemptionModel = .init(totalQuantity: 10,
+    @State var currentRedemption: ZoomoovRedemptionModel = .init(purchaseId: .init(),
+                                                                 totalQuantity: 10,
                                                                  merchant: "Zoomoov",
                                                                  type: "rides",
-                                                                 disclaimer: "Ride cannot be refunded, or anything that the parent should be aware of will take up this space.")
+                                                                 disclaimer: "Ride cannot be refunded, or anything that the parent should be aware of will take up this space.",
+                                                                 productType: .coupon)
     
     @State var hidden = true
     
@@ -191,17 +258,18 @@ struct ZoomoovRedemptionView: View {
                             Text(product.name)
                                 .font(.custom("Poppins-SemiBold", size: 20))
                             ForEach(product.purchases, id: \.id) { purchase in
-                                TicketView(ticket: .init(merchant: merchant.name, 
+                                TicketView(ticket: .init(merchant: viewModel.merchant.name,
                                                          quantity: purchase.remainingValue,
                                                          type: product.name,
                                                          expirationDate: purchase.expiresAt,
                                                          colors: Color.gradient.secondary /*merchant.bgColors*/)) // @todo change back to using the merchant colors
                                     .onTapGesture {
-                                        currentRedemption = .init(totalQuantity: purchase.remainingValue, 
-                                                                  merchant: merchant.name,
+                                        currentRedemption = .init(purchaseId: purchase.id,
+                                                                  totalQuantity: purchase.remainingValue,
+                                                                  merchant: viewModel.merchant.name,
                                                                   type: product.name,
-                                                                  disclaimer: purchase.note)
-                                        print("redemption ====", currentRedemption)
+                                                                  disclaimer: purchase.note,
+                                                                  productType: product.type)
                                         hidden = false
                                     }
                             }
@@ -222,9 +290,12 @@ struct ZoomoovRedemptionView: View {
             })
             .background(Color.background.pale)
         }
-        .customNavigationTitle(merchant.name)
+        .customNavigationTitle(viewModel.merchant.name)
         .customBottomSheet(hidden: $hidden) {
             ZoomoovBottomSheet(model: $currentRedemption) {
+                Task {
+                    try? await viewModel.fetch()
+                }
                 hidden = true
             }
         }
@@ -275,7 +346,7 @@ struct DottedLine: Shape {
 
 
 struct TicketView: View {
-    @State var ticket: Ticket
+    var ticket: Ticket
     
     private let ticketHeight: CGFloat = 126
     private let notchSize: CGFloat = 15

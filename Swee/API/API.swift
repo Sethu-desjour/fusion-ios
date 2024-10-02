@@ -216,6 +216,33 @@ class API: ObservableObject {
         
         return try await request(with: url)
     }
+    
+    func startRedemptions(for purchaseID: UUID, quantity: Int) async throws -> [RedemptionModel] {
+        let url = "/redemptions"
+        
+        let redemption = RedemptionNew(purchaseId: purchaseID.uuidString.lowercased(), value: quantity)
+        let jsonData = try JSONEncoder().encode(redemption)
+        return try await request(with: url, method: .POST(jsonData)) { data, response in
+            guard response.statusCode == 201 else {
+        throw APIError.wrongCode
+    }
+            return nil
+        }
+    }
+    
+    func checkRedemptionStatus(for id: UUID) async throws -> RedemptionModel {
+        let url = "/redemptions/\(id.uuidString.lowercased())"
+        
+        return try await request(with: url)
+    }
+    
+    func DEBUGchangeRedemptionStatus(for id: UUID, merchantId: UUID) async throws {
+        let url = "/redemptions/\(id.uuidString.lowercased())/status"
+        let update = RedemptionStatusUpdate(status: .success, merchantStoreId: merchantId.uuidString.lowercased())
+        let jsonData = try JSONEncoder().encode(update)
+        
+        try await request(with: url, method: .PUT(jsonData))
+    }
 }
 
 extension API {
