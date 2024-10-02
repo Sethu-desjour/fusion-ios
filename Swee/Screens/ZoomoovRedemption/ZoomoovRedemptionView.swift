@@ -119,20 +119,33 @@ struct ZoomoovBottomSheet: View {
         redemptions.filter { $0.status == .success }.count
     }
     @State private var redemptions: [Redemption] = []
+    @State private var stopPolling = false
+    @State var timer: DispatchSourceTimer?
     
     var onComplete: () -> Void
     
     func poll(for redemption: Redemption) {
-        print("polling for \(redemption.id.uuidString.lowercased()).....")
-        Task {
-            let status = try await checkRedemptionStatus(for: redemption.id)
-            guard status != .success else {
-                print("poll successful for \(redemption.id.uuidString.lowercased())")
-                return
+        self.timer?.cancel()
+        let queue = DispatchQueue.global(qos: .background)
+        let timer = DispatchSource.makeTimerSource(queue: queue)
+        timer.schedule(deadline: .now(), repeating: .seconds(2), leeway: .seconds(1))
+        timer.setEventHandler(handler: {
+            print("polling for \(redemption.id.uuidString.lowercased()).....")
+            Task {
+                let status = try await checkRedemptionStatus(for: redemption.id)
+                guard status != .success else {
+                    print("poll successful for \(redemption.id.uuidString.lowercased())")
+                    self.timer?.cancel()
+                    self.timer = nil
+                    return
+                }
+                try? await Task.sleep(nanoseconds: 1_000_000_000)
+//                poll(for: redemption)
             }
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
-            poll(for: redemption)
-        }
+        })
+        timer.resume()
+        
+        self.timer = timer
     }
     
     func checkRedemptionStatus(for id: UUID) async throws -> RedemptionStatus {
@@ -157,66 +170,71 @@ struct ZoomoovBottomSheet: View {
     }
     
     var body: some View {
-        switch step {
-        case .setup:
-            ZoomoovRedemptionSetupView(model: $model) {
-                do {
-                    let redemptions = try await api.startRedemptions(for: model.purchaseId,
-                                                                     quantity: model.qtyToRedeem)
-                    .map { $0.toRedemption() }
-                    await MainActor.run {
-                        self.redemptions = redemptions
-                        guard !redemptions.isEmpty else {
-                            // @todo show error screen
-                            return
+        VStack {
+            switch step {
+            case .setup:
+                ZoomoovRedemptionSetupView(model: $model) {
+                    do {
+                        let redemptions = try await api.startRedemptions(for: model.purchaseId,
+                                                                         quantity: model.qtyToRedeem)
+                        .map { $0.toRedemption() }
+                        await MainActor.run {
+                            self.redemptions = redemptions
+                            guard !redemptions.isEmpty else {
+                                // @todo show error screen
+                                return
+                            }
+                            goToNextRedemption()
                         }
-                        goToNextRedemption()
+                    } catch {
+                        print("error =======", error)
+                        // @todo show error screen
                     }
-                } catch {
-                    print("error =======", error)
-                    // @todo show error screen
                 }
-            }
-        case .redemptionQueue(let redemption):
-            RedemptionScanView(model: .init(header: "\(model.type.capitalized) \(successfulScans + 1)/\(model.qtyToRedeem)",
-                                            title: model.productType == .coupon ? "Scan QR to start your ride" : "Scar QR to get a mask", // @todo this should be optimized from BE
-                                            qr: redemption.qrCodeImage,
-                                            description: model.productType == .coupon ? "Show this QR code at the counter, our staff will scan this QR to mark your presence" : "Show this QR code at the counter, our staff will scan this QR to provide you the mask", // @todo this as well
-                                            actionTitle: "Next QR")) {
-                
-                do {
-                    // @todo NEEDS TO BE DELETED
-//                    try? await api.DEBUGchangeRedemptionStatus(for: redemption.id, merchantId: .init())
-                    // @todo NEEDS TO BE DELETED
+            case .redemptionQueue(let redemption):
+                RedemptionScanView(model: .init(header: "\(model.type.capitalized) \(successfulScans + 1)/\(model.qtyToRedeem)",
+                                                title: model.productType == .coupon ? "Scan QR to start your ride" : "Scar QR to get a mask", // @todo this should be optimized from BE
+                                                qr: redemption.qrCodeImage,
+                                                description: model.productType == .coupon ? "Show this QR code at the counter, our staff will scan this QR to mark your presence" : "Show this QR code at the counter, our staff will scan this QR to provide you the mask", // @todo this as well
+                                                actionTitle: "Next QR")) {
                     
-                    let status = try await checkRedemptionStatus(for: redemption.id)
-                    guard status != .success else { return }
-                    // @todo what do we show when it hasn't been scanned yet?
-                } catch {
-                    // @todo show error screen
+                    do {
+                        // @todo NEEDS TO BE DELETED
+    //                    try? await api.DEBUGchangeRedemptionStatus(for: redemption.id, merchantId: .init())
+                        // @todo NEEDS TO BE DELETED
+                        
+                        let status = try await checkRedemptionStatus(for: redemption.id)
+                        guard status != .success else { return }
+                        // @todo what do we show when it hasn't been scanned yet?
+                    } catch {
+                        // @todo show error screen
+                    }
+    //                step = .loading
                 }
-//                step = .loading
-            }
-        case .loading:
-            RedemptionLoadingView(model: .init(header: "",
-                                               title: "Scanning for \(model.type.capitalized) \(model.currentTicket)")) {
-                if model.currentTicket == model.qtyToRedeem {
-                    step = .completed
-                } else {
-                    model.currentTicket += 1
-//                    step = .redemptionQueue
+            case .loading:
+                RedemptionLoadingView(model: .init(header: "",
+                                                   title: "Scanning for \(model.type.capitalized) \(model.currentTicket)")) {
+                    if model.currentTicket == model.qtyToRedeem {
+                        step = .completed
+                    } else {
+                        model.currentTicket += 1
+    //                    step = .redemptionQueue
+                    }
                 }
-            }
-        case .completed:
-            RedemptionCompletedView(model: .init(header: "\(model.type.capitalized) \(successfulScans)/\(model.qtyToRedeem)",
-                                                 title: "\(model.qtyToRedeem) Coupons redeemed successfully!",
-                                                 description: "",
-                                                 actionTitle: "Done")) {
-                onComplete()
-                step = .setup
+            case .completed:
+                RedemptionCompletedView(model: .init(header: "\(model.type.capitalized) \(successfulScans)/\(model.qtyToRedeem)",
+                                                     title: "\(model.qtyToRedeem) Coupons redeemed successfully!",
+                                                     description: "",
+                                                     actionTitle: "Done")) {
+                    onComplete()
+                    step = .setup
+                }
             }
         }
-        
+        .onDisappear {
+            timer?.cancel()
+            timer = nil
+        }
     }
 }
 
@@ -292,11 +310,17 @@ struct ZoomoovRedemptionView: View {
         }
         .customNavigationTitle(viewModel.merchant.name)
         .customBottomSheet(hidden: $hidden) {
-            ZoomoovBottomSheet(model: $currentRedemption) {
-                Task {
-                    try? await viewModel.fetch()
+            // this if-else is needed to discard the view when it's hidden
+            if !hidden {
+                ZoomoovBottomSheet(model: $currentRedemption) {
+                    Task {
+                        try? await viewModel.fetch()
+                    }
+                    hidden = true
                 }
-                hidden = true
+            } else {
+                // NOTE: this will allow us to keep the approximate same layout when hiding the sheet
+                ZoomoovBottomSheet(model: $currentRedemption) {}
             }
         }
     }

@@ -15,7 +15,6 @@ struct BottomSheet<Content: View>: View {
                 } label: {
                     Color.black.opacity(0.5)
                         .ignoresSafeArea()
-//                        .animation(.easeInOut(duration: 0.2), value: hide)
                 }
                 .buttonStyle(EmptyStyle())
             }
