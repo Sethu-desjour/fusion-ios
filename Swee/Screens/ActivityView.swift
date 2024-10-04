@@ -15,7 +15,7 @@ enum ActivityTab {
 }
 
 
-struct PurchaseModel: Hashable {
+struct PurchaseLog: Hashable {
     let title: String
     let description: String
     let typeAndTime: String
@@ -24,7 +24,7 @@ struct PurchaseModel: Hashable {
     let isPackage: Bool
 }
 
-struct RedeemModel: Hashable {
+struct RedemptionLog: Hashable {
     let title: String
     let typeAndTime: String
     let redemption: String
@@ -33,12 +33,12 @@ struct RedeemModel: Hashable {
 
 struct RedemptionsSection: Hashable {
     let date: Date
-    let redemptions: [RedeemModel]
+    let redemptions: [RedemptionLog]
 }
 
 struct PurchasesSection: Hashable {
     let date: Date
-    let purchases: [PurchaseModel]
+    let purchases: [PurchaseLog]
 }
 
 struct ActivityView: View {
@@ -366,7 +366,7 @@ struct ActivitySectionHeader: View {
 }
 
 struct PurchaseRow: View {
-    @State var purchase: PurchaseModel
+    @State var purchase: PurchaseLog
     @State var hideDivider: Bool = false
     
     var body: some View {
@@ -408,7 +408,7 @@ struct PurchaseRow: View {
 }
 
 struct RedemptionRow: View {
-    @State var redemption: RedeemModel
+    @State var redemption: RedemptionLog
     @State var hideDivider: Bool = false
     
     var body: some View {

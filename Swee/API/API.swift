@@ -1,11 +1,6 @@
 import Foundation
 import CoreLocation
 
-struct NetworkError {
-    let code: Int
-    let message: String
-}
-
 class API: ObservableObject {
     @Published var user: User?
     @Published var sendToAuth: Bool = false
@@ -29,7 +24,7 @@ class API: ObservableObject {
                 if let stringResponse = convertedString, stringResponse.contains("DATA_NOT_FOUND") {
                     return .withoutName
                 } else {
-                    throw LocalError(message: "Something went wrong")
+                    throw APIError.wrongCode
                 }
             }
             
@@ -43,7 +38,7 @@ class API: ObservableObject {
             }
             
             guard response.statusCode == 200 else {
-                throw LocalError(message: "Something went wrong")
+                throw APIError.wrongCode
             }
             
             do {
@@ -53,20 +48,20 @@ class API: ObservableObject {
                 }
                 return .loggedIn
             } catch {
-                throw LocalError(message: "Incorrect server data")
+                throw APIError.decodingError
             }
         }
     }
     
     func signOut() async {
         UserDefaults.standard.removeObject(forKey: Keys.authToken)
-//        cart.reset()
+        //        cart.reset()
         try? await Authentication().logout()
     }
     
     func completeUser(with name: String) async throws {
         guard let token = UserDefaults.standard.string(forKey: Keys.authToken) else {
-            throw LocalError(message: "Token not found")
+            throw APIError.tokenNotFound
         }
         
         let url = "/users?token=" + token
@@ -75,7 +70,7 @@ class API: ObservableObject {
         
         try await request(with: url, method: .POST(jsonData)) { data, response in
             guard response.statusCode == 201 else {
-                throw LocalError(message: "Something went wrong")
+                throw APIError.wrongCode
             }
             
             do {
@@ -84,7 +79,7 @@ class API: ObservableObject {
                     self.user = user
                 }
             } catch {
-                throw LocalError(message: "Incorrect server data")
+                throw APIError.decodingError
             }
             
             return nil
@@ -125,8 +120,9 @@ class API: ObservableObject {
     
     func latestCart() async throws -> CartModel {
         try await request(with: "/carts/latest") { data, response in
+            
             guard response.statusCode == 200 else {
-                throw LocalError(message: "Something went wrong")
+                throw APIError.wrongCode
             }
             
             return nil
@@ -150,7 +146,7 @@ class API: ObservableObject {
         
         return try await request(with: url, method: .POST(jsonData)) { data, response in
             guard response.statusCode == 200 else {
-                throw LocalError(message: "Something went wrong")
+                throw APIError.wrongCode
             }
             
             do {
@@ -159,7 +155,7 @@ class API: ObservableObject {
                     return item
                 }
             } catch {
-                throw LocalError(message: "Incorrect server data")
+                throw APIError.decodingError
             }
         }
     }
@@ -170,7 +166,7 @@ class API: ObservableObject {
         
         try await request(with: url, method: .PUT(jsonData)) { [weak self] data, response in
             guard response.statusCode == 200 else {
-                throw LocalError(message: "Something went wrong")
+                throw APIError.wrongCode
             }
             if response.statusCode == 404 {
                 try await self?.addPackageToCart(id, quantity: quantity)
@@ -183,9 +179,69 @@ class API: ObservableObject {
         
         try await request(with: url, method: .DELETE) { data, response in
             guard response.statusCode == 204 else {
-                throw LocalError(message: "Something went wrong")
+                throw APIError.wrongCode
             }
         }
+    }
+    
+    func createOrder(for cartid: UUID) async throws -> OrderModel {
+        let url = "/orders"
+        
+        let jsonData = try JSONEncoder().encode(["cart_id": cartid.uuidString.lowercased()])
+        
+        return try await request(with: url, method: .POST(jsonData)) { data, response in
+            print("checkout response ====== ", response)
+            guard response.statusCode == 201 else {
+                throw APIError.wrongCode
+            }
+                
+            return nil
+        }
+    }
+    
+    func orders() async throws -> [OrderModel] {
+        let url = "/orders"
+        
+        return try await request(with: url)
+    }
+    
+    func walletMerchants() async throws -> [WalletMerchantModel] {
+        let url = "/wallet/merchants"
+        
+        return try await request(with: url)
+    }
+    
+    func walletMerchant(for id: UUID) async throws -> WalletMerchantModel {
+        let url = "/wallet/merchants/\(id.uuidString.lowercased())"
+        
+        return try await request(with: url)
+    }
+    
+    func startRedemptions(for purchaseID: UUID, quantity: Int) async throws -> [RedemptionModel] {
+        let url = "/redemptions"
+        
+        let redemption = RedemptionNew(purchaseId: purchaseID.uuidString.lowercased(), value: quantity)
+        let jsonData = try JSONEncoder().encode(redemption)
+        return try await request(with: url, method: .POST(jsonData)) { data, response in
+            guard response.statusCode == 201 else {
+        throw APIError.wrongCode
+    }
+            return nil
+        }
+    }
+    
+    func checkRedemptionStatus(for id: UUID) async throws -> RedemptionModel {
+        let url = "/redemptions/\(id.uuidString.lowercased())"
+        
+        return try await request(with: url)
+    }
+    
+    func DEBUGchangeRedemptionStatus(for id: UUID, merchantId: UUID) async throws {
+        let url = "/redemptions/\(id.uuidString.lowercased())/status"
+        let update = RedemptionStatusUpdate(status: .success, merchantStoreId: merchantId.uuidString.lowercased())
+        let jsonData = try JSONEncoder().encode(update)
+        
+        try await request(with: url, method: .PUT(jsonData))
     }
 }
 
@@ -204,13 +260,13 @@ extension API {
         reauthenticate: Bool = true
     ) async throws -> (Data, HTTPURLResponse) {
         guard let token = UserDefaults.standard.string(forKey: Keys.authToken) else {
-            throw LocalError(message: "Token not found")
+            throw APIError.tokenNotFound
         }
-
+        
         guard let url = URL(string: Strings.baseURL + urlString) else {
-            throw LocalError(message: "Can't form Complete profile URL")
+            throw APIError.invalidURL
         }
-
+        
         var request = URLRequest(url: url)
         switch method {
         case .GET:
@@ -226,19 +282,19 @@ extension API {
         case .DELETE:
             request.httpMethod = "DELETE"
         }
-
+        
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-
+        
         let config = URLSessionConfiguration.default
         if let mock = mockProtocol {
             config.protocolClasses = [mock]
         }
         let session = URLSession(configuration: config)
-
+        
         let (data, response) = try await session.data(for: request)
-
+        
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw LocalError(message: "Invalid response")
+            throw APIError.invalidResponse
         }
         
         if reauthenticate {
@@ -258,42 +314,42 @@ extension API {
                 }
             }
         }
-
+        
         return (data, httpResponse)
     }
-
+    
     fileprivate func request<T: Decodable, U: URLProtocol>(
         with url: String,
         method: Method = .GET,
         reauthenticate: Bool = true,
         intercept: ((Data, HTTPURLResponse) async throws -> T?)? = { data, response in
             guard response.statusCode == 200 else {
-                throw LocalError(message: "Something went wrong")
-            }
+        throw APIError.wrongCode
+    }
             return nil
         },
         mockProtocol: U.Type? = nil
     ) async throws -> T {
-        let (data, response) = try await performRequest(with: url, 
-                                                        method: method, 
+        let (data, response) = try await performRequest(with: url,
+                                                        method: method,
                                                         mockProtocol: mockProtocol,
                                                         reauthenticate: reauthenticate)
-
+        
         if let intercept = intercept, let decision = try await intercept(data, response) {
             return decision
         }
-
+        
         return try decodeResponseData(data: data)
     }
-
+    
     fileprivate func request<U: URLProtocol>(
         with url: String,
         method: Method = .GET,
         reauthenticate: Bool = true,
         intercept: ((Data, HTTPURLResponse) async throws -> Void?)? = { data, response in
             guard response.statusCode == 200 else {
-                throw LocalError(message: "Something went wrong")
-            }
+        throw APIError.wrongCode
+    }
             return nil
         },
         mockProtocol: U.Type? = nil
@@ -307,13 +363,22 @@ extension API {
             _ = try await intercept(data, response)
         }
     }
-
+    
     fileprivate func decodeResponseData<T: Decodable>(data: Data) throws -> T {
         do {
             let decodedResponse = try JSONDecoder().decode(T.self, from: data)
             return decodedResponse
         } catch {
-            throw LocalError(message: "Incorrect server data")
+            print("decode error ======", error)
+            throw APIError.decodingError
         }
     }
+}
+
+enum APIError: Error {
+    case wrongCode
+    case decodingError
+    case invalidResponse
+    case tokenNotFound
+    case invalidURL
 }

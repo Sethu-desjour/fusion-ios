@@ -12,3 +12,20 @@ struct Banner {
     let background: Background
     let badgeImage: URL?
 }
+
+extension BannerModel: RawModelConvertable {
+    func toLocal() -> Banner {
+        var background: Banner.Background
+        if let backgroundURL = backgroundURL {
+            background = .image(backgroundURL)
+        } else {
+            background = .gradient(backgroundColors ?? [])
+        }
+        
+        return Banner(title: name,
+                      description: description  ?? "",
+                      buttonTitle: ctaText,
+                      background: background,
+                      badgeImage: iconURL)
+    }
+}

@@ -5,23 +5,21 @@ struct CartItem: Codable, Identifiable {
     let id: UUID
     let packageId: UUID?
     let packageDetails: PackageModel?
-//    let productId: UUID?
-//    let productDetails: Product?
     let quantity: Int
-    let totalPriceCents: Int64
+    let totalPriceCents: Int
     @DecodableDate var createdAt: Date
-//    let updatedAt: Date
     
     enum CodingKeys: String, CodingKey {
         case id
         case packageId = "package_id"
         case packageDetails = "package_details"
-//        case productId = "product_id"
-//        case productDetails = "product_details"
         case quantity
         case totalPriceCents = "total_price_cents"
         case createdAt = "created_at"
-//        case updatedAt = "updated_at"
+    }
+    
+    var pricePerItem: Int {
+        return quantity > 0 ? totalPriceCents / quantity : 0
     }
 }
 
@@ -77,10 +75,11 @@ class Cart: ObservableObject {
     @Published private(set) var totalPriceCents: Int64 = 0
     @Published private(set) var fees: [FeeModel]? = []
     @Published private(set) var updatedAt: Date = .now
+    private var id: UUID = .init()
     var inProgress = false
     var stopRefresh = false
     var refreshingPackageID: UUID? = nil
-//    var debounceTimer: Timer?
+    var debounceTimer: Timer?
     
     func refresh() async throws {
         operationQueue.maxConcurrentOperationCount = 1
@@ -92,6 +91,7 @@ class Cart: ObservableObject {
 //            if let timer = debounceTimer, timer.isValid {
 //                return
 //            }
+            id = cart.id
             packages = cart.items
             currencyCode = cart.currencyCode
             priceCents = cart.priceCents
@@ -143,35 +143,36 @@ class Cart: ObservableObject {
         }
         let item = packages[index]
         await MainActor.run {
-            packages[index] = .init(id: item.id, packageId: item.packageId, packageDetails: item.packageDetails, quantity: quantity, totalPriceCents: item.totalPriceCents, createdAt: item.createdAt)
+            let pricePerItem = item.pricePerItem
+            packages[index] = .init(id: item.id, packageId: item.packageId, packageDetails: item.packageDetails, quantity: quantity, totalPriceCents: quantity * pricePerItem, createdAt: item.createdAt)
             stopRefresh = true
         }
         
-//        let operation = BlockOperation()
-//        operation.addExecutionBlock {
-//            Task {
-                do {
-                    try await self.api.changeQuantityInCart(for: item.id, quantity: quantity)
-                    await MainActor.run {
-                        stopRefresh = false
-//                        debounceTimer?.invalidate()
-//                        debounceTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { _ in
-//                            print ("Debounce this...")
-                            Task {
-                                self.inProgress = false
-                                try? await self.refresh()
-                            }
-                        }
-//                    }
-                } catch {
-                    await MainActor.run {
+        //        let operation = BlockOperation()
+        //        operation.addExecutionBlock {
+//        await MainActor.run {
+            //            debounceTimer?.invalidate()
+            //            debounceTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { _ in
+            //                Task {
+            do {
+                try await self.api.changeQuantityInCart(for: item.id, quantity: quantity)
+                await MainActor.run {
+                    self.stopRefresh = false
+                    Task {
                         self.inProgress = false
-                        self.packages = oldItems
+                        try? await self.refresh()
                     }
                 }
+                //                    }
+            } catch {
+                await MainActor.run {
+                    self.inProgress = false
+                    self.packages = oldItems
+                }
+            }
+            //                }
 //            }
 //        }
-    
         
 //        operations[packageId.uuidString.lowercased()] = operation
 //        
@@ -184,18 +185,35 @@ class Cart: ObservableObject {
         }
         inProgress = true
         let item = packages[index]
+        self.stopRefresh = true
         do {
             try await api.deletePackageFromCart(item.id)
             await MainActor.run {
                 let _ = packages.remove(at: index)
-            }
-            Task {
-                try? await self.refresh()
+                self.stopRefresh = false
+                Task {
+                    self.inProgress = false
+                    try? await self.refresh()
+                }
             }
         } catch {
             inProgress = false
             // @todo maybe show some kind of notification that request failed
         }
+    }
+    
+    func checkout() async throws {
+        do {
+            // @todo handle all order states
+            let order = try await api.createOrder(for: id)
+            print("successful order ====", order)
+            await MainActor.run {
+                reset()
+            }
+        } catch {
+            throw error
+        }
+        
     }
 
     func quantity(for package: Package) -> Int {

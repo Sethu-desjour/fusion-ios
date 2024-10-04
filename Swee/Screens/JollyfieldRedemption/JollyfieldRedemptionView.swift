@@ -14,13 +14,14 @@ struct RedemptionScanView: View {
     struct Model {
         let header: String
         let title: String
-        let qr: Image
+        let qr: Image?
         let description: String
         let actionTitle: String
     }
     //    @Binding var model: ZoomoovRedemptionModel
     var model: Model
-    var closure: (() -> Void)?
+    var tint: Color = Color.primary.brand
+    var closure: () async throws -> Void
     
     var body: some View {
         VStack {
@@ -37,9 +38,8 @@ struct RedemptionScanView: View {
                 .multilineTextAlignment(.center)
                 .foregroundStyle(Color.text.black60)
                 .padding(.bottom, 37)
-            Button {
-                // @todo make request
-                closure?()
+            AsyncButton(progressWidth: .infinity, progressTint: tint) {
+                try? await closure()
             } label: {
                 HStack {
                     Spacer()
@@ -47,11 +47,11 @@ struct RedemptionScanView: View {
                         .font(.custom("Roboto-Bold", size: 16))
                     Spacer()
                 }
-                .foregroundStyle(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .foregroundStyle(tint)
                 .frame(maxWidth: .infinity)
                 .contentShape(Capsule())
             }
-            .buttonStyle(OutlineButton(strokeColor: Color.primary.brand))
+            .buttonStyle(OutlineButton(strokeColor: tint))
             .padding(.bottom, 16)
         }
     }
@@ -64,6 +64,7 @@ struct RedemptionLoadingView: View {
     }
     //    @Binding var model: ZoomoovRedemptionModel
     var model: Model
+    var tint: Color = Color.primary.brand
     var closure: (() -> Void)?
     
     var body: some View {
@@ -98,6 +99,7 @@ struct RedemptionCompletedView: View {
     }
     //    @Binding var model: ZoomoovRedemptionModel
     var model: Model
+    var tint: Color = Color.primary.brand
     var closure: (() -> Void)?
     
     var body: some View {
@@ -125,11 +127,11 @@ struct RedemptionCompletedView: View {
                         .font(.custom("Roboto-Bold", size: 16))
                     Spacer()
                 }
-                .foregroundStyle(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
+                .foregroundStyle(tint)
                 .frame(maxWidth: .infinity)
                 .contentShape(Capsule())
             }
-            .buttonStyle(OutlineButton(strokeColor: Color.primary.brand))
+            .buttonStyle(OutlineButton(strokeColor: tint))
             .padding(.top, 44)
             .padding(.bottom, 16)
         }

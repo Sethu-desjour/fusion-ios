@@ -31,13 +31,13 @@ class HomeViewModel: ObservableObject {
             let sections: [Section] = sectionsModels.map { model in
                 switch model.type {
                 case .bannerCarousel:
-                        .init(id: model.id, title: model.title, content: .bannerCarousel(model.banners.toBanners()))
+                        .init(id: model.id, title: model.title, content: .bannerCarousel(model.banners.toLocal()))
                 case .packageCarousel:
-                        .init(id: model.id, title: model.title, content: .packages(model.packages.toPackages()))
+                        .init(id: model.id, title: model.title, content: .packages(model.packages.toLocal()))
                 case .merchantList:
-                        .init(id: model.id, title: model.title, content: .merchants(model.merchants.toMerchants()))
+                        .init(id: model.id, title: model.title, content: .merchants(model.merchants.toLocal()))
                 case .bannerStatic:
-                        .init(id: model.id, content: .bannerStatic(model.banners.toBanners()))
+                        .init(id: model.id, content: .bannerStatic(model.banners.toLocal()))
                 }
             }
             await MainActor.run {
@@ -53,98 +53,13 @@ class HomeViewModel: ObservableObject {
     }
 }
 
-extension Optional where Wrapped == [BannerModel] {
-    func toBanners() -> [Banner] {
+extension Optional where Wrapped: Collection, Wrapped.Element: RawModelConvertable {
+    func toLocal() -> [Wrapped.Element.LocalModel] {
         switch self {
         case .none:
             return []
-        case .some(let banners):
-            return banners.map { $0.toBanner() }
+        case .some(let items):
+            return items.map { $0.toLocal() }
         }
-    }
-}
-
-
-extension Optional where Wrapped == [PackageModel] {
-    func toPackages() -> [Package] {
-        switch self {
-        case .none:
-            return []
-        case .some(let banners):
-            return banners.map { $0.toPackage() }
-        }
-    }
-}
-
-
-extension Optional where Wrapped == [MerchantModel] {
-    func toMerchants() -> [Merchant] {
-        switch self {
-        case .none:
-            return []
-        case .some(let banners):
-            return banners.map { $0.toMerchant() }
-        }
-    }
-}
-
-extension BannerModel {
-    func toBanner() -> Banner {
-        var background: Banner.Background
-        if let backgroundURL = backgroundURL {
-            background = .image(backgroundURL)
-        } else {
-            background = .gradient(backgroundColors ?? [])
-        }
-        
-        return Banner(title: name,
-                      description: description  ?? "",
-                      buttonTitle: ctaText,
-                      background: background,
-                      badgeImage: iconURL)
-    }
-}
-
-extension PackageModel {
-    func toPackage() -> Package {
-        .init(id: id,
-              merchant: merchantName,
-              imageURL: photoURL,
-              title: name,
-              description: description ?? "",
-              summary: productSummary,
-              price: priceCents.toPrice(),
-              originalPrice: originalPriceCents.toPrice(),
-              currency: currencyCode,
-              details: details ?? [],
-              tos: tos)
-    }
-}
-
-extension MerchantModel {
-    func toMerchant() -> Merchant {
-        .init(id: id,
-              name: name,
-              description: description,
-              backgroundImage: backgroundURL,
-              backgroundColors: backgroundColors ?? [],
-              storeImageURL: photoURL)
-    }
-}
-
-fileprivate extension Optional where Wrapped == Int {
-    func toPrice() -> Double? {
-        switch self {
-        case .none:
-            return nil
-        case .some(let price):
-            return price.toPrice()
-        }
-    }
-}
-
-fileprivate extension Int {
-    func toPrice() -> Double {
-        return Double(self / 100)
     }
 }
