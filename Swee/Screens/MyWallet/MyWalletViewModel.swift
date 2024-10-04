@@ -10,14 +10,14 @@ struct MyWalletMerchant {
     let products: [PurchaseProduct]
 }
 
-struct PurchaseProduct {
+struct PurchaseProduct: Equatable {
     let id: UUID
     let name: String
     let type: ProductType
     let purchases: [Purchase]
 }
 
-struct Purchase {
+struct Purchase: Equatable {
     let id: UUID
     let merchantID: UUID
     let type: ProductType

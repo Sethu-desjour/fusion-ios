@@ -1,12 +1,12 @@
 import Foundation
 
-enum PurchaseStatus: String, Codable {
+enum PurchaseStatus: String, Codable, Equatable {
     case ready = "READY"
     case completed = "COMPLETED"
     case expired = "EXPIRED"
 }
 
-enum ProductType: String, Codable {
+enum ProductType: String, Codable, Equatable {
     case coupon = "COUPON"
     case item = "ITEM"
     case timeBased = "TIME_BASED"

@@ -10,8 +10,39 @@ struct MerchantPurchases {
 
 struct MyWalletView: View {
     @Environment(\.tabIsShown) private var tabIsShown
+    @Environment(\.currentTab) private var currentTab
     @EnvironmentObject private var api: API
     @StateObject private var viewModel = MyWalletViewModel()
+    
+    var emptyUI: some View {
+        VStack(spacing: 0) {
+            Image("wallet-empty")
+                .padding(.vertical, 32)
+            VStack {
+                Text("No coupons found")
+                    .font(.custom("Poppins-SemiBold", size: 18))
+                    .foregroundStyle(Color.text.black80)
+                    .padding(.bottom, 8)
+                Text("Browse packages and save your coupons in your wallet here")
+                    .font(.custom("Poppins-Medium", size: 14))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(Color.text.black60)
+                    .padding(.bottom, 24)
+                Button {
+                    currentTab.wrappedValue = .home
+                } label: {
+                    HStack {
+                        Text("Explore package")
+                            .font(.custom("Poppins-Bold", size: 16))
+                            .foregroundStyle(Color.primary.brand)
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(OutlineButton(strokeColor: Color.primary.brand, cornerRadius: 28))
+            }
+            .padding(.horizontal, 60)
+        }
+    }
     
     var body: some View {
         CustomNavView {
@@ -49,6 +80,8 @@ struct MyWalletView: View {
                         MerchantPurchasesCard.skeleton.equatable.view
                     }
                     .padding(.horizontal, 16)
+                } else if viewModel.merchants.isEmpty {
+                    emptyUI
                 } else {
                     LazyVStack(spacing: 16) {
                         ForEach(viewModel.merchants, id: \.id) { merchant in

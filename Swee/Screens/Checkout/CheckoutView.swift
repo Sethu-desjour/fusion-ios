@@ -6,6 +6,10 @@ extension CartItem {
     func priceString(currencyCode: String) -> String {
         return "\(currencyCode) \(String(format: "%.2f", Double(totalPriceCents / 100)))"
     }
+    
+    func pricePerItemString(currencyCode: String) -> String {
+        return "\(currencyCode) \(String(format: "%.2f", Double(pricePerItem / 100)))"
+    }
 }
 
 struct BlinkViewModifier: ViewModifier {
@@ -75,7 +79,7 @@ struct CheckoutView: View {
                                 Text(element.packageDetails?.productSummary)
                                     .foregroundStyle(Color.text.black80)
                                     .font(.custom("Poppins-Medium", size: 12))
-                                Text("\(element.quantity) x Qty")
+                                Text("1 Unit - \(element.pricePerItemString(currencyCode: cart.currencyCode))")
                                     .foregroundStyle(Color.text.black80)
                                     .font(.custom("Poppins-Medium", size: 12))
                                 Spacer()
