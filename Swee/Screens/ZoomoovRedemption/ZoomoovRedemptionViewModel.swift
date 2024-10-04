@@ -5,7 +5,7 @@ class ZoomoovRedemptionViewModel: ObservableObject {
     var api: API = API()
     @Published private(set) var loadedData = false
     @Published private(set) var showError = false
-    @Published var merchant: MyWalletMerchant = .empty
+    @Published var merchant: WalletMerchant = .empty
     
     func fetch() async throws {
         do {
@@ -13,7 +13,7 @@ class ZoomoovRedemptionViewModel: ObservableObject {
             await MainActor.run {
                 loadedData = true
                 showError = false
-                self.merchant = merchant.toMerchant()
+                self.merchant = merchant.toLocal()
             }
         } catch {
             await MainActor.run {
@@ -23,7 +23,7 @@ class ZoomoovRedemptionViewModel: ObservableObject {
     }
 }
 
-extension MyWalletMerchant {
+extension WalletMerchant {
     static var empty: Self {
         .init(id: .init(), name: "Zoomoov", photoURL: nil, bgColors: [], purchaseSummary: "", products: [])
     }

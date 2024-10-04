@@ -40,7 +40,7 @@ struct ZoomoovBottomSheet: View {
         let redemptionUpdate = try await api.checkRedemptionStatus(for: id)
         await MainActor.run {
             if redemptionUpdate.status == .success, let index = redemptions.firstIndex(where: { $0.id == id }) {
-                redemptions[index] = redemptionUpdate.toRedemption()
+                redemptions[index] = redemptionUpdate.toLocal()
                 goToNextRedemption()
             }
         }
@@ -65,7 +65,7 @@ struct ZoomoovBottomSheet: View {
                     do {
                         let redemptions = try await api.startRedemptions(for: model.purchaseId,
                                                                          quantity: model.qtyToRedeem)
-                        .map { $0.toRedemption() }
+                        .map { $0.toLocal() }
                         await MainActor.run {
                             self.redemptions = redemptions
                             guard !redemptions.isEmpty else {

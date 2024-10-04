@@ -121,7 +121,7 @@ struct MyWalletView: View {
 }
 
 struct MerchantPurchasesCard: View {
-    var merchant: MyWalletMerchant
+    var merchant: WalletMerchant
     
     var body: some View {
         VStack {

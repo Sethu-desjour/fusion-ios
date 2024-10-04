@@ -20,7 +20,7 @@ class MerchantPageViewModel: ObservableObject {
             
             await MainActor.run {
                 showError = false
-                self.packages = packageModels.map { $0.toPackage() }
+                self.packages = packageModels.map { $0.toLocal() }
             }
         } catch {
             await MainActor.run {
@@ -32,20 +32,10 @@ class MerchantPageViewModel: ObservableObject {
             let storeModels = try await self.api.storesForMerchant(id, location: locationManager.lastKnownLocation)
             
             await MainActor.run {
-                self.stores = storeModels.map { $0.toStore() }
+                self.stores = storeModels.map { $0.toLocal() }
             }
         } catch {
             // @todo parse error and show error screen
         }
-    }
-}
-
-extension MerchantStoreModel {
-    func toStore() -> MerchantStore {
-        .init(id: id,
-              name: name,
-              address: address,
-              imageURL: photoURL,
-              distance: distance)
     }
 }

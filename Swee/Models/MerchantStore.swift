@@ -7,3 +7,18 @@ struct MerchantStore: Identifiable {
     let imageURL: URL?
     let distance: String?
 }
+
+extension MerchantStoreModel: RawModelConvertable {
+    func toLocal() -> MerchantStore {
+        .init(id: id,
+              name: name,
+              address: address,
+              imageURL: photoURL,
+              distance: distance)
+    }
+}
+
+protocol RawModelConvertable {
+    associatedtype LocalModel
+    func toLocal() -> LocalModel
+}

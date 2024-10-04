@@ -8,3 +8,14 @@ struct Merchant {
     let backgroundColors: [Color]
     let storeImageURL: URL?
 }
+
+extension MerchantModel: RawModelConvertable {
+    func toLocal() -> Merchant {
+        .init(id: id,
+              name: name,
+              description: description,
+              backgroundImage: backgroundURL,
+              backgroundColors: backgroundColors ?? [],
+              storeImageURL: photoURL)
+    }
+}

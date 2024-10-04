@@ -21,7 +21,7 @@ class PackageDetailViewModel: ObservableObject {
             loadedData = true
             
             await MainActor.run {
-                self.package = package.toPackage()
+                self.package = package.toLocal()
                 showError = false
             }
         } catch {
@@ -35,7 +35,7 @@ class PackageDetailViewModel: ObservableObject {
         }
         
         await MainActor.run {
-            self.stores = storeModels.map { $0.toStore() }
+            self.stores = storeModels.map { $0.toLocal() }
         }
     }
     

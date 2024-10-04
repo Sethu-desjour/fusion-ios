@@ -115,7 +115,7 @@ struct ZoomoovRedemptionView: View {
     @Environment(\.tabIsShown) private var tabIsShown
     @EnvironmentObject private var api: API
     @StateObject private var viewModel = ZoomoovRedemptionViewModel()
-    @State var merchant: MyWalletMerchant
+    @State var merchant: WalletMerchant
     
     @State var step: ZoomoovRedemptionSteps = .setup
     @State var currentRedemption: ZoomoovRedemptionModel = .init(purchaseId: .init(),
