@@ -21,7 +21,6 @@ struct PurchaseLog: Hashable {
     let typeAndTime: String
     let vendor: Vendors
     let price: String
-    let isPackage: Bool
 }
 
 struct RedemptionLog: Hashable {
@@ -45,18 +44,20 @@ struct ActivityView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.tabIsShown) private var tabIsShown
     @Environment(\.currentTab) private var currentTab
+    @EnvironmentObject private var api: API
     
+    @StateObject private var viewModel = ActivityViewModel()
     @State private var hideBottomSheet: Bool = true
     @State private var tab = ActivityTab.Purchased
     @State private var purchases: [PurchasesSection] = [
         .init(date: Date(), purchases: [
-            .init(title: "Chinese new year package", description: "8 Zoomoov ride + 2 Hero mask", typeAndTime: "Online | 22 June, 7:00 PM", vendor: .Jollyfield, price: "S$50", isPackage: true),
-            .init(title: "Zoomoov", description: "8 Ride", typeAndTime: "Online | 22 June, 7:08 PM", vendor: .Zoomoov, price: "S$59", isPackage: true),
-            .init(title: "Jollyfield", description: "50 mins", typeAndTime: "Online | 22 June, 11:00 PM ", vendor: .Zoomoov, price: "S$59", isPackage: true),
+            .init(title: "Chinese new year package", description: "8 Zoomoov ride + 2 Hero mask", typeAndTime: "Online | 22 June, 7:00 PM", vendor: .Jollyfield, price: "S$50"),
+            .init(title: "Zoomoov", description: "8 Ride", typeAndTime: "Online | 22 June, 7:08 PM", vendor: .Zoomoov, price: "S$59"),
+            .init(title: "Jollyfield", description: "50 mins", typeAndTime: "Online | 22 June, 11:00 PM ", vendor: .Zoomoov, price: "S$59"),
         ]),
         .init(date: Date(), purchases: [
-            .init(title: "Jollyfield", description: "50 mins", typeAndTime: "Online | 22 June, 11:00 PM ", vendor: .Zoomoov, price: "S$59", isPackage: true),
-            .init(title: "Jollyfield", description: "50 mins", typeAndTime: "Online | 22 June, 11:00 PM ", vendor: .Zoomoov, price: "S$59", isPackage: true),
+            .init(title: "Jollyfield", description: "50 mins", typeAndTime: "Online | 22 June, 11:00 PM ", vendor: .Zoomoov, price: "S$59"),
+            .init(title: "Jollyfield", description: "50 mins", typeAndTime: "Online | 22 June, 11:00 PM ", vendor: .Zoomoov, price: "S$59"),
         ])
     ]
     
@@ -213,7 +214,11 @@ struct ActivityView: View {
                emptyUI(description: "You have not made any actions yet")
             }
         }
-        .onWillAppear({
+        .onAppear(perform: {
+            viewModel.api = api
+            Task {
+                try? await viewModel.fetch()
+            }
             tabIsShown.wrappedValue = false
         })
         .customNavigationTitle("My Activity")
