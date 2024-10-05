@@ -21,6 +21,7 @@ struct ProfileView: View {
     
     @EnvironmentObject private var api: API
     @EnvironmentObject private var appRootManager: AppRootManager
+    @Environment(\.tabIsShown) private var tabIsShown
     
     @State private var profileProgress: Double = 0.6
     @State private var sections: [[RowData]] = []
@@ -160,10 +161,11 @@ struct ProfileView: View {
                     .customNavBarHidden(true)
                 }
             }
+            .onAppear(perform: {
+                setupSections()
+                tabIsShown.wrappedValue = true
+            })
         }
-        .onAppear(perform: {
-            setupSections()
-        })
     }
     
     struct Row: View {
