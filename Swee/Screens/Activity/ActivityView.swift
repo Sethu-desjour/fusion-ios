@@ -15,13 +15,13 @@ enum ActivityTab {
 }
 
 
-struct PurchaseLog: Hashable {
-    let title: String
-    let description: String
-    let typeAndTime: String
-    let vendor: Vendors
-    let price: String
-}
+//struct PurchaseLog: Hashable {
+//    let title: String
+//    let description: String
+//    let typeAndTime: String
+//    let vendor: Vendors
+//    let price: String
+//}
 
 struct RedemptionLog: Hashable {
     let title: String
@@ -37,7 +37,7 @@ struct RedemptionsSection: Hashable {
 
 struct PurchasesSection: Hashable {
     let date: Date
-    let purchases: [PurchaseLog]
+    let purchases: [Order]
 }
 
 struct ActivityView: View {
@@ -49,18 +49,6 @@ struct ActivityView: View {
     @StateObject private var viewModel = ActivityViewModel()
     @State private var hideBottomSheet: Bool = true
     @State private var tab = ActivityTab.Purchased
-    @State private var purchases: [PurchasesSection] = [
-        .init(date: Date(), purchases: [
-            .init(title: "Chinese new year package", description: "8 Zoomoov ride + 2 Hero mask", typeAndTime: "Online | 22 June, 7:00 PM", vendor: .Jollyfield, price: "S$50"),
-            .init(title: "Zoomoov", description: "8 Ride", typeAndTime: "Online | 22 June, 7:08 PM", vendor: .Zoomoov, price: "S$59"),
-            .init(title: "Jollyfield", description: "50 mins", typeAndTime: "Online | 22 June, 11:00 PM ", vendor: .Zoomoov, price: "S$59"),
-        ]),
-        .init(date: Date(), purchases: [
-            .init(title: "Jollyfield", description: "50 mins", typeAndTime: "Online | 22 June, 11:00 PM ", vendor: .Zoomoov, price: "S$59"),
-            .init(title: "Jollyfield", description: "50 mins", typeAndTime: "Online | 22 June, 11:00 PM ", vendor: .Zoomoov, price: "S$59"),
-        ])
-    ]
-    
     @State private var redemptions: [RedemptionsSection] = [
         .init(date: Date(), redemptions: [
             .init(title: "Zoomoov ride", typeAndTime: "JEM Mall | 12:30 pm", redemption: "- 1 Rides", vendor: .Zoomoov),
@@ -71,7 +59,10 @@ struct ActivityView: View {
     ]
     
     var noData: Bool {
-        return purchases.isEmpty && redemptions.isEmpty
+        return viewModel.purchaseSections.isEmpty && 
+        redemptions.isEmpty &&
+        viewModel.loadedData &&
+        !viewModel.showError
     }
     
     func emptyUI(description: String) -> some View {
@@ -114,102 +105,116 @@ struct ActivityView: View {
     var currentTabIsEmpty: Bool {
         switch tab {
         case .Purchased:
-            purchases.isEmpty
+            viewModel.purchaseSections.isEmpty
         case .Redeemed:
             redemptions.isEmpty
         }
     }
     
-    var body: some View {
-        ZStack {
-            if !noData {
-                VStack(spacing: 0) {
-                    GeometryReader { metrics in
-                        ZStack {
-                            HStack {
-                                Capsule()
-                                    .frame(maxWidth: metrics.size.width / 2.2, maxHeight: 45, alignment: .leading)
-                                    .foregroundStyle(Color.primary.brand)
-                            }
-                            .frame(maxWidth: .infinity, alignment: tab == .Purchased ? .leading : .trailing)
-                            .animation(.default, value: tab)
-                            HStack {
-                                Button {
-                                    tab = .Purchased
-                                } label: {
-                                    Text("Purchased")
-                                        .frame(maxWidth: .infinity)
-                                        .font(.custom(tab == .Purchased ? "Poppins-Bold" : "Poppins-Medium", size: 14))
-                                        .foregroundStyle(.white)
-                                }
-                                //                        .buttonStyle(EmptyStyle())
-                                Spacer()
-                                Button {
-                                    tab = .Redeemed
-                                } label: {
-                                    Text("Redeemed")
-                                        .frame(maxWidth: .infinity)
-                                        .font(.custom(tab == .Redeemed ? "Poppins-Bold" : "Poppins-Medium", size: 14))
-                                        .foregroundStyle(.white)
-                                }
-                                //                        .buttonStyle(EmptyStyle())
-                            }
-                            .animation(.default, value: tab)
-                            
-                        }
-                        .background(Capsule()
-                            .foregroundStyle(Color.primary.lighter))
-                        .padding()
+    var mainUI: some View {
+        VStack(spacing: 0) {
+            GeometryReader { metrics in
+                ZStack {
+                    HStack {
+                        Capsule()
+                            .frame(maxWidth: metrics.size.width / 2.2, maxHeight: 45, alignment: .leading)
+                            .foregroundStyle(Color.primary.brand)
                     }
-                    .frame(height: 80)
-                    if currentTabIsEmpty {
-                        emptyUI(description: tab.emptyDescription)
-                    } else {
-                        List {
-                            if tab == .Purchased {
-                                ForEach(Array(purchases.enumerated()), id: \.offset) { sectionIndex, section in
-                                    Section {
-                                        ForEach(Array(section.purchases.enumerated()), id: \.offset) { index, purchase in
-                                            PurchaseRow(purchase: purchase, hideDivider: index == 0)
-                                        }
-                                        
-                                    } header: {
-                                        ActivitySectionHeader(date: section.date)
-                                    }
-                                    
-                                }
-                                .listRowSeparator(.hidden, edges: .all)
-                            } else {
-                                ForEach(Array(redemptions.enumerated()), id: \.offset) { sectionIndex, section in
-                                    Section {
-                                        ForEach(Array(section.redemptions.enumerated()), id: \.offset) { index, redemption in
-                                            RedemptionRow(redemption: redemption, hideDivider: index == 0)
-                                        }
-                                    } header: {
-                                        ActivitySectionHeader(date: section.date)
-                                    }
-                                    
-                                }
-                                .listRowSeparator(.hidden, edges: .all)
-                            }
-                            HStack {
-                                Rectangle()
-                                    .fill(Color.text.black10)
-                                    .frame(height: 1)
-                                Text("End of Actvity".uppercased())
-                                    .font(.custom("Poppins-Medium", size: 10))
-                                    .foregroundStyle(Color.text.black40)
-                                Rectangle()
-                                    .fill(Color.text.black10)
-                                    .frame(height: 1)
-                            }
-                            .padding(.top, 20)
-                            .padding([.leading, .trailing], -10)
-                            .listRowSeparator(.hidden, edges: .all)
+                    .frame(maxWidth: .infinity, alignment: tab == .Purchased ? .leading : .trailing)
+                    .animation(.default, value: tab)
+                    HStack {
+                        Button {
+                            tab = .Purchased
+                        } label: {
+                            Text("Purchased")
+                                .frame(maxWidth: .infinity)
+                                .font(.custom(tab == .Purchased ? "Poppins-Bold" : "Poppins-Medium", size: 14))
+                                .foregroundStyle(.white)
                         }
-                        .listStyle(.inset)
+                        //                        .buttonStyle(EmptyStyle())
+                        Spacer()
+                        Button {
+                            tab = .Redeemed
+                        } label: {
+                            Text("Redeemed")
+                                .frame(maxWidth: .infinity)
+                                .font(.custom(tab == .Redeemed ? "Poppins-Bold" : "Poppins-Medium", size: 14))
+                                .foregroundStyle(.white)
+                        }
+                        //                        .buttonStyle(EmptyStyle())
+                    }
+                    .animation(.default, value: tab)
+                    
+                }
+                .background(Capsule()
+                    .foregroundStyle(Color.primary.lighter))
+                .padding()
+            }
+            .frame(height: 80)
+            if !viewModel.loadedData {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        PurchaseRow.skeleton.equatable.view
+                        PurchaseRow.skeleton.equatable.view
+                        PurchaseRow.skeleton.equatable.view
+                        PurchaseRow.skeleton.equatable.view
                     }
                 }
+            } else if currentTabIsEmpty {
+                emptyUI(description: tab.emptyDescription)
+            } else {
+                List {
+                    if tab == .Purchased {
+                        ForEach(Array(viewModel.purchaseSections.enumerated()), id: \.offset) { sectionIndex, section in
+                            Section {
+                                ForEach(Array(section.purchases.enumerated()), id: \.offset) { index, purchase in
+                                    PurchaseRow(purchase: purchase, hideDivider: index == 0)
+                                }
+                                
+                            } header: {
+                                ActivitySectionHeader(date: section.date)
+                            }
+                            
+                        }
+                        .listRowSeparator(.hidden, edges: .all)
+                    } else {
+                        ForEach(Array(redemptions.enumerated()), id: \.offset) { sectionIndex, section in
+                            Section {
+                                ForEach(Array(section.redemptions.enumerated()), id: \.offset) { index, redemption in
+                                    RedemptionRow(redemption: redemption, hideDivider: index == 0)
+                                }
+                            } header: {
+                                ActivitySectionHeader(date: section.date)
+                            }
+                            
+                        }
+                        .listRowSeparator(.hidden, edges: .all)
+                    }
+                    HStack {
+                        Rectangle()
+                            .fill(Color.text.black10)
+                            .frame(height: 1)
+                        Text("End of Actvity".uppercased())
+                            .font(.custom("Poppins-Medium", size: 10))
+                            .foregroundStyle(Color.text.black40)
+                        Rectangle()
+                            .fill(Color.text.black10)
+                            .frame(height: 1)
+                    }
+                    .padding(.top, 20)
+                    .padding([.leading, .trailing], -10)
+                    .listRowSeparator(.hidden, edges: .all)
+                }
+                .listStyle(.inset)
+            }
+        }
+    }
+    
+    var body: some View {
+        ZStack {
+            // @todo add error state
+            if !noData {
+              mainUI
             } else {
                emptyUI(description: "You have not made any actions yet")
             }
@@ -371,7 +376,7 @@ struct ActivitySectionHeader: View {
 }
 
 struct PurchaseRow: View {
-    @State var purchase: PurchaseLog
+    @State var purchase: Order
     @State var hideDivider: Bool = false
     
     var body: some View {
@@ -383,31 +388,71 @@ struct PurchaseRow: View {
             HStack(spacing: 0) {
                 Circle()
                     .foregroundStyle(LinearGradient(
-                        colors: purchase.vendor == .Zoomoov ? Color.gradient.secondary : Color.gradient.primary,
+                        colors: Color.gradient.secondary, // @todo change once provided from BE
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     ))
                     .frame(width: 40, height: 40)
                     .overlay {
-                        Text(purchase.vendor == .Zoomoov ? "Z" : "J")
+                        Text(String(purchase.merchantName.first ?? "N"))
                             .foregroundStyle(.white)
                             .font(.custom("Poppins-Bold", size: 16))
                     }
                     .padding(.trailing, 16)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(purchase.title)
+                    Text(purchase.merchantName)
                         .font(.custom("Poppins-SemiBold", size: 14))
-                    Text(purchase.description)
+                    Text("\(purchase.quantity) items")
                         .font(.custom("Poppins-SemiBold", size: 12))
-                    Text(purchase.typeAndTime)
+                    Text("\(purchase.type.toString) | \(purchase.createdAtDate.formatted(date: .omitted, time: .shortened))")
                         .font(.custom("Poppins-SemiBold", size: 10))
                         .foregroundStyle(Color.text.black40)
                 }
                 Spacer()
-                Text(purchase.price)
+                Text("\(purchase.currencyCode) \(purchase.totalPriceCents / 100)")
                     .font(.custom("Poppins-SemiBold", size: 18))
                     .foregroundStyle(Color.primary.brand)
             }
+        }
+    }
+}
+
+extension PurchaseRow: Skeletonable {
+    static var skeleton: any View {
+        VStack(alignment: .leading) {
+            HStack {
+                Color.white
+                    .skeleton(with: true, shape: .circle)
+                    .frame(width: 40, height: 40)
+                VStack(alignment: .leading) {
+                    Text("")
+                        .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                        .frame(width: 170, height: 20)
+                    Text("")
+                        .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                        .frame(width: 70, height: 10)
+                    Text("")
+                        .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                        .frame(width: 70, height: 10)
+                }
+                Spacer()
+                Text("")
+                    .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                    .frame(width: 40, height: 30)
+            }
+        }
+        .padding(.horizontal)
+        .frame(maxWidth: .infinity)
+    }
+}
+
+extension OrderType {
+    var toString: String {
+        switch self {
+        case .online:
+            return "Online"
+        case .otc:
+            return "Other the counter"
         }
     }
 }

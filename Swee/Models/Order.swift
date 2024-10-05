@@ -1,12 +1,13 @@
 import SwiftUI
 
-struct Order {
+struct Order: Hashable {
     let id: UUID
     let status: OrderStatus
     let type: OrderType
     let currencyCode: String
     let totalPriceCents: Int
     let quantity: Int
+    let merchantName: String
     let createdAtDate: Date
 }
 
@@ -18,12 +19,14 @@ extension OrderModel: RawModelConvertable {
                 return acc + item.quantity
             }
         }
+        let merchantName =  items?.first?.snapshot.merchantName ?? "N/A"
         return .init(id: id,
                      status: status,
                      type: type,
                      currencyCode: currencyCode,
                      totalPriceCents: totalPriceCents,
                      quantity: quantity,
+                     merchantName: merchantName,
                      createdAtDate: createdAt)
     }
 }

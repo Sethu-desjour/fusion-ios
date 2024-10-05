@@ -1,12 +1,12 @@
 import Foundation
 
-enum OrderStatus: String, Codable {
+enum OrderStatus: String, Codable, Equatable {
     case pending = "PENDING"
     case completed = "COMPLETED"
     case failed = "FAILED"
 }
 
-enum OrderType: String, Codable {
+enum OrderType: String, Codable, Equatable {
     case online = "ONLINE"
     case otc = "OTC"
 }
@@ -29,7 +29,8 @@ struct OrderModel: Codable {
         case id
         case userID = "user_id"
         case cartID = "cart_id"
-        case status, type
+        case status
+        case type = "order_type"
         case currencyCode = "currency_code"
         case priceCents = "price_cents"
         case totalPriceCents = "total_price_cents"

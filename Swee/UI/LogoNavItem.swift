@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct LogoNavItem: View {
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             Image("logo")
