@@ -130,7 +130,7 @@ struct ZoomoovRedemptionView: View {
     var mainUI: some View {
         ForEach(viewModel.merchant.products, id: \.id) { product in
             VStack(alignment: .leading, spacing: 0) {
-                Text(product.name)
+                Text(product.singularName)
                     .font(.custom("Poppins-SemiBold", size: 20))
                 ForEach(product.purchases, id: \.id) { purchase in
                     TicketView(ticket: .init(merchant: viewModel.merchant.name,
@@ -142,7 +142,7 @@ struct ZoomoovRedemptionView: View {
                         currentRedemption = .init(purchaseId: purchase.id,
                                                   totalQuantity: purchase.remainingValue,
                                                   merchant: viewModel.merchant.name,
-                                                  type: product.name,
+                                                  type: product.singularName,
                                                   disclaimer: purchase.note,
                                                   productType: product.type)
                         hidden = false

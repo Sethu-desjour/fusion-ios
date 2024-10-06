@@ -14,25 +14,9 @@ enum ActivityTab {
     }
 }
 
-
-//struct PurchaseLog: Hashable {
-//    let title: String
-//    let description: String
-//    let typeAndTime: String
-//    let vendor: Vendors
-//    let price: String
-//}
-
-struct RedemptionLog: Hashable {
-    let title: String
-    let typeAndTime: String
-    let redemption: String
-    let vendor: Vendors
-}
-
 struct RedemptionsSection: Hashable {
     let date: Date
-    let redemptions: [RedemptionLog]
+    let redemptions: [Redemption]
 }
 
 struct PurchasesSection: Hashable {
@@ -49,18 +33,10 @@ struct ActivityView: View {
     @StateObject private var viewModel = ActivityViewModel()
     @State private var hideBottomSheet: Bool = true
     @State private var tab = ActivityTab.Purchased
-    @State private var redemptions: [RedemptionsSection] = [
-        .init(date: Date(), redemptions: [
-            .init(title: "Zoomoov ride", typeAndTime: "JEM Mall | 12:30 pm", redemption: "- 1 Rides", vendor: .Zoomoov),
-            .init(title: "Jollyfield ride", typeAndTime: "Jewel Ter 3 | 11:30 pm", redemption: "- 58 mins", vendor: .Jollyfield),
-            .init(title: "Zoomoov ride", typeAndTime: "Jurong East | 12:00 PM ", redemption: "- 2 Rides", vendor: .Zoomoov),
-            .init(title: "Jollyfield ride", typeAndTime: "Jurong East | 11:00 PM ", redemption: "- 20 mins", vendor: .Jollyfield),
-        ])
-    ]
     
     var noData: Bool {
         return viewModel.purchaseSections.isEmpty && 
-        redemptions.isEmpty &&
+        viewModel.redemptionSections.isEmpty &&
         viewModel.loadedData &&
         !viewModel.showError
     }
@@ -107,7 +83,7 @@ struct ActivityView: View {
         case .Purchased:
             viewModel.purchaseSections.isEmpty
         case .Redeemed:
-            redemptions.isEmpty
+            viewModel.redemptionSections.isEmpty
         }
     }
     
@@ -178,7 +154,7 @@ struct ActivityView: View {
                         }
                         .listRowSeparator(.hidden, edges: .all)
                     } else {
-                        ForEach(Array(redemptions.enumerated()), id: \.offset) { sectionIndex, section in
+                        ForEach(Array(viewModel.redemptionSections.enumerated()), id: \.offset) { sectionIndex, section in
                             Section {
                                 ForEach(Array(section.redemptions.enumerated()), id: \.offset) { index, redemption in
                                     RedemptionRow(redemption: redemption, hideDivider: index == 0)
@@ -458,8 +434,16 @@ extension OrderType {
 }
 
 struct RedemptionRow: View {
-    @State var redemption: RedemptionLog
+    @State var redemption: Redemption
     @State var hideDivider: Bool = false
+    private var storeAndTime: String {
+        let string = "\(redemption.createdAt.formatted(date: .omitted, time: .shortened))"
+        guard let storeName = redemption.storeName else {
+            return string
+        }
+        
+        return "\(storeName) | " + string
+    }
     
     var body: some View {
         VStack {
@@ -470,26 +454,26 @@ struct RedemptionRow: View {
             HStack(spacing: 0) {
                 Circle()
                     .foregroundStyle(LinearGradient(
-                        colors: redemption.vendor == .Zoomoov ? Color.gradient.secondary : Color.gradient.primary,
+                        colors: Color.gradient.secondary, // @todo change for BE content
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     ))
                     .frame(width: 40, height: 40)
                     .overlay {
-                        Text(redemption.vendor == .Zoomoov ? "Z" : "J")
+                        Text("Z") // @todo change with BE content
                             .foregroundStyle(.white)
                             .font(.custom("Poppins-Bold", size: 16))
                     }
                     .padding(.trailing, 16)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(redemption.title)
+                    Text("Zoomoov ride") // @todo change with BE content
                         .font(.custom("Poppins-SemiBold", size: 14))
-                    Text(redemption.typeAndTime)
+                    Text(storeAndTime)
                         .font(.custom("Poppins-SemiBold", size: 10))
                         .foregroundStyle(Color.text.black40)
                 }
                 Spacer()
-                Text(redemption.redemption)
+                Text("- \(redemption.value) Rides") // @todo change with BE content
                     .font(.custom("Poppins-SemiBold", size: 14))
                     .foregroundStyle(Color.secondary.brand)
             }

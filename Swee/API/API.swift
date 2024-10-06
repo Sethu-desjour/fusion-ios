@@ -205,6 +205,12 @@ class API: ObservableObject {
         return try await request(with: url)
     }
     
+    func redemptions() async throws -> [RedemptionModel] {
+        let url = "/redemptions"
+        
+        return try await request(with: url)
+    }
+    
     func walletMerchants() async throws -> [WalletMerchantModel] {
         let url = "/wallet/merchants"
         

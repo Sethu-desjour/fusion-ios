@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-enum RedemptionStatus: String, Codable {
+enum RedemptionStatus: String, Codable, Equatable {
     case pending = "PENDING"
     case success = "SUCCESS"
     case cancelled = "CANCELLED"

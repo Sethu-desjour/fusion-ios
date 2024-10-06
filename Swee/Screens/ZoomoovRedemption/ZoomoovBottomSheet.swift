@@ -10,11 +10,13 @@ struct ZoomoovBottomSheet: View {
     @State private var redemptions: [Redemption] = []
     @State private var stopPolling = false
     @State var timer: DispatchSourceTimer?
+    @State private var currentRedemption: Redemption?
     
     var onComplete: () -> Void
     
     func poll(for redemption: Redemption) {
         self.timer?.cancel()
+        currentRedemption = redemption
         let queue = DispatchQueue.global(qos: .background)
         let timer = DispatchSource.makeTimerSource(queue: queue)
         timer.schedule(deadline: .now(), repeating: .seconds(2), leeway: .seconds(1))
@@ -24,8 +26,10 @@ struct ZoomoovBottomSheet: View {
                 let status = try await checkRedemptionStatus(for: redemption.id)
                 guard status != .success else {
                     print("poll successful for \(redemption.id.uuidString.lowercased())")
-                    self.timer?.cancel()
-                    self.timer = nil
+                    if let currentRedemption = currentRedemption, currentRedemption.id == redemption.id {
+                        self.timer?.cancel()
+                        self.timer = nil
+                    }
                     return
                 }
                 try? await Task.sleep(nanoseconds: 1_000_000_000)
@@ -33,6 +37,7 @@ struct ZoomoovBottomSheet: View {
         })
         timer.resume()
         
+        print("reset timer")
         self.timer = timer
     }
     
