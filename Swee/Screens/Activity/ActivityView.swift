@@ -312,24 +312,6 @@ struct FiltersView: View {
                 .frame(height: 1)
                 .padding(.bottom)
                 .padding([.leading, .trailing], -20)
-//            VStack(spacing: 8) {
-//                Text("By Merchant")
-//                    .font(.custom("Poppins-SemiBold", size: 16))
-//                    .frame(maxWidth: .infinity, alignment: .leading)
-//                VStack(spacing: 2) {
-//                    ForEach(Vendors.allCases, id: \.self) { vendor in
-//                        FilterRow(title: vendor.toString(),
-//                                  selected: vendorFilters.contains(vendor)) {
-//                            if vendorFilters.contains(vendor) {
-//                                vendorFilters.remove(vendor)
-//                            } else {
-//                                vendorFilters.insert(vendor)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            .padding(.bottom)
             VStack(spacing: 8) {
                 Text("By Date")
                     .font(.custom("Poppins-SemiBold", size: 16))

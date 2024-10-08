@@ -12,7 +12,7 @@ struct LogoNavItem: View {
             } label: {
                 HStack(spacing: 4) {
                     Image("location")
-                    Text(locationManager.lastKnownCity ?? "Singapore")
+                    Text(locationManager.lastKnownCity ?? "Singapore") // @todo check phone number for fallback
                         .font(.custom("Poppins-Regular", size: 14))
                         .foregroundStyle(Color.text.black80)
                 }
