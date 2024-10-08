@@ -5,11 +5,6 @@ struct PurchaseProduct: Equatable {
     let name: String
     let type: ProductType
     let purchases: [Purchase]
-    
-    var singularName: String {
-        var mutableName = name
-        return mutableName.replacingOccurrences(of: "(s)", with: "")
-    }
 }
 
 extension PurchaseProductModel: RawModelConvertable {

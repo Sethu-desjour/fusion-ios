@@ -199,13 +199,13 @@ class API: ObservableObject {
         }
     }
     
-    func orders() async throws -> [OrderModel] {
+    func orders() async throws -> [OrderDetailModel] {
         let url = "/orders"
         
         return try await request(with: url)
     }
     
-    func redemptions() async throws -> [RedemptionModel] {
+    func redemptions() async throws -> [RedemptionDetailModel] {
         let url = "/redemptions"
         
         return try await request(with: url)

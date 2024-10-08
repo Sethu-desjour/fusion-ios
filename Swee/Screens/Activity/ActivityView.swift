@@ -16,12 +16,12 @@ enum ActivityTab {
 
 struct RedemptionsSection: Hashable {
     let date: Date
-    let redemptions: [Redemption]
+    let redemptions: [RedemptionDetail]
 }
 
 struct PurchasesSection: Hashable {
     let date: Date
-    let purchases: [Order]
+    let purchases: [OrderDetail]
 }
 
 struct ActivityView: View {
@@ -139,57 +139,72 @@ struct ActivityView: View {
             } else if currentTabIsEmpty {
                 emptyUI(description: tab.emptyDescription)
             } else {
-                List {
-                    if tab == .Purchased {
-                        ForEach(Array(viewModel.purchaseSections.enumerated()), id: \.offset) { sectionIndex, section in
-                            Section {
-                                ForEach(Array(section.purchases.enumerated()), id: \.offset) { index, purchase in
-                                    PurchaseRow(purchase: purchase, hideDivider: index == 0)
-                                }
-                                
-                            } header: {
-                                ActivitySectionHeader(date: section.date)
-                            }
-                            
-                        }
-                        .listRowSeparator(.hidden, edges: .all)
-                    } else {
-                        ForEach(Array(viewModel.redemptionSections.enumerated()), id: \.offset) { sectionIndex, section in
-                            Section {
-                                ForEach(Array(section.redemptions.enumerated()), id: \.offset) { index, redemption in
-                                    RedemptionRow(redemption: redemption, hideDivider: index == 0)
-                                }
-                            } header: {
-                                ActivitySectionHeader(date: section.date)
-                            }
-                            
-                        }
-                        .listRowSeparator(.hidden, edges: .all)
-                    }
-                    HStack {
-                        Rectangle()
-                            .fill(Color.text.black10)
-                            .frame(height: 1)
-                        Text("End of Actvity".uppercased())
-                            .font(.custom("Poppins-Medium", size: 10))
-                            .foregroundStyle(Color.text.black40)
-                        Rectangle()
-                            .fill(Color.text.black10)
-                            .frame(height: 1)
-                    }
-                    .padding(.top, 20)
-                    .padding([.leading, .trailing], -10)
-                    .listRowSeparator(.hidden, edges: .all)
-                }
-                .listStyle(.inset)
+               listsUI
             }
         }
     }
     
+    var purchaseList: some View {
+        ForEach(Array(viewModel.purchaseSections.enumerated()), id: \.offset) { sectionIndex, section in
+            Section {
+                ForEach(Array(section.items.enumerated()), id: \.offset) { index, purchase in
+                    PurchaseRow(purchase: purchase, hideDivider: index == 0)
+                }
+                
+            } header: {
+                ActivitySectionHeader(date: section.date)
+            }
+            
+        }
+        .listRowSeparator(.hidden, edges: .all)
+    }
+    
+    var redemptionList: some View {
+        ForEach(Array(viewModel.redemptionSections.enumerated()), id: \.offset) { sectionIndex, section in
+            Section {
+                ForEach(Array(section.items.enumerated()), id: \.offset) { index, redemption in
+                    RedemptionRow(redemption: redemption, hideDivider: index == 0)
+                }
+            } header: {
+                ActivitySectionHeader(date: section.date)
+            }
+            
+        }
+        .listRowSeparator(.hidden, edges: .all)
+    }
+    
+    var listsUI: some View {
+        List {
+            if tab == .Purchased {
+               purchaseList
+            } else {
+               redemptionList
+            }
+            HStack {
+                Rectangle()
+                    .fill(Color.text.black10)
+                    .frame(height: 1)
+                Text("End of Actvity".uppercased())
+                    .font(.custom("Poppins-Medium", size: 10))
+                    .foregroundStyle(Color.text.black40)
+                Rectangle()
+                    .fill(Color.text.black10)
+                    .frame(height: 1)
+            }
+            .padding(.top, 20)
+            .padding([.leading, .trailing], -10)
+            .listRowSeparator(.hidden, edges: .all)
+        }
+        .listStyle(.inset)
+    }
+    
     var body: some View {
         ZStack {
-            // @todo add error state
-            if !noData {
+            if viewModel.showError {
+                StateView.error {
+                    try? await viewModel.fetch()
+                }
+            } else if !noData {
               mainUI
             } else {
                emptyUI(description: "You have not made any actions yet")
@@ -352,7 +367,7 @@ struct ActivitySectionHeader: View {
 }
 
 struct PurchaseRow: View {
-    @State var purchase: Order
+    @State var purchase: OrderDetail
     @State var hideDivider: Bool = false
     
     var body: some View {
@@ -364,7 +379,7 @@ struct PurchaseRow: View {
             HStack(spacing: 0) {
                 Circle()
                     .foregroundStyle(LinearGradient(
-                        colors: Color.gradient.secondary, // @todo change once provided from BE
+                        colors: purchase.bgColors,
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     ))
@@ -380,7 +395,7 @@ struct PurchaseRow: View {
                         .font(.custom("Poppins-SemiBold", size: 14))
                     Text("\(purchase.quantity) items")
                         .font(.custom("Poppins-SemiBold", size: 12))
-                    Text("\(purchase.type.toString) | \(purchase.createdAtDate.formatted(date: .omitted, time: .shortened))")
+                    Text("\(purchase.type.toString) | \(purchase.createdAt.formatted(date: .omitted, time: .shortened))")
                         .font(.custom("Poppins-SemiBold", size: 10))
                         .foregroundStyle(Color.text.black40)
                 }
@@ -434,15 +449,10 @@ extension OrderType {
 }
 
 struct RedemptionRow: View {
-    @State var redemption: Redemption
+    @State var redemption: RedemptionDetail
     @State var hideDivider: Bool = false
     private var storeAndTime: String {
-        let string = "\(redemption.createdAt.formatted(date: .omitted, time: .shortened))"
-        guard let storeName = redemption.storeName else {
-            return string
-        }
-        
-        return "\(storeName) | " + string
+        return "\(redemption.storeName) | \(redemption.createdAt.formatted(date: .omitted, time: .shortened))"
     }
     
     var body: some View {
@@ -454,26 +464,26 @@ struct RedemptionRow: View {
             HStack(spacing: 0) {
                 Circle()
                     .foregroundStyle(LinearGradient(
-                        colors: Color.gradient.secondary, // @todo change for BE content
+                        colors: redemption.bgColors,
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     ))
                     .frame(width: 40, height: 40)
                     .overlay {
-                        Text("Z") // @todo change with BE content
+                        Text(String(redemption.merchantName.first ?? "N"))
                             .foregroundStyle(.white)
                             .font(.custom("Poppins-Bold", size: 16))
                     }
                     .padding(.trailing, 16)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Zoomoov ride") // @todo change with BE content
+                    Text("\(redemption.merchantName) \(redemption.productName.singularName)")
                         .font(.custom("Poppins-SemiBold", size: 14))
                     Text(storeAndTime)
                         .font(.custom("Poppins-SemiBold", size: 10))
                         .foregroundStyle(Color.text.black40)
                 }
                 Spacer()
-                Text("- \(redemption.value) Rides") // @todo change with BE content
+                Text("- \(redemption.value) \(redemption.productName.singularName)")
                     .font(.custom("Poppins-SemiBold", size: 14))
                     .foregroundStyle(Color.secondary.brand)
             }

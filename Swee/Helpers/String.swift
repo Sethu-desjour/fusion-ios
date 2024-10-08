@@ -17,4 +17,9 @@ extension String {
         
         return string
     }
+    
+    var singularName: String {
+        let mutableName = self
+        return mutableName.replacingOccurrences(of: "(s)", with: "")
+    }
 }
