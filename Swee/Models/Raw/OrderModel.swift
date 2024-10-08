@@ -1,19 +1,25 @@
 import Foundation
 
+enum OrderStatus: String, Codable, Equatable {
+    case pending = "PENDING"
+    case completed = "COMPLETED"
+    case failed = "FAILED"
+}
+
+enum OrderType: String, Codable, Equatable {
+    case online = "ONLINE"
+    case otc = "OTC"
+}
+
 struct OrderModel: Codable {
-    enum Status: String, Codable {
-        case pending = "PENDING"
-        case completed = "COMPLETED"
-        case failed = "FAILED"
-    }
-    
     let id: UUID
     let userID: UUID
     let cartID: UUID
-    let status: Status
+    let status: OrderStatus
+    let type: OrderType
     let currencyCode: String
-    let priceCents: Int64
-    let totalPriceCents: Int64
+    let priceCents: Int
+    let totalPriceCents: Int
     let items: [OrderItem]?
     let fees: [FeeModel]?
     @DecodableDate var createdAt: Date
@@ -24,11 +30,11 @@ struct OrderModel: Codable {
         case userID = "user_id"
         case cartID = "cart_id"
         case status
+        case type = "order_type"
         case currencyCode = "currency_code"
         case priceCents = "price_cents"
         case totalPriceCents = "total_price_cents"
-        case items
-        case fees
+        case items, fees
         case createdAt = "created_at"
         case updatedAt = "updated_at"
     }

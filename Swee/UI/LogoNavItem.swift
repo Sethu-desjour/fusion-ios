@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct LogoNavItem: View {
+    @EnvironmentObject var locationManager: LocationManager
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             Image("logo")
@@ -10,7 +12,7 @@ struct LogoNavItem: View {
             } label: {
                 HStack(spacing: 4) {
                     Image("location")
-                    Text("Singapore")
+                    Text(locationManager.lastKnownCity ?? "Singapore") // @todo check phone number for fallback
                         .font(.custom("Poppins-Regular", size: 14))
                         .foregroundStyle(Color.text.black80)
                 }

@@ -17,7 +17,7 @@ class SeeAllViewModel: ObservableObject {
                 showError = false
                 switch section.type {
                 case .packageCarousel:
-                    self.packages = section.packages.toPackages()
+                    self.packages = section.packages.toLocal()
                 case .bannerCarousel, .bannerStatic, .merchantList:
                     showError = true
                     print("Wrong models returned in See All")

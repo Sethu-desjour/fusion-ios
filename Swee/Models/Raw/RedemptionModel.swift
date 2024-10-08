@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-enum RedemptionStatus: String, Codable {
+enum RedemptionStatus: String, Codable, Equatable {
     case pending = "PENDING"
     case success = "SUCCESS"
     case cancelled = "CANCELLED"
@@ -31,7 +31,7 @@ struct RedemptionModel: Codable {
     let id: UUID
     let purchaseId: UUID
     let value: Int
-    let qrCode: URL
+//    let qrCode: URL
     let qrCodeImage: String? // Assuming this is a base64 encoded string
     let status: RedemptionStatus
     let redemptionStoreId: UUID?
@@ -43,7 +43,7 @@ struct RedemptionModel: Codable {
         case id
         case purchaseId = "purchase_id"
         case value
-        case qrCode = "qr_code"
+//        case qrCode = "qr_code"
         case qrCodeImage = "qr_code_image"
         case status
         case redemptionStoreId = "redemption_store_id"

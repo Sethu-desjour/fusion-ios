@@ -199,8 +199,28 @@ class API: ObservableObject {
         }
     }
     
-    func orders() async throws -> [OrderModel] {
-        let url = "/orders"
+    func orders(with filterDate: Date? = nil) async throws -> [OrderDetailModel] {
+        var url = "/orders"
+        if let filterDate = filterDate {
+            let isoFormatter = ISO8601DateFormatter()
+            isoFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+
+            let isoDateString = isoFormatter.string(from: filterDate)
+            url = url + "?createdAtGte=\(isoDateString)"
+        }
+        
+        return try await request(with: url)
+    }
+    
+    func redemptions(with filterDate: Date? = nil) async throws -> [RedemptionDetailModel] {
+        var url = "/redemptions"
+        if let filterDate = filterDate {
+            let isoFormatter = ISO8601DateFormatter()
+            isoFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+
+            let isoDateString = isoFormatter.string(from: filterDate)
+            url = url + "?createdAtGte=\(isoDateString)"
+        }
         
         return try await request(with: url)
     }

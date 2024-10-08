@@ -17,6 +17,8 @@
 		AF13C85B2CAFCAE200496B0C /* Purchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C85A2CAFCAE200496B0C /* Purchase.swift */; };
 		AF13C85D2CAFCB1000496B0C /* PurchaseProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C85C2CAFCB1000496B0C /* PurchaseProduct.swift */; };
 		AF13C85F2CAFCB2900496B0C /* WalletMerchant.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C85E2CAFCB2900496B0C /* WalletMerchant.swift */; };
+		AF13C8622CAFD82C00496B0C /* ActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C8612CAFD82C00496B0C /* ActivityViewModel.swift */; };
+		AF13C8642CAFD87100496B0C /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C8632CAFD87100496B0C /* Order.swift */; };
 		AF16A0F82C8567190093CD99 /* CheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0F72C8567190093CD99 /* CheckoutView.swift */; };
 		AF16A0FB2C86B96F0093CD99 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0FA2C86B96F0093CD99 /* Keys.swift */; };
 		AF16A0FD2C86C43A0093CD99 /* MyWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0FC2C86C43A0093CD99 /* MyWalletView.swift */; };
@@ -73,6 +75,8 @@
 		AF501F362C980FCB00637042 /* HomeSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F352C980FCB00637042 /* HomeSectionModel.swift */; };
 		AF501F382C9813D300637042 /* MockHomeSectionURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F372C9813D300637042 /* MockHomeSectionURLProtocol.swift */; };
 		AF557FC82C79AAC700AD99A5 /* SweeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF557FC72C79AAC700AD99A5 /* SweeApp.swift */; };
+		AF6D42422CB4D0FB0050C2B8 /* OrderDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6D42412CB4D0FB0050C2B8 /* OrderDetailModel.swift */; };
+		AF6D42442CB4D12C0050C2B8 /* OrderDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6D42432CB4D12C0050C2B8 /* OrderDetail.swift */; };
 		AF72DFE72C80248200F70387 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72DFE62C80248200F70387 /* ActivityView.swift */; };
 		AF72DFE92C81699C00F70387 /* MerchantPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72DFE82C81699C00F70387 /* MerchantPageView.swift */; };
 		AF78C2C42C89681400F8F8DB /* AddChildView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF78C2C32C89681400F8F8DB /* AddChildView.swift */; };
@@ -109,6 +113,8 @@
 		AFCEC5C22C7C111200D157BE /* CompleteProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */; };
 		AFCEC5C42C7C260B00D157BE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5C32C7C260B00D157BE /* HomeView.swift */; };
 		AFCEC5C62C7C26EB00D157BE /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5C52C7C26EB00D157BE /* MainView.swift */; };
+		AFD6F07F2CB4D3DE004424E5 /* RedemptionDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD6F07E2CB4D3DE004424E5 /* RedemptionDetailModel.swift */; };
+		AFD6F0812CB4D3F0004424E5 /* RedemptionDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD6F0802CB4D3F0004424E5 /* RedemptionDetail.swift */; };
 		AFDB2B522C9131AC00BA75DA /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB2B512C9131AC00BA75DA /* ProfileView.swift */; };
 		AFDB90452C8EA256008931DB /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB90442C8EA256008931DB /* TimeInterval.swift */; };
 		AFDB90482C8EDE43008931DB /* CustomNavBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB90472C8EDE42008931DB /* CustomNavBarView.swift */; };
@@ -142,6 +148,8 @@
 		AF13C85A2CAFCAE200496B0C /* Purchase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purchase.swift; sourceTree = "<group>"; };
 		AF13C85C2CAFCB1000496B0C /* PurchaseProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseProduct.swift; sourceTree = "<group>"; };
 		AF13C85E2CAFCB2900496B0C /* WalletMerchant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletMerchant.swift; sourceTree = "<group>"; };
+		AF13C8612CAFD82C00496B0C /* ActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewModel.swift; sourceTree = "<group>"; };
+		AF13C8632CAFD87100496B0C /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		AF16A0F72C8567190093CD99 /* CheckoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutView.swift; sourceTree = "<group>"; };
 		AF16A0FA2C86B96F0093CD99 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		AF16A0FC2C86C43A0093CD99 /* MyWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWalletView.swift; sourceTree = "<group>"; };
@@ -201,6 +209,8 @@
 		AF501F352C980FCB00637042 /* HomeSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSectionModel.swift; sourceTree = "<group>"; };
 		AF501F372C9813D300637042 /* MockHomeSectionURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHomeSectionURLProtocol.swift; sourceTree = "<group>"; };
 		AF557FC72C79AAC700AD99A5 /* SweeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SweeApp.swift; sourceTree = "<group>"; };
+		AF6D42412CB4D0FB0050C2B8 /* OrderDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailModel.swift; sourceTree = "<group>"; };
+		AF6D42432CB4D12C0050C2B8 /* OrderDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetail.swift; sourceTree = "<group>"; };
 		AF72DFE62C80248200F70387 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		AF72DFE82C81699C00F70387 /* MerchantPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MerchantPageView.swift; sourceTree = "<group>"; };
 		AF78C2C32C89681400F8F8DB /* AddChildView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChildView.swift; sourceTree = "<group>"; };
@@ -237,6 +247,8 @@
 		AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteProfileView.swift; sourceTree = "<group>"; };
 		AFCEC5C32C7C260B00D157BE /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		AFCEC5C52C7C26EB00D157BE /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		AFD6F07E2CB4D3DE004424E5 /* RedemptionDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionDetailModel.swift; sourceTree = "<group>"; };
+		AFD6F0802CB4D3F0004424E5 /* RedemptionDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionDetail.swift; sourceTree = "<group>"; };
 		AFDB2B512C9131AC00BA75DA /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		AFDB90442C8EA256008931DB /* TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
 		AFDB90472C8EDE42008931DB /* CustomNavBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavBarView.swift; sourceTree = "<group>"; };
@@ -294,6 +306,15 @@
 				AF13C8562CAF98EF00496B0C /* ZoomoovBottomSheet.swift */,
 			);
 			path = ZoomoovRedemption;
+			sourceTree = "<group>";
+		};
+		AF13C8602CAFD81F00496B0C /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				AF72DFE62C80248200F70387 /* ActivityView.swift */,
+				AF13C8612CAFD82C00496B0C /* ActivityViewModel.swift */,
+			);
+			path = Activity;
 			sourceTree = "<group>";
 		};
 		AF16A0F92C86B9620093CD99 /* Environment */ = {
@@ -392,11 +413,13 @@
 				AF2F85C72C9AA324004B0B31 /* MerchantStoreModel.swift */,
 				AFDD17352CA0FD2900DC8DB8 /* PackageDetailModel.swift */,
 				AF3022D22CAA4894006DBCAD /* OrderModel.swift */,
+				AF6D42412CB4D0FB0050C2B8 /* OrderDetailModel.swift */,
 				AF3022D42CAA48C7006DBCAD /* OrderItemModel.swift */,
 				AF3022D62CAA48D7006DBCAD /* OrderItemSnapshotModel.swift */,
 				AF0558362CABA1F000ABEBA3 /* WalletMerchantModel.swift */,
 				AF13C8502CABB99000496B0C /* PurchaseModel.swift */,
 				AF13C8522CAC10C800496B0C /* RedemptionModel.swift */,
+				AFD6F07E2CB4D3DE004424E5 /* RedemptionDetailModel.swift */,
 			);
 			path = Raw;
 			sourceTree = "<group>";
@@ -414,7 +437,7 @@
 				AF1FAC462C79B0E100654FB7 /* AuthView.swift */,
 				AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */,
 				AFCEC5C52C7C26EB00D157BE /* MainView.swift */,
-				AF72DFE62C80248200F70387 /* ActivityView.swift */,
+				AF13C8602CAFD81F00496B0C /* Activity */,
 				AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */,
 				AF501F302C96B56D00637042 /* SplashView.swift */,
 				AF3022D82CAA75CE006DBCAD /* MyWallet */,
@@ -484,6 +507,9 @@
 				AF13C85A2CAFCAE200496B0C /* Purchase.swift */,
 				AF13C85C2CAFCB1000496B0C /* PurchaseProduct.swift */,
 				AF13C85E2CAFCB2900496B0C /* WalletMerchant.swift */,
+				AF13C8632CAFD87100496B0C /* Order.swift */,
+				AF6D42432CB4D12C0050C2B8 /* OrderDetail.swift */,
+				AFD6F0802CB4D3F0004424E5 /* RedemptionDetail.swift */,
 				AF2F85D52C9C4616004B0B31 /* Raw */,
 			);
 			path = Models;
@@ -775,8 +801,10 @@
 				AF2F85E42C9C5337004B0B31 /* MerchantCard.swift in Sources */,
 				AF3022D52CAA48C7006DBCAD /* OrderItemModel.swift in Sources */,
 				AFCEC5C62C7C26EB00D157BE /* MainView.swift in Sources */,
+				AF6D42422CB4D0FB0050C2B8 /* OrderDetailModel.swift in Sources */,
 				AF2F85C42C9AA2B4004B0B31 /* MerchantModel.swift in Sources */,
 				AFDF67F92C7F4EA900489D0C /* BottomSheet.swift in Sources */,
+				AFD6F0812CB4D3F0004424E5 /* RedemptionDetail.swift in Sources */,
 				AF3022D72CAA48D7006DBCAD /* OrderItemSnapshotModel.swift in Sources */,
 				AF13C85D2CAFCB1000496B0C /* PurchaseProduct.swift in Sources */,
 				AF501F2E2C95234C00637042 /* FirebaseAuth.swift in Sources */,
@@ -793,6 +821,7 @@
 				AF2F85CC2C9BB7F1004B0B31 /* LogoNavItem.swift in Sources */,
 				AF3022CF2CA66CC6006DBCAD /* StateView.swift in Sources */,
 				AFDD17362CA0FD2900DC8DB8 /* PackageDetailModel.swift in Sources */,
+				AF6D42442CB4D12C0050C2B8 /* OrderDetail.swift in Sources */,
 				AF13C8552CAF980300496B0C /* TicketView.swift in Sources */,
 				AFDB904A2C8EE077008931DB /* CustomNavBarContainerView.swift in Sources */,
 				AF82A4672C84418200E0DD4C /* PackageDetailView.swift in Sources */,
@@ -823,6 +852,7 @@
 				AF2F85D72C9C4629004B0B31 /* Package.swift in Sources */,
 				AFDB90502C8EE471008931DB /* CustomNavBarPreferenceKeys.swift in Sources */,
 				AFCEC5C02C7C0E9100D157BE /* ButtonStyles.swift in Sources */,
+				AF13C8642CAFD87100496B0C /* Order.swift in Sources */,
 				AF1FAC492C79B12A00654FB7 /* View.swift in Sources */,
 				AF3022CB2CA2BA03006DBCAD /* CheckoutViewModel.swift in Sources */,
 				AFDB2B522C9131AC00BA75DA /* ProfileView.swift in Sources */,
@@ -847,10 +877,12 @@
 				AF501F272C945D7C00637042 /* API.swift in Sources */,
 				AF2F85E02C9C52CC004B0B31 /* PackageCard.swift in Sources */,
 				AF0558372CABA1F000ABEBA3 /* WalletMerchantModel.swift in Sources */,
+				AF13C8622CAFD82C00496B0C /* ActivityViewModel.swift in Sources */,
 				AFDD17402CA1846E00DC8DB8 /* StoresView.swift in Sources */,
 				AF501F2C2C94736C00637042 /* AsyncButton.swift in Sources */,
 				AF13C85F2CAFCB2900496B0C /* WalletMerchant.swift in Sources */,
 				AF557FC82C79AAC700AD99A5 /* SweeApp.swift in Sources */,
+				AFD6F07F2CB4D3DE004424E5 /* RedemptionDetailModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
