@@ -7,11 +7,18 @@ class ActivityViewModel: ObservableObject {
     @Published private(set) var showError = false
     @Published var purchaseSections: [DateGroup<OrderDetail>] = []
     @Published var redemptionSections: [DateGroup<RedemptionDetail>] = []
+    @State private var filter: DateFilter?
     
-    func fetch() async throws {
+    func fetch(with filter: DateFilter) async throws {
+        if self.filter != filter {
+            await MainActor.run {
+                self.filter = filter
+                loadedData = false
+            }
+        }
         do {
-            let rawOrders = try await self.api.orders()
-            let rawRedemptions = try await self.api.redemptions()
+            let rawOrders = try await self.api.orders(with: filter.date)
+            let rawRedemptions = try await self.api.redemptions(with: filter.date)
             await MainActor.run {
                 loadedData = true
                 showError = false

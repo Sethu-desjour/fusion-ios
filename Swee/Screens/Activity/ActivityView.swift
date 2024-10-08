@@ -33,6 +33,7 @@ struct ActivityView: View {
     @StateObject private var viewModel = ActivityViewModel()
     @State private var hideBottomSheet: Bool = true
     @State private var tab = ActivityTab.Purchased
+    @State private var filter: DateFilter = .Anytime
     
     var noData: Bool {
         return viewModel.purchaseSections.isEmpty && 
@@ -135,6 +136,7 @@ struct ActivityView: View {
                         PurchaseRow.skeleton.equatable.view
                         PurchaseRow.skeleton.equatable.view
                     }
+                    .padding(.top, 48)
                 }
             } else if currentTabIsEmpty {
                 emptyUI(description: tab.emptyDescription)
@@ -202,7 +204,7 @@ struct ActivityView: View {
         ZStack {
             if viewModel.showError {
                 StateView.error {
-                    try? await viewModel.fetch()
+                    try? await viewModel.fetch(with: filter)
                 }
             } else if !noData {
               mainUI
@@ -213,7 +215,7 @@ struct ActivityView: View {
         .onAppear(perform: {
             viewModel.api = api
             Task {
-                try? await viewModel.fetch()
+                try? await viewModel.fetch(with: filter)
             }
             tabIsShown.wrappedValue = false
         })
@@ -230,41 +232,64 @@ struct ActivityView: View {
             }
         }
         .customBottomSheet(hidden: $hideBottomSheet) {
-            FiltersView()
+            FiltersView(dateFilter: filter) { filter in
+                self.filter = filter
+                Task {
+                    try? await viewModel.fetch(with: filter)
+                }
+                hideBottomSheet = true
+            }
+        }
+    }
+}
+
+enum DateFilter: Int, CaseIterable {
+    case Anytime
+    case ThisWeek
+    case Past30Days
+    case Past90Days
+    case Past6Months
+    case PastYear
+    
+    func toString() -> String {
+        switch self {
+        case .Anytime:
+            return "Anytime"
+        case .ThisWeek:
+            return "This Week"
+        case .Past30Days:
+            return "Past 30 days"
+        case .Past90Days:
+            return "Past 90 days"
+        case .Past6Months:
+            return "Past 6 months"
+        case .PastYear:
+            return "Past year"
+        }
+    }
+    
+    var date: Date? {
+        switch self {
+        case .Anytime:
+            return nil
+        case .ThisWeek:
+            return Calendar.current.date(byAdding: .day, value: -7, to: .now)
+        case .Past30Days:
+            return Calendar.current.date(byAdding: .month, value: -1, to: .now)
+        case .Past90Days:
+            return Calendar.current.date(byAdding: .month, value: -3, to: .now)
+        case .Past6Months:
+            return Calendar.current.date(byAdding: .month, value: -6, to: .now)
+        case .PastYear:
+            return Calendar.current.date(byAdding: .year, value: -1, to: .now)
         }
     }
 }
 
 struct FiltersView: View {
-    
-    enum DateFilters: Int, CaseIterable {
-        case Anytime
-        case ThisWeek
-        case Past30Days
-        case Past90Days
-        case Past6Months
-        case PastYear
-        
-        func toString() -> String {
-            switch self {
-            case .Anytime:
-                return "Anytime"
-            case .ThisWeek:
-                return "This Week"
-            case .Past30Days:
-                return "Past 30 days"
-            case .Past90Days:
-                return "Past 90 days"
-            case .Past6Months:
-                return "Past 6 months"
-            case .PastYear:
-                return "Past year"
-            }
-        }
-    }
-    
 //    @State private var vendorFilters: Set<Vendors> = [.Zoomoov, .Jollyfield]
-    @State private var dateFilter: DateFilters = .Anytime
+    @State var dateFilter: DateFilter = .Anytime
+    var onFiltersChange: (DateFilter) -> Void
     
     var body: some View {
         VStack {
@@ -273,7 +298,7 @@ struct FiltersView: View {
                     .font(.custom("Poppins-SemiBold", size: 24))
                 Spacer()
                 Button {
-                    
+                    onFiltersChange(dateFilter)
                 } label: {
                     Text("Apply")
                         .font(.custom("Poppins-Medium", size: 16))
@@ -310,7 +335,7 @@ struct FiltersView: View {
                     .font(.custom("Poppins-SemiBold", size: 16))
                     .frame(maxWidth: .infinity, alignment: .leading)
                 VStack(spacing: 2) {
-                    ForEach(DateFilters.allCases, id: \.self) { filter in
+                    ForEach(DateFilter.allCases, id: \.self) { filter in
                         FilterRow(title: filter.toString(),
                                   selected: dateFilter == filter) {
                             dateFilter = filter
@@ -338,6 +363,7 @@ struct FilterRow: View {
                 Spacer()
                 Image("checkmark")
                     .hidden(!selected)
+                    .foregroundStyle(Color.primary.brand)
             }
         }
         .padding([.trailing, .leading], 12)
