@@ -75,6 +75,12 @@
 		AF501F362C980FCB00637042 /* HomeSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F352C980FCB00637042 /* HomeSectionModel.swift */; };
 		AF501F382C9813D300637042 /* MockHomeSectionURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F372C9813D300637042 /* MockHomeSectionURLProtocol.swift */; };
 		AF557FC82C79AAC700AD99A5 /* SweeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF557FC72C79AAC700AD99A5 /* SweeApp.swift */; };
+		AF67C9B12CB50C3000A46B11 /* RedemptionScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF67C9B02CB50C3000A46B11 /* RedemptionScanView.swift */; };
+		AF67C9B32CB50C6200A46B11 /* RedemptionCompletedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF67C9B22CB50C6200A46B11 /* RedemptionCompletedView.swift */; };
+		AF67C9B52CB50C8D00A46B11 /* RedemptionLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF67C9B42CB50C8D00A46B11 /* RedemptionLoadingView.swift */; };
+		AF69BC002CB52CF800E87E2B /* ChildModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF69BBFF2CB52CF800E87E2B /* ChildModel.swift */; };
+		AF69BC022CB5391100E87E2B /* JollyfieldRedemptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF69BC012CB5391100E87E2B /* JollyfieldRedemptionViewModel.swift */; };
+		AF69BC042CB5393000E87E2B /* Child.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF69BC032CB5393000E87E2B /* Child.swift */; };
 		AF6D42422CB4D0FB0050C2B8 /* OrderDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6D42412CB4D0FB0050C2B8 /* OrderDetailModel.swift */; };
 		AF6D42442CB4D12C0050C2B8 /* OrderDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6D42432CB4D12C0050C2B8 /* OrderDetail.swift */; };
 		AF72DFE72C80248200F70387 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72DFE62C80248200F70387 /* ActivityView.swift */; };
@@ -209,6 +215,12 @@
 		AF501F352C980FCB00637042 /* HomeSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSectionModel.swift; sourceTree = "<group>"; };
 		AF501F372C9813D300637042 /* MockHomeSectionURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHomeSectionURLProtocol.swift; sourceTree = "<group>"; };
 		AF557FC72C79AAC700AD99A5 /* SweeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SweeApp.swift; sourceTree = "<group>"; };
+		AF67C9B02CB50C3000A46B11 /* RedemptionScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionScanView.swift; sourceTree = "<group>"; };
+		AF67C9B22CB50C6200A46B11 /* RedemptionCompletedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionCompletedView.swift; sourceTree = "<group>"; };
+		AF67C9B42CB50C8D00A46B11 /* RedemptionLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionLoadingView.swift; sourceTree = "<group>"; };
+		AF69BBFF2CB52CF800E87E2B /* ChildModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildModel.swift; sourceTree = "<group>"; };
+		AF69BC012CB5391100E87E2B /* JollyfieldRedemptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JollyfieldRedemptionViewModel.swift; sourceTree = "<group>"; };
+		AF69BC032CB5393000E87E2B /* Child.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Child.swift; sourceTree = "<group>"; };
 		AF6D42412CB4D0FB0050C2B8 /* OrderDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailModel.swift; sourceTree = "<group>"; };
 		AF6D42432CB4D12C0050C2B8 /* OrderDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetail.swift; sourceTree = "<group>"; };
 		AF72DFE62C80248200F70387 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
@@ -419,6 +431,7 @@
 				AF0558362CABA1F000ABEBA3 /* WalletMerchantModel.swift */,
 				AF13C8502CABB99000496B0C /* PurchaseModel.swift */,
 				AF13C8522CAC10C800496B0C /* RedemptionModel.swift */,
+				AF69BBFF2CB52CF800E87E2B /* ChildModel.swift */,
 				AFD6F07E2CB4D3DE004424E5 /* RedemptionDetailModel.swift */,
 			);
 			path = Raw;
@@ -510,9 +523,20 @@
 				AF13C8632CAFD87100496B0C /* Order.swift */,
 				AF6D42432CB4D12C0050C2B8 /* OrderDetail.swift */,
 				AFD6F0802CB4D3F0004424E5 /* RedemptionDetail.swift */,
+				AF69BC032CB5393000E87E2B /* Child.swift */,
 				AF2F85D52C9C4616004B0B31 /* Raw */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		AF67C9AF2CB50C0F00A46B11 /* Redemptions */ = {
+			isa = PBXGroup;
+			children = (
+				AF67C9B02CB50C3000A46B11 /* RedemptionScanView.swift */,
+				AF67C9B22CB50C6200A46B11 /* RedemptionCompletedView.swift */,
+				AF67C9B42CB50C8D00A46B11 /* RedemptionLoadingView.swift */,
+			);
+			path = Redemptions;
 			sourceTree = "<group>";
 		};
 		AF80222D2C770C12001274FA /* Helpers */ = {
@@ -575,6 +599,7 @@
 			isa = PBXGroup;
 			children = (
 				AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */,
+				AF69BC012CB5391100E87E2B /* JollyfieldRedemptionViewModel.swift */,
 				AF78C2C32C89681400F8F8DB /* AddChildView.swift */,
 			);
 			path = JollyfieldRedemption;
@@ -595,6 +620,7 @@
 				AF13C8542CAF980300496B0C /* TicketView.swift */,
 				AF3022CE2CA66CC6006DBCAD /* StateView.swift */,
 				AF82A4642C8432C700E0DD4C /* ObservableScrollView.swift */,
+				AF67C9AF2CB50C0F00A46B11 /* Redemptions */,
 				AF501F2B2C94736C00637042 /* AsyncButton.swift */,
 				AF2F85E32C9C5337004B0B31 /* MerchantCard.swift */,
 				AF2F85E52C9C5354004B0B31 /* ReferalCard.swift */,
@@ -798,6 +824,7 @@
 				AF2F85E22C9C5310004B0B31 /* Skeletonable.swift in Sources */,
 				AFA335C82C92676700883CBB /* AlertsView.swift in Sources */,
 				AF72DFE92C81699C00F70387 /* MerchantPageView.swift in Sources */,
+				AF67C9B52CB50C8D00A46B11 /* RedemptionLoadingView.swift in Sources */,
 				AF2F85E42C9C5337004B0B31 /* MerchantCard.swift in Sources */,
 				AF3022D52CAA48C7006DBCAD /* OrderItemModel.swift in Sources */,
 				AFCEC5C62C7C26EB00D157BE /* MainView.swift in Sources */,
@@ -814,6 +841,7 @@
 				AFDF67FD2C7F5A6C00489D0C /* SeeAllView.swift in Sources */,
 				AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */,
 				AF78C2C42C89681400F8F8DB /* AddChildView.swift in Sources */,
+				AF67C9B12CB50C3000A46B11 /* RedemptionScanView.swift in Sources */,
 				AF2F85DD2C9C46B5004B0B31 /* MerchantStore.swift in Sources */,
 				AF16A0FD2C86C43A0093CD99 /* MyWalletView.swift in Sources */,
 				AF72DFE72C80248200F70387 /* ActivityView.swift in Sources */,
@@ -856,22 +884,26 @@
 				AF1FAC492C79B12A00654FB7 /* View.swift in Sources */,
 				AF3022CB2CA2BA03006DBCAD /* CheckoutViewModel.swift in Sources */,
 				AFDB2B522C9131AC00BA75DA /* ProfileView.swift in Sources */,
+				AF69BC042CB5393000E87E2B /* Child.swift in Sources */,
 				AF501F362C980FCB00637042 /* HomeSectionModel.swift in Sources */,
 				AFDB904C2C8EE190008931DB /* CustomNavView.swift in Sources */,
 				AF80222F2C770C27001274FA /* Colors.swift in Sources */,
 				AF3022CD2CA5584E006DBCAD /* LocationManager.swift in Sources */,
 				AF2F85D22C9C1760004B0B31 /* MerchantPageViewModel.swift in Sources */,
+				AF69BC022CB5391100E87E2B /* JollyfieldRedemptionViewModel.swift in Sources */,
 				AF2F85D42C9C24C6004B0B31 /* MockMerchantStoresURLProtocol.swift in Sources */,
 				AFDD17342C9DBFEC00DC8DB8 /* SeeAllViewModel.swift in Sources */,
 				AFCEC5C42C7C260B00D157BE /* HomeView.swift in Sources */,
 				AF13C8532CAC10C900496B0C /* RedemptionModel.swift in Sources */,
 				AFDB904E2C8EE2EC008931DB /* CustomNavLink.swift in Sources */,
 				AF13C8512CABB99000496B0C /* PurchaseModel.swift in Sources */,
+				AF67C9B32CB50C6200A46B11 /* RedemptionCompletedView.swift in Sources */,
 				AF13C84F2CABB83000496B0C /* ZoomoovRedemptionViewModel.swift in Sources */,
 				AF3022C82CA2B51B006DBCAD /* CartButton.swift in Sources */,
 				AF2F85D92C9C4652004B0B31 /* Banner.swift in Sources */,
 				AF2F85C62C9AA30E004B0B31 /* PackageModel.swift in Sources */,
 				AF3022D32CAA4894006DBCAD /* OrderModel.swift in Sources */,
+				AF69BC002CB52CF800E87E2B /* ChildModel.swift in Sources */,
 				AFDB90482C8EDE43008931DB /* CustomNavBarView.swift in Sources */,
 				AF80222C2C72F39E001274FA /* OnboardingView.swift in Sources */,
 				AF501F272C945D7C00637042 /* API.swift in Sources */,

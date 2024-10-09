@@ -256,12 +256,50 @@ class API: ObservableObject {
         return try await request(with: url)
     }
     
+    func children() async throws -> [ChildModel] {
+        let url = "/children"
+        
+        return try await request(with: url)
+    }
+    
+    func addChild(with name: String, dob: Date?) async throws -> ChildModel {
+        let url = "/children"
+        
+        let jsonData = try JSONEncoder().encode(NewChild(name: name, dob: dob))
+        
+        return try await request(with: url, method: .POST(jsonData)) { data, response in
+            guard response.statusCode == 201 else {
+                throw APIError.wrongCode
+            }
+                
+            return nil
+        }
+    }
+    
+    func updateChild(with id: UUID, name: String, dob: Date?) async throws -> ChildModel {
+        let url = "/children/\(id.uuidString.lowercased())"
+        
+        let jsonData = try JSONEncoder().encode(NewChild(name: name, dob: dob))
+        
+        return try await request(with: url, method: .PUT(jsonData))
+    }
+    
     func DEBUGchangeRedemptionStatus(for id: UUID, merchantId: UUID) async throws {
         let url = "/redemptions/\(id.uuidString.lowercased())/status"
         let update = RedemptionStatusUpdate(status: .success, merchantStoreId: merchantId.uuidString.lowercased())
         let jsonData = try JSONEncoder().encode(update)
         
         try await request(with: url, method: .PUT(jsonData))
+    }
+}
+
+fileprivate struct NewChild: Encodable {
+    let name: String
+    @DecodableDayDate var dob: Date?
+    
+    private enum CodingKeys: String, CodingKey {
+        case name
+        case dob = "date_of_birth"
     }
 }
 

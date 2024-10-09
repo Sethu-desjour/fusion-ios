@@ -1,145 +1,5 @@
 import SwiftUI
 
-struct ChildModel: Equatable, Hashable {
-    let id = UUID().uuidString
-    var name: String = ""
-    var dob: Date?
-    
-    var isValid: Bool {
-        !name.isEmpty && dob != nil
-    }
-}
-
-struct RedemptionScanView: View {
-    struct Model {
-        let header: String
-        let title: String
-        let qr: Image?
-        let description: String
-        let actionTitle: String
-    }
-    //    @Binding var model: ZoomoovRedemptionModel
-    var model: Model
-    var tint: Color = Color.primary.brand
-    var closure: () async throws -> Void
-    
-    var body: some View {
-        VStack {
-            Text(model.header)
-                .font(.custom("Poppins-SemiBold", size: 24))
-                .foregroundStyle(Color.text.black100)
-            model.qr
-                .padding(.bottom, 8)
-            Text(model.title)
-                .font(.custom("Poppins-SemiBold", size: 20))
-                .foregroundStyle(Color.text.black100)
-            Text(model.description)
-                .font(.custom("Poppins-Medium", size: 12))
-                .multilineTextAlignment(.center)
-                .foregroundStyle(Color.text.black60)
-                .padding(.bottom, 37)
-            AsyncButton(progressWidth: .infinity, progressTint: tint) {
-                try? await closure()
-            } label: {
-                HStack {
-                    Spacer()
-                    Text(model.actionTitle)
-                        .font(.custom("Roboto-Bold", size: 16))
-                    Spacer()
-                }
-                .foregroundStyle(tint)
-                .frame(maxWidth: .infinity)
-                .contentShape(Capsule())
-            }
-            .buttonStyle(OutlineButton(strokeColor: tint))
-            .padding(.bottom, 16)
-        }
-    }
-}
-
-struct RedemptionLoadingView: View {
-    struct Model {
-        let header: String
-        let title: String
-    }
-    //    @Binding var model: ZoomoovRedemptionModel
-    var model: Model
-    var tint: Color = Color.primary.brand
-    var closure: (() -> Void)?
-    
-    var body: some View {
-        ZStack(alignment: .top) {
-            Text(model.header)
-                .font(.custom("Poppins-SemiBold", size: 24))
-                .foregroundStyle(Color.text.black100)
-            VStack {
-                Image("spinner")
-                    .padding(.top, 150)
-                    .onTapGesture {
-                        closure?()
-                    }
-                    .padding(.bottom, 22)
-                Text(model.title)
-                    .font(.custom("Poppins-SemiBold", size: 20))
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(Color.text.black100)
-                    .padding(.bottom, 150)
-            }
-            .frame(maxWidth: .infinity)
-        }
-    }
-}
-
-struct RedemptionCompletedView: View {
-    struct Model {
-        let header: String
-        let title: String
-        let description: String
-        let actionTitle: String
-    }
-    //    @Binding var model: ZoomoovRedemptionModel
-    var model: Model
-    var tint: Color = Color.primary.brand
-    var closure: (() -> Void)?
-    
-    var body: some View {
-        VStack {
-            Text(model.header)
-                .font(.custom("Poppins-SemiBold", size: 24))
-                .foregroundStyle(Color.text.black100)
-                .padding(.bottom, 32)
-            Image("checkout-success")
-                .resizable()
-                .scaledToFill()
-                .frame(width: 164, height: 136)
-            Text(model.title)
-                .font(.custom("Poppins-SemiBold", size: 20))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 39)
-                .foregroundStyle(Color.text.black100)
-            Button {
-                // @todo make request
-                closure?()
-            } label: {
-                HStack {
-                    Spacer()
-                    Text(model.actionTitle)
-                        .font(.custom("Roboto-Bold", size: 16))
-                    Spacer()
-                }
-                .foregroundStyle(tint)
-                .frame(maxWidth: .infinity)
-                .contentShape(Capsule())
-            }
-            .buttonStyle(OutlineButton(strokeColor: tint))
-            .padding(.top, 44)
-            .padding(.bottom, 16)
-        }
-        .frame(maxWidth: .infinity)
-    }
-}
-
-
 struct JollyfieldRedemptionView: View {
     enum RedemptionStep {
         case qrStart
@@ -151,21 +11,23 @@ struct JollyfieldRedemptionView: View {
     }
     
     @Environment(\.tabIsShown) private var tabIsShown
-    @State private var children: [ChildModel] = [.init(name: "Johnny Depp", dob: .now), .init(name: "Charlee Sheen", dob: .now)]
-//    @State private var children: [ChildModel] = []
-    @State private var selectedChildren: Set<ChildModel> = .init()
-    @State private var availableTime: TimeInterval = 5400
+    @EnvironmentObject private var api: API
+    
+    @State var merchant: WalletMerchant
+    @StateObject private var viewModel = JollyfieldRedemptionViewModel()
+    @State private var selectedChildren: Set<Child> = .init()
+    
     @State var hidden = true
     @State var tempStep: RedemptionStep = .qrStart
     
     var indexOfLastSelectedChild: Int {
-        let lastChild = children.last { child in
+        let lastChild = viewModel.children.last { child in
             selectedChildren.contains { selectedChild in
                 selectedChild == child
             }
         }
         
-        return children.firstIndex { $0 == lastChild } ?? 0
+        return viewModel.children.firstIndex { $0 == lastChild } ?? 0
     }
     
     var emptyUI: some View {
@@ -179,8 +41,8 @@ struct JollyfieldRedemptionView: View {
                 .padding(.horizontal, 28)
                 .foregroundStyle(Color.text.black60)
                 .multilineTextAlignment(.center)
-            CustomNavLink(destination: AddChildView(children: children) { children in
-                self.children = children
+            CustomNavLink(destination: AddChildView(children: viewModel.children) { children in
+                viewModel.children = children
             }) {
                 HStack {
                     Text("Add child")
@@ -198,7 +60,7 @@ struct JollyfieldRedemptionView: View {
     
     var dottedOutline: some View {
         
-        if children.isEmpty || sessionOngoing {
+        if viewModel.children.isEmpty || sessionOngoing {
             return RoundedRectangle(cornerRadius: 8)
                 .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [6]))
                 .foregroundStyle(Color.black.opacity(0.3))
@@ -217,7 +79,7 @@ struct JollyfieldRedemptionView: View {
         }
         
         let index = indexOfLastSelectedChild
-        let multiplier = children.count - 1 - index // since we're pushing the lower side of the dotted line, I need to know how many cards up I need to push
+        let multiplier = viewModel.children.count - 1 - index // since we're pushing the lower side of the dotted line, I need to know how many cards up I need to push
         let cardHeight: CGFloat = 120
         let vPaddingBetweenCards: CGFloat = 16
         let heightOfDisclaimer: CGFloat = 24
@@ -260,7 +122,7 @@ struct JollyfieldRedemptionView: View {
             return 0
         }
         
-        return availableTime / Double(selectedChildren.count)
+        return viewModel.availableTime / Double(selectedChildren.count)
     }
     
     var sessionOngoing: Bool {
@@ -278,7 +140,7 @@ struct JollyfieldRedemptionView: View {
                     VStack {
                         VStack {
                             VStack {
-                                Text("\(availableTime.toString()) Hr")
+                                Text("\(viewModel.availableTime.toString()) Hr")
                                     .font(.custom("Roboto-Bold", size: 32))
                                     .foregroundStyle(.white)
                                     .shadow(color: .black.opacity(0.25), radius: 2, x: 1, y: 2)
@@ -287,7 +149,7 @@ struct JollyfieldRedemptionView: View {
                                     .foregroundStyle(.white.opacity(0.6))
                                     .shadow(color: .black.opacity(0.25), radius: 2, x: 1, y: 2)
                             }
-                            .frame(maxWidth: children.isEmpty ? nil : .infinity, maxHeight: 100)
+                            .frame(maxWidth: viewModel.children.isEmpty ? nil : .infinity, maxHeight: 100)
                             .padding(.horizontal, 40)
                             .padding(.vertical, 21)
                             .background(RoundedRectangle(cornerRadius: 8)
@@ -298,24 +160,26 @@ struct JollyfieldRedemptionView: View {
                                 .foregroundStyle(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
                             )
                             HStack(spacing: 0) {
-                                Text("Valid until ")
-                                    .foregroundStyle(Color.text.black60)
-                                    .font(.custom("Poppins-Medium", size: 12))
-                                Text("\(Date().formatted(date: .abbreviated, time: .omitted))")
-                                    .foregroundStyle(Color.text.black100)
-                                    .font(.custom("Poppins-Medium", size: 12))
+                                if let validUntilDate = viewModel.validUntilDate {
+                                    Text("Valid until ")
+                                        .foregroundStyle(Color.text.black60)
+                                        .font(.custom("Poppins-Medium", size: 12))
+                                    Text("\(validUntilDate.formatted(date: .abbreviated, time: .omitted))")
+                                        .foregroundStyle(Color.text.black100)
+                                        .font(.custom("Poppins-Medium", size: 12))
+                                }
                             }
                             .padding(.bottom, 16)
 
-                            if children.isEmpty {
+                            if viewModel.children.isEmpty {
                                 emptyUI
                             } else {
                                 VStack(alignment: .leading, spacing: 16) {
-                                    ForEach(children.indices, id: \.self) { index in
-                                        let child = children[index]
+                                    ForEach(viewModel.children.indices, id: \.self) { index in
+                                        let child = viewModel.children[index]
                                         let isSelected = selectedChildren.contains(child)
                                         VStack(alignment: .leading) {
-                                            Text(children[index].name)
+                                            Text(viewModel.children[index].name)
                                                 .font(.custom("Poppins-Medium", size: 18))
                                                 .foregroundStyle(Color.text.black80)
                                             Button {
@@ -402,7 +266,12 @@ struct JollyfieldRedemptionView: View {
             }
             .background(Color.background.white)
         }
-        .onWillAppear({
+        .onAppear(perform: {
+            viewModel.api = api
+            viewModel.merchant = merchant
+            Task {
+                try? await viewModel.fetch()
+            }
             tabIsShown.wrappedValue = false
         })
         .customBottomSheet(hidden: $hidden) {
@@ -438,7 +307,7 @@ struct JollyfieldRedemptionView: View {
         }
         .customNavigationTitle("Jollyfield")
         .customNavTrailingItem {
-            if children.isEmpty {
+            if viewModel.children.isEmpty {
                 Text("")
             } else if sessionOngoing {
                 Button {
@@ -453,8 +322,8 @@ struct JollyfieldRedemptionView: View {
                     .foregroundStyle(Color.primary.brand)
                 }
             } else {
-                CustomNavLink(destination: AddChildView(children: children) { children in
-                    self.children = children
+                CustomNavLink(destination: AddChildView(children: viewModel.children) { children in
+                    viewModel.children = children
                 }) {
                     Text("Add child")
                         .font(.custom("Poppins-Medium", size: 16))
@@ -467,6 +336,6 @@ struct JollyfieldRedemptionView: View {
 
 #Preview {
     CustomNavView {
-        JollyfieldRedemptionView()
+        JollyfieldRedemptionView(merchant: .empty)
     }
 }
