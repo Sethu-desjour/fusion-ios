@@ -30,7 +30,6 @@ class MerchantPageViewModel: ObservableObject {
         
         do {
             let storeModels = try await self.api.storesForMerchant(id, location: locationManager.lastKnownLocation)
-            
             await MainActor.run {
                 self.stores = storeModels.map { $0.toLocal() }
             }

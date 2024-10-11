@@ -2,11 +2,12 @@ import SwiftUI
 
 struct AddChildView: View {
     @Environment(\.dismiss) private var dismiss
-    @State var children: [ChildModel] = [.init()]
-    private(set) var onSave: (_ children: [ChildModel]) -> Void
+    @EnvironmentObject private var api: API
+    @State var children: [Child] = [.init(name: "")]
+    private(set) var onSave: (_ children: [Child]) -> Void
     
-    init(children: [ChildModel], onSave: @escaping (_: [ChildModel]) -> Void) {
-        self.children = [.init()] + children
+    init(children: [Child], onSave: @escaping (_: [Child]) -> Void) {
+        self.children = [.init(name: "")] + children
         self.onSave = onSave
     }
     
@@ -46,7 +47,7 @@ struct AddChildView: View {
                             }
                         }
                         Button {
-                            children.append(.init())
+                            children.append(.init(name: ""))
                         } label: {
                             Text("Add another child")
                                 .font(.custom("Roboto-Bold", size: 16))
@@ -63,7 +64,8 @@ struct AddChildView: View {
         }
         .customNavigationTitle("Add child")
         .customNavTrailingItem {
-            Button {
+            AsyncButton {
+                let children = await save(children: children)
                 onSave(children)
                 dismiss()
             } label: {
@@ -74,16 +76,47 @@ struct AddChildView: View {
             .tint(Color.primary.brand)
         }
     }
+    
+    func save(children: [Child]) async -> [Child] {
+        return await withTaskGroup(of: Child?.self) { group in
+            for child in children {
+                group.addTask {
+                    do {
+                        if let id = child.id {
+                            return try await api.updateChild(with: id,
+                                                             name: child.name,
+                                                             dob: child.dob).toLocal()
+                        } else {
+                            return try await api.addChild(with: child.name,
+                                                          dob: child.dob).toLocal()
+                        }
+                    } catch {
+                        return child.id != nil ? child : nil // we're failing silently here
+                    }
+                }
+            }
+
+            var results: [Child] = []
+            for await result in group {
+                guard let child = result else {
+                    continue
+                }
+                results.append(child)
+            }
+
+            return results
+        }
+    }
 }
 
 struct ChildDetailsView: View {
-    var child: ChildModel
+    var child: Child
     var onEdit: (_ name: String, _ dob: Date?) -> Void
     @State var name: String
     @State var dob: Date = .now
     @FocusState private var isKeyboardShowing: Bool
     
-    init(child: ChildModel, onEdit: @escaping (_: String, _: Date?) -> Void) {
+    init(child: Child, onEdit: @escaping (_: String, _: Date?) -> Void) {
         self.child = child
         self.onEdit = onEdit
         self.name = child.name
@@ -151,7 +184,7 @@ struct ChildDetailsView: View {
 
 #Preview {
     CustomNavView {
-        AddChildView(children: []) { children in
+        AddChildView(children: []) { _ in
             
         }
     }

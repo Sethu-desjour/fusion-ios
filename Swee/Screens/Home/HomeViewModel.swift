@@ -59,7 +59,13 @@ extension Optional where Wrapped: Collection, Wrapped.Element: RawModelConvertab
         case .none:
             return []
         case .some(let items):
-            return items.map { $0.toLocal() }
+            return items.toLocal()
         }
+    }
+}
+
+extension Collection where Element: RawModelConvertable {
+    func toLocal() -> [Element.LocalModel] {
+        map { $0.toLocal() }
     }
 }

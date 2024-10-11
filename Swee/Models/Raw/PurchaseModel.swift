@@ -8,7 +8,6 @@ enum PurchaseStatus: String, Codable, Equatable {
 
 enum ProductType: String, Codable, Equatable {
     case coupon = "COUPON"
-    case item = "ITEM"
     case timeBased = "TIME_BASED"
 }
 

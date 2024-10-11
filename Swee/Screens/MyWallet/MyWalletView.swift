@@ -91,7 +91,7 @@ struct MyWalletView: View {
                                     view
                                 }
                             } else {
-                                CustomNavLink(destination: JollyfieldRedemptionView()) {
+                                CustomNavLink(destination: JollyfieldRedemptionView(merchant: merchant)) {
                                     view
                                 }
                             }

@@ -25,6 +25,12 @@ class ZoomoovRedemptionViewModel: ObservableObject {
 
 extension WalletMerchant {
     static var empty: Self {
-        .init(id: .init(), name: "Zoomoov", photoURL: nil, bgColors: [], purchaseSummary: "", products: [])
+        .init(id: .init(), 
+              name: "Zoomoov",
+              photoURL: nil,
+              bgColors: [],
+              purchaseSummary: "",
+              products: [],
+              activeSession: nil)
     }
 }
