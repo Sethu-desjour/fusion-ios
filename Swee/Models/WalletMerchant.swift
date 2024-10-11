@@ -7,6 +7,7 @@ struct WalletMerchant {
     let bgColors: [Color]
     let purchaseSummary: String
     let products: [PurchaseProduct]
+    let activeSession: Session?
 }
 
 extension WalletMerchantModel: RawModelConvertable {
@@ -18,6 +19,7 @@ extension WalletMerchantModel: RawModelConvertable {
                      photoURL: merchantPhotoURL,
                      bgColors: colors.map { Color(hex: $0) },
                      purchaseSummary: purchaseSummary,
-                     products: products.map { $0.toLocal() })
+                     products: products.map { $0.toLocal() },
+                     activeSession: activeSession?.toLocal())
     }
 }

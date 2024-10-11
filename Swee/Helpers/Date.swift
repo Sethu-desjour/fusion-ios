@@ -21,16 +21,51 @@ extension Date {
 }
 
 @propertyWrapper
-struct DecodableDate: Equatable {
-    var wrappedValue: Date
+struct DecodableDate<Value: Codable & Equatable> {
+    var wrappedValue: Value
+    
+    init(wrappedValue: Value) {
+        self.wrappedValue = wrappedValue
+    }
 }
 
-extension DecodableDate: Codable {
+extension DecodableDate: Codable, Equatable {
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        let dateString = try container.decode(String.self)
+
+        // If the Value is an optional Date
+        if Value.self == Date?.self {
+            let dateString = try? container.decode(String.self)
+            self.wrappedValue = dateString.flatMap { Date.iso8601Full.date(from: $0) } as! Value
+        }
+        // If the Value is a non-optional Date
+        else if Value.self == Date.self {
+            let dateString = try container.decode(String.self)
+            self.wrappedValue = (Date.iso8601Full.date(from: dateString) ?? Date()) as! Value
+        } else {
+            throw DecodingError.typeMismatch(Value.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid type for DecodableDate"))
+        }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
         
-        wrappedValue = Date.iso8601Full.date(from: dateString) ?? Date()
+        // If the Value is an optional Date
+        if let date = wrappedValue as? Date? {
+            if let date = date {
+                let dateString = Date.iso8601Full.string(from: date)
+                try container.encode(dateString)
+            } else {
+                try container.encodeNil()
+            }
+        }
+        // If the Value is a non-optional Date
+        else if let date = wrappedValue as? Date {
+            let dateString = Date.iso8601Full.string(from: date)
+            try container.encode(dateString)
+        } else {
+            throw EncodingError.invalidValue(wrappedValue, EncodingError.Context(codingPath: encoder.codingPath, debugDescription: "Invalid value for DecodableDate"))
+        }
     }
 }
 
@@ -80,5 +115,15 @@ extension DecodableDayDate: Codable, Equatable {
         } else {
             throw EncodingError.invalidValue(wrappedValue, EncodingError.Context(codingPath: encoder.codingPath, debugDescription: "Invalid value for DecodableDate"))
         }
+    }
+}
+
+extension KeyedDecodingContainer {
+    func decode<T: ExpressibleByNilLiteral>(_ type: DecodableDate<T>.Type, forKey key: K) throws -> DecodableDate<T> {
+        if let value = try self.decodeIfPresent(type, forKey: key) {
+            return value
+        }
+
+        return DecodableDate(wrappedValue: nil)
     }
 }

@@ -7,6 +7,7 @@ struct WalletMerchantModel: Codable {
     let merchantBackgroundColors: [String]?
     let purchaseSummary: String
     let products: [PurchaseProductModel]?
+    let activeSession: SessionModel?
     
     private enum CodingKeys: String, CodingKey {
         case merchantID = "merchant_id"
@@ -15,6 +16,7 @@ struct WalletMerchantModel: Codable {
         case merchantBackgroundColors = "merchant_background_colors"
         case purchaseSummary = "purchase_summary"
         case products
+        case activeSession = "active_session"
     }
 }
 

@@ -81,6 +81,7 @@
 		AF69BC002CB52CF800E87E2B /* ChildModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF69BBFF2CB52CF800E87E2B /* ChildModel.swift */; };
 		AF69BC022CB5391100E87E2B /* JollyfieldRedemptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF69BC012CB5391100E87E2B /* JollyfieldRedemptionViewModel.swift */; };
 		AF69BC042CB5393000E87E2B /* Child.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF69BC032CB5393000E87E2B /* Child.swift */; };
+		AF69BC082CB649B400E87E2B /* SessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF69BC072CB649B400E87E2B /* SessionModel.swift */; };
 		AF6D42422CB4D0FB0050C2B8 /* OrderDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6D42412CB4D0FB0050C2B8 /* OrderDetailModel.swift */; };
 		AF6D42442CB4D12C0050C2B8 /* OrderDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6D42432CB4D12C0050C2B8 /* OrderDetail.swift */; };
 		AF72DFE72C80248200F70387 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72DFE62C80248200F70387 /* ActivityView.swift */; };
@@ -110,6 +111,7 @@
 		AF82A4632C819B8500E0DD4C /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF82A4622C819B8500E0DD4C /* String.swift */; };
 		AF82A4652C8432C700E0DD4C /* ObservableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF82A4642C8432C700E0DD4C /* ObservableScrollView.swift */; };
 		AF82A4672C84418200E0DD4C /* PackageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF82A4662C84418200E0DD4C /* PackageDetailView.swift */; };
+		AF8423C42CB7C7400087497A /* ChildCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8423C32CB7C7400087497A /* ChildCard.swift */; };
 		AF8B1E182C8729B600B44D75 /* ZoomoovRedemptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8B1E172C8729B600B44D75 /* ZoomoovRedemptionView.swift */; };
 		AF9AC5682C894D5700B16186 /* JollyfieldRedemptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */; };
 		AFA335C82C92676700883CBB /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA335C72C92676700883CBB /* AlertsView.swift */; };
@@ -221,6 +223,7 @@
 		AF69BBFF2CB52CF800E87E2B /* ChildModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildModel.swift; sourceTree = "<group>"; };
 		AF69BC012CB5391100E87E2B /* JollyfieldRedemptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JollyfieldRedemptionViewModel.swift; sourceTree = "<group>"; };
 		AF69BC032CB5393000E87E2B /* Child.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Child.swift; sourceTree = "<group>"; };
+		AF69BC072CB649B400E87E2B /* SessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionModel.swift; sourceTree = "<group>"; };
 		AF6D42412CB4D0FB0050C2B8 /* OrderDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailModel.swift; sourceTree = "<group>"; };
 		AF6D42432CB4D12C0050C2B8 /* OrderDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetail.swift; sourceTree = "<group>"; };
 		AF72DFE62C80248200F70387 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
@@ -250,6 +253,7 @@
 		AF82A4622C819B8500E0DD4C /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		AF82A4642C8432C700E0DD4C /* ObservableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableScrollView.swift; sourceTree = "<group>"; };
 		AF82A4662C84418200E0DD4C /* PackageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageDetailView.swift; sourceTree = "<group>"; };
+		AF8423C32CB7C7400087497A /* ChildCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildCard.swift; sourceTree = "<group>"; };
 		AF8B1E172C8729B600B44D75 /* ZoomoovRedemptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomoovRedemptionView.swift; sourceTree = "<group>"; };
 		AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JollyfieldRedemptionView.swift; sourceTree = "<group>"; };
 		AFA335C72C92676700883CBB /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
@@ -433,6 +437,7 @@
 				AF13C8522CAC10C800496B0C /* RedemptionModel.swift */,
 				AF69BBFF2CB52CF800E87E2B /* ChildModel.swift */,
 				AFD6F07E2CB4D3DE004424E5 /* RedemptionDetailModel.swift */,
+				AF69BC072CB649B400E87E2B /* SessionModel.swift */,
 			);
 			path = Raw;
 			sourceTree = "<group>";
@@ -601,6 +606,7 @@
 				AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */,
 				AF69BC012CB5391100E87E2B /* JollyfieldRedemptionViewModel.swift */,
 				AF78C2C32C89681400F8F8DB /* AddChildView.swift */,
+				AF8423C32CB7C7400087497A /* ChildCard.swift */,
 			);
 			path = JollyfieldRedemption;
 			sourceTree = "<group>";
@@ -892,6 +898,7 @@
 				AF2F85D22C9C1760004B0B31 /* MerchantPageViewModel.swift in Sources */,
 				AF69BC022CB5391100E87E2B /* JollyfieldRedemptionViewModel.swift in Sources */,
 				AF2F85D42C9C24C6004B0B31 /* MockMerchantStoresURLProtocol.swift in Sources */,
+				AF8423C42CB7C7400087497A /* ChildCard.swift in Sources */,
 				AFDD17342C9DBFEC00DC8DB8 /* SeeAllViewModel.swift in Sources */,
 				AFCEC5C42C7C260B00D157BE /* HomeView.swift in Sources */,
 				AF13C8532CAC10C900496B0C /* RedemptionModel.swift in Sources */,
@@ -914,6 +921,7 @@
 				AF501F2C2C94736C00637042 /* AsyncButton.swift in Sources */,
 				AF13C85F2CAFCB2900496B0C /* WalletMerchant.swift in Sources */,
 				AF557FC82C79AAC700AD99A5 /* SweeApp.swift in Sources */,
+				AF69BC082CB649B400E87E2B /* SessionModel.swift in Sources */,
 				AFD6F07F2CB4D3DE004424E5 /* RedemptionDetailModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

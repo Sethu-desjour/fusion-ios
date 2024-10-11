@@ -8,7 +8,6 @@ struct ZoomoovBottomSheet: View {
         redemptions.filter { $0.status == .success }.count
     }
     @State private var redemptions: [Redemption] = []
-    @State private var stopPolling = false
     @State var timer: DispatchSourceTimer?
     @State private var currentRedemption: Redemption?
     

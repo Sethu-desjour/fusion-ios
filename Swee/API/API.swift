@@ -284,6 +284,31 @@ class API: ObservableObject {
         return try await request(with: url, method: .PUT(jsonData))
     }
     
+    func startSession(for purchaseId: UUID, children: [UUID]) async throws -> SessionModel {
+        let url = "/sessions"
+        
+        let jsonData = try JSONEncoder().encode(SessionNew(purchaseId: purchaseId.uuidString.lowercased(), 
+                                                           childrenIds: children.map { $0.uuidString.lowercased() }))
+        print("json data ===", String(data: jsonData, encoding: String.Encoding.utf8))
+
+        return try await request(with: url, method: .POST(jsonData))  { data, response in
+            print("session creation response ====", response)
+            print("response data ===", String(data: data, encoding: String.Encoding.utf8))
+
+            guard response.statusCode == 201 else {
+                throw APIError.wrongCode
+            }
+                
+            return nil
+        }
+    }
+    
+    func getSession(with id: UUID) async throws -> SessionModel {
+        let url = "/sessions/\(id.uuidString.lowercased())"
+        
+        return try await request(with: url)
+    }
+    
     func DEBUGchangeRedemptionStatus(for id: UUID, merchantId: UUID) async throws {
         let url = "/redemptions/\(id.uuidString.lowercased())/status"
         let update = RedemptionStatusUpdate(status: .success, merchantStoreId: merchantId.uuidString.lowercased())
