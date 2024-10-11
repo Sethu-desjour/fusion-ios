@@ -7,7 +7,6 @@ struct RedemptionCompletedView: View {
         let description: String
         let actionTitle: String
     }
-    //    @Binding var model: ZoomoovRedemptionModel
     var model: Model
     var tint: Color = Color.primary.brand
     var closure: (() -> Void)?
@@ -28,7 +27,6 @@ struct RedemptionCompletedView: View {
                 .padding(.horizontal, 39)
                 .foregroundStyle(Color.text.black100)
             Button {
-                // @todo make request
                 closure?()
             } label: {
                 HStack {

@@ -112,6 +112,7 @@
 		AF82A4652C8432C700E0DD4C /* ObservableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF82A4642C8432C700E0DD4C /* ObservableScrollView.swift */; };
 		AF82A4672C84418200E0DD4C /* PackageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF82A4662C84418200E0DD4C /* PackageDetailView.swift */; };
 		AF8423C42CB7C7400087497A /* ChildCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8423C32CB7C7400087497A /* ChildCard.swift */; };
+		AF8423C62CB8D4160087497A /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8423C52CB8D4160087497A /* Session.swift */; };
 		AF8B1E182C8729B600B44D75 /* ZoomoovRedemptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8B1E172C8729B600B44D75 /* ZoomoovRedemptionView.swift */; };
 		AF9AC5682C894D5700B16186 /* JollyfieldRedemptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */; };
 		AFA335C82C92676700883CBB /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA335C72C92676700883CBB /* AlertsView.swift */; };
@@ -254,6 +255,7 @@
 		AF82A4642C8432C700E0DD4C /* ObservableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableScrollView.swift; sourceTree = "<group>"; };
 		AF82A4662C84418200E0DD4C /* PackageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageDetailView.swift; sourceTree = "<group>"; };
 		AF8423C32CB7C7400087497A /* ChildCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildCard.swift; sourceTree = "<group>"; };
+		AF8423C52CB8D4160087497A /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		AF8B1E172C8729B600B44D75 /* ZoomoovRedemptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomoovRedemptionView.swift; sourceTree = "<group>"; };
 		AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JollyfieldRedemptionView.swift; sourceTree = "<group>"; };
 		AFA335C72C92676700883CBB /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
@@ -527,6 +529,7 @@
 				AF13C85E2CAFCB2900496B0C /* WalletMerchant.swift */,
 				AF13C8632CAFD87100496B0C /* Order.swift */,
 				AF6D42432CB4D12C0050C2B8 /* OrderDetail.swift */,
+				AF8423C52CB8D4160087497A /* Session.swift */,
 				AFD6F0802CB4D3F0004424E5 /* RedemptionDetail.swift */,
 				AF69BC032CB5393000E87E2B /* Child.swift */,
 				AF2F85D52C9C4616004B0B31 /* Raw */,
@@ -884,6 +887,7 @@
 				AF3022DA2CAA75EF006DBCAD /* MyWalletViewModel.swift in Sources */,
 				AFDD17382CA1221D00DC8DB8 /* User.swift in Sources */,
 				AF2F85D72C9C4629004B0B31 /* Package.swift in Sources */,
+				AF8423C62CB8D4160087497A /* Session.swift in Sources */,
 				AFDB90502C8EE471008931DB /* CustomNavBarPreferenceKeys.swift in Sources */,
 				AFCEC5C02C7C0E9100D157BE /* ButtonStyles.swift in Sources */,
 				AF13C8642CAFD87100496B0C /* Order.swift in Sources */,

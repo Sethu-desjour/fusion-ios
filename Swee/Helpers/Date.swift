@@ -118,6 +118,8 @@ extension DecodableDayDate: Codable, Equatable {
     }
 }
 
+
+// without this the decoder doesn't know when to treat the property as an optional and will fail decoding if the field is missing in json
 extension KeyedDecodingContainer {
     func decode<T: ExpressibleByNilLiteral>(_ type: DecodableDate<T>.Type, forKey key: K) throws -> DecodableDate<T> {
         if let value = try self.decodeIfPresent(type, forKey: key) {
@@ -125,5 +127,15 @@ extension KeyedDecodingContainer {
         }
 
         return DecodableDate(wrappedValue: nil)
+    }
+}
+
+extension KeyedDecodingContainer {
+    func decode<T: ExpressibleByNilLiteral>(_ type: DecodableDayDate<T>.Type, forKey key: K) throws -> DecodableDayDate<T> {
+        if let value = try self.decodeIfPresent(type, forKey: key) {
+            return value
+        }
+
+        return DecodableDayDate(wrappedValue: nil)
     }
 }

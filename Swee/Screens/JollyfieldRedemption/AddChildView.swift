@@ -78,7 +78,7 @@ struct AddChildView: View {
     }
     
     func save(children: [Child]) async -> [Child] {
-        return await withTaskGroup(of: Child.self) { group in
+        return await withTaskGroup(of: Child?.self) { group in
             for child in children {
                 group.addTask {
                     do {
@@ -91,14 +91,17 @@ struct AddChildView: View {
                                                           dob: child.dob).toLocal()
                         }
                     } catch {
-                        return child
+                        return child.id != nil ? child : nil // we're failing silently here
                     }
                 }
             }
 
             var results: [Child] = []
             for await result in group {
-                results.append(result)
+                guard let child = result else {
+                    continue
+                }
+                results.append(child)
             }
 
             return results

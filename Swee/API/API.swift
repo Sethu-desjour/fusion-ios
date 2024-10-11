@@ -190,7 +190,6 @@ class API: ObservableObject {
         let jsonData = try JSONEncoder().encode(["cart_id": cartid.uuidString.lowercased()])
         
         return try await request(with: url, method: .POST(jsonData)) { data, response in
-            print("checkout response ====== ", response)
             guard response.statusCode == 201 else {
                 throw APIError.wrongCode
             }
@@ -289,12 +288,8 @@ class API: ObservableObject {
         
         let jsonData = try JSONEncoder().encode(SessionNew(purchaseId: purchaseId.uuidString.lowercased(), 
                                                            childrenIds: children.map { $0.uuidString.lowercased() }))
-        print("json data ===", String(data: jsonData, encoding: String.Encoding.utf8))
 
         return try await request(with: url, method: .POST(jsonData))  { data, response in
-            print("session creation response ====", response)
-            print("response data ===", String(data: data, encoding: String.Encoding.utf8))
-
             guard response.statusCode == 201 else {
                 throw APIError.wrongCode
             }
@@ -386,6 +381,7 @@ extension API {
                 print("reauthenticating....")
                 do {
                     let token = try await Authentication().reauthenticate()
+                    print("new token ====", token)
                     UserDefaults.standard.set(token, forKey: Keys.authToken)
                     return try await performRequest(with: urlString, method: method, mockProtocol: mockProtocol)
                 } catch {
