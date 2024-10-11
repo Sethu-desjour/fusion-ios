@@ -227,8 +227,28 @@ struct ActivityView: View {
                 Button {
                     hideBottomSheet = false
                 } label: {
-                    Image("filter")
+                    ZStack {
+                        Image("filter")
+                        if filter != .Anytime {
+                            VStack(alignment: .trailing, spacing: 0) {
+                                HStack(spacing: 0) {
+                                    Spacer()
+                                    Circle()
+                                        .foregroundStyle(Color(hex: "#DA1E28"))
+                                        .frame(width: 12, height: 12)
+                                        .padding(.trailing, 2)
+                                        .padding(.top, 0)
+                                }
+                                Spacer()
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        }
+                    }
+                    .animation(.default, value: filter)
+                    .frame(width: 40, height: 24)
+                    //                        .background(.green)
                 }
+                .buttonStyle(EmptyStyle())
             }
         }
         .customBottomSheet(hidden: $hideBottomSheet) {
