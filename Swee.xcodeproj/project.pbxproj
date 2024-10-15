@@ -119,6 +119,7 @@
 		AF8423C42CB7C7400087497A /* ChildCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8423C32CB7C7400087497A /* ChildCard.swift */; };
 		AF8423C62CB8D4160087497A /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8423C52CB8D4160087497A /* Session.swift */; };
 		AF8B1E182C8729B600B44D75 /* ZoomoovRedemptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8B1E172C8729B600B44D75 /* ZoomoovRedemptionView.swift */; };
+		AF8FB96E2CBE50A900B3B21C /* EditEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB96D2CBE50A900B3B21C /* EditEmailView.swift */; };
 		AF9AC5682C894D5700B16186 /* JollyfieldRedemptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */; };
 		AFA335C82C92676700883CBB /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA335C72C92676700883CBB /* AlertsView.swift */; };
 		AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */; };
@@ -267,6 +268,7 @@
 		AF8423C32CB7C7400087497A /* ChildCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildCard.swift; sourceTree = "<group>"; };
 		AF8423C52CB8D4160087497A /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		AF8B1E172C8729B600B44D75 /* ZoomoovRedemptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomoovRedemptionView.swift; sourceTree = "<group>"; };
+		AF8FB96D2CBE50A900B3B21C /* EditEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEmailView.swift; sourceTree = "<group>"; };
 		AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JollyfieldRedemptionView.swift; sourceTree = "<group>"; };
 		AFA335C72C92676700883CBB /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
 		AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
@@ -511,6 +513,7 @@
 				AFDB2B512C9131AC00BA75DA /* ProfileView.swift */,
 				AF3022DC2CAAA00E006DBCAD /* EditBasicInfoView.swift */,
 				AF0558302CAABC2100ABEBA3 /* EditNameView.swift */,
+				AF8FB96D2CBE50A900B3B21C /* EditEmailView.swift */,
 				AF0558322CAABFF500ABEBA3 /* EditPhoneView.swift */,
 				AF0558342CAAC2DA00ABEBA3 /* EditOtpView.swift */,
 			);
@@ -899,6 +902,7 @@
 				AF501F332C97EB4A00637042 /* HomeViewModel.swift in Sources */,
 				AF16A0F82C8567190093CD99 /* CheckoutView.swift in Sources */,
 				AF82A4632C819B8500E0DD4C /* String.swift in Sources */,
+				AF8FB96E2CBE50A900B3B21C /* EditEmailView.swift in Sources */,
 				AF2F85DB2C9C467B004B0B31 /* Merchant.swift in Sources */,
 				AF2F85CE2C9C138B004B0B31 /* MockProductsURLProtocol.swift in Sources */,
 				AF3022C62CA18C62006DBCAD /* Cart.swift in Sources */,

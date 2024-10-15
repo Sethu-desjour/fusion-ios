@@ -121,11 +121,44 @@ class API: ObservableObject {
         }
     }
     
-    func update(name: String) async throws -> User {
+    func update(name: String? = nil, 
+                email: String? = nil,
+                preferredLanguage: String? = nil,
+                gender: User.Gender? = nil,
+                dob: Date? = nil) async throws -> User {
+        struct UserUpdate: Encodable {
+            let name: String?
+            let email: String?
+            let preferredLanguage: String?
+            let gender: User.Gender?
+            let dob: String?
+            
+            enum CodingKeys: String, CodingKey {
+                case name
+                case email
+                case preferredLanguage = "preferred_language"
+                case gender
+                case dob = "date_of_birth"
+            }
+        }
+        
         let url = "/users/me"
         
-        let jsonData = try JSONEncoder().encode(["name" : name])
+        var dobString: String? = nil
         
+        if let dob = dob {
+            dobString = Date.iso8601DateOnly.string(from: dob)
+        }
+        
+        let userUpdate = UserUpdate(name: name,
+                                    email: email,
+                                    preferredLanguage: preferredLanguage,
+                                    gender: gender,
+                                    dob: dobString)
+        
+        let jsonData = try JSONEncoder().encode(userUpdate)
+        print("profile update jsonData =====", String(data: jsonData, encoding: .utf8))
+
         return try await request(with: url, method: .PATCH(jsonData)) { data, response in
             print("profile update response ======= ", response)
             print("profile update data =====", String(data: data, encoding: .utf8))
