@@ -1,10 +1,3 @@
-//
-//  EditEmailView.swift
-//  Swee
-//
-//  Created by Serghei on 15.10.2024.
-//
-
 import SwiftUI
 
 struct EditEmailView: View {

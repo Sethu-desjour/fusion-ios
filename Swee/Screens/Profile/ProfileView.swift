@@ -33,6 +33,8 @@ struct ProfileView: View {
     @State private var sections: [[RowData]] = []
     @State private var goToChildren: Bool = false
     @State private var goToEmail: Bool = false
+    @State private var goToDOB: Bool = false
+    @State private var goToGender: Bool = false
     
     func setupSections() {
         sections = [
@@ -49,8 +51,11 @@ struct ProfileView: View {
                 .init(title: "Payment", description: .text("Add payment"), leadingIcon: Image("card")) {
                     
                 },
+                .init(title: "Date of birth", description: .text(api.user?.birthDayString ?? "Add date"), leadingIcon: Image("calendar")) {
+                    goToDOB = true
+                },
                 .init(title: "Gender", description: .text(api.user?.gender.toString ?? "Add gender"), leadingIcon: Image("gender")) {
-                    
+                    goToGender = true
                 },
             ],
             [
@@ -93,6 +98,8 @@ struct ProfileView: View {
             ZStack(alignment: .top) {
                 CustomNavLink(isActive: $goToChildren, destination: AddChildView(editingMode: false))
                 CustomNavLink(isActive: $goToEmail, destination: EditEmailView(email: api.user?.email ?? ""))
+                CustomNavLink(isActive: $goToDOB, destination: EditDOBView(dob: api.user?.dob))
+                CustomNavLink(isActive: $goToGender, destination: EditGenderView(gender: api.user?.gender))
                 VStack {
                     LinearGradient(colors: [Color.secondary.brand, Color.white, Color.white], startPoint: .init(x: 0.5, y: 0), endPoint: .bottomLeading)
                         .frame(maxWidth: .infinity, maxHeight: 500)

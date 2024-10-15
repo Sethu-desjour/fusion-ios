@@ -1,7 +1,7 @@
 import Foundation
 
 struct User: Identifiable, Codable {
-    enum Gender: String, Codable {
+    enum Gender: String, Codable, CaseIterable {
         case male = "M"
         case female = "F"
         case other = "O"
@@ -28,6 +28,14 @@ struct User: Identifiable, Codable {
     let email: String?
     let photoURL: String?
     @DecodableDayDate var dob: Date?
+    
+    var birthDayString: String? {
+        if let dob = dob {
+            return Date.iso8601DateOnly.string(from: dob)
+        }
+
+        return nil
+    }
     
     enum CodingKeys: String, CodingKey {
         case id
