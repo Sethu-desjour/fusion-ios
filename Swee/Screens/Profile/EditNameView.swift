@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct EditNameView: View {
+    @EnvironmentObject private var api: API
+    @Environment(\.dismiss) private var dismiss
     @State var name: String
     @FocusState private var isKeyboardShowing: Bool
     private var nameFieldActive: Bool {
@@ -23,7 +25,12 @@ struct EditNameView: View {
                             lineWidth: nameFieldActive ? 2 : 1))
             Spacer()
             AsyncButton(progressWidth: .infinity) {
-                // @todo validate and update
+                do {
+                    let _ = try await api.update(name: name)
+                    dismiss()
+                } catch {
+                    self.name = api.user?.name ?? name
+                }
             } label: {
                 Text("Update")
                     .frame(maxWidth: .infinity)

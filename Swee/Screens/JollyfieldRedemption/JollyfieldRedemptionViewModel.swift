@@ -61,7 +61,7 @@ class JollyfieldRedemptionViewModel: ObservableObject {
     func fetch() async throws {
         do {
             let children = try await self.api.children()
-            print("childre ids", children.map { $0.id.uuidString.lowercased() })
+            print("children ids", children.map { $0.id.uuidString.lowercased() })
             let merchant = try await self.api.walletMerchant(for: merchant.id)
             await MainActor.run {
                 loadedData = true

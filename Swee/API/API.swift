@@ -1,5 +1,6 @@
 import Foundation
 import CoreLocation
+import SwiftUI
 
 class API: ObservableObject {
     @Published var user: User?
@@ -70,6 +71,66 @@ class API: ObservableObject {
         
         try await request(with: url, method: .POST(jsonData)) { data, response in
             guard response.statusCode == 201 else {
+                throw APIError.wrongCode
+            }
+            
+            do {
+                let user = try JSONDecoder().decode(User.self, from: data)
+                await MainActor.run {
+                    self.user = user
+                }
+            } catch {
+                throw APIError.decodingError
+            }
+            
+            return nil
+        }
+    }
+    
+    func refreshUser() async throws {
+        guard let token = UserDefaults.standard.string(forKey: Keys.authToken) else {
+            throw APIError.tokenNotFound
+        }
+
+        let url = "/users/me?token=\(token)"
+        
+        let userUpdate: User = try await request(with: url)
+        print("user  ======", userUpdate)
+        await MainActor.run {
+            self.user = userUpdate
+        }
+    }
+    
+    func uploadUserAvatar(image: UIImage) async throws {
+        let url = "/users/me/photo"
+        
+        guard let imageString = image.toBase64() else {
+            return
+        }
+        
+        let jsonData = try JSONEncoder().encode(["image": imageString])
+        
+//        print("photo upload data ====", String(data: jsonData, encoding: .utf8))
+        
+        try await request(with: url, method: .POST(jsonData)) { data, response in
+//            print("image upload response =====", response)
+//            print("image upload data =====", String(data: data, encoding: .utf8))
+            guard response.statusCode == 204 else {
+                throw APIError.wrongCode
+            }
+        }
+    }
+    
+    func update(name: String) async throws -> User {
+        let url = "/users/me"
+        
+        let jsonData = try JSONEncoder().encode(["name" : name])
+        
+        return try await request(with: url, method: .PATCH(jsonData)) { data, response in
+            print("profile update response ======= ", response)
+            print("profile update data =====", String(data: data, encoding: .utf8))
+
+            guard response.statusCode == 200 else {
                 throw APIError.wrongCode
             }
             
@@ -275,6 +336,16 @@ class API: ObservableObject {
         }
     }
     
+    func deleteChild(with id: UUID) async throws {
+        let url = "/children/\(id.uuidString.lowercased())"
+        
+        return try await request(with: url, method: .DELETE) { date, response in
+            guard response.statusCode == 204 else {
+                throw APIError.wrongCode
+            }
+        }
+    }
+    
     func updateChild(with id: UUID, name: String, dob: Date?) async throws -> ChildModel {
         let url = "/children/\(id.uuidString.lowercased())"
         
@@ -328,6 +399,7 @@ extension API {
         case GET
         case POST(Data)
         case PUT(Data)
+        case PATCH(Data)
         case DELETE
     }
     
@@ -355,6 +427,10 @@ extension API {
             request.httpBody = jsonData
         case .PUT(let jsonData):
             request.httpMethod = "PUT"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = jsonData
+        case .PATCH(let jsonData):
+            request.httpMethod = "PATCH"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = jsonData
         case .DELETE:
@@ -460,4 +536,10 @@ enum APIError: Error {
     case invalidResponse
     case tokenNotFound
     case invalidURL
+}
+
+extension UIImage {
+    func toBase64(compressionQuality: CGFloat = 1.0) -> String? {
+        self.jpegData(compressionQuality: 1)?.base64EncodedString()
+    }
 }

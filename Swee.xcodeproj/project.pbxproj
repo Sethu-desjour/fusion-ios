@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AF0558312CAABC2100ABEBA3 /* EditNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558302CAABC2100ABEBA3 /* EditNameView.swift */; };
+		AF0558332CAABFF500ABEBA3 /* EditPhoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558322CAABFF500ABEBA3 /* EditPhoneView.swift */; };
+		AF0558352CAAC2DA00ABEBA3 /* EditOtpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558342CAAC2DA00ABEBA3 /* EditOtpView.swift */; };
 		AF0558372CABA1F000ABEBA3 /* WalletMerchantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558362CABA1F000ABEBA3 /* WalletMerchantModel.swift */; };
 		AF13C84F2CABB83000496B0C /* ZoomoovRedemptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C84E2CABB83000496B0C /* ZoomoovRedemptionViewModel.swift */; };
 		AF13C8512CABB99000496B0C /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C8502CABB99000496B0C /* PurchaseModel.swift */; };
@@ -19,14 +22,12 @@
 		AF13C85F2CAFCB2900496B0C /* WalletMerchant.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C85E2CAFCB2900496B0C /* WalletMerchant.swift */; };
 		AF13C8622CAFD82C00496B0C /* ActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C8612CAFD82C00496B0C /* ActivityViewModel.swift */; };
 		AF13C8642CAFD87100496B0C /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C8632CAFD87100496B0C /* Order.swift */; };
-		AF0558312CAABC2100ABEBA3 /* EditNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558302CAABC2100ABEBA3 /* EditNameView.swift */; };
-		AF0558332CAABFF500ABEBA3 /* EditPhoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558322CAABFF500ABEBA3 /* EditPhoneView.swift */; };
-		AF0558352CAAC2DA00ABEBA3 /* EditOtpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558342CAAC2DA00ABEBA3 /* EditOtpView.swift */; };
 		AF16A0F82C8567190093CD99 /* CheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0F72C8567190093CD99 /* CheckoutView.swift */; };
 		AF16A0FB2C86B96F0093CD99 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0FA2C86B96F0093CD99 /* Keys.swift */; };
 		AF16A0FD2C86C43A0093CD99 /* MyWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0FC2C86C43A0093CD99 /* MyWalletView.swift */; };
 		AF170B0A2C71C02B00544970 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF170B092C71C02B00544970 /* Assets.xcassets */; };
 		AF170B0D2C71C02B00544970 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = AF170B0C2C71C02B00544970 /* Base */; };
+		AF1C31F42CB946A8001DD7EE /* AddChildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1C31F32CB946A8001DD7EE /* AddChildViewModel.swift */; };
 		AF1FAC472C79B0E100654FB7 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1FAC462C79B0E100654FB7 /* AuthView.swift */; };
 		AF1FAC492C79B12A00654FB7 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1FAC482C79B12A00654FB7 /* View.swift */; };
 		AF1FAC572C79CEDD00654FB7 /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC4B2C79CEDD00654FB7 /* Roboto-LightItalic.ttf */; };
@@ -151,6 +152,9 @@
 /* Begin PBXFileReference section */
 		669376952C1EE713F9129744 /* Pods_Swee.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Swee.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		917C3D03CF12F5C5F725DBA2 /* Pods-Swee.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swee.debug.xcconfig"; path = "Target Support Files/Pods-Swee/Pods-Swee.debug.xcconfig"; sourceTree = "<group>"; };
+		AF0558302CAABC2100ABEBA3 /* EditNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNameView.swift; sourceTree = "<group>"; };
+		AF0558322CAABFF500ABEBA3 /* EditPhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPhoneView.swift; sourceTree = "<group>"; };
+		AF0558342CAAC2DA00ABEBA3 /* EditOtpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOtpView.swift; sourceTree = "<group>"; };
 		AF0558362CABA1F000ABEBA3 /* WalletMerchantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletMerchantModel.swift; sourceTree = "<group>"; };
 		AF13C84E2CABB83000496B0C /* ZoomoovRedemptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomoovRedemptionViewModel.swift; sourceTree = "<group>"; };
 		AF13C8502CABB99000496B0C /* PurchaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseModel.swift; sourceTree = "<group>"; };
@@ -163,9 +167,6 @@
 		AF13C85E2CAFCB2900496B0C /* WalletMerchant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletMerchant.swift; sourceTree = "<group>"; };
 		AF13C8612CAFD82C00496B0C /* ActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewModel.swift; sourceTree = "<group>"; };
 		AF13C8632CAFD87100496B0C /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
-		AF0558302CAABC2100ABEBA3 /* EditNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNameView.swift; sourceTree = "<group>"; };
-		AF0558322CAABFF500ABEBA3 /* EditPhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPhoneView.swift; sourceTree = "<group>"; };
-		AF0558342CAAC2DA00ABEBA3 /* EditOtpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOtpView.swift; sourceTree = "<group>"; };
 		AF16A0F72C8567190093CD99 /* CheckoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutView.swift; sourceTree = "<group>"; };
 		AF16A0FA2C86B96F0093CD99 /* Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
 		AF16A0FC2C86C43A0093CD99 /* MyWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWalletView.swift; sourceTree = "<group>"; };
@@ -173,6 +174,7 @@
 		AF170B092C71C02B00544970 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AF170B0C2C71C02B00544970 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AF170B0E2C71C02B00544970 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AF1C31F32CB946A8001DD7EE /* AddChildViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChildViewModel.swift; sourceTree = "<group>"; };
 		AF1FAC462C79B0E100654FB7 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		AF1FAC482C79B12A00654FB7 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		AF1FAC4B2C79CEDD00654FB7 /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
@@ -501,7 +503,7 @@
 				AF3022D92CAA75EF006DBCAD /* MyWalletViewModel.swift */,
 			);
 			path = MyWallet;
-				sourceTree = "<group>";
+			sourceTree = "<group>";
 		};
 		AF3022DB2CAA9FF7006DBCAD /* Profile */ = {
 			isa = PBXGroup;
@@ -629,6 +631,7 @@
 				AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */,
 				AF69BC012CB5391100E87E2B /* JollyfieldRedemptionViewModel.swift */,
 				AF78C2C32C89681400F8F8DB /* AddChildView.swift */,
+				AF1C31F32CB946A8001DD7EE /* AddChildViewModel.swift */,
 				AF8423C32CB7C7400087497A /* ChildCard.swift */,
 			);
 			path = JollyfieldRedemption;
@@ -861,6 +864,7 @@
 				AF6D42422CB4D0FB0050C2B8 /* OrderDetailModel.swift in Sources */,
 				AF2F85C42C9AA2B4004B0B31 /* MerchantModel.swift in Sources */,
 				AFDF67F92C7F4EA900489D0C /* BottomSheet.swift in Sources */,
+				AF1C31F42CB946A8001DD7EE /* AddChildViewModel.swift in Sources */,
 				AFD6F0812CB4D3F0004424E5 /* RedemptionDetail.swift in Sources */,
 				AF3022D72CAA48D7006DBCAD /* OrderItemSnapshotModel.swift in Sources */,
 				AF13C85D2CAFCB1000496B0C /* PurchaseProduct.swift in Sources */,

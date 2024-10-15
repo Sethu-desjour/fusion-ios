@@ -1,4 +1,5 @@
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct EditBasicInfoView: View {
     @EnvironmentObject private var api: API
@@ -6,6 +7,7 @@ struct EditBasicInfoView: View {
     @State private var showSheet = false
     @State private var showSelectionSheet = false
     @State private var image: UIImage?
+    @State private var uploadingImage = false
     @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
     @State private var goToEditName = false
     @State private var goToEditPhone = false
@@ -46,11 +48,33 @@ struct EditBasicInfoView: View {
             VStack(alignment: .leading) {
                 row(title: "Add photo") {
                     if let image = image {
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 82, height: 82)
-                            .clipShape(Circle())
+                        ZStack {
+                            if uploadingImage {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 82, height: 82)
+                                    .clipShape(Circle())
+                                    .blinking()
+                            } else {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 82, height: 82)
+                                    .clipShape(Circle())
+                            }
+                        }
+                    } else if let photoURL = api.user?.photoURL {
+                        WebImage(url: URL(string: photoURL)) { image in
+                            image.resizable()
+                                .scaledToFill()
+                        } placeholder: {
+                            Color.white
+                                .skeleton(with: true, shape: .circle)
+                                .frame(height: 82)
+                        }
+                        .clipShape(.circle)
+                        .frame(width: 82, height: 82)
                     } else {
                         Image("avatar")
                     }
@@ -89,6 +113,19 @@ struct EditBasicInfoView: View {
                 showSheet = true
             }
         }
+        .onChange(of: image, perform: { newValue in
+            guard let image = newValue else {
+                return
+            }
+            uploadingImage = true
+            Task {
+                try? await api.uploadUserAvatar(image: image)
+                try? await api.refreshUser()
+                await MainActor.run {
+                    uploadingImage = false
+                }
+            }
+        })
         .sheet(isPresented: $showSheet) {
                 ImagePicker(sourceType: sourceType, selectedImage: self.$image)
         }
@@ -101,7 +138,13 @@ struct EditBasicInfoView: View {
 
 #Preview {
     let api = API()
-    api.user = .init(id: "id", name: "Test Testesteron", preferredLanguage: "English", phone: "+6544444444")
+    api.user = .init(id: "id", 
+                     name: "Test Testesteron",
+                     preferredLanguage: "English",
+                     phone: "+6544444444",
+                     gender: .male,
+                     email: nil,
+                     photoURL: nil)
     return CustomNavView {
         EditBasicInfoView()
             .environmentObject(api)

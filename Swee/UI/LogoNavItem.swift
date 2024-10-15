@@ -8,15 +8,15 @@ struct LogoNavItem: View {
             Image("logo")
                 .resizable()
                 .frame(width: 60, height: 18)
-            Button {
-            } label: {
+//            Button {
+//            } label: {
                 HStack(spacing: 4) {
                     Image("location")
                     Text(locationManager.lastKnownCity ?? "Singapore") // @todo check phone number for fallback
                         .font(.custom("Poppins-Regular", size: 14))
                         .foregroundStyle(Color.text.black80)
                 }
-            }
+//            }
         }
     }
 }

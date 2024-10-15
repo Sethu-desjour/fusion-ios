@@ -23,7 +23,7 @@ struct OtpView: View {
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @State private var errorMessage: String = ""
     @State private var showError: Bool = false
-    
+
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {

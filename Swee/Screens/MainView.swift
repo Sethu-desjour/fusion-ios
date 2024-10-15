@@ -54,7 +54,6 @@ enum Tabs: Int, CaseIterable, Identifiable {
 struct MainView: View {
     @State private var selectedTab: Tabs = .home
     @State private var showTabBar = true
-//    @State private var bottomSheetData: BottomSheetData = .init(view: FiltersView().equatable)
     
     func TabItem(imageName: String, title: String, isActive: Bool) -> some View {
         VStack {
@@ -81,39 +80,38 @@ struct MainView: View {
                 }
             }
             ZStack {
-                VStack(spacing: 0) {
-                    HStack{
-                        Spacer()
-                        ForEach((Tabs.allCases), id: \.self){ item in
-                            Button{
-                                selectedTab = item
-                            } label: {
-                                TabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item))
+                if showTabBar {
+                    VStack(spacing: 0) {
+                        HStack{
+                            Spacer()
+                            ForEach((Tabs.allCases), id: \.self){ item in
+                                Button{
+                                    selectedTab = item
+                                } label: {
+                                    TabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item))
+                                }
+                                .buttonStyle(EmptyStyle())
                             }
-                            .buttonStyle(EmptyStyle())
+                            Spacer()
                         }
-                        Spacer()
+                        .frame(maxWidth: .infinity)
+                        .background(.ultraThickMaterial)
+                        .compositingGroup()
+                        .shadow(color: .black.opacity(0.15), radius: 2, y: -2)
                     }
-                    .frame(maxWidth: .infinity)
-                    .background(.ultraThickMaterial)
-                    .compositingGroup()
-                    .shadow(color: .black.opacity(0.15), radius: 2, y: -2)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
-            .hidden(!showTabBar)
+//            .hidden(!showTabBar)
             .onAppear(perform: {
                 //  NOTE: Uncomment to keep the images loading indefinately
 //                SDImageCachesManager.shared.caches = []
 //                SDWebImageManager.defaultImageCache = SDImageCachesManager.shared
             })
             .animation(.snappy(duration: 0.2), value: showTabBar)
-//            BottomSheet(hide: bottomSheetData.hidden) {
-//                bottomSheetData.view.view
-//            }
         }
         .environment(\.tabIsShown, $showTabBar)
         .environment(\.currentTab, $selectedTab)
-//        .environment(\.bottomSheetData, $bottomSheetData)
     }
 }
 

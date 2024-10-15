@@ -6,24 +6,29 @@ import CryptoKit
 
 enum PhoneError: Error {
     case wrongCode
+    case incorrectPhone
     case tooManyAttempts
-    case other
+    case other(Error?)
 }
 
 struct Authentication {
     private var appleSignIn = AppleSignIn()
     
-    func verify(phone: String) async -> Result<String, Error> {
+    func verify(phone: String) async -> Result<String, PhoneError> {
         await withCheckedContinuation { continuation in
             PhoneAuthProvider.provider()
                 .verifyPhoneNumber(phone, uiDelegate: nil) { verificationID, error in
                     if let error = error {
-                        continuation.resume(returning: .failure(error))
-                        return
+                        switch error.localizedDescription {
+                        case "TOO_SHORT", "TOO_LONG":
+                            return continuation.resume(returning: .failure(PhoneError.incorrectPhone))
+                        default:
+                            return continuation.resume(returning: .failure(PhoneError.other(error)))
+                        }
                     } else if let verificationID = verificationID {
                         continuation.resume(returning: .success(verificationID))
                     } else {
-                        continuation.resume(returning: .failure(LocalError(message: "verificationId not found")))
+                        continuation.resume(returning: .failure(PhoneError.other(LocalError(message: "verificationId not found"))))
                     }
                 }
         }
@@ -37,24 +42,24 @@ struct Authentication {
                         verificationCode: otp)
         
         guard let credential = credential else {
-            throw PhoneError.other
+            throw PhoneError.other(nil)
         }
         
         do {
             try await Auth.auth().signIn(with: credential)
             guard let token = try await Auth.auth().currentUser?.getIDToken() else {
-                throw PhoneError.other
+                throw PhoneError.other(nil)
             }
             return token
         } catch {
             guard let authError = error as NSError?, let errorCode = AuthErrorCode(_bridgedNSError: authError) else {
-                throw PhoneError.other
+                throw PhoneError.other(nil)
             }
             
             if case .invalidVerificationCode = errorCode.code {
                 throw PhoneError.wrongCode
             } else {
-                throw PhoneError.other
+                throw PhoneError.other(nil)
             }
         }
     }

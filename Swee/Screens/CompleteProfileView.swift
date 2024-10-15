@@ -4,6 +4,7 @@ struct CompleteProfileView: View {
     @Environment(\.dismiss) private var dismiss
     @State var fullName: String = ""
     @FocusState private var isKeyboardShowing: Bool
+    @State private var errorMessage: String?
     
     @EnvironmentObject private var appRootManager: AppRootManager
     @EnvironmentObject var api: API
@@ -40,15 +41,22 @@ struct CompleteProfileView: View {
                     .overlay(RoundedRectangle(cornerRadius: 12)
                         .stroke(nameFieldActive ? Color.primary.brand : Color(hex: "#E7EAEB"),
                                 lineWidth: nameFieldActive ? 2 : 1))
+                    if errorMessage != nil {
+                        Text(errorMessage)
+                            .font(.custom("Poppins-Regular", size: 12))
+                            .foregroundStyle(.red)
+                    }
+
                 }
                 .padding([.bottom], 70)
                 AsyncButton(progressWidth: .infinity) {
-                    // validate and navigate next
+                    errorMessage = nil
                     do {
                         try await api.completeUser(with: fullName.trimmingCharacters(in: .whitespaces))
                         appRootManager.currentRoot = .home
                     } catch(let error) {
                         print("complete profile error =====", error)
+                        errorMessage = "Something went wrong. Please try again"
                         // @todo handle error case
                     }
                 } label: {

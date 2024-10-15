@@ -20,6 +20,14 @@ extension Date {
     }()
 }
 
+extension Date {
+    func yearsBetween(endDate: Date = .now) -> Int {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year], from: self, to: endDate)
+        return components.year ?? 0
+    }
+}
+
 @propertyWrapper
 struct DecodableDate<Value: Codable & Equatable> {
     var wrappedValue: Value

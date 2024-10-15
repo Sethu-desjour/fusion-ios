@@ -7,6 +7,7 @@ struct MerchantStoreModel: Codable {
     let email: String?
     let phoneNumber: String?
     let address: String?
+    let operatingHours: String?
     let lat: Double
     let lon: Double
     let distance: String?
@@ -22,5 +23,6 @@ struct MerchantStoreModel: Codable {
         case lat, lon, distance
         case createdAt = "created_at"
         case updatedAt = "updated_at"
+        case operatingHours = "operating_hours"
     }
 }

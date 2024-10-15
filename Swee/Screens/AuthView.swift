@@ -13,6 +13,7 @@ struct AuthView: View {
     @State private var goToOTP: Bool = false
     @State private var verificationID: String = ""
     @State private var loading = false
+    @State private var errorMessage: String?
     
     private var phoneFieldActive: Bool {
         return phone != "" && isPhoneFocused
@@ -34,6 +35,14 @@ struct AuthView: View {
         string.link = URL(string: "https://google.com")
         
         return string
+    }
+    
+    private var phoneBorderColor: Color {
+        if errorMessage != nil {
+            return .red
+        }
+        
+        return phoneFieldActive ? Color.text.black100 : Color(hex: "#E7EAEB")
     }
     
     var body: some View {
@@ -59,6 +68,7 @@ struct AuthView: View {
                         Text("Your Phone number")
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .font(.custom("Poppins-Medium", size: 16))
+                            .foregroundStyle(errorMessage != nil ? .red : Color.text.black100)
                         HStack {
                             TextField("", text: $code) {
                                 UIApplication.shared.endEditing()
@@ -77,11 +87,15 @@ struct AuthView: View {
                             }
                             .keyboardType(.numberPad)
                             .padding([.top, .bottom], 17)
+                            .onChange(of: phone, perform: { newValue in
+                                errorMessage = nil
+                            })
                             .padding([.leading, .trailing], 14)
                             .focused($isPhoneFocused)
+                            .foregroundStyle(errorMessage != nil ? .red : Color.text.black100)
                             .font(.custom("Poppins-Regular", size: 14))
                             .overlay(RoundedRectangle(cornerRadius: 12)
-                                .stroke(phoneFieldActive ? Color.text.black100 : Color(hex: "#E7EAEB"),
+                                .stroke(phoneBorderColor,
                                         lineWidth: 1))
                             .toolbar {
                                 ToolbarItemGroup(placement: .keyboard) {
@@ -96,6 +110,11 @@ struct AuthView: View {
                                 }
                             }
                         }
+                        if errorMessage != nil {
+                            Text(errorMessage)
+                                .font(.custom("Poppins-Regular", size: 12))
+                                .foregroundStyle(.red)
+                        }
                     }
                     Spacer()
                     Spacer()
@@ -109,8 +128,12 @@ struct AuthView: View {
                             goToOTP = true
                             print("verificationID ====", verificationId)
                         case .failure(let error):
+                            if case .incorrectPhone = error {
+                                errorMessage = "Check your phone number"
+                            } else {
+                                errorMessage = "Something went wrong. Please try again"
+                            }
                             print(error.localizedDescription)
-                            // @todo handle error
                         }
                     } label: {
                         Text("Verify")
