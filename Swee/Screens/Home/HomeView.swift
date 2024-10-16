@@ -11,6 +11,7 @@ struct HomeView: View {
     @EnvironmentObject private var locationManager: LocationManager
     @StateObject private var viewModel = HomeViewModel()
     @Environment(\.tabIsShown) private var tabIsShown
+    @Environment(\.sessionActive) private var sessionActive
     @State private var hideBottomSheet: Bool = true
     @State private var navView: UINavigationController? = nil
     
@@ -62,7 +63,7 @@ struct HomeView: View {
             }
             .padding(.vertical, 20)
 //                        .padding(.horizontal, 16)
-            .padding(.bottom, 80)
+            .padding(.bottom, sessionActive.wrappedValue ? 220 : 80)
         }
         .ignoresSafeArea()
     }

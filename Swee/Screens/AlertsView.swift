@@ -48,6 +48,8 @@ struct AlertsView: View {
     
     @Environment(\.tabIsShown) private var tabIsShown
     @Environment(\.currentTab) private var selectedTab
+    @Environment(\.sessionActive) private var sessionActive
+
     @State private var goToMerchant: Bool = false
     @State private var nrOfAlerts: Int = 6
     @State private var alerts: [Alert] = [
@@ -103,6 +105,7 @@ struct AlertsView: View {
                     ForEach(alerts.indices, id: \.self) { index in
                         row(at: index).equatable.view
                     }
+                    .padding(.bottom, sessionActive.wrappedValue ? 200 : 60)
 //                    CustomNavLink(isActive: $goToMerchant, destination: MerchantPageView()) {
 //                    }
                 }

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct JollyfieldRedemptionView: View {
     @Environment(\.tabIsShown) private var tabIsShown
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var api: API
     
     @State var merchant: WalletMerchant
@@ -227,6 +228,9 @@ struct JollyfieldRedemptionView: View {
         .onAppear(perform: {
             viewModel.api = api
             viewModel.merchant = merchant
+            viewModel.onComplete = {
+                dismiss()
+            }
             Task {
                 try? await viewModel.fetch()
             }

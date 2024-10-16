@@ -11,6 +11,7 @@ class JollyfieldRedemptionViewModel: ObservableObject {
     @Published var selectedChildren: Set<Child> = .init()
     private let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
     private var cancellables = Set<AnyCancellable>()
+    var onComplete: () -> Void = {}
     
     init() {
         timer.sink { [weak self] time in
@@ -20,6 +21,10 @@ class JollyfieldRedemptionViewModel: ObservableObject {
             print("should update remaining time....")
             self?.session?.remainingTimeMinutes = remainingTime - session.numberOfActiveKids
         }.store(in: &cancellables)
+    }
+    
+    deinit {
+        print("*** DEALLOCATING MODEL")
     }
     
     var indexOfLastSelectedChild: Int {
@@ -83,6 +88,16 @@ class JollyfieldRedemptionViewModel: ObservableObject {
         } catch {
             await MainActor.run {
                 showError = true
+            }
+            
+            guard let apiError = error as? APIError else {
+                return
+            }
+            
+            if case .notFound = apiError {
+                await MainActor.run {
+                    onComplete()
+                }
             }
         }
     }

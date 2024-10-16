@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import SDWebImageSwiftUI
 
 enum Tabs: Int, CaseIterable, Identifiable {
@@ -52,8 +53,13 @@ enum Tabs: Int, CaseIterable, Identifiable {
 }
 
 struct MainView: View {
+    @EnvironmentObject private var api: API
     @State private var selectedTab: Tabs = .home
-    @State private var showTabBar = true
+    @State private(set) var sessionActive = false
+    @State private var activeSession: Session?
+    @State private var tabIsShown = true
+    private let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+    @State private var cancellables = Set<AnyCancellable>()
     
     func TabItem(imageName: String, title: String, isActive: Bool) -> some View {
         VStack {
@@ -71,6 +77,41 @@ struct MainView: View {
         .frame(maxWidth: 100, maxHeight: 60)
     }
     
+    var activeSessionUI: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("Jollyfield") // @todo replace with actual data
+                        .font(.custom("Poppins-SemiBold", size: 18))
+                    Text("In progress")
+                        .font(.custom("Poppins-SemiBold", size: 12))
+                        .foregroundStyle(Color.white)
+                        .padding(.vertical, 2)
+                        .padding(.horizontal, 4)
+                        .background(Color.secondary.darker)
+                    Spacer()
+                }
+                HStack {
+                    Text(activeSession?.hoursPassed)
+                        .font(.custom("Poppins-Bold", size: 31))
+                        .foregroundStyle(Color.secondary.brand)
+                    Text("Hours passed")
+                        .font(.custom("Poppins-Regular", size: 24))
+                    Spacer()
+                }
+                Text("Total package left : \(activeSession!.availableTime) Hours")
+                    .font(.custom("Poppins-SemiBold", size: 14))
+                    .foregroundStyle(Color.text.black40)
+            }
+            Image("arrow-right")
+                .tint(Color.black)
+        }
+        .padding(14)
+        .background(.ultraThickMaterial)
+        .compositingGroup()
+        .shadow(color: .black.opacity(0.15), radius: 2, y: -2)
+    }
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
@@ -80,8 +121,11 @@ struct MainView: View {
                 }
             }
             ZStack {
-                if showTabBar {
+                if tabIsShown {
                     VStack(spacing: 0) {
+                        if sessionActive {
+                            activeSessionUI
+                        }
                         HStack{
                             Spacer()
                             ForEach((Tabs.allCases), id: \.self){ item in
@@ -97,21 +141,63 @@ struct MainView: View {
                         .frame(maxWidth: .infinity)
                         .background(.ultraThickMaterial)
                         .compositingGroup()
-                        .shadow(color: .black.opacity(0.15), radius: 2, y: -2)
+                        .shadow(color: .black.opacity(sessionActive ? 0.2 : 0.15), radius: sessionActive ? 0.5 : 2, y: sessionActive ? -0.5 : -2)
                     }
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
 //            .hidden(!showTabBar)
             .onAppear(perform: {
+                timer
+                    .prepend(.now)
+                    .sink { time in
+                    Task {
+                        let sessions = try? await api.getSessions().toLocal()
+                        await MainActor.run {
+                            guard let session = sessions?.first else {
+                                sessionActive = false
+                                activeSession = nil
+                                return
+                            }
+                            activeSession = session
+                            sessionActive = true
+                        }
+                    }
+                }.store(in: &cancellables)
+                
                 //  NOTE: Uncomment to keep the images loading indefinately
 //                SDImageCachesManager.shared.caches = []
 //                SDWebImageManager.defaultImageCache = SDImageCachesManager.shared
             })
-            .animation(.snappy(duration: 0.2), value: showTabBar)
+            .animation(.snappy(duration: 0.2), value: tabIsShown)
         }
-        .environment(\.tabIsShown, $showTabBar)
+        .environment(\.tabIsShown, $tabIsShown)
         .environment(\.currentTab, $selectedTab)
+        .environment(\.sessionActive, $sessionActive)
+    }
+}
+
+extension Session {
+    var hoursPassed: String {
+        guard let startedAt = startedAt else {
+            return "--:--"
+        }
+        let interval = Date.now.timeIntervalSince(startedAt)
+           
+           let hours = Int(interval) / 3600
+           let minutes = (Int(interval) % 3600) / 60
+           
+           let formattedString = String(format: "%02d:%02d", hours, minutes)
+           
+           return formattedString
+    }
+    
+    var availableTime: String {
+        if let remainingTime = remainingTimeMinutes {
+            return Double(remainingTime * 60).toString()
+        }
+        
+        return "--:--"
     }
 }
 

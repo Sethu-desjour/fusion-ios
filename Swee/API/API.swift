@@ -157,12 +157,8 @@ class API: ObservableObject {
                                     dob: dobString)
         
         let jsonData = try JSONEncoder().encode(userUpdate)
-        print("profile update jsonData =====", String(data: jsonData, encoding: .utf8))
 
         return try await request(with: url, method: .PATCH(jsonData)) { data, response in
-            print("profile update response ======= ", response)
-            print("profile update data =====", String(data: data, encoding: .utf8))
-
             guard response.statusCode == 200 else {
                 throw APIError.wrongCode
             }
@@ -327,7 +323,18 @@ class API: ObservableObject {
     func walletMerchant(for id: UUID) async throws -> WalletMerchantModel {
         let url = "/wallet/merchants/\(id.uuidString.lowercased())"
         
-        return try await request(with: url)
+        return try await request(with: url) { data, response in
+            if response.statusCode == 404 {
+                throw APIError.notFound
+            }
+            
+            guard response.statusCode == 200 else {
+                throw APIError.wrongCode
+            }
+            
+            return nil
+            
+        }
     }
     
     func startRedemptions(for purchaseID: UUID, quantity: Int) async throws -> [RedemptionModel] {
@@ -404,6 +411,12 @@ class API: ObservableObject {
     
     func getSession(with id: UUID) async throws -> SessionModel {
         let url = "/sessions/\(id.uuidString.lowercased())"
+        
+        return try await request(with: url)
+    }
+    
+    func getSessions() async throws -> [SessionModel] {
+        let url = "/sessions"
         
         return try await request(with: url)
     }
@@ -565,6 +578,7 @@ extension API {
 
 enum APIError: Error {
     case wrongCode
+    case notFound
     case decodingError
     case invalidResponse
     case tokenNotFound

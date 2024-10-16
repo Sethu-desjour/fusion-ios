@@ -13,6 +13,10 @@ struct BottomSheetContentKey: EnvironmentKey {
     static let defaultValue: Binding<BottomSheetData> = .constant(.init(view: EquatableViewContainer(view: AnyView(Text("")))))
 }
 
+private struct SessionActiveKey: EnvironmentKey {
+    static let defaultValue: Binding<Bool> = .constant(true)
+}
+
 private struct TabVisibilityKey: EnvironmentKey {
     static let defaultValue: Binding<Bool> = .constant(true)
 }
@@ -25,6 +29,11 @@ extension EnvironmentValues {
     var currentTab: Binding<Tabs> {
         get { self[CurrentTabKey.self] }
         set { self[CurrentTabKey.self] = newValue }
+    }
+    
+    var sessionActive: Binding<Bool> {
+        get { self[SessionActiveKey.self] }
+        set { self[SessionActiveKey.self] = newValue }
     }
     
     var tabIsShown: Binding<Bool> {

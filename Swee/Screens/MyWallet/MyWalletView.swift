@@ -11,6 +11,7 @@ struct MerchantPurchases {
 struct MyWalletView: View {
     @Environment(\.tabIsShown) private var tabIsShown
     @Environment(\.currentTab) private var currentTab
+    @Environment(\.sessionActive) private var sessionActive
     @EnvironmentObject private var api: API
     @StateObject private var viewModel = MyWalletViewModel()
     
@@ -98,7 +99,7 @@ struct MyWalletView: View {
                         }
                     }
                     .padding(.horizontal, 16)
-                    .padding(.bottom, 60)
+                    .padding(.bottom, sessionActive.wrappedValue ? 200 : 60)
                 }
             }
             .background(Color.background.pale)
@@ -152,6 +153,7 @@ struct MerchantPurchasesCard: View {
                 }
                 Spacer()
                 Image("arrow-right")
+                    .tint(.white)
                     .padding(4)
                     .background {
                         Circle()
