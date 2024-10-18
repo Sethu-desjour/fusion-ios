@@ -7,7 +7,7 @@ struct WalletMerchant {
     let bgColors: [Color]
     let purchaseSummary: String
     let products: [PurchaseProduct]
-    let activeSession: Session?
+    var activeSession: Session?
 }
 
 extension WalletMerchantModel: RawModelConvertable {

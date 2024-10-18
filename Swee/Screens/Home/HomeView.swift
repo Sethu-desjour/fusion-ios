@@ -9,9 +9,9 @@ struct HomeView: View {
     @EnvironmentObject private var api: API
     @EnvironmentObject private var cart: Cart
     @EnvironmentObject private var locationManager: LocationManager
+    @EnvironmentObject private var activeSession: ActiveSession
     @StateObject private var viewModel = HomeViewModel()
     @Environment(\.tabIsShown) private var tabIsShown
-    @Environment(\.sessionActive) private var sessionActive
     @State private var hideBottomSheet: Bool = true
     @State private var navView: UINavigationController? = nil
     
@@ -63,7 +63,7 @@ struct HomeView: View {
             }
             .padding(.vertical, 20)
 //                        .padding(.horizontal, 16)
-            .padding(.bottom, sessionActive.wrappedValue ? 220 : 80)
+            .padding(.bottom, activeSession.sessionIsActive ? 220 : 80)
         }
         .ignoresSafeArea()
     }

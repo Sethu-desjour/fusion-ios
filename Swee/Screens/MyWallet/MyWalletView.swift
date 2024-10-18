@@ -11,7 +11,7 @@ struct MerchantPurchases {
 struct MyWalletView: View {
     @Environment(\.tabIsShown) private var tabIsShown
     @Environment(\.currentTab) private var currentTab
-    @Environment(\.sessionActive) private var sessionActive
+    @EnvironmentObject private var activeSession: ActiveSession
     @EnvironmentObject private var api: API
     @StateObject private var viewModel = MyWalletViewModel()
     
@@ -97,9 +97,10 @@ struct MyWalletView: View {
                                 }
                             }
                         }
+                        .animation(.easeIn, value: viewModel.merchants.count)
                     }
                     .padding(.horizontal, 16)
-                    .padding(.bottom, sessionActive.wrappedValue ? 200 : 60)
+                    .padding(.bottom, activeSession.sessionIsActive ? 200 : 60)
                 }
             }
             .background(Color.background.pale)

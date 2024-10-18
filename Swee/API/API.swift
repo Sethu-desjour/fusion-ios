@@ -418,7 +418,13 @@ class API: ObservableObject {
     func getSessions() async throws -> [SessionModel] {
         let url = "/sessions"
         
-        return try await request(with: url)
+        return try await request(with: url) { data, response in
+            guard response.statusCode == 200 else {
+                throw APIError.wrongCode
+            }
+            
+            return nil
+        }
     }
     
     func DEBUGchangeRedemptionStatus(for id: UUID, merchantId: UUID) async throws {

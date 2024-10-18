@@ -54,11 +54,9 @@ enum Tabs: Int, CaseIterable, Identifiable {
 
 struct MainView: View {
     @EnvironmentObject private var api: API
+    @StateObject var activeSession = ActiveSession()
     @State private var selectedTab: Tabs = .home
-    @State private(set) var sessionActive = false
-    @State private var activeSession: Session?
     @State private var tabIsShown = true
-    private let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
     @State private var cancellables = Set<AnyCancellable>()
     
     func TabItem(imageName: String, title: String, isActive: Bool) -> some View {
@@ -92,14 +90,14 @@ struct MainView: View {
                     Spacer()
                 }
                 HStack {
-                    Text(activeSession?.hoursPassed)
+                    Text(activeSession.session?.hoursPassed)
                         .font(.custom("Poppins-Bold", size: 31))
                         .foregroundStyle(Color.secondary.brand)
                     Text("Hours passed")
                         .font(.custom("Poppins-Regular", size: 24))
                     Spacer()
                 }
-                Text("Total package left : \(activeSession!.availableTime) Hours")
+                Text("Total package left : \(activeSession.session!.availableTime) Hours")
                     .font(.custom("Poppins-SemiBold", size: 14))
                     .foregroundStyle(Color.text.black40)
             }
@@ -123,7 +121,7 @@ struct MainView: View {
             ZStack {
                 if tabIsShown {
                     VStack(spacing: 0) {
-                        if sessionActive {
+                        if activeSession.sessionIsActive {
                             activeSessionUI
                         }
                         HStack{
@@ -141,29 +139,29 @@ struct MainView: View {
                         .frame(maxWidth: .infinity)
                         .background(.ultraThickMaterial)
                         .compositingGroup()
-                        .shadow(color: .black.opacity(sessionActive ? 0.2 : 0.15), radius: sessionActive ? 0.5 : 2, y: sessionActive ? -0.5 : -2)
+                        .shadow(color: .black.opacity(activeSession.sessionIsActive ? 0.2 : 0.15), radius: activeSession.sessionIsActive ? 0.5 : 2, y: activeSession.sessionIsActive ? -0.5 : -2)
                     }
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
 //            .hidden(!showTabBar)
             .onAppear(perform: {
-                timer
-                    .prepend(.now)
-                    .sink { time in
-                    Task {
-                        let sessions = try? await api.getSessions().toLocal()
-                        await MainActor.run {
-                            guard let session = sessions?.first else {
-                                sessionActive = false
-                                activeSession = nil
-                                return
-                            }
-                            activeSession = session
-                            sessionActive = true
-                        }
-                    }
-                }.store(in: &cancellables)
+//                timer
+//                    .prepend(.now)
+//                    .sink { time in
+//                    Task {
+//                        let sessions = try? await api.getSessions().toLocal()
+//                        await MainActor.run {
+//                            guard let session = sessions?.first else {
+//                                sessionActive = false
+//                                activeSession.session = nil
+//                                return
+//                            }
+//                            activeSession = session
+//                            sessionActive = true
+//                        }
+//                    }
+//                }.store(in: &cancellables)
                 
                 //  NOTE: Uncomment to keep the images loading indefinately
 //                SDImageCachesManager.shared.caches = []
@@ -173,7 +171,8 @@ struct MainView: View {
         }
         .environment(\.tabIsShown, $tabIsShown)
         .environment(\.currentTab, $selectedTab)
-        .environment(\.sessionActive, $sessionActive)
+        .environmentObject(activeSession)
+//        .environment(\.sessionActive, $sessionActive)
     }
 }
 

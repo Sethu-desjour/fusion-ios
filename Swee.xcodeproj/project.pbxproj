@@ -122,6 +122,7 @@
 		AF8FB96E2CBE50A900B3B21C /* EditEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB96D2CBE50A900B3B21C /* EditEmailView.swift */; };
 		AF8FB9702CBE5C5F00B3B21C /* EditDOBView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB96F2CBE5C5F00B3B21C /* EditDOBView.swift */; };
 		AF8FB9722CBE61DB00B3B21C /* EditGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB9712CBE61DB00B3B21C /* EditGenderView.swift */; };
+		AF8FB9762CBF7B8000B3B21C /* ActiveSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB9752CBF7B8000B3B21C /* ActiveSession.swift */; };
 		AF9AC5682C894D5700B16186 /* JollyfieldRedemptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */; };
 		AFA335C82C92676700883CBB /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA335C72C92676700883CBB /* AlertsView.swift */; };
 		AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */; };
@@ -273,6 +274,7 @@
 		AF8FB96D2CBE50A900B3B21C /* EditEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEmailView.swift; sourceTree = "<group>"; };
 		AF8FB96F2CBE5C5F00B3B21C /* EditDOBView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDOBView.swift; sourceTree = "<group>"; };
 		AF8FB9712CBE61DB00B3B21C /* EditGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGenderView.swift; sourceTree = "<group>"; };
+		AF8FB9752CBF7B8000B3B21C /* ActiveSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSession.swift; sourceTree = "<group>"; };
 		AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JollyfieldRedemptionView.swift; sourceTree = "<group>"; };
 		AFA335C72C92676700883CBB /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
 		AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
@@ -489,6 +491,7 @@
 			children = (
 				AF3022C52CA18C62006DBCAD /* Cart.swift */,
 				AF3022CC2CA5584E006DBCAD /* LocationManager.swift */,
+				AF8FB9752CBF7B8000B3B21C /* ActiveSession.swift */,
 			);
 			path = Singletons;
 			sourceTree = "<group>";
@@ -917,6 +920,7 @@
 				AF13C85B2CAFCAE200496B0C /* Purchase.swift in Sources */,
 				AFCEC5BC2C7AD00F00D157BE /* OtpView.swift in Sources */,
 				AF1FAC472C79B0E100654FB7 /* AuthView.swift in Sources */,
+				AF8FB9762CBF7B8000B3B21C /* ActiveSession.swift in Sources */,
 				AF3022D12CA9850D006DBCAD /* ContentErrorView.swift in Sources */,
 				AF501F382C9813D300637042 /* MockHomeSectionURLProtocol.swift in Sources */,
 				AF2F85C82C9AA324004B0B31 /* MerchantStoreModel.swift in Sources */,

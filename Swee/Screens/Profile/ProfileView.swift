@@ -28,7 +28,7 @@ struct ProfileView: View {
     @EnvironmentObject private var api: API
     @EnvironmentObject private var appRootManager: AppRootManager
     @Environment(\.tabIsShown) private var tabIsShown
-    @Environment(\.sessionActive) private var sessionActive
+    @EnvironmentObject private var activeSession: ActiveSession
 
     
     @State private var profileProgress: Double = 0.6
@@ -193,7 +193,7 @@ struct ProfileView: View {
                         ReferalCard(banner: .init(title: "Refer a friend and earn rewards ✨", description: "Enjoy a free Zoomoov ride for each friend who signs up through your referral, and your friend gets a free ride too!", buttonTitle: "Share", background: .image(URL(string: "https://i.ibb.co/LpYWLfQ/referal-bg-3x.png")!), badgeImage: URL(string: "https://i.ibb.co/qkHf8XZ/badge-1-3x.png")))
                     }
                     .padding()
-                    .padding(.bottom, sessionActive.wrappedValue ? 200 : 60)
+                    .padding(.bottom, activeSession.sessionIsActive ? 200 : 60)
                     .customNavBarHidden(true)
                 }
             }
