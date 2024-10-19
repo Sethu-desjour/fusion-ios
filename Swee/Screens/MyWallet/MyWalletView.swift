@@ -11,6 +11,8 @@ struct MerchantPurchases {
 struct MyWalletView: View {
     @Environment(\.tabIsShown) private var tabIsShown
     @Environment(\.currentTab) private var currentTab
+    @Environment(\.goToActiveSession) private var activeSessionSignal
+    @State private var goToActiveSession = false
     @EnvironmentObject private var activeSession: ActiveSession
     @EnvironmentObject private var api: API
     @StateObject private var viewModel = MyWalletViewModel()
@@ -47,76 +49,82 @@ struct MyWalletView: View {
     
     var body: some View {
         CustomNavView {
-            ScrollView {
-                HStack {
-                    Text("My purchases")
-                        .font(.custom("Poppins-SemiBold", size: 18))
-                    Spacer()
-                    CustomNavLink(destination: ActivityView()) {
-                        HStack {
-                            Image("activity")
-                            Text("All activity")
-                                .font(.custom("Poppins-Medium", size: 14))
-                        }
-                    }
-                    .padding(8)
-                    .tint(Color.text.black60)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(.black.opacity(0.15),
-                                    lineWidth: 1)
-                    )
-                    .background(.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                }
-                .padding(.top, 8)
-                .padding(.horizontal, 16)
-                if viewModel.showError {
-                    StateView.error {
-                        try? await viewModel.fetch()
-                    }
-                } else if !viewModel.loadedData, viewModel.merchants.isEmpty {
-                    VStack(spacing: 16) {
-                        MerchantPurchasesCard.skeleton.equatable.view
-                        MerchantPurchasesCard.skeleton.equatable.view
-                    }
-                    .padding(.horizontal, 16)
-                } else if viewModel.merchants.isEmpty {
-                    emptyUI
-                } else {
-                    LazyVStack(spacing: 16) {
-                        ForEach(viewModel.merchants, id: \.id) { merchant in
-                            let view = MerchantPurchasesCard(merchant: merchant)
-                            if merchant.name.lowercased() == "zoomoov" {
-                                CustomNavLink(destination: ZoomoovRedemptionView(merchant: merchant)) {
-                                    view
-                                }
-                            } else {
-                                CustomNavLink(destination: JollyfieldRedemptionView(merchant: merchant)) {
-                                    view
-                                }
+            ZStack {
+                CustomNavLink(isActive: activeSessionSignal, destination: JollyfieldRedemptionView(merchant: activeSession.merchant ?? .empty))
+                ScrollView {
+                    HStack {
+                        Text("My purchases")
+                            .font(.custom("Poppins-SemiBold", size: 18))
+                        Spacer()
+                        CustomNavLink(destination: ActivityView()) {
+                            HStack {
+                                Image("activity")
+                                Text("All activity")
+                                    .font(.custom("Poppins-Medium", size: 14))
                             }
                         }
-                        .animation(.easeIn, value: viewModel.merchants.count)
+                        .padding(8)
+                        .tint(Color.text.black60)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(.black.opacity(0.15),
+                                        lineWidth: 1)
+                        )
+                        .background(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
+                    .padding(.top, 8)
                     .padding(.horizontal, 16)
-                    .padding(.bottom, activeSession.sessionIsActive ? 200 : 60)
+                    if viewModel.showError {
+                        StateView.error {
+                            try? await viewModel.fetch()
+                        }
+                    } else if !viewModel.loadedData, viewModel.merchants.isEmpty {
+                        VStack(spacing: 16) {
+                            MerchantPurchasesCard.skeleton.equatable.view
+                            MerchantPurchasesCard.skeleton.equatable.view
+                        }
+                        .padding(.horizontal, 16)
+                    } else if viewModel.merchants.isEmpty {
+                        emptyUI
+                    } else {
+                        LazyVStack(spacing: 16) {
+                            ForEach(viewModel.merchants, id: \.id) { merchant in
+                                let view = MerchantPurchasesCard(merchant: merchant)
+                                if merchant.name.lowercased() == "zoomoov" {
+                                    CustomNavLink(destination: ZoomoovRedemptionView(merchant: merchant)) {
+                                        view
+                                    }
+                                } else {
+                                    CustomNavLink(destination: JollyfieldRedemptionView(merchant: merchant)) {
+                                        view
+                                    }
+                                }
+                            }
+                            .animation(.easeIn, value: viewModel.merchants.count)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, activeSession.sessionIsActive ? 200 : 60)
+                    }
                 }
-            }
-            .background(Color.background.pale)
-            .onAppear(perform: {
-                viewModel.api = api
-                Task {
-                    try? await viewModel.fetch()
+                //            .onChange(of: activeSessionSignal, perform: { newValue in
+                //                goToActiveSession = activeSessionSignal.wrappedValue
+                //            })
+                .background(Color.background.pale)
+                .onAppear(perform: {
+                    viewModel.api = api
+                    Task {
+                        try? await viewModel.fetch()
+                    }
+                    tabIsShown.wrappedValue = true
+                })
+                .customNavigationBackButtonHidden(true)
+                .customNavLeadingItem {
+                    LogoNavItem()
                 }
-                tabIsShown.wrappedValue = true
-            })
-            .customNavigationBackButtonHidden(true)
-            .customNavLeadingItem {
-                LogoNavItem()
-            }
-            .customNavTrailingItem {
-                CartButton()
+                .customNavTrailingItem {
+                    CartButton()
+                }
             }
         }
     }

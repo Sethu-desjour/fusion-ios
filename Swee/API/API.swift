@@ -176,6 +176,18 @@ class API: ObservableObject {
         }
     }
     
+    func DEBUGdeleteAccount() async throws {
+        let url = "/users/me"
+        
+        // WARNING: this will delete the account and all of its data permanently.
+        // Make sure you're aware of that.
+        try await request(with: url, method: .DELETE) { data, response in
+            guard response.statusCode == 204 else {
+                throw APIError.wrongCode
+            }
+        }
+    }
+    
     func homeSections() async throws -> [HomeSectionModel] {
         return try await request(with: "/home_sections", mockProtocol: nil /*MockHomeSectionURLProtocol.self*/)
     }
@@ -419,6 +431,7 @@ class API: ObservableObject {
         let url = "/sessions"
         
         return try await request(with: url) { data, response in
+            print("sessions ====", String(data: data, encoding: .utf8))
             guard response.statusCode == 200 else {
                 throw APIError.wrongCode
             }
@@ -529,13 +542,13 @@ extension API {
         with url: String,
         method: Method = .GET,
         reauthenticate: Bool = true,
+        mockProtocol: U.Type? = nil,
         intercept: ((Data, HTTPURLResponse) async throws -> T?)? = { data, response in
             guard response.statusCode == 200 else {
         throw APIError.wrongCode
     }
             return nil
-        },
-        mockProtocol: U.Type? = nil
+        }
     ) async throws -> T {
         let (data, response) = try await performRequest(with: url,
                                                         method: method,
@@ -553,13 +566,13 @@ extension API {
         with url: String,
         method: Method = .GET,
         reauthenticate: Bool = true,
+        mockProtocol: U.Type? = nil,
         intercept: ((Data, HTTPURLResponse) async throws -> Void?)? = { data, response in
             guard response.statusCode == 200 else {
         throw APIError.wrongCode
     }
             return nil
-        },
-        mockProtocol: U.Type? = nil
+        }
     ) async throws {
         let (data, response) = try await performRequest(with: url,
                                                         method: method,

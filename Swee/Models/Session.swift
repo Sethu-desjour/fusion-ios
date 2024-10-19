@@ -2,7 +2,8 @@ import SwiftUI
 
 struct Session {
     let id: UUID
-    let purchaseId: UUID
+    let merchantId: UUID?
+    let merchantName: String?
     let qrCodeImage: Image?
     let status: SessionStatus
     let startedAt: Date?
@@ -24,7 +25,8 @@ extension SessionModel: RawModelConvertable {
             image = uiImage
         }
         return .init(id: id,
-                     purchaseId: purchaseId,
+                     merchantId: merchantId,
+                     merchantName: merchantName,
                      qrCodeImage: Image(uiImage: image),
                      status: status,
                      startedAt: startedAt,

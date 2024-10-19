@@ -33,6 +33,14 @@ struct ProfileView: View {
     
     @State private var profileProgress: Double = 0.6
     @State private var sections: [[RowData]] = []
+    @State private var showDeleteProfileAlert = false
+    @State private var showLogoutAlert = false
+    @State private var alertData: CustomAlert.Data = .init(isActive: .constant(false),
+                                                           title: "",
+                                                           message: "",
+                                                           buttonTitle: "",
+                                                           cancelTitle: "",
+                                                           action: .init(closure: {}))
     @State private var goToChildren: Bool = false
     @State private var goToEmail: Bool = false
     @State private var goToDOB: Bool = false
@@ -81,15 +89,23 @@ struct ProfileView: View {
             ],
             [
                 .init(title: "Logout", trailingIcon: Image("logout")) {
-                    Task {
+                    showLogoutAlert = true
+                    alertData = .init(isActive: $showLogoutAlert, title: "Logout?",
+                                      message: "Do you want to log out from the app, you ll have to sign in again",
+                                      buttonTitle: "Log out", cancelTitle: "Stay In", action: .init(closure: {
                         await api.signOut()
                         appRootManager.currentRoot = .authentication
-                    }
+                    }))
                 },
             ],
             [
                 .init(title: "Delete profile", trailingIcon: Image("delete"), tint: .red) {
-                    
+                    showDeleteProfileAlert = true
+                    alertData = .init(isActive: $showDeleteProfileAlert, title: "Delete?",
+                                      message: "All your data will be deleted including your purchases",
+                                      buttonTitle: "Delete", cancelTitle: "Keep the data", action: .init(closure: {
+                        
+                    }))
                 },
             ],
         ]
@@ -195,12 +211,35 @@ struct ProfileView: View {
                     .padding()
                     .padding(.bottom, activeSession.sessionIsActive ? 200 : 60)
                     .customNavBarHidden(true)
+                    .customAlert(data: alertData)
+//                    .customAlert(isActive: $showDeleteProfileAlert,
+//                                 title: "Delete?",
+//                                 message: "All your data will be deleted including your purchases",
+//                                 buttonTitle: "Delete", cancelTitle: "Keep the data",
+//                                 action: {
+////                        try await api.DEBUGdeleteAccount()
+//                    })
+//                    .customAlert(isActive: $showLogoutAlert, 
+//                                 title: "Logout?",
+//                                 message: "Do you want to log out from the app, you ll have to sign in again",
+//                                 buttonTitle: "Log out",
+//                                 cancelTitle: "Stay in") {
+////                        await api.signOut()
+////                        appRootManager.currentRoot = .authentication
+//                    }
                 }
             }
+//            .onChange(of: showDeleteProfileAlert, perform: { newValue in
+//                tabIsShown.wrappedValue = !showDeleteProfileAlert
+//            })
+            .onChange(of: alertData.$isActive, perform: { newValue in
+                tabIsShown.wrappedValue = !alertData.isActive
+            })
             .onAppear(perform: {
                 setupSections()
                 tabIsShown.wrappedValue = true
             })
+            
         }
     }
     
@@ -316,4 +355,5 @@ struct CircularProgressView: View {
     ProfileView()
         .environmentObject(AppRootManager())
         .environmentObject(API())
+        .environmentObject(ActiveSession())
 }

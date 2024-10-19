@@ -123,6 +123,7 @@
 		AF8FB9702CBE5C5F00B3B21C /* EditDOBView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB96F2CBE5C5F00B3B21C /* EditDOBView.swift */; };
 		AF8FB9722CBE61DB00B3B21C /* EditGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB9712CBE61DB00B3B21C /* EditGenderView.swift */; };
 		AF8FB9762CBF7B8000B3B21C /* ActiveSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB9752CBF7B8000B3B21C /* ActiveSession.swift */; };
+		AF8FB9782CC2103900B3B21C /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB9772CC2103900B3B21C /* CustomAlert.swift */; };
 		AF9AC5682C894D5700B16186 /* JollyfieldRedemptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */; };
 		AFA335C82C92676700883CBB /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA335C72C92676700883CBB /* AlertsView.swift */; };
 		AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */; };
@@ -275,6 +276,7 @@
 		AF8FB96F2CBE5C5F00B3B21C /* EditDOBView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDOBView.swift; sourceTree = "<group>"; };
 		AF8FB9712CBE61DB00B3B21C /* EditGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGenderView.swift; sourceTree = "<group>"; };
 		AF8FB9752CBF7B8000B3B21C /* ActiveSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSession.swift; sourceTree = "<group>"; };
+		AF8FB9772CC2103900B3B21C /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
 		AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JollyfieldRedemptionView.swift; sourceTree = "<group>"; };
 		AFA335C72C92676700883CBB /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
 		AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
@@ -656,6 +658,7 @@
 				AFDB90462C8EDE32008931DB /* Navigation */,
 				AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */,
 				AF2F85DF2C9C52CC004B0B31 /* PackageCard.swift */,
+				AF8FB9772CC2103900B3B21C /* CustomAlert.swift */,
 				AF2F85CB2C9BB7F1004B0B31 /* LogoNavItem.swift */,
 				AF3022D02CA9850D006DBCAD /* ContentErrorView.swift */,
 				AF2F85E12C9C5310004B0B31 /* Skeletonable.swift */,
@@ -961,6 +964,7 @@
 				AF69BC002CB52CF800E87E2B /* ChildModel.swift in Sources */,
 				AFDB90482C8EDE43008931DB /* CustomNavBarView.swift in Sources */,
 				AF80222C2C72F39E001274FA /* OnboardingView.swift in Sources */,
+				AF8FB9782CC2103900B3B21C /* CustomAlert.swift in Sources */,
 				AF501F272C945D7C00637042 /* API.swift in Sources */,
 				AF2F85E02C9C52CC004B0B31 /* PackageCard.swift in Sources */,
 				AF0558372CABA1F000ABEBA3 /* WalletMerchantModel.swift in Sources */,

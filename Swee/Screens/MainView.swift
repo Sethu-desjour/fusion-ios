@@ -58,6 +58,7 @@ struct MainView: View {
     @State private var selectedTab: Tabs = .home
     @State private var tabIsShown = true
     @State private var cancellables = Set<AnyCancellable>()
+    @State private var goToActiveSession = false
     
     func TabItem(imageName: String, title: String, isActive: Bool) -> some View {
         VStack {
@@ -103,6 +104,10 @@ struct MainView: View {
             }
             Image("arrow-right")
                 .tint(Color.black)
+        }
+        .onTapGesture {
+            selectedTab = .purchases
+            goToActiveSession = true
         }
         .padding(14)
         .background(.ultraThickMaterial)
@@ -171,6 +176,7 @@ struct MainView: View {
         }
         .environment(\.tabIsShown, $tabIsShown)
         .environment(\.currentTab, $selectedTab)
+        .environment(\.goToActiveSession, $goToActiveSession)
         .environmentObject(activeSession)
 //        .environment(\.sessionActive, $sessionActive)
     }

@@ -2,8 +2,9 @@ import SwiftUI
 
 struct MerchantModel: Decodable {
     enum Status: String, Codable {
-        case live = "LIVE"
-        case notLive = "NOT_LIVE"
+        case active = "ACTIVE"
+        case pending = "PENDING"
+        case terminated = "TERMINATED"
     }
     
     let id: UUID

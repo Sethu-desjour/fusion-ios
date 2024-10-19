@@ -4,6 +4,7 @@ import Combine
 class ActiveSession: ObservableObject {
     private let api = API()
     @Published var session: Session?
+    @Published var merchant: WalletMerchant?
     var sessionIsActive: Bool {
         session != nil
     }
@@ -21,9 +22,17 @@ class ActiveSession: ObservableObject {
                     return
                 }
                 let sessions = try? await weakSelf.api.getSessions().toLocal()
+                if let merchantId = sessions?.first?.merchantId {
+                    let merchant = try? await weakSelf.api.walletMerchant(for: merchantId)
+                    
+                    await MainActor.run {
+                        weakSelf.merchant = merchant?.toLocal()
+                    }
+                }
                 await MainActor.run {
                     guard let session = sessions?.first else {
                         weakSelf.session = nil
+                        weakSelf.merchant = nil
                         return
                     }
                     weakSelf.session = session

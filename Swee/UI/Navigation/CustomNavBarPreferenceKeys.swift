@@ -49,6 +49,19 @@ struct CustomNavBottomSheetData: PreferenceKey {
     }
 }
 
+struct CustomAlertData: PreferenceKey {
+    static var defaultValue: CustomAlert.Data = .init(isActive: .constant(false),
+                                                      title: "",
+                                                      message: "",
+                                                      buttonTitle: "",
+                                                      cancelTitle: "",
+                                                      action: .init(closure: {}))
+    
+    static func reduce(value: inout CustomAlert.Data, nextValue: () -> CustomAlert.Data) {
+        value = nextValue()
+    }
+}
+
 extension View {
     func customNavigationTitle(_ title: String) -> some View {
         preference(key: CustomNavBarTitlePreferenceKey.self, value: title)
@@ -73,15 +86,36 @@ extension View {
     func customBottomSheet(hidden: Binding<Bool>, @ViewBuilder _ content: () -> some View) -> some View {
         preference(key: CustomNavBottomSheetData.self, value: BottomSheetData(view: content().equatable, hidden: hidden))
     }
+    
+//    func customAlert(isActive: Binding<Bool>,
+//                     title: String,
+//                     message: String,
+//                     buttonTitle: String,
+//                     cancelTitle: String,
+//                     action: @escaping () async throws -> Void) -> some View {
+//        preference(key: CustomAlertData.self, value: .init(isActive: isActive, title: title, message: message, buttonTitle: buttonTitle, cancelTitle: cancelTitle, action: .init(closure: action)))
+//    }
+    
+    func customAlert(data: CustomAlert.Data) -> some View {
+        preference(key: CustomAlertData.self, value: data)
+    }
 }
 
 
 struct EquatableViewContainer: Equatable {
-    
     let id = UUID().uuidString
     let view: AnyView
     
     static func == (lhs: EquatableViewContainer, rhs: EquatableViewContainer) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
+struct EquatableAsyncVoidClosure: Equatable {
+    let id = UUID().uuidString
+    let closure: () async throws -> Void
+    
+    static func == (lhs: EquatableAsyncVoidClosure, rhs: EquatableAsyncVoidClosure) -> Bool {
         return lhs.id == rhs.id
     }
 }

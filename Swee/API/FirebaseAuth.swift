@@ -70,6 +70,8 @@ struct Authentication {
             fatalError("no firbase clientID found")
         }
         
+        print("client ID ======", clientID)
+        
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
         
@@ -83,17 +85,26 @@ struct Authentication {
             withPresenting: rootViewController
         )
         let user = result.user
+
+        print("google user =====", user)
         guard let idToken = user.idToken?.tokenString else {
             throw LocalError(message: "Unexpected error occurred, please retry")
         }
         
+        print("idToken ======", idToken)
+        print("user access token string ======", user.accessToken.tokenString)
         let credential = GoogleAuthProvider.credential(
             withIDToken: idToken, accessToken: user.accessToken.tokenString
         )
+        print("credential ======", credential)
         try await Auth.auth().signIn(with: credential)
+        let authUser = Auth.auth().currentUser
+        
         guard let token = try await Auth.auth().currentUser?.getIDToken() else {
             throw LocalError(message: "Couldn't get token on Google Auth")
         }
+        
+        print("token ======", token)
         
         return token
     }
