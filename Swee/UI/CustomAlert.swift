@@ -2,7 +2,6 @@ import SwiftUI
 
 struct CustomAlert: View {
     struct Data: Equatable {
-        @Binding var isActive: Bool
         let title: String
         let message: String
         let buttonTitle: String
@@ -10,12 +9,12 @@ struct CustomAlert: View {
         let action: EquatableAsyncVoidClosure
     }
     
+    @Binding var isActive: Bool
     var data: Data
-//    @State private var offset: CGFloat = 1000
     
     var body: some View {
         ZStack {
-            if data.isActive {
+            if isActive {
                 Color(.black)
                     .opacity(0.5)
                     .onTapGesture {
@@ -24,70 +23,59 @@ struct CustomAlert: View {
                     .transition(.opacity)
                 VStack {
                     Text(data.title)
-                        .font(.title2)
-                        .bold()
+                        .font(.custom("Poppins-SemiBold", size: 18))
+                        .foregroundStyle(Color.text.black100)
                         .padding()
                     
                     Text(data.message)
-                        .font(.body)
+                        .font(.custom("Poppins-Regular", size: 14))
+                        .foregroundStyle(Color.text.black60)
+                        .multilineTextAlignment(.center)
                     
-                    AsyncButton {
+                    AsyncButton(progressWidth: .infinity) {
                         try? await data.action.closure()
                         close()
                     } label: {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 20)
-                                .foregroundColor(.red)
-                            
-                            Text(data.buttonTitle)
-                                .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(.white)
-                                .padding()
-                        }
-                        .padding()
+                        Text(data.buttonTitle)
+                            .font(.custom("Poppins-Bold", size: 16))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
                     }
+                    .padding()
+                    .buttonStyle(PrimaryButton(backgroundColor: .error))
+                    Button {
+                        close()
+                    } label: {
+                        Text(data.cancelTitle)
+                            .font(.custom("Poppins-SemiBold", size: 16))
+                            .foregroundStyle(Color.text.black60)
+                    }
+                    .padding(.bottom, 24)
                 }
                 .fixedSize(horizontal: false, vertical: true)
                 .padding()
                 .background(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .overlay(alignment: .topTrailing) {
-                    Button {
-                        close()
-                    } label: {
-                        Image(systemName: "xmark")
-                            .font(.title2)
-                    }
-                    .tint(.black)
-                    .padding()
-                }
+                .clipShape(RoundedRectangle(cornerRadius: 4))
                 .shadow(radius: 20)
                 .padding(30)
-//                .offset(x: 0, y: offset)
                 .transition(.flipFromBottom.combined(with: .opacity))
-//                .onAppear {
-//                    withAnimation(.spring()) {
-//                        offset = 0
-//                    }
-//                }
             }
         }
-        .animation(.spring(duration: 0.2), value: data.isActive)
+        .animation(.spring(duration: 0.2), value: isActive)
         .ignoresSafeArea()
     }
     
     func close() {
         withAnimation(.spring()) {
 //            offset = 1000
-            data.isActive = false
+            isActive = false
         }
     }
 }
 
 struct CustomAlert_Previews: PreviewProvider {
     static var previews: some View {
-        CustomAlert(data: .init(isActive: .constant(false),
-                                title: "Delete?",
+        CustomAlert(isActive: .constant(false), data: .init(title: "Delete?",
                                 message: "This will delete all your data",
                                 buttonTitle: "Delete",
                                 cancelTitle: "Keep my account",

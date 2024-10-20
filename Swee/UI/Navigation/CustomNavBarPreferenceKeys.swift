@@ -49,15 +49,22 @@ struct CustomNavBottomSheetData: PreferenceKey {
     }
 }
 
-struct CustomAlertData: PreferenceKey {
-    static var defaultValue: CustomAlert.Data = .init(isActive: .constant(false),
-                                                      title: "",
-                                                      message: "",
-                                                      buttonTitle: "",
-                                                      cancelTitle: "",
-                                                      action: .init(closure: {}))
+struct CustomAlertData: PreferenceKey, Equatable {
+    @Binding var isActive: Bool
+    let title: String
+    let message: String
+    let buttonTitle: String
+    let cancelTitle: String
+    let action: EquatableAsyncVoidClosure
     
-    static func reduce(value: inout CustomAlert.Data, nextValue: () -> CustomAlert.Data) {
+    static var defaultValue: CustomAlertData = .init(isActive: .constant(false),
+                                                     title: "",
+                                                     message: "",
+                                                     buttonTitle: "",
+                                                     cancelTitle: "",
+                                                     action: .init(closure: {}))
+    
+    static func reduce(value: inout CustomAlertData, nextValue: () -> CustomAlertData) {
         value = nextValue()
     }
 }
@@ -96,8 +103,8 @@ extension View {
 //        preference(key: CustomAlertData.self, value: .init(isActive: isActive, title: title, message: message, buttonTitle: buttonTitle, cancelTitle: cancelTitle, action: .init(closure: action)))
 //    }
     
-    func customAlert(data: CustomAlert.Data) -> some View {
-        preference(key: CustomAlertData.self, value: data)
+    func customAlert(isActive: Binding<Bool>, data: CustomAlert.Data) -> some View {
+        preference(key: CustomAlertData.self, value: .init(isActive: isActive, title: data.title, message: data.message, buttonTitle: data.buttonTitle, cancelTitle: data.cancelTitle, action: data.action))
     }
 }
 

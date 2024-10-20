@@ -15,10 +15,11 @@ struct SocialButton: ButtonStyle {
 
 struct PrimaryButton: ButtonStyle {
     @Environment(\.isEnabled) private var isEnabled: Bool
+    var backgroundColor: Color = .primary.brand
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()
-            .background(Color.primary.brand.opacity(isEnabled ? 1 : 0.5))
+            .background(backgroundColor.opacity(isEnabled ? 1 : 0.5))
             .foregroundStyle(.white)
             .clipShape(Capsule())
     }

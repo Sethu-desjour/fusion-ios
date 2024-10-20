@@ -17,6 +17,8 @@ extension Color {
         static let lighter = Color(hex:"#B3F7DB")
     }
     
+    static let error = Color(hex: "#B3261E")
+    
     struct background {
         static let white = Color(hex:"#FFFFFF")
         static let pale = Color(hex:"#F7F9FA")

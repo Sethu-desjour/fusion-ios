@@ -34,9 +34,8 @@ struct ProfileView: View {
     @State private var profileProgress: Double = 0.6
     @State private var sections: [[RowData]] = []
     @State private var showDeleteProfileAlert = false
-    @State private var showLogoutAlert = false
-    @State private var alertData: CustomAlert.Data = .init(isActive: .constant(false),
-                                                           title: "",
+    @State private var showAlert = false
+    @State private var alertData: CustomAlert.Data = .init(title: "",
                                                            message: "",
                                                            buttonTitle: "",
                                                            cancelTitle: "",
@@ -89,10 +88,12 @@ struct ProfileView: View {
             ],
             [
                 .init(title: "Logout", trailingIcon: Image("logout")) {
-                    showLogoutAlert = true
-                    alertData = .init(isActive: $showLogoutAlert, title: "Logout?",
+                    showAlert = true
+                    alertData = .init(title: "Logout?",
                                       message: "Do you want to log out from the app, you ll have to sign in again",
-                                      buttonTitle: "Log out", cancelTitle: "Stay In", action: .init(closure: {
+                                      buttonTitle: "Log out", 
+                                      cancelTitle: "Stay In",
+                                      action: .init(closure: {
                         await api.signOut()
                         appRootManager.currentRoot = .authentication
                     }))
@@ -100,11 +101,13 @@ struct ProfileView: View {
             ],
             [
                 .init(title: "Delete profile", trailingIcon: Image("delete"), tint: .red) {
-                    showDeleteProfileAlert = true
-                    alertData = .init(isActive: $showDeleteProfileAlert, title: "Delete?",
+                    showAlert = true
+                    alertData = .init(title: "Delete?",
                                       message: "All your data will be deleted including your purchases",
-                                      buttonTitle: "Delete", cancelTitle: "Keep the data", action: .init(closure: {
-                        
+                                      buttonTitle: "Delete",
+                                      cancelTitle: "Keep the data",
+                                      action: .init(closure: {
+                        try await api.DEBUGdeleteAccount()
                     }))
                 },
             ],
@@ -211,7 +214,7 @@ struct ProfileView: View {
                     .padding()
                     .padding(.bottom, activeSession.sessionIsActive ? 200 : 60)
                     .customNavBarHidden(true)
-                    .customAlert(data: alertData)
+                    .customAlert(isActive: $showAlert, data: alertData)
 //                    .customAlert(isActive: $showDeleteProfileAlert,
 //                                 title: "Delete?",
 //                                 message: "All your data will be deleted including your purchases",
@@ -232,8 +235,8 @@ struct ProfileView: View {
 //            .onChange(of: showDeleteProfileAlert, perform: { newValue in
 //                tabIsShown.wrappedValue = !showDeleteProfileAlert
 //            })
-            .onChange(of: alertData.$isActive, perform: { newValue in
-                tabIsShown.wrappedValue = !alertData.isActive
+            .onChange(of: showAlert, perform: { newValue in
+                tabIsShown.wrappedValue = !showAlert
             })
             .onAppear(perform: {
                 setupSections()

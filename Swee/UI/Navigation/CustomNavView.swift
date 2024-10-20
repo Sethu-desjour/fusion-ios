@@ -10,7 +10,7 @@ import SwiftUI
 struct CustomNavView<Content: View>: View {
     let content: Content
     @State private var bottomSheetData: BottomSheetData = .init(view: Text("").equatable, hidden: .constant(true))
-    @State private var alertData: CustomAlert.Data = .init(isActive: .constant(false),
+    @State private var alertData: CustomAlertData = .init(isActive: .constant(false),
                                                            title: "",
                                                            message: "",
                                                            buttonTitle: "", 
@@ -41,7 +41,11 @@ struct CustomNavView<Content: View>: View {
             BottomSheet(hide: bottomSheetData.hidden) {
                 bottomSheetData.view.view
             }
-            CustomAlert(data: alertData)
+            CustomAlert(isActive: alertData.$isActive, data: .init(title: alertData.title,
+                                                                  message: alertData.message,
+                                                                  buttonTitle: alertData.buttonTitle,
+                                                                  cancelTitle: alertData.cancelTitle, 
+                                                                  action: alertData.action))
         }
     }
 }
