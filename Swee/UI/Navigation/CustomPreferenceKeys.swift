@@ -93,16 +93,7 @@ extension View {
     func customBottomSheet(hidden: Binding<Bool>, @ViewBuilder _ content: () -> some View) -> some View {
         preference(key: CustomNavBottomSheetData.self, value: BottomSheetData(view: content().equatable, hidden: hidden))
     }
-    
-//    func customAlert(isActive: Binding<Bool>,
-//                     title: String,
-//                     message: String,
-//                     buttonTitle: String,
-//                     cancelTitle: String,
-//                     action: @escaping () async throws -> Void) -> some View {
-//        preference(key: CustomAlertData.self, value: .init(isActive: isActive, title: title, message: message, buttonTitle: buttonTitle, cancelTitle: cancelTitle, action: .init(closure: action)))
-//    }
-    
+        
     func customAlert(isActive: Binding<Bool>, data: CustomAlert.Data) -> some View {
         preference(key: CustomAlertData.self, value: .init(isActive: isActive, title: data.title, message: data.message, buttonTitle: data.buttonTitle, cancelTitle: data.cancelTitle, action: data.action))
     }

@@ -57,7 +57,6 @@ struct StoreRow: View {
                                     .font(.custom("Poppins-Regular", size: 12))
                                     .lineLimit(2)
                                     .foregroundStyle(Color.text.black40)
-//                                    .fixedSize(horizontal: true, vertical: false)
                                     .frame(maxHeight: .infinity)
 
                                 Spacer()
@@ -76,19 +75,12 @@ struct StoreRow: View {
                                     .font(.custom("Poppins-Regular", size: 12))
                                     .foregroundStyle(Color.text.black40)
                                     .lineLimit(2)
-//                                    .padding(.leading, 15)
-//                                    .padding(.bottom, 3)
                                 Spacer()
                             }
                         }
                     }
                     .padding(.horizontal, 8)
                     .transition(.scale.combined(with: .opacity))
-//                    .transition(
-//                        .move(edge: .top)
-//                        .combined(with: .opacity)
-//                        .combined(with: .scale)
-//                    )
                 }
             }
             Spacer()

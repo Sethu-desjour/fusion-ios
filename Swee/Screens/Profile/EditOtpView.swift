@@ -1,24 +1,10 @@
-//
-//  EditOtpView.swift
-//  Swee
-//
-//  Created by Serghei on 30.09.2024.
-//
-
 import SwiftUI
 
 struct EditOtpView: View {
     @Environment(\.dismiss) private var dismiss
-//    @EnvironmentObject var api: API
-//    @EnvironmentObject private var appRootManager: AppRootManager
-//
     @State var verificationID: String
-//    
     @State private var otpText: String = ""
-//    @State private var goToCompleteProfile: Bool = false
     @FocusState private var isKeyboardShowing: Bool
-//    @State private var timeRemaining = 0
-//    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @State private var errorMessage: String = ""
     @State private var showError: Bool = false
     

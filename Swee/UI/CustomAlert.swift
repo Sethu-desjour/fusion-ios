@@ -67,7 +67,6 @@ struct CustomAlert: View {
     
     func close() {
         withAnimation(.spring()) {
-//            offset = 1000
             isActive = false
         }
     }

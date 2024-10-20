@@ -11,6 +11,11 @@ enum PhoneError: Error {
     case other(Error?)
 }
 
+enum SocialSignInResult {
+    case token(String)
+    case missingPhone
+}
+
 struct Authentication {
     private var appleSignIn = AppleSignIn()
     
@@ -74,11 +79,6 @@ struct Authentication {
                 throw PhoneError.other(nil)
             }
         }
-    }
-    
-    enum SocialSignInResult {
-        case token(String)
-        case missingPhone
     }
     
     @MainActor

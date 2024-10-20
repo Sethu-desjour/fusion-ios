@@ -219,29 +219,11 @@ struct ProfileView: View {
                         ReferalCard(banner: .init(title: "Refer a friend and earn rewards ✨", description: "Enjoy a free Zoomoov ride for each friend who signs up through your referral, and your friend gets a free ride too!", buttonTitle: "Share", background: .image(URL(string: "https://i.ibb.co/LpYWLfQ/referal-bg-3x.png")!), badgeImage: URL(string: "https://i.ibb.co/qkHf8XZ/badge-1-3x.png")))
                     }
                     .padding()
-                    .padding(.bottom, activeSession.sessionIsActive ? 200 : 60)
+                    .padding(.bottom, activeSession.sessionIsActive ? 120 : 60)
                     .customNavBarHidden(true)
                     .customAlert(isActive: $showAlert, data: alertData)
-//                    .customAlert(isActive: $showDeleteProfileAlert,
-//                                 title: "Delete?",
-//                                 message: "All your data will be deleted including your purchases",
-//                                 buttonTitle: "Delete", cancelTitle: "Keep the data",
-//                                 action: {
-////                        try await api.DEBUGdeleteAccount()
-//                    })
-//                    .customAlert(isActive: $showLogoutAlert, 
-//                                 title: "Logout?",
-//                                 message: "Do you want to log out from the app, you ll have to sign in again",
-//                                 buttonTitle: "Log out",
-//                                 cancelTitle: "Stay in") {
-////                        await api.signOut()
-////                        appRootManager.currentRoot = .authentication
-//                    }
                 }
             }
-//            .onChange(of: showDeleteProfileAlert, perform: { newValue in
-//                tabIsShown.wrappedValue = !showDeleteProfileAlert
-//            })
             .onChange(of: showAlert, perform: { newValue in
                 tabIsShown.wrappedValue = !showAlert
             })

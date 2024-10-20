@@ -105,7 +105,7 @@ struct AlertsView: View {
                     ForEach(alerts.indices, id: \.self) { index in
                         row(at: index).equatable.view
                     }
-                    .padding(.bottom, activeSession.sessionIsActive ? 200 : 60)
+                    .padding(.bottom, activeSession.sessionIsActive ? 120 : 60)
 //                    CustomNavLink(isActive: $goToMerchant, destination: MerchantPageView()) {
 //                    }
                 }

@@ -95,7 +95,6 @@ class API: ObservableObject {
         let url = "/users/me?token=\(token)"
         
         let userUpdate: User = try await request(with: url)
-        print("user  ======", userUpdate)
         await MainActor.run {
             self.user = userUpdate
         }
@@ -110,11 +109,8 @@ class API: ObservableObject {
         
         let jsonData = try JSONEncoder().encode(["image": imageString])
         
-//        print("photo upload data ====", String(data: jsonData, encoding: .utf8))
         
         try await request(with: url, method: .POST(jsonData)) { data, response in
-//            print("image upload response =====", response)
-//            print("image upload data =====", String(data: data, encoding: .utf8))
             guard response.statusCode == 204 else {
                 throw APIError.wrongCode
             }

@@ -11,8 +11,7 @@ struct MerchantPurchases {
 struct MyWalletView: View {
     @Environment(\.tabIsShown) private var tabIsShown
     @Environment(\.currentTab) private var currentTab
-    @Environment(\.goToActiveSession) private var activeSessionSignal
-    @State private var goToActiveSession = false
+    @Environment(\.goToActiveSession) private var goToActiveSession
     @EnvironmentObject private var activeSession: ActiveSession
     @EnvironmentObject private var api: API
     @StateObject private var viewModel = MyWalletViewModel()
@@ -50,7 +49,7 @@ struct MyWalletView: View {
     var body: some View {
         CustomNavView {
             ZStack {
-                CustomNavLink(isActive: activeSessionSignal, destination: JollyfieldRedemptionView(merchant: activeSession.merchant ?? .empty))
+                CustomNavLink(isActive: goToActiveSession, destination: JollyfieldRedemptionView(merchant: activeSession.merchant ?? .empty))
                 ScrollView {
                     HStack {
                         Text("My purchases")
@@ -104,12 +103,9 @@ struct MyWalletView: View {
                             .animation(.easeIn, value: viewModel.merchants.count)
                         }
                         .padding(.horizontal, 16)
-                        .padding(.bottom, activeSession.sessionIsActive ? 200 : 60)
+                        .padding(.bottom, activeSession.sessionIsActive ? 140 : 80)
                     }
                 }
-                //            .onChange(of: activeSessionSignal, perform: { newValue in
-                //                goToActiveSession = activeSessionSignal.wrappedValue
-                //            })
                 .background(Color.background.pale)
                 .onAppear(perform: {
                     viewModel.api = api

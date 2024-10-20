@@ -81,7 +81,7 @@ struct MainView: View {
         HStack {
             VStack(alignment: .leading) {
                 HStack {
-                    Text("Jollyfield") // @todo replace with actual data
+                    Text(activeSession.session?.merchantName)
                         .font(.custom("Poppins-SemiBold", size: 18))
                         .foregroundStyle(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
                     Text("In progress")
@@ -156,25 +156,7 @@ struct MainView: View {
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
-//            .hidden(!showTabBar)
             .onAppear(perform: {
-//                timer
-//                    .prepend(.now)
-//                    .sink { time in
-//                    Task {
-//                        let sessions = try? await api.getSessions().toLocal()
-//                        await MainActor.run {
-//                            guard let session = sessions?.first else {
-//                                sessionActive = false
-//                                activeSession.session = nil
-//                                return
-//                            }
-//                            activeSession = session
-//                            sessionActive = true
-//                        }
-//                    }
-//                }.store(in: &cancellables)
-                
                 //  NOTE: Uncomment to keep the images loading indefinately
 //                SDImageCachesManager.shared.caches = []
 //                SDWebImageManager.defaultImageCache = SDImageCachesManager.shared
@@ -186,7 +168,6 @@ struct MainView: View {
         .environment(\.currentTab, $selectedTab)
         .environment(\.goToActiveSession, $goToActiveSession)
         .environmentObject(activeSession)
-//        .environment(\.sessionActive, $sessionActive)
     }
 }
 

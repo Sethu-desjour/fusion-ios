@@ -48,12 +48,6 @@ struct EditDOBView: View {
             Spacer()
             AsyncButton(progressWidth: .infinity) {
                 // @todo add validation logic?
-//                guard validateEmail(email) else {
-//                    showError = true
-//                    return
-//                }
-                
-//                showError = false
                 do {
                     let _ = try await api.update(dob: dob)
                     dismiss()
@@ -68,9 +62,6 @@ struct EditDOBView: View {
             .disabled(dob == nil)
             .buttonStyle(PrimaryButton())
         }
-//        .onChange(of: email, perform: { newValue in
-//            showError = false
-//        })
         .padding()
         .customNavigationTitle("Date of birth")
         .onAppear(perform: {

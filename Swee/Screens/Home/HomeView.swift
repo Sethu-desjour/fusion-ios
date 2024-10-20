@@ -63,7 +63,7 @@ struct HomeView: View {
             }
             .padding(.vertical, 20)
 //                        .padding(.horizontal, 16)
-            .padding(.bottom, activeSession.sessionIsActive ? 220 : 80)
+            .padding(.bottom, activeSession.sessionIsActive ? 160 : 100)
         }
         .ignoresSafeArea()
     }

@@ -105,6 +105,7 @@ class JollyfieldRedemptionViewModel: ObservableObject {
         let newSession = try await api.startSession(for: purchase.id,
                                                     children: selectedChildren.compactMap { $0.id }).toLocal()
         await MainActor.run {
+            self.activeSession.session = newSession
             self.merchant.activeSession = newSession
         }
     }

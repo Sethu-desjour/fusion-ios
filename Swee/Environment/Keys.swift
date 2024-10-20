@@ -31,11 +31,6 @@ extension EnvironmentValues {
         set { self[CurrentTabKey.self] = newValue }
     }
     
-//    var sessionActive: Binding<Bool> {
-//        get { self[SessionActiveKey.self] }
-//        set { self[SessionActiveKey.self] = newValue }
-//    }
-    
     var tabIsShown: Binding<Bool> {
         get { self[TabVisibilityKey.self] }
         set { self[TabVisibilityKey.self] = newValue }
