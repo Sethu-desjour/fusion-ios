@@ -1,5 +1,6 @@
 import Foundation
 import CoreLocation
+import SwiftUI
 
 class API: ObservableObject {
     @Published var user: User?
@@ -83,6 +84,103 @@ class API: ObservableObject {
             }
             
             return nil
+        }
+    }
+    
+    func refreshUser() async throws {
+        guard let token = UserDefaults.standard.string(forKey: Keys.authToken) else {
+            throw APIError.tokenNotFound
+        }
+
+        let url = "/users/me?token=\(token)"
+        
+        let userUpdate: User = try await request(with: url)
+        await MainActor.run {
+            self.user = userUpdate
+        }
+    }
+    
+    func uploadUserAvatar(image: UIImage) async throws {
+        let url = "/users/me/photo"
+        
+        guard let imageString = image.toBase64() else {
+            return
+        }
+        
+        let jsonData = try JSONEncoder().encode(["image": imageString])
+        
+        
+        try await request(with: url, method: .POST(jsonData)) { data, response in
+            guard response.statusCode == 204 else {
+                throw APIError.wrongCode
+            }
+        }
+    }
+    
+    func update(name: String? = nil, 
+                email: String? = nil,
+                preferredLanguage: String? = nil,
+                gender: User.Gender? = nil,
+                dob: Date? = nil) async throws -> User {
+        struct UserUpdate: Encodable {
+            let name: String?
+            let email: String?
+            let preferredLanguage: String?
+            let gender: User.Gender?
+            let dob: String?
+            
+            enum CodingKeys: String, CodingKey {
+                case name
+                case email
+                case preferredLanguage = "preferred_language"
+                case gender
+                case dob = "date_of_birth"
+            }
+        }
+        
+        let url = "/users/me"
+        
+        var dobString: String? = nil
+        
+        if let dob = dob {
+            dobString = Date.iso8601DateOnly.string(from: dob)
+        }
+        
+        let userUpdate = UserUpdate(name: name,
+                                    email: email,
+                                    preferredLanguage: preferredLanguage,
+                                    gender: gender,
+                                    dob: dobString)
+        
+        let jsonData = try JSONEncoder().encode(userUpdate)
+
+        return try await request(with: url, method: .PATCH(jsonData)) { data, response in
+            guard response.statusCode == 200 else {
+                throw APIError.wrongCode
+            }
+            
+            do {
+                let user = try JSONDecoder().decode(User.self, from: data)
+                await MainActor.run {
+                    self.user = user
+                }
+            } catch {
+                throw APIError.decodingError
+            }
+            
+            return nil
+        }
+    }
+    
+    func DEBUGdeleteAccount() async throws {
+        let url = "/users/me"
+        
+        // WARNING: this will delete the account and all of its data permanently.
+        // Make sure you're aware of that.
+        try await request(with: url, method: .DELETE) { data, response in
+            guard response.statusCode == 204 else {
+                throw APIError.wrongCode
+            }
         }
     }
     
@@ -233,7 +331,18 @@ class API: ObservableObject {
     func walletMerchant(for id: UUID) async throws -> WalletMerchantModel {
         let url = "/wallet/merchants/\(id.uuidString.lowercased())"
         
-        return try await request(with: url)
+        return try await request(with: url) { data, response in
+            if response.statusCode == 404 {
+                throw APIError.notFound
+            }
+            
+            guard response.statusCode == 200 else {
+                throw APIError.wrongCode
+            }
+            
+            return nil
+            
+        }
     }
     
     func startRedemptions(for purchaseID: UUID, quantity: Int) async throws -> [RedemptionModel] {
@@ -275,6 +384,16 @@ class API: ObservableObject {
         }
     }
     
+    func deleteChild(with id: UUID) async throws {
+        let url = "/children/\(id.uuidString.lowercased())"
+        
+        return try await request(with: url, method: .DELETE) { date, response in
+            guard response.statusCode == 204 else {
+                throw APIError.wrongCode
+            }
+        }
+    }
+    
     func updateChild(with id: UUID, name: String, dob: Date?) async throws -> ChildModel {
         let url = "/children/\(id.uuidString.lowercased())"
         
@@ -304,6 +423,19 @@ class API: ObservableObject {
         return try await request(with: url)
     }
     
+    func getSessions() async throws -> [SessionModel] {
+        let url = "/sessions"
+        
+        return try await request(with: url) { data, response in
+            print("sessions ====", String(data: data, encoding: .utf8))
+            guard response.statusCode == 200 else {
+                throw APIError.wrongCode
+            }
+            
+            return nil
+        }
+    }
+    
     func DEBUGchangeRedemptionStatus(for id: UUID, merchantId: UUID) async throws {
         let url = "/redemptions/\(id.uuidString.lowercased())/status"
         let update = RedemptionStatusUpdate(status: .success, merchantStoreId: merchantId.uuidString.lowercased())
@@ -328,6 +460,7 @@ extension API {
         case GET
         case POST(Data)
         case PUT(Data)
+        case PATCH(Data)
         case DELETE
     }
     
@@ -355,6 +488,10 @@ extension API {
             request.httpBody = jsonData
         case .PUT(let jsonData):
             request.httpMethod = "PUT"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = jsonData
+        case .PATCH(let jsonData):
+            request.httpMethod = "PATCH"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = jsonData
         case .DELETE:
@@ -401,13 +538,13 @@ extension API {
         with url: String,
         method: Method = .GET,
         reauthenticate: Bool = true,
+        mockProtocol: U.Type? = nil,
         intercept: ((Data, HTTPURLResponse) async throws -> T?)? = { data, response in
             guard response.statusCode == 200 else {
         throw APIError.wrongCode
     }
             return nil
-        },
-        mockProtocol: U.Type? = nil
+        }
     ) async throws -> T {
         let (data, response) = try await performRequest(with: url,
                                                         method: method,
@@ -425,13 +562,13 @@ extension API {
         with url: String,
         method: Method = .GET,
         reauthenticate: Bool = true,
+        mockProtocol: U.Type? = nil,
         intercept: ((Data, HTTPURLResponse) async throws -> Void?)? = { data, response in
             guard response.statusCode == 200 else {
         throw APIError.wrongCode
     }
             return nil
-        },
-        mockProtocol: U.Type? = nil
+        }
     ) async throws {
         let (data, response) = try await performRequest(with: url,
                                                         method: method,
@@ -456,8 +593,15 @@ extension API {
 
 enum APIError: Error {
     case wrongCode
+    case notFound
     case decodingError
     case invalidResponse
     case tokenNotFound
     case invalidURL
+}
+
+extension UIImage {
+    func toBase64(compressionQuality: CGFloat = 1.0) -> String? {
+        self.jpegData(compressionQuality: 1)?.base64EncodedString()
+    }
 }

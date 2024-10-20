@@ -113,6 +113,7 @@ struct ZoomoovRedemptionSetupView: View {
 
 struct ZoomoovRedemptionView: View {
     @Environment(\.tabIsShown) private var tabIsShown
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var api: API
     @StateObject private var viewModel = ZoomoovRedemptionViewModel()
     @State var merchant: WalletMerchant
@@ -167,25 +168,32 @@ struct ZoomoovRedemptionView: View {
     
     var body: some View {
         ZStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    if viewModel.loadedData {
-                       mainUI
-                    } else {
-                      loadingUI
-                    }
-                }
-                .padding([.horizontal, .top], 16)
-            }
-            .onAppear(perform: {
-                viewModel.api = api
-                viewModel.merchant = merchant
-                Task {
+            if viewModel.showError {
+                StateView.error {
                     try? await viewModel.fetch()
                 }
-                tabIsShown.wrappedValue = false
-            })
-            .background(Color.background.pale)
+            } else {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        if viewModel.loadedData {
+                           mainUI
+                        } else {
+                          loadingUI
+                        }
+                    }
+                    .padding([.horizontal, .top], 16)
+                }
+                .onAppear(perform: {
+                    viewModel.dismiss = dismiss
+                    viewModel.api = api
+                    viewModel.merchant = merchant
+                    Task {
+                        try? await viewModel.fetch()
+                    }
+                    tabIsShown.wrappedValue = false
+                })
+                .background(Color.background.pale)
+            }
         }
         .customNavigationTitle(viewModel.merchant.name)
         .customBottomSheet(hidden: $hidden) {

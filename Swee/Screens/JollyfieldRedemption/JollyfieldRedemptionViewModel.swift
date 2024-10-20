@@ -3,23 +3,23 @@ import Combine
 
 class JollyfieldRedemptionViewModel: ObservableObject {
     var api: API = API()
+    var activeSession: ActiveSession = ActiveSession(refreshFrequencyInMin: 1)
     @Published private(set) var loadedData = false
     @Published private(set) var showError = false
     @Published var children: [Child] = []
     @Published var merchant: WalletMerchant = .empty
-    @Published var session: Session?
+    var session: Session? {
+        if let session = activeSession.session {
+            return session
+        } else {
+            return merchant.activeSession
+        }
+    }
     @Published var selectedChildren: Set<Child> = .init()
-    private let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
-    private var cancellables = Set<AnyCancellable>()
+    var dismiss: DismissAction?
     
-    init() {
-        timer.sink { [weak self] time in
-            guard let session = self?.session, session.status == .inProgress, let remainingTime = session.remainingTimeMinutes, remainingTime > 0 else {
-                return
-            }
-            print("should update remaining time....")
-            self?.session?.remainingTimeMinutes = remainingTime - session.numberOfActiveKids
-        }.store(in: &cancellables)
+    deinit {
+        print("*** DEALLOCATING MODEL")
     }
     
     var indexOfLastSelectedChild: Int {
@@ -61,13 +61,13 @@ class JollyfieldRedemptionViewModel: ObservableObject {
     func fetch() async throws {
         do {
             let children = try await self.api.children()
-            print("childre ids", children.map { $0.id.uuidString.lowercased() })
+            print("children ids", children.map { $0.id.uuidString.lowercased() })
             let merchant = try await self.api.walletMerchant(for: merchant.id)
             await MainActor.run {
                 loadedData = true
                 showError = false
                 self.merchant = merchant.toLocal()
-                self.session = self.merchant.activeSession
+                self.activeSession.session = self.merchant.activeSession
                 guard purchase?.type == .timeBased  else {
                     showError = true
                     return
@@ -81,6 +81,16 @@ class JollyfieldRedemptionViewModel: ObservableObject {
                 }
             }
         } catch {
+            if let apiError = error as? APIError  {
+                if case .notFound = apiError {
+                    await MainActor.run { [weak self] in
+                        self?.activeSession.session = nil
+                        self?.dismiss?()
+                    }
+                    return
+                }
+            }
+            
             await MainActor.run {
                 showError = true
             }
@@ -95,19 +105,8 @@ class JollyfieldRedemptionViewModel: ObservableObject {
         let newSession = try await api.startSession(for: purchase.id,
                                                     children: selectedChildren.compactMap { $0.id }).toLocal()
         await MainActor.run {
-            session = newSession
+            self.activeSession.session = newSession
+            self.merchant.activeSession = newSession
         }
     }
-    
-//    func refershSession() async throws {
-//        guard let sessionId = session?.id else {
-//            throw LocalError(message: "Session is nil")
-//        }
-//        
-//        let updatedSession = try await api.getSession(with: sessionId).toLocal()
-//        
-//        await MainActor.run {
-//            session = updatedSession
-//        }
-//    }
 }

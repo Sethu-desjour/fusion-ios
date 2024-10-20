@@ -2,7 +2,7 @@ import SwiftUI
 import AuthenticationServices
 import FirebaseAuth
 
-struct AuthView: View {
+struct PhoneLinkingView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var api: API
     @EnvironmentObject private var appRootManager: AppRootManager
@@ -11,7 +11,6 @@ struct AuthView: View {
     @State private var code: String = "🇸🇬 +65"
     @FocusState var isPhoneFocused: Bool
     @State private var goToOTP: Bool = false
-    @State private var goToLinkPhone: Bool = false
     @State private var verificationID: String = ""
     @State private var loading = false
     @State private var errorMessage: String?
@@ -52,10 +51,9 @@ struct AuthView: View {
                 VStack {
                     NavigationLink(isActive: $goToOTP) {
                         OtpView(countryCode:"+65", phoneNumber: phone, verificationID: verificationID)
-                    } label: { }
-                    NavigationLink(isActive: $goToLinkPhone) {
-                        PhoneLinkingView()
-                    } label: { }
+                    } label: {
+                        
+                    }
                     Spacer()
                     Text("Enter your phone number")
                         .font(.custom("Poppins-SemiBold", size: 24))
@@ -100,6 +98,16 @@ struct AuthView: View {
                                 .stroke(phoneBorderColor,
                                         lineWidth: 1))
                             .toolbar {
+                                ToolbarItem(placement: .navigationBarLeading) {
+                                    Button {
+                                        Task {
+                                            try? await Authentication().logout()
+                                        }
+                                        dismiss()
+                                    } label: {
+                                        Image("back_auth", bundle: .main)
+                                    }
+                                }
                                 ToolbarItemGroup(placement: .keyboard) {
                                     HStack {
                                         Spacer()
@@ -118,10 +126,8 @@ struct AuthView: View {
                                 .foregroundStyle(.red)
                         }
                     }
-                    Spacer()
-                    Spacer()
+                    .padding(.bottom, 32)
                     AsyncButton(progressWidth: .infinity) {
-                        // @todo validate and navigate next
                         let result = await Authentication().verify(phone: "+65" + phone)
                         switch result {
                         case .success(let verificationId):
@@ -138,99 +144,13 @@ struct AuthView: View {
                             print(error.localizedDescription)
                         }
                     } label: {
-                        Text("Verify")
+                        Text("Continue")
                             .frame(maxWidth: .infinity)
                             .font(.custom("Roboto-Bold", size: 16))
                         
                     }
                     .disabled(phone.isEmpty)
                     .buttonStyle(PrimaryButton())
-                    Spacer()
-                    Spacer()
-                    HStack {
-                        Rectangle()
-                            .fill(Color.text.black20)
-                            .frame(height: 1)
-                        Text("Or continue with")
-                            .foregroundStyle(Color.black.opacity(0.7))
-                            .font(.custom("Poppins-Regular", size: 14))
-                            .layoutPriority(1)
-                        Rectangle()
-                            .fill(Color.text.black20)
-                            .frame(height: 1)
-                    }
-                    HStack(spacing: 12) {
-                        Button {
-                            loading = true
-                            Task {
-                                do {
-                                    let result = try await Authentication().appleSignIn()
-                                    
-                                    switch result {
-                                    case .token(let token):
-                                        try await api.signIn(with: token)
-                                        await MainActor.run {
-                                            loading = false
-                                            appRootManager.currentRoot = .home
-                                        }
-                                    case .missingPhone:
-                                        await MainActor.run {
-                                            loading = false
-                                            goToLinkPhone = true
-                                        }
-                                    }
-                                    
-                                } catch {
-                                    await MainActor.run {
-                                        loading = false
-                                    }
-                                    print("AppleAuthorization failed: \(error)")
-                                    // @todo handle error
-                                }
-                            }
-                        } label: {
-                            HStack {
-                                Image("apple")
-                                Text("Apple")
-                            }
-                            .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(SocialButton())
-                        Button {
-                            loading = true
-                            Task {
-                                do {
-                                    let result = try await Authentication().googleSignIn()
-                                    switch result {
-                                    case .token(let token):
-                                        try await api.signIn(with: token)
-                                        await MainActor.run {
-                                            loading = false
-                                            appRootManager.currentRoot = .home
-                                        }
-                                    case .missingPhone:
-                                        await MainActor.run {
-                                            loading = false
-                                            goToLinkPhone = true
-                                        }
-                                    }
-                                } catch(let error) {
-                                    await MainActor.run {
-                                        loading = false
-                                    }
-                                    print("google auth error ====", error)
-                                    // @todo handle error
-                                }
-                            }
-                        } label: {
-                            HStack {
-                                Image("google")
-                                Text("Google")
-                            }
-                            .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(SocialButton())
-                    }
                     Spacer()
                     Spacer()
                     Spacer()
@@ -260,6 +180,6 @@ struct AuthView: View {
 }
 
 #Preview {
-    AuthView()
+    PhoneLinkingView()
         .environmentObject(AppRootManager())
 }

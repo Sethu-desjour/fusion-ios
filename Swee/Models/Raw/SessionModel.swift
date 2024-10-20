@@ -29,9 +29,10 @@ struct SessionStatusUpdate: Codable {
 
 struct SessionModel: Codable {
     let id: UUID
-    let purchaseId: UUID
     let qrCodeImage: String?
     let status: SessionStatus
+    let merchantId: UUID?
+    let merchantName: String?
     @DecodableDate var startedAt: Date?
     @DecodableDate var endedAt: Date?
     let remainingTime: String?
@@ -43,9 +44,10 @@ struct SessionModel: Codable {
     
     enum CodingKeys: String, CodingKey {
         case id
-        case purchaseId = "purchase_id"
         case qrCodeImage = "qr_code_image"
         case status
+        case merchantId = "merchant_id"
+        case merchantName = "merchant_name"
         case startedAt = "started_at"
         case endedAt = "ended_at"
         case remainingTime = "remaining_time"

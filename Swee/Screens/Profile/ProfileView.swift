@@ -1,15 +1,21 @@
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct ProfileView: View {
     struct RowData {
+        enum Description {
+            typealias Request = () async throws -> String
+            case text(String)
+            case request(Request)
+        }
         let title: String
-        let description: String?
+        let description: Description?
         let leadingIcon: Image?
         let trailingIcon: Image?
         let action: () -> Void
         let tint: Color?
 
-        init(title: String, description: String? = nil, leadingIcon: Image? = nil, trailingIcon: Image = Image("forward"), tint: Color? = nil, action: @escaping () -> Void) {
+        init(title: String, description: Description? = nil, leadingIcon: Image? = nil, trailingIcon: Image = Image("forward"), tint: Color? = nil, action: @escaping () -> Void) {
             self.title = title
             self.description = description
             self.leadingIcon = leadingIcon
@@ -21,32 +27,52 @@ struct ProfileView: View {
     
     @EnvironmentObject private var api: API
     @EnvironmentObject private var appRootManager: AppRootManager
+    @Environment(\.tabIsShown) private var tabIsShown
+    @EnvironmentObject private var activeSession: ActiveSession
+
     
     @State private var profileProgress: Double = 0.6
     @State private var sections: [[RowData]] = []
+    @State private var showDeleteProfileAlert = false
+    @State private var showAlert = false
+    @State private var alertData: CustomAlert.Data = .init(title: "",
+                                                           message: "",
+                                                           buttonTitle: "",
+                                                           cancelTitle: "",
+                                                           action: .init(closure: {}))
+    @State private var goToChildren: Bool = false
+    @State private var goToEmail: Bool = false
+    @State private var goToDOB: Bool = false
+    @State private var goToGender: Bool = false
     
     func setupSections() {
         sections = [
             [
-                .init(title: "Location", description: "Singapore", leadingIcon: Image("location")) {
+//                .init(title: "Location", description: .text("Singapore"), leadingIcon: Image("location")) {
+//                    
+//                },
+//                .init(title: "Language", description: .text("English"), leadingIcon: Image("globe")) {
+//                    
+//                },
+                .init(title: "Email ID", description: .text(api.user?.email ?? "Add email ID"), leadingIcon: Image("mail")) {
+                    goToEmail = true
+                },
+                .init(title: "Payment", description: .text("Add payment"), leadingIcon: Image("card")) {
                     
                 },
-                .init(title: "Language", description: "English", leadingIcon: Image("globe")) {
-                    
+                .init(title: "Date of birth", description: .text(api.user?.birthDayString ?? "Add date"), leadingIcon: Image("calendar")) {
+                    goToDOB = true
                 },
-                .init(title: "Email ID", description: "Add email ID", leadingIcon: Image("mail")) {
-                    
-                },
-                .init(title: "Payment", description: "Add payment", leadingIcon: Image("card")) {
-                    
-                },
-                .init(title: "Gender", description: "Add gender", leadingIcon: Image("gender")) {
-                    
+                .init(title: "Gender", description: .text(api.user?.gender.toString ?? "Add gender"), leadingIcon: Image("gender")) {
+                    goToGender = true
                 },
             ],
             [
-                .init(title: "Child", description: "No info added", leadingIcon: Image("person-add")) {
-                    
+                .init(title: "Child", description: .request({
+                    let children = try await api.children()
+                    return children.isEmpty ? "No info added" : children.map { $0.name }.joined(separator: ", ")
+                }), leadingIcon: Image("person-add")) {
+                    goToChildren = true
                 },
             ],
             [
@@ -62,15 +88,27 @@ struct ProfileView: View {
             ],
             [
                 .init(title: "Logout", trailingIcon: Image("logout")) {
-                    Task {
+                    showAlert = true
+                    alertData = .init(title: "Logout?",
+                                      message: "Do you want to log out from the app, you ll have to sign in again",
+                                      buttonTitle: "Log out", 
+                                      cancelTitle: "Stay In",
+                                      action: .init(closure: {
                         await api.signOut()
                         appRootManager.currentRoot = .authentication
-                    }
+                    }))
                 },
             ],
             [
                 .init(title: "Delete profile", trailingIcon: Image("delete"), tint: .red) {
-                    
+                    showAlert = true
+                    alertData = .init(title: "Delete?",
+                                      message: "All your data will be deleted including your purchases",
+                                      buttonTitle: "Delete",
+                                      cancelTitle: "Keep the data",
+                                      action: .init(closure: {
+                        try await api.DEBUGdeleteAccount()
+                    }))
                 },
             ],
         ]
@@ -79,6 +117,10 @@ struct ProfileView: View {
     var body: some View {
         CustomNavView {
             ZStack(alignment: .top) {
+                CustomNavLink(isActive: $goToChildren, destination: AddChildView(editingMode: false))
+                CustomNavLink(isActive: $goToEmail, destination: EditEmailView(email: api.user?.email ?? ""))
+                CustomNavLink(isActive: $goToDOB, destination: EditDOBView(dob: api.user?.dob))
+                CustomNavLink(isActive: $goToGender, destination: EditGenderView(gender: api.user?.gender))
                 VStack {
                     LinearGradient(colors: [Color.secondary.brand, Color.white, Color.white], startPoint: .init(x: 0.5, y: 0), endPoint: .bottomLeading)
                         .frame(maxWidth: .infinity, maxHeight: 500)
@@ -88,7 +130,27 @@ struct ProfileView: View {
                 ScrollView {
                     VStack(spacing: 16) {
                         HStack(spacing: 16) {
-                            Image("avatar")
+                            if let image = api.user?.uploadingImage {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 82, height: 82)
+                                    .clipShape(Circle())
+                                    .blinking()
+                            } else if let photoURL = api.user?.photoURL {
+                                WebImage(url: URL(string: photoURL)) { image in
+                                    image.resizable()
+                                        .scaledToFill()
+                                } placeholder: {
+                                    Color.white
+                                        .skeleton(with: true, shape: .circle)
+                                        .frame(width: 82, height: 82)
+                                }
+                                .clipShape(.circle)
+                                .frame(width: 82, height: 82)
+                            } else {
+                                Image("avatar")
+                            }
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(api.user?.name ?? "")
                                     .font(.custom("Poppins-SemiBold", size: 18))
@@ -98,16 +160,18 @@ struct ProfileView: View {
                                         .font(.custom("Poppins-Medium", size: 14))
                                         .foregroundStyle(Color.text.black60)
                                 }
-                                HStack(alignment: .center, spacing: 3) {
-                                    Text("Edit basic info")
-                                        .font(.custom("Poppins-Medium", size: 14))
-                                    Image("back")
-                                        .resizable()
-                                        .frame(width: 18, height: 18)
-                                        .rotationEffect(.degrees(180))
-                                        .padding(.top, 1)
+                                CustomNavLink(destination: EditBasicInfoView()) {
+                                    HStack(alignment: .center, spacing: 3) {
+                                        Text("Edit basic info")
+                                            .font(.custom("Poppins-Medium", size: 14))
+                                        Image("back")
+                                            .resizable()
+                                            .frame(width: 18, height: 18)
+                                            .rotationEffect(.degrees(180))
+                                            .padding(.top, 1)
+                                    }
+                                    .foregroundStyle(Color.primary.brand)
                                 }
-                                .foregroundStyle(Color.primary.brand)
                             }
                             Spacer()
                         }
@@ -132,6 +196,7 @@ struct ProfileView: View {
                                         .fill(.white.opacity(0.1))
                                         .clipShape(RoundedRectangle(cornerRadius: 8))
                                 }
+                                .foregroundStyle(.white)
                         }
                         .frame(maxWidth: .infinity)
                         .padding(16)
@@ -154,19 +219,28 @@ struct ProfileView: View {
                         ReferalCard(banner: .init(title: "Refer a friend and earn rewards ✨", description: "Enjoy a free Zoomoov ride for each friend who signs up through your referral, and your friend gets a free ride too!", buttonTitle: "Share", background: .image(URL(string: "https://i.ibb.co/LpYWLfQ/referal-bg-3x.png")!), badgeImage: URL(string: "https://i.ibb.co/qkHf8XZ/badge-1-3x.png")))
                     }
                     .padding()
-                    .padding(.bottom, 60)
+                    .padding(.bottom, activeSession.sessionIsActive ? 120 : 60)
                     .customNavBarHidden(true)
+                    .customAlert(isActive: $showAlert, data: alertData)
                 }
             }
+            .onChange(of: showAlert, perform: { newValue in
+                tabIsShown.wrappedValue = !showAlert
+            })
+            .onAppear(perform: {
+                setupSections()
+                tabIsShown.wrappedValue = true
+            })
+            
         }
-        .onAppear(perform: {
-            setupSections()
-        })
     }
     
     struct Row: View {
         var row: RowData
         var hideDivider: Bool = false
+        @EnvironmentObject private var api: API
+        @State private var loading = false
+        @State private var loadedDescription: String = ""
         
         var body: some View {
             VStack(spacing: 0) {
@@ -188,9 +262,23 @@ struct ProfileView: View {
                             .font(.custom("Poppins-Medium", size: 14))
                             .foregroundStyle(row.tint != nil ? row.tint! : Color.text.black80)
                         if let description = row.description {
-                            Text(description)
-                                .font(.custom("Poppins-Medium", size: 12))
-                                .foregroundStyle(row.tint != nil ? row.tint! : Color.text.black40)
+                            switch description {
+                            case .text(let string):
+                                Text(string)
+                                    .font(.custom("Poppins-Medium", size: 12))
+                                    .foregroundStyle(row.tint != nil ? row.tint! : Color.text.black40)
+                            case .request(_):
+                                if loading {
+                                    Text("")
+                                        .skeleton(with: true, shape: .rounded(.radius(6, style: .circular)))
+                                        .frame(width: 100, height: 10)
+                                        .padding(.top, -4)
+                                } else {
+                                    Text(loadedDescription)
+                                        .font(.custom("Poppins-Medium", size: 12))
+                                        .foregroundStyle(row.tint != nil ? row.tint! : Color.text.black40)
+                                }
+                            }
                         }
                     }
                     Spacer()
@@ -201,6 +289,24 @@ struct ProfileView: View {
                             .foregroundStyle(row.tint != nil ? row.tint! : Color.text.black40)
                     }
                     
+                }
+                .task {
+                    guard let description = row.description else {
+                        return
+                    }
+                    if case let .request(request) = description {
+                        loading = true
+                        do {
+                            let loadedDescription = try await request()
+                            await MainActor.run {
+                                self.loadedDescription = loadedDescription
+                            }
+                        } catch {
+                            // @todo: don't know what to do here
+                        }
+                        
+                        loading = false
+                    }
                 }
                 .padding()
             }
@@ -241,4 +347,5 @@ struct CircularProgressView: View {
     ProfileView()
         .environmentObject(AppRootManager())
         .environmentObject(API())
+        .environmentObject(ActiveSession())
 }

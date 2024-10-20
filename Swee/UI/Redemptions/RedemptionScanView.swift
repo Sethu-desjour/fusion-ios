@@ -7,8 +7,11 @@ struct RedemptionScanView: View {
         let qr: Image?
         let description: String
         let actionTitle: String
+        var showCurrentTime: Bool = false
     }
-
+    
+    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    @State private var currentTime: String = Date().formatted(date: .omitted, time: .standard)
     var model: Model
     var tint: Color = Color.primary.brand
     var closure: () async throws -> Void
@@ -18,6 +21,12 @@ struct RedemptionScanView: View {
             Text(model.header)
                 .font(.custom("Poppins-SemiBold", size: 24))
                 .foregroundStyle(Color.text.black100)
+            if model.showCurrentTime {
+                Text(currentTime)
+                    .font(.custom("Poppins-Medium", size: 16))
+                    .foregroundStyle(Color.secondary.brand)
+                    .padding(.top, 2)
+            }
             model.qr
                 .padding(.bottom, 8)
             Text(model.title)
@@ -43,6 +52,9 @@ struct RedemptionScanView: View {
             }
             .buttonStyle(OutlineButton(strokeColor: tint))
             .padding(.bottom, 16)
+            .onReceive(timer, perform: { _ in
+                currentTime = Date().formatted(date: .omitted, time: .standard)
+            })
         }
     }
 }

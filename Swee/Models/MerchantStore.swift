@@ -6,6 +6,7 @@ struct MerchantStore: Identifiable {
     let address: String?
     let imageURL: URL?
     let distance: String?
+    let operatingHours: String?
 }
 
 extension MerchantStoreModel: RawModelConvertable {
@@ -14,7 +15,8 @@ extension MerchantStoreModel: RawModelConvertable {
               name: name,
               address: address,
               imageURL: photoURL,
-              distance: distance)
+              distance: distance,
+              operatingHours: operatingHours)
     }
 }
 

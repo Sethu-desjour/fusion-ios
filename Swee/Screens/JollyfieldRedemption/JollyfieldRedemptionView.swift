@@ -2,7 +2,9 @@ import SwiftUI
 
 struct JollyfieldRedemptionView: View {
     @Environment(\.tabIsShown) private var tabIsShown
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var api: API
+    @EnvironmentObject private var activeSession: ActiveSession
     
     @State var merchant: WalletMerchant
     @StateObject private var viewModel = JollyfieldRedemptionViewModel()
@@ -227,10 +229,16 @@ struct JollyfieldRedemptionView: View {
         .onAppear(perform: {
             viewModel.api = api
             viewModel.merchant = merchant
+            viewModel.activeSession = activeSession
+            activeSession.changeFrequency(to: 1)
+            viewModel.dismiss = dismiss
             Task {
                 try? await viewModel.fetch()
             }
             tabIsShown.wrappedValue = false
+        })
+        .onDisappear(perform: {
+            activeSession.changeFrequency(to: 5)
         })
         .customBottomSheet(hidden: $hidden) {
             JollyfieldBottomSheet(session: viewModel.session) {
@@ -333,7 +341,7 @@ struct JollyfieldBottomSheet: View {
             if session != nil {
                 switch step {
                 case .qrStart:
-                    RedemptionScanView(model: .init(header: "Start session", title: "Check - in", qr: session?.qrCodeImage, description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Refresh")) {
+                    RedemptionScanView(model: .init(header: "Start session", title: "Check - in", qr: session?.qrCodeImage, description: "Show this QR code at the counter, our staff will scan this QR to mark your presence", actionTitle: "Refresh", showCurrentTime: true)) {
                         try await checkIfSession(is: .inProgress, goTo: .sessionStarted)
                     }
                 case .sessionStarted:

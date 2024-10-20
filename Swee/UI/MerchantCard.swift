@@ -24,6 +24,7 @@ struct MerchantCard: View {
                         .foregroundStyle(.white)
                     Spacer()
                     Image("arrow-right")
+                        .tint(.white)
                 }
                 .padding(.leading, 10)
                 .padding(.trailing, 20)

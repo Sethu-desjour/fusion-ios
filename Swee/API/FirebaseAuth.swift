@@ -6,24 +6,34 @@ import CryptoKit
 
 enum PhoneError: Error {
     case wrongCode
+    case incorrectPhone
     case tooManyAttempts
-    case other
+    case other(Error?)
+}
+
+enum SocialSignInResult {
+    case token(String)
+    case missingPhone
 }
 
 struct Authentication {
     private var appleSignIn = AppleSignIn()
     
-    func verify(phone: String) async -> Result<String, Error> {
+    func verify(phone: String) async -> Result<String, PhoneError> {
         await withCheckedContinuation { continuation in
             PhoneAuthProvider.provider()
                 .verifyPhoneNumber(phone, uiDelegate: nil) { verificationID, error in
                     if let error = error {
-                        continuation.resume(returning: .failure(error))
-                        return
+                        switch error.localizedDescription {
+                        case "TOO_SHORT", "TOO_LONG":
+                            return continuation.resume(returning: .failure(PhoneError.incorrectPhone))
+                        default:
+                            return continuation.resume(returning: .failure(PhoneError.other(error)))
+                        }
                     } else if let verificationID = verificationID {
                         continuation.resume(returning: .success(verificationID))
                     } else {
-                        continuation.resume(returning: .failure(LocalError(message: "verificationId not found")))
+                        continuation.resume(returning: .failure(PhoneError.other(LocalError(message: "verificationId not found"))))
                     }
                 }
         }
@@ -37,30 +47,42 @@ struct Authentication {
                         verificationCode: otp)
         
         guard let credential = credential else {
-            throw PhoneError.other
+            throw PhoneError.other(nil)
+        }
+        
+        if let currentUser = Auth.auth().currentUser {
+            do {
+                try await currentUser.link(with: credential)
+                guard let token = try await Auth.auth().currentUser?.getIDToken() else {
+                    throw PhoneError.other(nil)
+                }
+                return token
+            } catch {
+                throw PhoneError.other(error)
+            }
         }
         
         do {
             try await Auth.auth().signIn(with: credential)
             guard let token = try await Auth.auth().currentUser?.getIDToken() else {
-                throw PhoneError.other
+                throw PhoneError.other(nil)
             }
             return token
         } catch {
             guard let authError = error as NSError?, let errorCode = AuthErrorCode(_bridgedNSError: authError) else {
-                throw PhoneError.other
+                throw PhoneError.other(nil)
             }
             
             if case .invalidVerificationCode = errorCode.code {
                 throw PhoneError.wrongCode
             } else {
-                throw PhoneError.other
+                throw PhoneError.other(nil)
             }
         }
     }
     
     @MainActor
-    func googleSignIn() async throws -> String {
+    func googleSignIn() async throws -> SocialSignInResult {
         guard let clientID = FirebaseApp.app()?.options.clientID else {
             fatalError("no firbase clientID found")
         }
@@ -78,6 +100,7 @@ struct Authentication {
             withPresenting: rootViewController
         )
         let user = result.user
+        
         guard let idToken = user.idToken?.tokenString else {
             throw LocalError(message: "Unexpected error occurred, please retry")
         }
@@ -85,12 +108,19 @@ struct Authentication {
         let credential = GoogleAuthProvider.credential(
             withIDToken: idToken, accessToken: user.accessToken.tokenString
         )
+        
         try await Auth.auth().signIn(with: credential)
+        let authUser = Auth.auth().currentUser
+        
+        guard authUser?.phoneNumber != nil else {
+            return .missingPhone
+        }
+        
         guard let token = try await Auth.auth().currentUser?.getIDToken() else {
             throw LocalError(message: "Couldn't get token on Google Auth")
         }
         
-        return token
+        return .token(token)
     }
     
     func reauthenticate() async throws -> String {
@@ -118,7 +148,7 @@ struct Authentication {
         }
     }
     
-    func appleSignIn() async throws -> String {
+    func appleSignIn() async throws -> SocialSignInResult {
         return try await withCheckedThrowingContinuation { continuation in
             appleSignIn.callback = { result in
                 switch result {
@@ -158,7 +188,7 @@ struct Authentication {
     fileprivate func appleAuth(
         _ appleIDCredential: ASAuthorizationAppleIDCredential,
         nonce: String?
-    ) async throws -> String {
+    ) async throws -> SocialSignInResult {
         guard let nonce = nonce else {
             fatalError("Invalid state: A login callback was received, but no login request was sent.")
         }
@@ -178,11 +208,19 @@ struct Authentication {
         
         do { // 3.
             try await Auth.auth().signIn(with: credentials)
+            
+            let authUser = Auth.auth().currentUser
+            
+            guard authUser?.phoneNumber != nil else {
+                return .missingPhone
+            }
+            
+            
             guard let token = try await Auth.auth().currentUser?.getIDToken() else {
                 throw LocalError(message: "Couldn't get token on Google Auth")
             }
             
-            return token
+            return .token(token)
         }
         catch {
             print("FirebaseAuthError: appleAuth(appleIDCredential:nonce:) failed. \(error)")

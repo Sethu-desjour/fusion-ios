@@ -25,7 +25,7 @@ struct CustomNavLink<Label: View, Destination: View>: View {
         self.label = label()
     }
     
-    init(isActive: Binding<Bool>, destination: Destination, @ViewBuilder label: () -> Label) {
+    init(isActive: Binding<Bool>, destination: Destination, @ViewBuilder label: () -> Label = { EmptyView() }) {
         self._isActive = isActive
         self.legacyNav = true
         self.destination = destination

@@ -20,6 +20,14 @@ extension Date {
     }()
 }
 
+extension Date {
+    func yearsBetween(endDate: Date = .now) -> Int {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year], from: self, to: endDate)
+        return components.year ?? 0
+    }
+}
+
 @propertyWrapper
 struct DecodableDate<Value: Codable & Equatable> {
     var wrappedValue: Value
@@ -104,9 +112,9 @@ extension DecodableDayDate: Codable, Equatable {
             if let date = date {
                 let dateString = Date.iso8601DateOnly.string(from: date)
                 try container.encode(dateString)
-            } else {
-                try container.encodeNil()
             }
+            
+            return
         }
         // If the Value is a non-optional Date
         else if let date = wrappedValue as? Date {
