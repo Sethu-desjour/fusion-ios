@@ -45,6 +45,18 @@ struct Authentication {
             throw PhoneError.other(nil)
         }
         
+        if let currentUser = Auth.auth().currentUser {
+            do {
+                try await currentUser.link(with: credential)
+                guard let token = try await Auth.auth().currentUser?.getIDToken() else {
+                    throw PhoneError.other(nil)
+                }
+                return token
+            } catch {
+                throw PhoneError.other(error)
+            }
+        }
+        
         do {
             try await Auth.auth().signIn(with: credential)
             guard let token = try await Auth.auth().currentUser?.getIDToken() else {
@@ -64,13 +76,16 @@ struct Authentication {
         }
     }
     
+    enum SocialSignInResult {
+        case token(String)
+        case missingPhone
+    }
+    
     @MainActor
-    func googleSignIn() async throws -> String {
+    func googleSignIn() async throws -> SocialSignInResult {
         guard let clientID = FirebaseApp.app()?.options.clientID else {
             fatalError("no firbase clientID found")
         }
-        
-        print("client ID ======", clientID)
         
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
@@ -85,28 +100,27 @@ struct Authentication {
             withPresenting: rootViewController
         )
         let user = result.user
-
-        print("google user =====", user)
+        
         guard let idToken = user.idToken?.tokenString else {
             throw LocalError(message: "Unexpected error occurred, please retry")
         }
         
-        print("idToken ======", idToken)
-        print("user access token string ======", user.accessToken.tokenString)
         let credential = GoogleAuthProvider.credential(
             withIDToken: idToken, accessToken: user.accessToken.tokenString
         )
-        print("credential ======", credential)
+        
         try await Auth.auth().signIn(with: credential)
         let authUser = Auth.auth().currentUser
+        
+        guard authUser?.phoneNumber != nil else {
+            return .missingPhone
+        }
         
         guard let token = try await Auth.auth().currentUser?.getIDToken() else {
             throw LocalError(message: "Couldn't get token on Google Auth")
         }
         
-        print("token ======", token)
-        
-        return token
+        return .token(token)
     }
     
     func reauthenticate() async throws -> String {
@@ -134,7 +148,7 @@ struct Authentication {
         }
     }
     
-    func appleSignIn() async throws -> String {
+    func appleSignIn() async throws -> SocialSignInResult {
         return try await withCheckedThrowingContinuation { continuation in
             appleSignIn.callback = { result in
                 switch result {
@@ -174,7 +188,7 @@ struct Authentication {
     fileprivate func appleAuth(
         _ appleIDCredential: ASAuthorizationAppleIDCredential,
         nonce: String?
-    ) async throws -> String {
+    ) async throws -> SocialSignInResult {
         guard let nonce = nonce else {
             fatalError("Invalid state: A login callback was received, but no login request was sent.")
         }
@@ -194,11 +208,19 @@ struct Authentication {
         
         do { // 3.
             try await Auth.auth().signIn(with: credentials)
+            
+            let authUser = Auth.auth().currentUser
+            
+            guard authUser?.phoneNumber != nil else {
+                return .missingPhone
+            }
+            
+            
             guard let token = try await Auth.auth().currentUser?.getIDToken() else {
                 throw LocalError(message: "Couldn't get token on Google Auth")
             }
             
-            return token
+            return .token(token)
         }
         catch {
             print("FirebaseAuthError: appleAuth(appleIDCredential:nonce:) failed. \(error)")

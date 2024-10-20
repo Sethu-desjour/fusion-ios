@@ -124,6 +124,7 @@
 		AF8FB9722CBE61DB00B3B21C /* EditGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB9712CBE61DB00B3B21C /* EditGenderView.swift */; };
 		AF8FB9762CBF7B8000B3B21C /* ActiveSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB9752CBF7B8000B3B21C /* ActiveSession.swift */; };
 		AF8FB9782CC2103900B3B21C /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB9772CC2103900B3B21C /* CustomAlert.swift */; };
+		AF8FB97A2CC37A1D00B3B21C /* PhoneLinkingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB9792CC37A1D00B3B21C /* PhoneLinkingView.swift */; };
 		AF9AC5682C894D5700B16186 /* JollyfieldRedemptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */; };
 		AFA335C82C92676700883CBB /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA335C72C92676700883CBB /* AlertsView.swift */; };
 		AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */; };
@@ -277,6 +278,7 @@
 		AF8FB9712CBE61DB00B3B21C /* EditGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGenderView.swift; sourceTree = "<group>"; };
 		AF8FB9752CBF7B8000B3B21C /* ActiveSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSession.swift; sourceTree = "<group>"; };
 		AF8FB9772CC2103900B3B21C /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
+		AF8FB9792CC37A1D00B3B21C /* PhoneLinkingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLinkingView.swift; sourceTree = "<group>"; };
 		AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JollyfieldRedemptionView.swift; sourceTree = "<group>"; };
 		AFA335C72C92676700883CBB /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
 		AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
@@ -475,6 +477,7 @@
 				AF3022C92CA2B9F6006DBCAD /* Checkout */,
 				AF80222B2C72F39E001274FA /* OnboardingView.swift */,
 				AF1FAC462C79B0E100654FB7 /* AuthView.swift */,
+				AF8FB9792CC37A1D00B3B21C /* PhoneLinkingView.swift */,
 				AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */,
 				AFCEC5C52C7C26EB00D157BE /* MainView.swift */,
 				AF13C8602CAFD81F00496B0C /* Activity */,
@@ -866,6 +869,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF0558352CAAC2DA00ABEBA3 /* EditOtpView.swift in Sources */,
+				AF8FB97A2CC37A1D00B3B21C /* PhoneLinkingView.swift in Sources */,
 				AF501F2A2C945F9C00637042 /* Strings.swift in Sources */,
 				AFCEC5C22C7C111200D157BE /* CompleteProfileView.swift in Sources */,
 				AFDD173B2CA139D100DC8DB8 /* PackageDetailViewModel.swift in Sources */,
