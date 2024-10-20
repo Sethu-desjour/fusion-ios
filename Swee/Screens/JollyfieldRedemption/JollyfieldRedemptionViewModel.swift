@@ -3,7 +3,7 @@ import Combine
 
 class JollyfieldRedemptionViewModel: ObservableObject {
     var api: API = API()
-    var activeSession: ActiveSession = ActiveSession()
+    var activeSession: ActiveSession = ActiveSession(refreshFrequencyInMin: 1)
     @Published private(set) var loadedData = false
     @Published private(set) var showError = false
     @Published var children: [Child] = []

@@ -8,11 +8,17 @@ class ActiveSession: ObservableObject {
     var sessionIsActive: Bool {
         session != nil
     }
-    private let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+    
+    private var timer: Publishers.Autoconnect<Timer.TimerPublisher>
     private var cancellables = Set<AnyCancellable>()
 
-    init() {
+    init(refreshFrequencyInMin: Int = 1) {
         print("*ACTIVE SESSION INITTED*")
+        self.timer = Timer.publish(every: Double(refreshFrequencyInMin * 60), on: .main, in: .common).autoconnect()
+        setupTimer()
+    }
+    
+    private func setupTimer() {
         timer
             .prepend(.now)
             .sink { [weak self] time in
@@ -39,6 +45,12 @@ class ActiveSession: ObservableObject {
                 }
             }
         }.store(in: &cancellables)
+    }
+    
+    func changeFrequency(to min: Int) {
+        self.timer.upstream.connect().cancel()
+        self.timer = Timer.publish(every: Double(min * 60), on: .main, in: .common).autoconnect()
+        setupTimer()
     }
     
     deinit {

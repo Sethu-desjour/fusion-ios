@@ -11,6 +11,7 @@ enum Tabs: Int, CaseIterable, Identifiable {
     
     @ViewBuilder
     var screen: some View {
+//        VStack {}
         switch self {
         case .home:
             HomeView()
@@ -54,7 +55,7 @@ enum Tabs: Int, CaseIterable, Identifiable {
 
 struct MainView: View {
     @EnvironmentObject private var api: API
-    @StateObject var activeSession = ActiveSession()
+    @StateObject var activeSession = ActiveSession(refreshFrequencyInMin: 5)
     @State private var selectedTab: Tabs = .home
     @State private var tabIsShown = true
     @State private var cancellables = Set<AnyCancellable>()
@@ -82,33 +83,39 @@ struct MainView: View {
                 HStack {
                     Text("Jollyfield") // @todo replace with actual data
                         .font(.custom("Poppins-SemiBold", size: 18))
+                        .foregroundStyle(LinearGradient(colors: Color.gradient.primary, startPoint: .topLeading, endPoint: .bottomTrailing))
                     Text("In progress")
                         .font(.custom("Poppins-SemiBold", size: 12))
                         .foregroundStyle(Color.white)
                         .padding(.vertical, 2)
-                        .padding(.horizontal, 4)
-                        .background(Color.secondary.darker)
+                        .padding(.horizontal, 6)
+                        .background(Color.secondary.brand)
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
                     Spacer()
                 }
-                HStack {
-                    Text(activeSession.session?.hoursPassed)
-                        .font(.custom("Poppins-Bold", size: 31))
-                        .foregroundStyle(Color.secondary.brand)
-                    Text("Hours passed")
-                        .font(.custom("Poppins-Regular", size: 24))
-                    Spacer()
-                }
-                Text("Total package left : \(activeSession.session!.availableTime) Hours")
-                    .font(.custom("Poppins-SemiBold", size: 14))
-                    .foregroundStyle(Color.text.black40)
+//                HStack {
+//                    Text(activeSession.session?.hoursPassed)
+//                        .font(.custom("Poppins-Bold", size: 31))
+//                        .foregroundStyle(Color.secondary.brand)
+//                    Text("Hours passed")
+//                        .font(.custom("Poppins-Regular", size: 24))
+//                    Spacer()
+//                }
+//                Text("Total package left : \(activeSession.session!.availableTime) Hours")
+//                    .font(.custom("Poppins-SemiBold", size: 14))
+//                    .foregroundStyle(Color.text.black40)
             }
             Image("arrow-right")
+                .resizable()
+                .frame(width: 32, height: 32)
                 .tint(Color.black)
         }
+        .contentShape(.rect)
         .onTapGesture {
             selectedTab = .purchases
             goToActiveSession = true
         }
+        .transition(.move(edge: .bottom).combined(with: .opacity))
         .padding(14)
         .background(.ultraThickMaterial)
         .compositingGroup()
@@ -173,6 +180,7 @@ struct MainView: View {
 //                SDWebImageManager.defaultImageCache = SDImageCachesManager.shared
             })
             .animation(.snappy(duration: 0.2), value: tabIsShown)
+            .animation(.snappy(duration: 0.2), value: activeSession.sessionIsActive)
         }
         .environment(\.tabIsShown, $tabIsShown)
         .environment(\.currentTab, $selectedTab)

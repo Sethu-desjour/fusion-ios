@@ -230,11 +230,15 @@ struct JollyfieldRedemptionView: View {
             viewModel.api = api
             viewModel.merchant = merchant
             viewModel.activeSession = activeSession
+            activeSession.changeFrequency(to: 1)
             viewModel.dismiss = dismiss
             Task {
                 try? await viewModel.fetch()
             }
             tabIsShown.wrappedValue = false
+        })
+        .onDisappear(perform: {
+            activeSession.changeFrequency(to: 5)
         })
         .customBottomSheet(hidden: $hidden) {
             JollyfieldBottomSheet(session: viewModel.session) {
