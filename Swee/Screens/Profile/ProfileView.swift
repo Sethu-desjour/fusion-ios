@@ -130,7 +130,14 @@ struct ProfileView: View {
                 ScrollView {
                     VStack(spacing: 16) {
                         HStack(spacing: 16) {
-                            if let photoURL = api.user?.photoURL {
+                            if let image = api.user?.uploadingImage {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 82, height: 82)
+                                    .clipShape(Circle())
+                                    .blinking()
+                            } else if let photoURL = api.user?.photoURL {
                                 WebImage(url: URL(string: photoURL)) { image in
                                     image.resizable()
                                         .scaledToFill()

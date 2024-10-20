@@ -48,22 +48,14 @@ struct EditBasicInfoView: View {
             VStack(alignment: .leading) {
                 row(title: "Add photo") {
                     if let image = image {
-                        ZStack {
-                            if uploadingImage {
-                                Image(uiImage: image)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 82, height: 82)
-                                    .clipShape(Circle())
-                                    .blinking()
-                            } else {
-                                Image(uiImage: image)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 82, height: 82)
-                                    .clipShape(Circle())
-                            }
-                        }
+                        //                        ZStack {
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 82, height: 82)
+                            .clipShape(Circle())
+                            .blinking()
+                        //                        }
                     } else if let photoURL = api.user?.photoURL {
                         WebImage(url: URL(string: photoURL)) { image in
                             image.resizable()
@@ -119,10 +111,18 @@ struct EditBasicInfoView: View {
             }
             uploadingImage = true
             Task {
-                try? await api.uploadUserAvatar(image: image)
-                try? await api.refreshUser()
-                await MainActor.run {
-                    uploadingImage = false
+                do {
+                    await MainActor.run {
+                        api.user?.uploadingImage = newValue
+                    }
+                    try await api.uploadUserAvatar(image: image)
+                    try await api.refreshUser()
+                    await MainActor.run {
+                        api.user?.uploadingImage = nil
+                        uploadingImage = false
+                    }
+                } catch {
+                    api.user?.uploadingImage = nil
                 }
             }
         })
@@ -131,6 +131,9 @@ struct EditBasicInfoView: View {
         }
         .customNavigationTitle("Profile Info")
         .onAppear(perform: {
+            if image == nil {
+                image = api.user?.uploadingImage
+            }
             tabIsShown.wrappedValue = false
         })
     }

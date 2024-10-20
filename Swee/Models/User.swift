@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 struct User: Identifiable, Codable {
     enum Gender: String, Codable, CaseIterable {
@@ -27,6 +28,7 @@ struct User: Identifiable, Codable {
     let gender: Gender
     let email: String?
     let photoURL: String?
+    var uploadingImage: UIImage? = nil
     @DecodableDayDate var dob: Date?
     
     var birthDayString: String? {
