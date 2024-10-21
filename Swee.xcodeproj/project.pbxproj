@@ -70,6 +70,7 @@
 		AF3022D72CAA48D7006DBCAD /* OrderItemSnapshotModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022D62CAA48D7006DBCAD /* OrderItemSnapshotModel.swift */; };
 		AF3022DA2CAA75EF006DBCAD /* MyWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022D92CAA75EF006DBCAD /* MyWalletViewModel.swift */; };
 		AF3022DD2CAAA00E006DBCAD /* EditBasicInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022DC2CAAA00E006DBCAD /* EditBasicInfoView.swift */; };
+		AF3813EF2CC5F59C0028FD02 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = AF3813EE2CC5F59C0028FD02 /* SwiftUIIntrospect */; };
 		AF501F242C942CDF00637042 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF501F232C942CDF00637042 /* GoogleService-Info.plist */; };
 		AF501F272C945D7C00637042 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F262C945D7C00637042 /* API.swift */; };
 		AF501F2A2C945F9C00637042 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F292C945F9C00637042 /* Strings.swift */; };
@@ -80,6 +81,12 @@
 		AF501F362C980FCB00637042 /* HomeSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F352C980FCB00637042 /* HomeSectionModel.swift */; };
 		AF501F382C9813D300637042 /* MockHomeSectionURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F372C9813D300637042 /* MockHomeSectionURLProtocol.swift */; };
 		AF557FC82C79AAC700AD99A5 /* SweeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF557FC72C79AAC700AD99A5 /* SweeApp.swift */; };
+		AF662A332CC5F1AF00613E45 /* SkeletonUI in Frameworks */ = {isa = PBXBuildFile; productRef = AF662A322CC5F1AF00613E45 /* SkeletonUI */; };
+		AF662A362CC5F20C00613E45 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = AF662A352CC5F20C00613E45 /* SDWebImageSwiftUI */; };
+		AF662A392CC5F28D00613E45 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = AF662A382CC5F28D00613E45 /* GoogleSignIn */; };
+		AF662A3B2CC5F28D00613E45 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = AF662A3A2CC5F28D00613E45 /* GoogleSignInSwift */; };
+		AF662A3E2CC5F44400613E45 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = AF662A3D2CC5F44400613E45 /* FirebaseAuth */; };
+		AF662A402CC5F44400613E45 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = AF662A3F2CC5F44400613E45 /* FirebaseCrashlytics */; };
 		AF67C9B12CB50C3000A46B11 /* RedemptionScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF67C9B02CB50C3000A46B11 /* RedemptionScanView.swift */; };
 		AF67C9B32CB50C6200A46B11 /* RedemptionCompletedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF67C9B22CB50C6200A46B11 /* RedemptionCompletedView.swift */; };
 		AF67C9B52CB50C8D00A46B11 /* RedemptionLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF67C9B42CB50C8D00A46B11 /* RedemptionLoadingView.swift */; };
@@ -152,12 +159,9 @@
 		AFDF67F92C7F4EA900489D0C /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */; };
 		AFDF67FB2C7F576C00489D0C /* ObservableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67FA2C7F576B00489D0C /* ObservableWrapper.swift */; };
 		AFDF67FD2C7F5A6C00489D0C /* SeeAllView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67FC2C7F5A6C00489D0C /* SeeAllView.swift */; };
-		F514815AD254E714A20D5845 /* Pods_Swee.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 669376952C1EE713F9129744 /* Pods_Swee.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		669376952C1EE713F9129744 /* Pods_Swee.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Swee.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		917C3D03CF12F5C5F725DBA2 /* Pods-Swee.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swee.debug.xcconfig"; path = "Target Support Files/Pods-Swee/Pods-Swee.debug.xcconfig"; sourceTree = "<group>"; };
 		AF0558302CAABC2100ABEBA3 /* EditNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNameView.swift; sourceTree = "<group>"; };
 		AF0558322CAABFF500ABEBA3 /* EditPhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPhoneView.swift; sourceTree = "<group>"; };
 		AF0558342CAAC2DA00ABEBA3 /* EditOtpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOtpView.swift; sourceTree = "<group>"; };
@@ -305,7 +309,6 @@
 		AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheet.swift; sourceTree = "<group>"; };
 		AFDF67FA2C7F576B00489D0C /* ObservableWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableWrapper.swift; sourceTree = "<group>"; };
 		AFDF67FC2C7F5A6C00489D0C /* SeeAllView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeeAllView.swift; sourceTree = "<group>"; };
-		D2B9A208B79A055F506C21FC /* Pods-Swee.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swee.release.xcconfig"; path = "Target Support Files/Pods-Swee/Pods-Swee.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -313,7 +316,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F514815AD254E714A20D5845 /* Pods_Swee.framework in Frameworks */,
+				AF3813EF2CC5F59C0028FD02 /* SwiftUIIntrospect in Frameworks */,
+				AF662A392CC5F28D00613E45 /* GoogleSignIn in Frameworks */,
+				AF662A362CC5F20C00613E45 /* SDWebImageSwiftUI in Frameworks */,
+				AF662A3B2CC5F28D00613E45 /* GoogleSignInSwift in Frameworks */,
+				AF662A332CC5F1AF00613E45 /* SkeletonUI in Frameworks */,
+				AF662A402CC5F44400613E45 /* FirebaseCrashlytics in Frameworks */,
+				AF662A3E2CC5F44400613E45 /* FirebaseAuth in Frameworks */,
 				AFDD173E2CA1438200DC8DB8 /* MarkdownUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -321,23 +330,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		78065637F006FEC735843AF7 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				917C3D03CF12F5C5F725DBA2 /* Pods-Swee.debug.xcconfig */,
-				D2B9A208B79A055F506C21FC /* Pods-Swee.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
-		92D9D0E67A63DA835F2A134D /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				669376952C1EE713F9129744 /* Pods_Swee.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		AF13C84D2CABB81F00496B0C /* ZoomoovRedemption */ = {
 			isa = PBXGroup;
 			children = (
@@ -371,8 +363,6 @@
 				AF501F232C942CDF00637042 /* GoogleService-Info.plist */,
 				AF170AFF2C71C02900544970 /* Swee */,
 				AF170AFE2C71C02900544970 /* Products */,
-				78065637F006FEC735843AF7 /* Pods */,
-				92D9D0E67A63DA835F2A134D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -724,11 +714,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AF170B112C71C02B00544970 /* Build configuration list for PBXNativeTarget "Swee" */;
 			buildPhases = (
-				653286FAC06F4483955426B8 /* [CP] Check Pods Manifest.lock */,
 				AF170AF92C71C02900544970 /* Sources */,
 				AF170AFA2C71C02900544970 /* Frameworks */,
 				AF170AFB2C71C02900544970 /* Resources */,
-				748DEF389B54851786D8986F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -737,6 +725,13 @@
 			name = Swee;
 			packageProductDependencies = (
 				AFDD173D2CA1438200DC8DB8 /* MarkdownUI */,
+				AF662A322CC5F1AF00613E45 /* SkeletonUI */,
+				AF662A352CC5F20C00613E45 /* SDWebImageSwiftUI */,
+				AF662A382CC5F28D00613E45 /* GoogleSignIn */,
+				AF662A3A2CC5F28D00613E45 /* GoogleSignInSwift */,
+				AF662A3D2CC5F44400613E45 /* FirebaseAuth */,
+				AF662A3F2CC5F44400613E45 /* FirebaseCrashlytics */,
+				AF3813EE2CC5F59C0028FD02 /* SwiftUIIntrospect */,
 			);
 			productName = Swee;
 			productReference = AF170AFD2C71C02900544970 /* Swee.app */;
@@ -768,6 +763,11 @@
 			mainGroup = AF170AF42C71C02900544970;
 			packageReferences = (
 				AFDD173C2CA1438200DC8DB8 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
+				AF662A312CC5F1AF00613E45 /* XCRemoteSwiftPackageReference "SkeletonUI" */,
+				AF662A342CC5F20C00613E45 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				AF662A372CC5F28D00613E45 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				AF662A3C2CC5F44400613E45 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				AF3813ED2CC5F59C0028FD02 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
 			);
 			productRefGroup = AF170AFE2C71C02900544970 /* Products */;
 			projectDirPath = "";
@@ -820,48 +820,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		653286FAC06F4483955426B8 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Swee-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		748DEF389B54851786D8986F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Swee/Pods-Swee-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Swee/Pods-Swee-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Swee/Pods-Swee-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AF170AF92C71C02900544970 /* Sources */ = {
@@ -1117,13 +1075,12 @@
 		};
 		AF170B122C71C02B00544970 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 917C3D03CF12F5C5F725DBA2 /* Pods-Swee.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 9M2L2N97YU;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1156,13 +1113,12 @@
 		};
 		AF170B132C71C02B00544970 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D2B9A208B79A055F506C21FC /* Pods-Swee.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 9M2L2N97YU;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1217,6 +1173,46 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		AF3813ED2CC5F59C0028FD02 /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/swiftui-introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
+		AF662A312CC5F1AF00613E45 /* XCRemoteSwiftPackageReference "SkeletonUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CSolanaM/SkeletonUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.2;
+			};
+		};
+		AF662A342CC5F20C00613E45 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.2;
+			};
+		};
+		AF662A372CC5F28D00613E45 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+		AF662A3C2CC5F44400613E45 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.3.0;
+			};
+		};
 		AFDD173C2CA1438200DC8DB8 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
@@ -1228,6 +1224,41 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		AF3813EE2CC5F59C0028FD02 /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF3813ED2CC5F59C0028FD02 /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
+			productName = SwiftUIIntrospect;
+		};
+		AF662A322CC5F1AF00613E45 /* SkeletonUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF662A312CC5F1AF00613E45 /* XCRemoteSwiftPackageReference "SkeletonUI" */;
+			productName = SkeletonUI;
+		};
+		AF662A352CC5F20C00613E45 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF662A342CC5F20C00613E45 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
+		AF662A382CC5F28D00613E45 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF662A372CC5F28D00613E45 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		AF662A3A2CC5F28D00613E45 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF662A372CC5F28D00613E45 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		AF662A3D2CC5F44400613E45 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF662A3C2CC5F44400613E45 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		AF662A3F2CC5F44400613E45 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF662A3C2CC5F44400613E45 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
 		AFDD173D2CA1438200DC8DB8 /* MarkdownUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AFDD173C2CA1438200DC8DB8 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
