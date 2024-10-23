@@ -115,7 +115,12 @@ class CheckoutViewModel: ObservableObject {
             
             await MainActor.run {
                 var configuration = PaymentSheet.Configuration()
-                configuration.merchantDisplayName = "Example, Inc." // @todo change this
+                configuration.applePay = .init(
+                  merchantId: "merchant.com.desjour.fusion",
+                  merchantCountryCode: "SG"
+                )
+                
+                configuration.merchantDisplayName = "Fusion" // @todo change this
                 configuration.customer = .init(id: paymentIntent.customerId, ephemeralKeySecret: paymentIntent.ephemeralKey)
                 // Set `allowsDelayedPaymentMethods` to true if your business handles
                 // delayed notification payment methods like US bank accounts.

@@ -71,6 +71,7 @@
 		AF3022DA2CAA75EF006DBCAD /* MyWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022D92CAA75EF006DBCAD /* MyWalletViewModel.swift */; };
 		AF3022DD2CAAA00E006DBCAD /* EditBasicInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022DC2CAAA00E006DBCAD /* EditBasicInfoView.swift */; };
 		AF3733962CC766C500AE6A45 /* PaymentIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3733952CC766C500AE6A45 /* PaymentIntent.swift */; };
+		AF3733982CC8A35D00AE6A45 /* StripeApplePay in Frameworks */ = {isa = PBXBuildFile; productRef = AF3733972CC8A35D00AE6A45 /* StripeApplePay */; };
 		AF3813EF2CC5F59C0028FD02 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = AF3813EE2CC5F59C0028FD02 /* SwiftUIIntrospect */; };
 		AF3813F22CC601180028FD02 /* StripePaymentSheet in Frameworks */ = {isa = PBXBuildFile; productRef = AF3813F12CC601180028FD02 /* StripePaymentSheet */; };
 		AF501F242C942CDF00637042 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF501F232C942CDF00637042 /* GoogleService-Info.plist */; };
@@ -324,6 +325,7 @@
 				AF662A362CC5F20C00613E45 /* SDWebImageSwiftUI in Frameworks */,
 				AF662A3B2CC5F28D00613E45 /* GoogleSignInSwift in Frameworks */,
 				AF662A332CC5F1AF00613E45 /* SkeletonUI in Frameworks */,
+				AF3733982CC8A35D00AE6A45 /* StripeApplePay in Frameworks */,
 				AF662A402CC5F44400613E45 /* FirebaseCrashlytics in Frameworks */,
 				AF662A3E2CC5F44400613E45 /* FirebaseAuth in Frameworks */,
 				AF3813F22CC601180028FD02 /* StripePaymentSheet in Frameworks */,
@@ -738,6 +740,7 @@
 				AF662A3F2CC5F44400613E45 /* FirebaseCrashlytics */,
 				AF3813EE2CC5F59C0028FD02 /* SwiftUIIntrospect */,
 				AF3813F12CC601180028FD02 /* StripePaymentSheet */,
+				AF3733972CC8A35D00AE6A45 /* StripeApplePay */,
 			);
 			productName = Swee;
 			productReference = AF170AFD2C71C02900544970 /* Swee.app */;
@@ -1240,6 +1243,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		AF3733972CC8A35D00AE6A45 /* StripeApplePay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF3813F02CC601180028FD02 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = StripeApplePay;
+		};
 		AF3813EE2CC5F59C0028FD02 /* SwiftUIIntrospect */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AF3813ED2CC5F59C0028FD02 /* XCRemoteSwiftPackageReference "swiftui-introspect" */;

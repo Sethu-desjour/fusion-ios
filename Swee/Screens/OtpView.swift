@@ -109,6 +109,8 @@ struct OtpView: View {
                         
                         if case .wrongCode = phoneError {
                             errorMessage = "Wrong code, please try again"
+                        } else if case .numberIsTaken = phoneError {
+                            errorMessage = "This phone number is registered to another account"
                         } else {
                             errorMessage = "Something went wrong. Please try again"
                         }

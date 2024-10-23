@@ -8,6 +8,7 @@ enum PhoneError: Error {
     case wrongCode
     case incorrectPhone
     case tooManyAttempts
+    case numberIsTaken
     case other(Error?)
 }
 
@@ -58,7 +59,7 @@ struct Authentication {
                 }
                 return token
             } catch {
-                throw PhoneError.other(error)
+                throw handlePhoneSignInError(error)
             }
         }
         
@@ -69,15 +70,21 @@ struct Authentication {
             }
             return token
         } catch {
-            guard let authError = error as NSError?, let errorCode = AuthErrorCode(_bridgedNSError: authError) else {
-                throw PhoneError.other(nil)
-            }
-            
-            if case .invalidVerificationCode = errorCode.code {
-                throw PhoneError.wrongCode
-            } else {
-                throw PhoneError.other(nil)
-            }
+            throw handlePhoneSignInError(error)
+        }
+    }
+    
+    func handlePhoneSignInError(_ error: Error) -> PhoneError {
+        guard let authError = error as NSError?, let errorCode = AuthErrorCode(rawValue: authError.code) else {
+            return PhoneError.other(nil)
+        }
+        
+        if case .invalidVerificationCode = errorCode.code {
+            return PhoneError.wrongCode
+        } else if case .credentialAlreadyInUse = errorCode.code {
+            return PhoneError.numberIsTaken
+        } else {
+            return PhoneError.other(nil)
         }
     }
     
