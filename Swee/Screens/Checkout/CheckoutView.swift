@@ -1,6 +1,7 @@
 import SwiftUI
 import SDWebImageSwiftUI
-
+import StripePaymentSheet
+import StripePaymentsUI
 
 extension CartItem {
     func priceString(currencyCode: String) -> String {
@@ -44,6 +45,7 @@ struct CheckoutView: View {
     @StateObject private var viewModel = CheckoutViewModel()
     
     @State private var text: String = ""
+    @State private var showPaymentSheet = false
 //    @State private var showPaymentSuccess: Bool = false
     
     var mainUI: some View {
@@ -195,26 +197,32 @@ struct CheckoutView: View {
                 .padding([.horizontal, .bottom], 16)
             }
             BottomButtonContainer {
-                AsyncButton(progressWidth: .infinity) {
-                    try? await viewModel.checkout()
-//                    showPaymentSuccess = true
-                } label: {
-                    HStack {
-                        Text("Proceed to payment")
-                            .font(.custom("Roboto-Bold", size: 16))
+                    AsyncButton(progressWidth: .infinity) {
+                        try? await viewModel.prepareForPayment()
+                        showPaymentSheet = true
+                    } label: {
+                        HStack {
+                            Text("Proceed to payment")
+                                .font(.custom("Roboto-Bold", size: 16))
+                        }
+                        .foregroundStyle(Color.background.white)
+                        .frame(maxWidth: .infinity)
+                    
+                    
                     }
-                    .foregroundStyle(Color.background.white)
-                    .frame(maxWidth: .infinity)
+                    .paymentSheet(
+                        isPresented: $showPaymentSheet,
+                        paymentSheet: viewModel.paymentSheet ?? .empty,
+                        onCompletion: viewModel.onPaymentCompletion)
+                    .disabled(cart.inProgress)
+                    .buttonStyle(PrimaryButton())
+
                 }
-                .disabled(cart.inProgress)
-                .buttonStyle(PrimaryButton())
-            }
             .padding(.bottom, 40)
         }
         .animation(.default, value: cart.updatedAt)
         .ignoresSafeArea(edges: .bottom)
         .background(Color.background.pale)
-        .customNavigationTitle("Checkout")
     }
     
     var successUI: some View {
@@ -222,6 +230,7 @@ struct CheckoutView: View {
                   title: "Payment success",
                   description: "2 Rides have been added to your purchase",
                   buttonTitle: "View my purchases") {
+            cart.reset()
             dismiss()
             selectedTab.wrappedValue = .purchases
         }
@@ -252,7 +261,7 @@ struct CheckoutView: View {
                   title: "Transaction failed",
                   description: "We are unable to complete the transaction, please try again.",
                   buttonTitle: "Retry payment") {
-            try? await viewModel.checkout()
+            try? await viewModel.prepareForPayment()
         }
     }
     
@@ -271,10 +280,24 @@ struct CheckoutView: View {
                 failedPaymentUI
             }
         }
+        .customNavigationTitle("Checkout")
+        .customNavigationBackButtonHidden(true)
+        .customNavLeadingItem {
+            Button {
+                if viewModel.state == .paymentSucceeded {
+                    cart.reset()
+                }
+                dismiss()
+            } label: {
+                Image("back")
+            }
+        }
         .onAppear(perform: {
             viewModel.cart = cart
+//            viewModel.preparePaymentSheet()
             Task {
                 try? await viewModel.fetch()
+                try? await viewModel.prepareForPayment()
             }
             tabIsShown.wrappedValue = false
         })

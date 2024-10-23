@@ -1,5 +1,6 @@
 import SwiftUI
 import Combine
+import StripePaymentSheet
 
 class CheckoutViewModel: ObservableObject {
     enum State {
@@ -15,6 +16,21 @@ class CheckoutViewModel: ObservableObject {
     private var showError = false
     private var cancellables = Set<AnyCancellable>()
     @Published private(set) var state: State = .loaded
+    @Published var paymentSheet: PaymentSheet?
+    @Published var paymentResult: PaymentSheetResult?
+    
+    func onPaymentCompletion(result: PaymentSheetResult) {
+        self.paymentResult = result
+        print("payment result =====", result)
+        switch result {
+        case .completed:
+            state = .paymentSucceeded
+        case .canceled:
+            print("cancelled payment")
+        case .failed(let error):
+            state = .paymentFailed
+        }
+    }
     
     var quantity: Int {
         return cart.quantity
@@ -59,6 +75,7 @@ class CheckoutViewModel: ObservableObject {
         
         if item.quantity == 1 {
             try? await cart.deletePackage(packageId)
+            
             return
         }
         
@@ -76,16 +93,46 @@ class CheckoutViewModel: ObservableObject {
         }
     }
     
-    func checkout() async throws {
+    func prepareForPayment() async throws {
+        if cart.packages.isEmpty {
+            return
+        }
         do {
-            try await cart.checkout()
+            let order = try await cart.checkout()
+            
+            if order.status == .completed {
+                await MainActor.run {
+                    state = .paymentSucceeded
+                }
+                return
+            }
+            
+            guard let paymentIntent = order.paymentIntent else {
+                throw LocalError(message: "Missing payment intent data")
+            }
+            STPAPIClient.shared.publishableKey = "pk_test_51LUUoYK8RYfweLYTt9LSdAlQaxjwIyk7UPjXYme3J1zstiC0mcQA2zTMeEj4yTZryjzTsPJcnTWpjj9J5Epf7hzE002MVGVeVE"
+            // MARK: Create a PaymentSheet instance
+            
             await MainActor.run {
-                state = .paymentSucceeded
+                var configuration = PaymentSheet.Configuration()
+                configuration.merchantDisplayName = "Example, Inc." // @todo change this
+                configuration.customer = .init(id: paymentIntent.customerId, ephemeralKeySecret: paymentIntent.ephemeralKey)
+                // Set `allowsDelayedPaymentMethods` to true if your business handles
+                // delayed notification payment methods like US bank accounts.
+                // configuration.allowsDelayedPaymentMethods = true
+                self.paymentSheet = PaymentSheet(paymentIntentClientSecret: paymentIntent.clientSecret,
+                                                 configuration: configuration)
             }
         } catch {
             await MainActor.run {
-                state = .paymentFailed
+                state = .error
             }
         }
+    }
+}
+
+extension PaymentSheet {
+    static var empty: PaymentSheet {
+        return PaymentSheet(paymentIntentClientSecret: "", configuration: .init())
     }
 }

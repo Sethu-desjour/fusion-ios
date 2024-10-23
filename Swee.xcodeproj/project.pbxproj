@@ -70,7 +70,9 @@
 		AF3022D72CAA48D7006DBCAD /* OrderItemSnapshotModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022D62CAA48D7006DBCAD /* OrderItemSnapshotModel.swift */; };
 		AF3022DA2CAA75EF006DBCAD /* MyWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022D92CAA75EF006DBCAD /* MyWalletViewModel.swift */; };
 		AF3022DD2CAAA00E006DBCAD /* EditBasicInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022DC2CAAA00E006DBCAD /* EditBasicInfoView.swift */; };
+		AF3733962CC766C500AE6A45 /* PaymentIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3733952CC766C500AE6A45 /* PaymentIntent.swift */; };
 		AF3813EF2CC5F59C0028FD02 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = AF3813EE2CC5F59C0028FD02 /* SwiftUIIntrospect */; };
+		AF3813F22CC601180028FD02 /* StripePaymentSheet in Frameworks */ = {isa = PBXBuildFile; productRef = AF3813F12CC601180028FD02 /* StripePaymentSheet */; };
 		AF501F242C942CDF00637042 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF501F232C942CDF00637042 /* GoogleService-Info.plist */; };
 		AF501F272C945D7C00637042 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F262C945D7C00637042 /* API.swift */; };
 		AF501F2A2C945F9C00637042 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F292C945F9C00637042 /* Strings.swift */; };
@@ -227,6 +229,7 @@
 		AF3022D62CAA48D7006DBCAD /* OrderItemSnapshotModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItemSnapshotModel.swift; sourceTree = "<group>"; };
 		AF3022D92CAA75EF006DBCAD /* MyWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWalletViewModel.swift; sourceTree = "<group>"; };
 		AF3022DC2CAAA00E006DBCAD /* EditBasicInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBasicInfoView.swift; sourceTree = "<group>"; };
+		AF3733952CC766C500AE6A45 /* PaymentIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentIntent.swift; sourceTree = "<group>"; };
 		AF501F232C942CDF00637042 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AF501F262C945D7C00637042 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		AF501F292C945F9C00637042 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
@@ -323,6 +326,7 @@
 				AF662A332CC5F1AF00613E45 /* SkeletonUI in Frameworks */,
 				AF662A402CC5F44400613E45 /* FirebaseCrashlytics in Frameworks */,
 				AF662A3E2CC5F44400613E45 /* FirebaseAuth in Frameworks */,
+				AF3813F22CC601180028FD02 /* StripePaymentSheet in Frameworks */,
 				AFDD173E2CA1438200DC8DB8 /* MarkdownUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -443,6 +447,7 @@
 				AF2F85C72C9AA324004B0B31 /* MerchantStoreModel.swift */,
 				AFDD17352CA0FD2900DC8DB8 /* PackageDetailModel.swift */,
 				AF3022D22CAA4894006DBCAD /* OrderModel.swift */,
+				AF3733952CC766C500AE6A45 /* PaymentIntent.swift */,
 				AF6D42412CB4D0FB0050C2B8 /* OrderDetailModel.swift */,
 				AF3022D42CAA48C7006DBCAD /* OrderItemModel.swift */,
 				AF3022D62CAA48D7006DBCAD /* OrderItemSnapshotModel.swift */,
@@ -732,6 +737,7 @@
 				AF662A3D2CC5F44400613E45 /* FirebaseAuth */,
 				AF662A3F2CC5F44400613E45 /* FirebaseCrashlytics */,
 				AF3813EE2CC5F59C0028FD02 /* SwiftUIIntrospect */,
+				AF3813F12CC601180028FD02 /* StripePaymentSheet */,
 			);
 			productName = Swee;
 			productReference = AF170AFD2C71C02900544970 /* Swee.app */;
@@ -768,6 +774,7 @@
 				AF662A372CC5F28D00613E45 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				AF662A3C2CC5F44400613E45 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				AF3813ED2CC5F59C0028FD02 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
+				AF3813F02CC601180028FD02 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
 			);
 			productRefGroup = AF170AFE2C71C02900544970 /* Products */;
 			projectDirPath = "";
@@ -840,6 +847,7 @@
 				AFCEC5C62C7C26EB00D157BE /* MainView.swift in Sources */,
 				AF6D42422CB4D0FB0050C2B8 /* OrderDetailModel.swift in Sources */,
 				AF2F85C42C9AA2B4004B0B31 /* MerchantModel.swift in Sources */,
+				AF3733962CC766C500AE6A45 /* PaymentIntent.swift in Sources */,
 				AFDF67F92C7F4EA900489D0C /* BottomSheet.swift in Sources */,
 				AF1C31F42CB946A8001DD7EE /* AddChildViewModel.swift in Sources */,
 				AFD6F0812CB4D3F0004424E5 /* RedemptionDetail.swift in Sources */,
@@ -1181,6 +1189,14 @@
 				minimumVersion = 1.3.0;
 			};
 		};
+		AF3813F02CC601180028FD02 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stripe/stripe-ios-spm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 23.31.1;
+			};
+		};
 		AF662A312CC5F1AF00613E45 /* XCRemoteSwiftPackageReference "SkeletonUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CSolanaM/SkeletonUI";
@@ -1228,6 +1244,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AF3813ED2CC5F59C0028FD02 /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
 			productName = SwiftUIIntrospect;
+		};
+		AF3813F12CC601180028FD02 /* StripePaymentSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF3813F02CC601180028FD02 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = StripePaymentSheet;
 		};
 		AF662A322CC5F1AF00613E45 /* SkeletonUI */ = {
 			isa = XCSwiftPackageProductDependency;
