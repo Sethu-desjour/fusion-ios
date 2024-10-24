@@ -128,7 +128,6 @@ class Cart: ObservableObject {
                 try? await refresh()
             }
         } catch {
-            // @todo maybe show some kind of notification that request failed
             inProgress = false
         }
     }
@@ -198,7 +197,6 @@ class Cart: ObservableObject {
             }
         } catch {
             inProgress = false
-            // @todo maybe show some kind of notification that request failed
         }
     }
     

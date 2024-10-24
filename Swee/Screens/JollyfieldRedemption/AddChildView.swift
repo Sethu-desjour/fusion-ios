@@ -85,7 +85,7 @@ struct AddChildView: View {
         .customNavigationTitle("Add child")
         .customNavTrailingItem {
             AsyncButton(progressTint: Color.primary.brand) {
-                let children = await save(children: viewModel.children)
+                let children = await viewModel.save(children: viewModel.children)
                 onSave(children)
                 dismiss()
             } label: {
@@ -94,37 +94,6 @@ struct AddChildView: View {
             }
             .disabled(!allDataFilled)
             .tint(Color.primary.brand)
-        }
-    }
-    
-    func save(children: [Child]) async -> [Child] {
-        return await withTaskGroup(of: Child?.self) { group in
-            for child in children {
-                group.addTask {
-                    do {
-                        if let id = child.id {
-                            return try await api.updateChild(with: id,
-                                                             name: child.name,
-                                                             dob: child.dob).toLocal()
-                        } else {
-                            return try await api.addChild(with: child.name,
-                                                          dob: child.dob).toLocal()
-                        }
-                    } catch {
-                        return child.id != nil ? child : nil // we're failing silently here
-                    }
-                }
-            }
-
-            var results: [Child] = []
-            for await result in group {
-                guard let child = result else {
-                    continue
-                }
-                results.append(child)
-            }
-
-            return results
         }
     }
 }
@@ -157,7 +126,7 @@ struct ChildDetailsCard: View {
                             onDelete(child)
                         }
                     } catch {
-                        // @todo fail silently
+                        // fail silently
                     }
                 } label: {
                     Image("delete")

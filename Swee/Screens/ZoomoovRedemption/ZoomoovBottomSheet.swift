@@ -93,8 +93,8 @@ struct ZoomoovBottomSheet: View {
                     do {
                         let status = try await checkRedemptionStatus(for: redemption.id)
                         guard status != .success else { return }
-                        
-                        // @todo what do we show when it hasn't been scanned yet?
+                        self.timer?.cancel()
+                        self.timer = nil
                     } catch {
                         // @todo show error screen
                     }

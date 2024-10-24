@@ -121,7 +121,6 @@ struct AuthView: View {
                     Spacer()
                     Spacer()
                     AsyncButton(progressWidth: .infinity) {
-                        // @todo validate and navigate next
                         let result = await Authentication().verify(phone: "+65" + phone)
                         switch result {
                         case .success(let verificationId):

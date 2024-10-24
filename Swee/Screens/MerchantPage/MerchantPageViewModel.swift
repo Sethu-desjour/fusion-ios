@@ -34,7 +34,7 @@ class MerchantPageViewModel: ObservableObject {
                 self.stores = storeModels.map { $0.toLocal() }
             }
         } catch {
-            // @todo parse error and show error screen
+            // fail silently
         }
     }
 }

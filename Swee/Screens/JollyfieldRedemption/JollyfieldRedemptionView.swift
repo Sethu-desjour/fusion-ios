@@ -322,7 +322,6 @@ struct JollyfieldBottomSheet: View {
     @discardableResult
     func checkIfSession(is status: SessionStatus, goTo step: RedemptionStep) async throws -> Bool {
         guard let session = session else {
-            // @todo maybe show error?
             return false
         }
         let currentStatus = try await api.getSession(with: session.id).toLocal().status
