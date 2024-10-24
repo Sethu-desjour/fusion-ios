@@ -73,14 +73,14 @@ struct ZoomoovBottomSheet: View {
                         await MainActor.run {
                             self.redemptions = redemptions
                             guard !redemptions.isEmpty else {
-                                // @todo show error screen
+                                step = .error
                                 return
                             }
                             goToNextRedemption()
                         }
                     } catch {
                         print("error =======", error)
-                        // @todo show error screen
+                        step = .error
                     }
                 }
             case .redemptionQueue(let redemption):
@@ -96,19 +96,7 @@ struct ZoomoovBottomSheet: View {
                         self.timer?.cancel()
                         self.timer = nil
                     } catch {
-                        // @todo show error screen
-                    }
-    //                step = .loading
-                }
-            case .loading:
-                RedemptionLoadingView(model: .init(header: "",
-                                                   title: "Scanning for \(model.type.capitalized) \(model.currentTicket)"),
-                                      tint: Color.secondary.brand) {
-                    if model.currentTicket == model.qtyToRedeem {
-                        step = .completed
-                    } else {
-                        model.currentTicket += 1
-    //                    step = .redemptionQueue
+                        // fail silently
                     }
                 }
             case .completed:
@@ -120,8 +108,13 @@ struct ZoomoovBottomSheet: View {
                     onComplete()
                     step = .setup
                 }
+            case .error:
+                RedemptionErrorView(model: .init(header: "Redemption failed", title: "Failed to initiate redemption", qr: nil, description: "", actionTitle: "Retry")) {
+                    step = .setup
+                }
             }
         }
+        .animation(.default, value: step)
         .onDisappear {
             timer?.cancel()
             timer = nil

@@ -302,7 +302,7 @@ struct ProfileView: View {
                                 self.loadedDescription = loadedDescription
                             }
                         } catch {
-                            // @todo: don't know what to do here
+                            self.loadedDescription = ""
                         }
                         
                         loading = false
