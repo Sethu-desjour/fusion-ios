@@ -202,14 +202,17 @@ class Cart: ObservableObject {
         }
     }
     
-    func checkout() async throws {
+    func checkout() async throws -> Order {
         do {
             // @todo handle all order states
             let order = try await api.createOrder(for: id)
-            print("successful order ====", order)
-            await MainActor.run {
-                reset()
+            if order.status == .completed {
+                print("successful order ====", order)
+                await MainActor.run {
+                    reset()
+                }
             }
+            return order.toLocal()
         } catch {
             throw error
         }
