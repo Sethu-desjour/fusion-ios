@@ -38,6 +38,9 @@ struct CompleteProfileView: View {
                     .focused($isKeyboardShowing)
                     .font(.custom("Poppins-Regular", size: 14))
                     .submitLabel(.done)
+                    .onChange(of: fullName, perform: { newValue in
+                        errorMessage = nil
+                    })
                     .overlay(RoundedRectangle(cornerRadius: 12)
                         .stroke(nameFieldActive ? Color.primary.brand : Color(hex: "#E7EAEB"),
                                 lineWidth: nameFieldActive ? 2 : 1))
@@ -57,7 +60,6 @@ struct CompleteProfileView: View {
                     } catch(let error) {
                         print("complete profile error =====", error)
                         errorMessage = "Something went wrong. Please try again"
-                        // @todo handle error case
                     }
                 } label: {
                     Text("Complete")

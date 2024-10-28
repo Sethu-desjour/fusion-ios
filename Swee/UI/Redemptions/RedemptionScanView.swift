@@ -56,5 +56,6 @@ struct RedemptionScanView: View {
                 currentTime = Date().formatted(date: .omitted, time: .standard)
             })
         }
+        .transition(.move(edge: .bottom).combined(with: .opacity))
     }
 }

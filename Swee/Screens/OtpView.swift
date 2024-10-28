@@ -159,7 +159,8 @@ struct OtpView: View {
                                     print("verificationID ====", verificationId)
                                 case .failure(let error):
                                     print(error.localizedDescription)
-                                    // @todo handle error
+                                    errorMessage = "Something went wrong. Please try again"
+                                    showError = true
                                 }
                             }
                             timeRemaining = 20

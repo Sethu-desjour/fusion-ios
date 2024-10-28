@@ -514,7 +514,6 @@ extension API {
         
         if reauthenticate {
             if httpResponse.statusCode == 403 {
-                // @todo try to reauthenticate
                 print("reauthenticating....")
                 do {
                     let token = try await Authentication().reauthenticate()

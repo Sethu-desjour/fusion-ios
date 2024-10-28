@@ -8,11 +8,10 @@ struct Ticket: Hashable {
     let colors: [Color]
 }
 
-enum ZoomoovRedemptionSteps {
+enum ZoomoovRedemptionSteps: Equatable {
     case setup
     case redemptionQueue(Redemption)
-    case loading
-    // case error @todo maybe?
+    case error
     case completed
 }
 
@@ -108,6 +107,7 @@ struct ZoomoovRedemptionSetupView: View {
             .padding(.bottom, 16)
             //            .buttonStyle(EmptyStyle())
         }
+        .transition(.move(edge: .bottom).combined(with: .opacity))
     }
 }
 

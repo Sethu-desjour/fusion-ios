@@ -284,7 +284,7 @@ struct JollyfieldRedemptionView: View {
 }
 
 struct JollyfieldBottomSheet: View {
-    enum RedemptionStep {
+    enum RedemptionStep: Equatable {
         case qrStart
         case sessionStarted
         case qrEnd
@@ -322,7 +322,6 @@ struct JollyfieldBottomSheet: View {
     @discardableResult
     func checkIfSession(is status: SessionStatus, goTo step: RedemptionStep) async throws -> Bool {
         guard let session = session else {
-            // @todo maybe show error?
             return false
         }
         let currentStatus = try await api.getSession(with: session.id).toLocal().status
@@ -349,7 +348,7 @@ struct JollyfieldBottomSheet: View {
                         onComplete()
                     }
                 case .qrEnd:
-                    RedemptionScanView(model: .init(header: "End Session", title: "Check - out", qr: session?.qrCodeImage, description: "Show this QR code at the counter, our staff will scan this QR to end your session", actionTitle: "Refresh")) {
+                    RedemptionScanView(model: .init(header: "End Session", title: "Check - out", qr: session?.qrCodeImage, description: "Show this QR code at the counter, our staff will scan this QR to end your session", actionTitle: "Refresh", showCurrentTime: true)) {
                         try await checkIfSession(is: .completed, goTo: .sessionEnded)
                     }
                 case .sessionEnded:
@@ -363,6 +362,7 @@ struct JollyfieldBottomSheet: View {
             }
            
         }
+        .animation(.snappy, value: step)
         .onAppear {
             guard let session = session else {
                 return

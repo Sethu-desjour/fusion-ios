@@ -73,42 +73,31 @@ struct ZoomoovBottomSheet: View {
                         await MainActor.run {
                             self.redemptions = redemptions
                             guard !redemptions.isEmpty else {
-                                // @todo show error screen
+                                step = .error
                                 return
                             }
                             goToNextRedemption()
                         }
                     } catch {
                         print("error =======", error)
-                        // @todo show error screen
+                        step = .error
                     }
                 }
             case .redemptionQueue(let redemption):
                 RedemptionScanView(model: .init(header: "\(model.type.capitalized) \(successfulScans + 1)/\(model.qtyToRedeem)",
-                                                title: model.productType == .coupon ? "Scan QR to start your ride" : "Scan QR to get a mask", // @todo this should be optimized from BE to accomodate other types
+                                                title: "Scan QR to redeem",
                                                 qr: redemption.qrCodeImage,
-                                                description: model.productType == .coupon ? "Show this QR code at the counter, our staff will scan this QR to mark your presence" : "Show this QR code at the counter, our staff will scan this QR to provide you the mask", // @todo this as well
-                                                actionTitle: "Next QR"),
+                                                description: "Show this QR code at the counter to redeem your purchase",
+                                                actionTitle: "Next QR",
+                                                showCurrentTime: true),
                                    tint: Color.secondary.brand) {
                     do {
                         let status = try await checkRedemptionStatus(for: redemption.id)
                         guard status != .success else { return }
-                        
-                        // @todo what do we show when it hasn't been scanned yet?
+                        self.timer?.cancel()
+                        self.timer = nil
                     } catch {
-                        // @todo show error screen
-                    }
-    //                step = .loading
-                }
-            case .loading:
-                RedemptionLoadingView(model: .init(header: "",
-                                                   title: "Scanning for \(model.type.capitalized) \(model.currentTicket)"),
-                                      tint: Color.secondary.brand) {
-                    if model.currentTicket == model.qtyToRedeem {
-                        step = .completed
-                    } else {
-                        model.currentTicket += 1
-    //                    step = .redemptionQueue
+                        // fail silently
                     }
                 }
             case .completed:
@@ -120,8 +109,13 @@ struct ZoomoovBottomSheet: View {
                     onComplete()
                     step = .setup
                 }
+            case .error:
+                RedemptionErrorView(model: .init(header: "Redemption failed", title: "Failed to initiate redemption", qr: nil, description: "", actionTitle: "Retry")) {
+                    step = .setup
+                }
             }
         }
+        .animation(.default, value: step)
         .onDisappear {
             timer?.cancel()
             timer = nil

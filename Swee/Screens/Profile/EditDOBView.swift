@@ -8,6 +8,13 @@ struct EditDOBView: View {
     @State private var editedDOB: Date = .now
     @State private var showError = false
     
+    private var latestDOB: Date {
+        let currentDate = Date()
+        var dateComponent = DateComponents()
+        dateComponent.year = -18
+        return Calendar.current.date(byAdding: dateComponent, to: currentDate) ?? Date()
+    }
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("Date of birth")
@@ -21,7 +28,7 @@ struct EditDOBView: View {
                         DatePicker(
                             "",
                             selection: $editedDOB,
-                            in: ...Date(),
+                            in: ...latestDOB,
                             displayedComponents: [.date]
                         )
                         .blendMode(.destinationOver)
@@ -47,7 +54,6 @@ struct EditDOBView: View {
             }
             Spacer()
             AsyncButton(progressWidth: .infinity) {
-                // @todo add validation logic?
                 do {
                     let _ = try await api.update(dob: dob)
                     dismiss()
