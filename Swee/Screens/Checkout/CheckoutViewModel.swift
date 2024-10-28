@@ -27,7 +27,7 @@ class CheckoutViewModel: ObservableObject {
             state = .paymentSucceeded
         case .canceled:
             print("cancelled payment")
-        case .failed(let error):
+        case .failed:
             state = .paymentFailed
         }
     }

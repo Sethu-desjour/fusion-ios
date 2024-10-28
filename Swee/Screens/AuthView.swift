@@ -61,7 +61,7 @@ struct AuthView: View {
                         .font(.custom("Poppins-SemiBold", size: 24))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.bottom, 8)
-                    Text("Logging in with an unregistered phone number will automatically create a new Swee account.")
+                    Text("Logging in with an unregistered phone number will automatically create a new Green account.")
                         .font(.custom("Poppins-Regular", size: 14))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .foregroundStyle(Color.text.black60)
@@ -245,7 +245,7 @@ struct AuthView: View {
                     Spacer()
                     Spacer()
                     HStack {
-                        Text(tosText("By continuing, you accept Swee’s \n") + tosLink("Terms and Condition") + tosText(" and ") + tosLink("Privacy Policy"))
+                        Text(tosText("By continuing, you accept Green’s \n") + tosLink("Terms and Condition") + tosText(" and ") + tosLink("Privacy Policy"))
                     }
                     .multilineTextAlignment(.center)
                     

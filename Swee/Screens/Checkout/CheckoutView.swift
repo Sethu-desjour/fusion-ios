@@ -228,7 +228,7 @@ struct CheckoutView: View {
     var successUI: some View {
         StateView(image: .success,
                   title: "Payment success",
-                  description: "2 Rides have been added to your purchase",
+                  description: "Items have been added to your purchases",
                   buttonTitle: "View my purchases") {
             cart.reset()
             dismiss()

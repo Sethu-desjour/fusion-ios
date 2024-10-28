@@ -1,10 +1,3 @@
-//
-//  CustomNavBarContainerView.swift
-//  Swee
-//
-//  Created by Serghei on 09.09.2024.
-//
-
 import SwiftUI
 
 struct CustomNavBarContainerView<Content: View>: View {

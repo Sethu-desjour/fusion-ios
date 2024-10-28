@@ -54,7 +54,6 @@ struct EditDOBView: View {
             }
             Spacer()
             AsyncButton(progressWidth: .infinity) {
-                // @todo add validation logic?
                 do {
                     let _ = try await api.update(dob: dob)
                     dismiss()
