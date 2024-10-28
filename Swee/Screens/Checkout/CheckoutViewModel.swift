@@ -120,7 +120,7 @@ class CheckoutViewModel: ObservableObject {
                   merchantCountryCode: "SG"
                 )
                 
-                configuration.merchantDisplayName = "Fusion" // @todo change this
+                configuration.merchantDisplayName = "Green"
                 configuration.customer = .init(id: paymentIntent.customerId, ephemeralKeySecret: paymentIntent.ephemeralKey)
                 // Set `allowsDelayedPaymentMethods` to true if your business handles
                 // delayed notification payment methods like US bank accounts.

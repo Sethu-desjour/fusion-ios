@@ -15,7 +15,7 @@ struct AuthView: View {
     @State private var verificationID: String = ""
     @State private var loading = false
     @State private var errorMessage: String?
-    
+    @State private var showAlert = false
     private var phoneFieldActive: Bool {
         return phone != "" && isPhoneFocused
     }
@@ -177,6 +177,11 @@ struct AuthView: View {
                                             loading = false
                                             goToLinkPhone = true
                                         }
+                                    case .cancelled:
+                                        await MainActor.run {
+                                            loading = false
+                                        }
+                                        print("User cancelled login")
                                     }
                                     
                                 } catch {
@@ -184,7 +189,7 @@ struct AuthView: View {
                                         loading = false
                                     }
                                     print("AppleAuthorization failed: \(error)")
-                                    // @todo handle error
+                                    showAlert = true
                                 }
                             }
                         } label: {
@@ -212,13 +217,18 @@ struct AuthView: View {
                                             loading = false
                                             goToLinkPhone = true
                                         }
+                                    case .cancelled:
+                                        await MainActor.run {
+                                            loading = false
+                                        }
+                                        print("User cancelled login")
                                     }
                                 } catch(let error) {
                                     await MainActor.run {
                                         loading = false
                                     }
                                     print("google auth error ====", error)
-                                    // @todo handle error
+                                    showAlert = true
                                 }
                             }
                         } label: {
@@ -243,6 +253,11 @@ struct AuthView: View {
                 .padding()
                 .ignoresSafeArea(.keyboard)
                 .navigationBarBackButtonHidden(true)
+                .alert(isPresented: $showAlert) {
+                    Alert(title: Text("Social login failed"), 
+                          message: Text("Please try again"),
+                          dismissButton: .default(Text("OK")))
+                        }
             }
             .navigationBarTitle("")
             .navigationBarHidden(true)

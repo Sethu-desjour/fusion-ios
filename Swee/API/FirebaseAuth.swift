@@ -15,6 +15,7 @@ enum PhoneError: Error {
 enum SocialSignInResult {
     case token(String)
     case missingPhone
+    case cancelled
 }
 
 struct Authentication {
@@ -103,9 +104,22 @@ struct Authentication {
             throw LocalError(message: "There is no root view controller!")
         }
         
-        let result = try await GIDSignIn.sharedInstance.signIn(
-            withPresenting: rootViewController
-        )
+        var result: GIDSignInResult!
+        
+        do {
+            result = try await GIDSignIn.sharedInstance.signIn(
+                withPresenting: rootViewController
+            )
+
+        } catch {
+            if let googlError = error as? GIDSignInError, 
+                googlError.code == GIDSignInError.canceled {
+                return .cancelled
+            }
+            
+            throw error
+        }
+        
         let user = result.user
         
         guard let idToken = user.idToken?.tokenString else {
@@ -179,8 +193,7 @@ struct Authentication {
                 case .failure(let error):
                     switch error {
                     case .canceled:
-                        // @todo handle this case separately
-                        continuation.resume(throwing: LocalError(message: "User cancelled the interaction"))
+                        continuation.resume(returning: .cancelled)
                     case .error(let error):
                         continuation.resume(throwing: LocalError(message: "AppleAuthorization failed: \(error)"))
                     }

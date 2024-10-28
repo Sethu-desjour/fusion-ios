@@ -85,10 +85,11 @@ struct ZoomoovBottomSheet: View {
                 }
             case .redemptionQueue(let redemption):
                 RedemptionScanView(model: .init(header: "\(model.type.capitalized) \(successfulScans + 1)/\(model.qtyToRedeem)",
-                                                title: model.productType == .coupon ? "Scan QR to start your ride" : "Scan QR to get a mask", // @todo this should be optimized from BE to accomodate other types
+                                                title: "Scan QR to redeem",
                                                 qr: redemption.qrCodeImage,
-                                                description: model.productType == .coupon ? "Show this QR code at the counter, our staff will scan this QR to mark your presence" : "Show this QR code at the counter, our staff will scan this QR to provide you the mask", // @todo this as well
-                                                actionTitle: "Next QR"),
+                                                description: "Show this QR code at the counter to redeem your purchase",
+                                                actionTitle: "Next QR",
+                                                showCurrentTime: true),
                                    tint: Color.secondary.brand) {
                     do {
                         let status = try await checkRedemptionStatus(for: redemption.id)
