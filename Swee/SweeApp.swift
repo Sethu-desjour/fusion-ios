@@ -2,6 +2,7 @@ import SwiftUI
 import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
+import StripePaymentSheet
 
 final class AppRootManager: ObservableObject {
     
@@ -15,6 +16,9 @@ final class AppRootManager: ObservableObject {
     }
 }
 
+enum Route: Hashable {
+    case package(UUID)
+}
 
 @main
 struct SweeApp: App {
@@ -23,6 +27,8 @@ struct SweeApp: App {
     @StateObject var api = API()
     @StateObject var cart = Cart()
     @StateObject var locationManager = LocationManager()
+    @State var route: Route?
+    @State private var delayedRoute: Route?
     
     var body: some Scene {
         WindowGroup {
@@ -41,12 +47,36 @@ struct SweeApp: App {
             .onAppear(perform: {
                 cart.api = api
             })
+            .onOpenURL(perform: { url in
+                let stripeHandled = StripeAPI.handleURLCallback(with: url)
+                guard !stripeHandled else {
+                    return
+                }
+                if url.scheme == "com.fusion.green" {
+                    if url.host == "stripe-redirect" {
+                        return
+                    }
+                    let newRoute = Route.package(.init(uuidString: "8da6f2c0-691f-41ce-9ea7-8bd16c77c2ee".uppercased())!) // @todo remove the test UUID and parse the url
+                    if appRootManager.currentRoot != .home {
+                        delayedRoute = newRoute
+                    } else {
+                        route = newRoute
+                    }
+                }
+            })
+            .onChange(of: appRootManager.currentRoot, perform: { newValue in
+                if newValue == .home {
+                    route = delayedRoute
+                    delayedRoute = nil
+                }
+            })
             .onChange(of: api.sendToAuth, perform: { newValue in
                 if newValue {
                     cart.reset()
                     appRootManager.currentRoot = .authentication
                 }
             })
+            .environment(\.route, $route)
             .environmentObject(appRootManager)
             .environmentObject(api)
             .environmentObject(cart)

@@ -68,6 +68,7 @@ class JollyfieldRedemptionViewModel: ObservableObject {
                 showError = false
                 self.merchant = merchant.toLocal()
                 self.activeSession.session = self.merchant.activeSession
+                self.activeSession.merchant = self.merchant
                 guard purchase?.type == .timeBased  else {
                     showError = true
                     return

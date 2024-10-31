@@ -110,18 +110,20 @@ class CheckoutViewModel: ObservableObject {
             guard let paymentIntent = order.paymentIntent else {
                 throw LocalError(message: "Missing payment intent data")
             }
-            STPAPIClient.shared.publishableKey = "pk_test_51LUUoYK8RYfweLYTt9LSdAlQaxjwIyk7UPjXYme3J1zstiC0mcQA2zTMeEj4yTZryjzTsPJcnTWpjj9J5Epf7hzE002MVGVeVE"
+            STPAPIClient.shared.publishableKey = Strings.stripePublishableKey
             // MARK: Create a PaymentSheet instance
             
             await MainActor.run {
                 var configuration = PaymentSheet.Configuration()
+                configuration.returnURL = Strings.stripeReturnURL
                 configuration.applePay = .init(
-                  merchantId: "merchant.com.desjour.fusion",
-                  merchantCountryCode: "SG"
+                    merchantId: Strings.stripeMerchantId,
+                    merchantCountryCode: "SG"
                 )
                 
-                configuration.merchantDisplayName = "Green"
+                configuration.merchantDisplayName = Strings.stripeMerchantName
                 configuration.customer = .init(id: paymentIntent.customerId, ephemeralKeySecret: paymentIntent.ephemeralKey)
+                configuration.appearance = paymentSheetAppearance()
                 // Set `allowsDelayedPaymentMethods` to true if your business handles
                 // delayed notification payment methods like US bank accounts.
                 // configuration.allowsDelayedPaymentMethods = true
@@ -133,6 +135,25 @@ class CheckoutViewModel: ObservableObject {
                 state = .error
             }
         }
+    }
+    
+    private func paymentSheetAppearance() -> PaymentSheet.Appearance {
+        var appearance = PaymentSheet.Appearance()
+        appearance.font.base = UIFont(name: "Poppins-Regular", size: UIFont.systemFontSize)!
+        appearance.cornerRadius = 12
+        appearance.shadow = .disabled
+        appearance.borderWidth = 0.5
+        appearance.colors.background = .white
+        appearance.colors.primary = UIColor(Color.primary.brand)
+        appearance.colors.textSecondary = .black
+        appearance.colors.componentPlaceholderText = UIColor(red: 115/255, green: 117/255, blue: 123/255, alpha: 1)
+        appearance.colors.componentText = .black
+        appearance.colors.componentBorder = .clear
+        appearance.colors.componentDivider = UIColor(red: 195/255, green: 213/255, blue: 200/255, alpha: 1)
+        appearance.colors.componentBackground = UIColor(red: 243/255, green: 248/255, blue: 250/247, alpha: 1)
+        appearance.primaryButton.cornerRadius = 20
+        
+        return appearance
     }
 }
 

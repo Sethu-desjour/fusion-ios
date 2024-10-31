@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct Session {
+struct Session: Equatable {
     let id: UUID
     let merchantId: UUID?
     let merchantName: String?

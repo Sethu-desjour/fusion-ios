@@ -51,6 +51,21 @@ class HomeViewModel: ObservableObject {
             }
         }
     }
+    
+    func package(for id: UUID) async throws -> Package {
+        var package: Package? = nil
+        sections.forEach { section in
+            if case .packages(let packages) = section.content {
+                package = packages.first(where: { $0.id == id } )
+            }
+        }
+        
+        if let package = package {
+            return package
+        } else {
+            return try await api.packageDetails(for: id).toLocal()
+        }
+    }
 }
 
 extension Optional where Wrapped: Collection, Wrapped.Element: RawModelConvertable {

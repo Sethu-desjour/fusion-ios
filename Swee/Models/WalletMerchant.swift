@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct WalletMerchant {
+struct WalletMerchant: Equatable {
     let id: UUID
     let name: String
     let photoURL: URL?

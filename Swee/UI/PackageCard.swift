@@ -78,6 +78,6 @@ extension PackageCard: Skeletonable {
 }
 
 #Preview {
-    PackageCard.skeleton
+    PackageCard.skeleton.equatable.view
         .frame(maxWidth: 160)
 }

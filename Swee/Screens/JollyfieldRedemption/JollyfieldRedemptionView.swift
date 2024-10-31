@@ -228,7 +228,12 @@ struct JollyfieldRedemptionView: View {
         }
         .onAppear(perform: {
             viewModel.api = api
-            viewModel.merchant = merchant
+            if merchant == WalletMerchant.empty,
+               let merchant = activeSession.merchant {
+                viewModel.merchant = merchant
+            } else {
+                viewModel.merchant = merchant
+            }
             viewModel.activeSession = activeSession
             activeSession.changeFrequency(to: 1)
             viewModel.dismiss = dismiss

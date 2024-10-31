@@ -25,6 +25,10 @@ private struct NavViewKey: EnvironmentKey {
     static let defaultValue: Binding<UINavigationController?> = .constant(nil)
 }
 
+private struct RouteKey: EnvironmentKey {
+    static let defaultValue: Binding<Route?> = .constant(nil)
+}
+
 extension EnvironmentValues {
     var currentTab: Binding<Tabs> {
         get { self[CurrentTabKey.self] }
@@ -49,6 +53,11 @@ extension EnvironmentValues {
     var navView: Binding<UINavigationController?> {
         get { self[NavViewKey.self] }
         set { self[NavViewKey.self] = newValue }
+    }
+    
+    var route: Binding<Route?> {
+        get { self[RouteKey.self] }
+        set { self[RouteKey.self] = newValue }
     }
 }
 

@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-enum SessionStatus: String, Codable {
+enum SessionStatus: String, Codable, Equatable {
     case notStarted = "NOT_STARTED"
     case inProgress = "IN_PROGRESS"
     case completed = "COMPLETED"
@@ -64,7 +64,7 @@ enum SessionChildStatus: String, Codable {
     case inactive = "INACTIVE"
 }
 
-struct SessionChildModel: Codable {
+struct SessionChildModel: Codable, Equatable {
     let id: UUID
     let name: String
     let remainingTime: String?
