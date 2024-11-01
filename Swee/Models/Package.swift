@@ -28,7 +28,17 @@ extension Package {
     }
     
     static var empty: Package {
-        .init(id: .init(uuidString: "4cc469ee-7337-4644-b335-0cb6990a42c2")!, merchant: "Zoomoov", imageURL: nil, title: "Chinese New Year", description: "Some description", summary: "Some summary", price: 1000, originalPrice: 2000, currency: "SGD", details: [], tos: nil)
+        .init(id: .init(uuidString: "4cc469ee-7337-4644-b335-0cb6990a42c2")!,
+              merchant: "",
+              imageURL: nil,
+              title: "",
+              description: "",
+              summary: "",
+              price: 0,
+              originalPrice: 0,
+              currency: "",
+              details: [],
+              tos: nil)
     }
 }
 

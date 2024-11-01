@@ -286,23 +286,6 @@ extension BannerView: Skeletonable {
     }
 }
 
-
-enum Vendors: CaseIterable {
-    case Zoomoov
-    case Jollyfield
-}
-
-extension Vendors {
-    func toString() -> String {
-        switch self {
-        case .Jollyfield:
-            return "Jollyfield"
-        case .Zoomoov:
-            return "Zoomoov"
-        }
-    }
-}
-
 struct PackageCarouselModel {
     let sectionID: UUID
     let title: String

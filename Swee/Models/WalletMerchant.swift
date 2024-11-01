@@ -10,6 +10,18 @@ struct WalletMerchant: Equatable {
     var activeSession: Session?
 }
 
+extension WalletMerchant {
+    static var empty: Self {
+        .init(id: .init(uuidString: "28910AFE-DB24-41D1-B0E1-6064D9C23083")!,
+              name: "",
+              photoURL: nil,
+              bgColors: [],
+              purchaseSummary: "",
+              products: [],
+              activeSession: nil)
+    }
+}
+
 extension WalletMerchantModel: RawModelConvertable {
     func toLocal() -> WalletMerchant {
         let colors = merchantBackgroundColors ?? []
