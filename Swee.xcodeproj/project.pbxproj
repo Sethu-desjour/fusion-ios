@@ -138,6 +138,7 @@
 		AF9AC5682C894D5700B16186 /* JollyfieldRedemptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */; };
 		AFA335C82C92676700883CBB /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA335C72C92676700883CBB /* AlertsView.swift */; };
 		AFA5CBF92CCA2DAA00660293 /* RedemptionErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5CBF82CCA2DAA00660293 /* RedemptionErrorView.swift */; };
+		AFB4E83F2CD4A247002273C4 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = AFB4E83E2CD4A247002273C4 /* FirebaseMessaging */; };
 		AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */; };
 		AFCEC5BC2C7AD00F00D157BE /* OtpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */; };
 		AFCEC5C02C7C0E9100D157BE /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5BF2C7C0E9100D157BE /* ButtonStyles.swift */; };
@@ -331,6 +332,7 @@
 				AF662A402CC5F44400613E45 /* FirebaseCrashlytics in Frameworks */,
 				AF662A3E2CC5F44400613E45 /* FirebaseAuth in Frameworks */,
 				AF3813F22CC601180028FD02 /* StripePaymentSheet in Frameworks */,
+				AFB4E83F2CD4A247002273C4 /* FirebaseMessaging in Frameworks */,
 				AFDD173E2CA1438200DC8DB8 /* MarkdownUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -744,6 +746,7 @@
 				AF3813EE2CC5F59C0028FD02 /* SwiftUIIntrospect */,
 				AF3813F12CC601180028FD02 /* StripePaymentSheet */,
 				AF3733972CC8A35D00AE6A45 /* StripeApplePay */,
+				AFB4E83E2CD4A247002273C4 /* FirebaseMessaging */,
 			);
 			productName = Swee;
 			productReference = AF170AFD2C71C02900544970 /* Swee.app */;
@@ -1114,6 +1117,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.desjour.fusion;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1152,6 +1156,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.desjour.fusion;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1291,6 +1296,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AF662A3C2CC5F44400613E45 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
+		};
+		AFB4E83E2CD4A247002273C4 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseMessaging;
 		};
 		AFDD173D2CA1438200DC8DB8 /* MarkdownUI */ = {
 			isa = XCSwiftPackageProductDependency;
