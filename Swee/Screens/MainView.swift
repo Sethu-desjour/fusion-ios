@@ -55,6 +55,7 @@ enum Tabs: Int, CaseIterable, Identifiable {
 
 struct MainView: View {
     @EnvironmentObject private var api: API
+    @Environment(\.route) private var route
     @StateObject var activeSession = ActiveSession(refreshFrequencyInMin: 5)
     @State private var selectedTab: Tabs = .home
     @State private var tabIsShown = true
@@ -122,6 +123,16 @@ struct MainView: View {
         .shadow(color: .black.opacity(0.15), radius: 2, y: -2)
     }
     
+    private func handle(route: Binding<Route?>) {
+        guard let route = route.wrappedValue else {
+            return
+        }
+        switch route {
+        case .package(let packageId):
+            selectedTab = .home
+        }
+    }
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
@@ -156,10 +167,14 @@ struct MainView: View {
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
+            .onChange(of: route, perform: { newValue in
+                handle(route: route)
+            })
             .onAppear(perform: {
                 //  NOTE: Uncomment to keep the images loading indefinately
 //                SDImageCachesManager.shared.caches = []
 //                SDWebImageManager.defaultImageCache = SDImageCachesManager.shared
+//                handle(route: route)
             })
             .animation(.snappy(duration: 0.2), value: tabIsShown)
             .animation(.snappy(duration: 0.2), value: activeSession.sessionIsActive)

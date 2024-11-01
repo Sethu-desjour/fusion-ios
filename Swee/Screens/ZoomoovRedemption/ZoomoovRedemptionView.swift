@@ -26,6 +26,19 @@ struct ZoomoovRedemptionModel {
     let productType: ProductType
 }
 
+extension ZoomoovRedemptionModel {
+    static var empty: ZoomoovRedemptionModel {
+        .init(purchaseId: .init(uuidString: "28910AFE-DB24-41D1-B0E1-6064D9C23083")!,
+              totalQuantity: 0,
+              qtyToRedeem: 0,
+              currentTicket: 0,
+              merchant: "",
+              type: "",
+              disclaimer: nil,
+              productType: .coupon)
+    }
+}
+
 struct ZoomoovRedemptionSetupView: View {
     @Binding var model: ZoomoovRedemptionModel
 //    var purchase: Purchase
@@ -119,12 +132,7 @@ struct ZoomoovRedemptionView: View {
     @State var merchant: WalletMerchant
     
     @State var step: ZoomoovRedemptionSteps = .setup
-    @State var currentRedemption: ZoomoovRedemptionModel = .init(purchaseId: .init(),
-                                                                 totalQuantity: 10,
-                                                                 merchant: "Zoomoov",
-                                                                 type: "rides",
-                                                                 disclaimer: "Ride cannot be refunded, or anything that the parent should be aware of will take up this space.",
-                                                                 productType: .coupon)
+    @State var currentRedemption: ZoomoovRedemptionModel = .empty
     
     @State var hidden = true
     

@@ -12,8 +12,11 @@ struct HomeView: View {
     @EnvironmentObject private var activeSession: ActiveSession
     @StateObject private var viewModel = HomeViewModel()
     @Environment(\.tabIsShown) private var tabIsShown
+    @Environment(\.route) private var route
     @State private var hideBottomSheet: Bool = true
     @State private var navView: UINavigationController? = nil
+    @State private var goToPackage = false
+    @State private var deepLinkPackage: Package?
     
     func section(at index: Int) -> any View {
         let section = viewModel.sections[index]
@@ -70,45 +73,73 @@ struct HomeView: View {
     
     var body: some View {
         CustomNavView {
-            VStack {
-                if viewModel.showError {
-                    StateView.error {
+            ZStack {
+                if let package = deepLinkPackage {
+                    CustomNavLink(isActive: $goToPackage, destination: PackageDetailView(package: package))
+                }
+                VStack {
+                    if viewModel.showError {
+                        StateView.error {
+                            try? await viewModel.fetch()
+                        }
+                    } else if viewModel.sections.isEmpty {
+                        skeletonUI
+                    } else {
+                        mainUI
+                    }
+                }
+                .onChange(of: hideBottomSheet, perform: { newValue in
+                    tabIsShown.wrappedValue = hideBottomSheet
+                })
+                .onAppear(perform: {
+                    viewModel.api = api
+                    viewModel.cart = cart
+                    Task {
                         try? await viewModel.fetch()
                     }
-                } else if viewModel.sections.isEmpty {
-                   skeletonUI
-                } else {
-                    mainUI
+                    tabIsShown.wrappedValue = true
+                    locationManager.checkLocationAuthorization()
+                })
+                .customNavigationBackButtonHidden(true)
+                .customNavLeadingItem {
+                    LogoNavItem()
+                }
+                .customNavTrailingItem {
+                    CartButton()
+                    //                Button(action: {
+                    //                    hideBottomSheet = false
+                    //                }, label: {
+                    //                    Image("cart")
+                    //                        .foregroundStyle(Color.text.black60)
+                    //                })
+                    //                .buttonStyle(EmptyStyle())
+                }
+                .customBottomSheet(hidden: $hideBottomSheet) {
+                    NotificationUpsell(hide: $hideBottomSheet)
                 }
             }
-            .onChange(of: hideBottomSheet, perform: { newValue in
-                tabIsShown.wrappedValue = hideBottomSheet
-            })
-            .onAppear(perform: {
-                viewModel.api = api
-                viewModel.cart = cart
+        }
+        .onChange(of: route) { newValue in
+            guard let route = route.wrappedValue else {
+                return
+            }
+            
+            switch route {
+            case .package(let id):
+                defer {
+                    self.route.wrappedValue = nil
+                }
                 Task {
-                    try? await viewModel.fetch()
+                    do {
+                        let package = try await viewModel.package(for: id)
+                        await MainActor.run {
+                            deepLinkPackage = package
+                            goToPackage = true
+                        }
+                    } catch {
+                        // fail silently
+                    }
                 }
-                tabIsShown.wrappedValue = true
-                locationManager.checkLocationAuthorization()
-            })
-            .customNavigationBackButtonHidden(true)
-            .customNavLeadingItem {
-                LogoNavItem()
-            }
-            .customNavTrailingItem {
-                CartButton()
-//                Button(action: {
-//                    hideBottomSheet = false
-//                }, label: {
-//                    Image("cart")
-//                        .foregroundStyle(Color.text.black60)
-//                })
-//                .buttonStyle(EmptyStyle())
-            }
-            .customBottomSheet(hidden: $hideBottomSheet) {
-                NotificationUpsell(hide: $hideBottomSheet)
             }
         }
         .environment(\.navView, $navView)
@@ -255,23 +286,6 @@ extension BannerView: Skeletonable {
     }
 }
 
-
-enum Vendors: CaseIterable {
-    case Zoomoov
-    case Jollyfield
-}
-
-extension Vendors {
-    func toString() -> String {
-        switch self {
-        case .Jollyfield:
-            return "Jollyfield"
-        case .Zoomoov:
-            return "Zoomoov"
-        }
-    }
-}
-
 struct PackageCarouselModel {
     let sectionID: UUID
     let title: String
@@ -307,7 +321,8 @@ struct PackagesCarousel: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHGrid(rows: [.init()], spacing: 16) {
                     ForEach(model.packages.indices, id: \.self) { index in
-                        PackageCard(package: model.packages[index])
+                        let package = model.packages[index]
+                        PackageCard(package: package)
                             .frame(width: 165)
                     }
                 }

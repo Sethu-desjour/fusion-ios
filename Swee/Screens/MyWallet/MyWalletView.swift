@@ -49,7 +49,8 @@ struct MyWalletView: View {
     var body: some View {
         CustomNavView {
             ZStack {
-                CustomNavLink(isActive: goToActiveSession, destination: JollyfieldRedemptionView(merchant: activeSession.merchant ?? .empty))
+                CustomNavLink(isActive: goToActiveSession,
+                              destination: JollyfieldRedemptionView(merchant: activeSession.merchant ?? .empty))
                 ScrollView {
                     HStack {
                         Text("My purchases")
@@ -197,7 +198,7 @@ extension MerchantPurchasesCard: Skeletonable {
 
 #Preview {
     MerchantPurchasesCard
-        .skeleton
+        .skeleton.equatable.view
 }
 
 #Preview {

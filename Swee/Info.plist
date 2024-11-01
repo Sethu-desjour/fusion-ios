@@ -20,6 +20,16 @@
 				<string>com.googleusercontent.apps.862723965615-h7dcrrfd2h5fhnojm7tj27odnd8st7hm</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.fusion.green</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.fusion.green</string>
+			</array>
+		</dict>
 	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
