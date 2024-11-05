@@ -30,6 +30,7 @@ struct SweeApp: App {
     @StateObject var locationManager = LocationManager()
     @State var route: Route?
     @State private var delayedRoute: Route?
+    @State var fcmToken: String?
     
     var body: some Scene {
         WindowGroup {
@@ -65,6 +66,15 @@ struct SweeApp: App {
                     }
                 }
             })
+            .onChange(of: delegate.fcmToken, perform: { newValue in
+                fcmToken = newValue
+                guard let newValue else {
+                    return
+                }
+                Task {
+                    try? await api.savePushToken(newValue)
+                }
+            })
             .onChange(of: appRootManager.currentRoot, perform: { newValue in
                 if newValue == .home {
                     route = delayedRoute
@@ -78,6 +88,7 @@ struct SweeApp: App {
                 }
             })
             .environment(\.route, $route)
+            .environment(\.fcmToken, $fcmToken)
             .environmentObject(appRootManager)
             .environmentObject(api)
             .environmentObject(cart)
@@ -86,7 +97,10 @@ struct SweeApp: App {
     }
 }
 
-class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
+class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate, ObservableObject {
+    
+    @Published var fcmToken: String?
+    
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
@@ -106,6 +120,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("fcmToken =====", fcmToken)
+        self.fcmToken = fcmToken
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {

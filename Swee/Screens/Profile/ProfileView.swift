@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 import SDWebImageSwiftUI
 
 struct ProfileView: View {
@@ -28,6 +29,7 @@ struct ProfileView: View {
     @EnvironmentObject private var api: API
     @EnvironmentObject private var appRootManager: AppRootManager
     @Environment(\.tabIsShown) private var tabIsShown
+    @Environment(\.fcmToken) private var fcmToken
     @EnvironmentObject private var activeSession: ActiveSession
 
     
@@ -111,7 +113,19 @@ struct ProfileView: View {
                     }))
                 },
             ],
+            
         ]
+        
+        if let token = fcmToken.wrappedValue {
+            sections.append(
+                [
+                    .init(title: "Copy push token", trailingIcon: Image("forward")) {
+                        UIPasteboard.general.setValue(token,
+                                                      forPasteboardType: UTType.plainText.identifier)
+                    },
+                ]
+            )
+        }
     }
     
     var body: some View {

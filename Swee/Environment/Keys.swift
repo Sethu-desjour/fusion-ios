@@ -29,6 +29,10 @@ private struct RouteKey: EnvironmentKey {
     static let defaultValue: Binding<Route?> = .constant(nil)
 }
 
+private struct FCMTokenKey: EnvironmentKey {
+    static let defaultValue: Binding<String?> = .constant(nil)
+}
+
 extension EnvironmentValues {
     var currentTab: Binding<Tabs> {
         get { self[CurrentTabKey.self] }
@@ -58,6 +62,11 @@ extension EnvironmentValues {
     var route: Binding<Route?> {
         get { self[RouteKey.self] }
         set { self[RouteKey.self] = newValue }
+    }
+    
+    var fcmToken: Binding<String?> {
+        get { self[FCMTokenKey.self] }
+        set { self[FCMTokenKey.self] = newValue }
     }
 }
 

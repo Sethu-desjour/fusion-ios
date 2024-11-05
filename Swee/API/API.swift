@@ -426,14 +426,21 @@ class API: ObservableObject {
     func getSessions() async throws -> [SessionModel] {
         let url = "/sessions"
         
-        return try await request(with: url) { data, response in
-            print("sessions ====", String(data: data, encoding: .utf8))
-            guard response.statusCode == 200 else {
-                throw APIError.wrongCode
-            }
-            
-            return nil
-        }
+        return try await request(with: url)
+    }
+    
+    func savePushToken(_ token: String) async throws {
+        let url = "/push_tokens"
+        
+        let jsonData = try JSONEncoder().encode(["token": token, "device_type": "ios"])
+        
+        try await request(with: url, method: .POST(jsonData))
+    }
+    
+    func getAlerts() async throws -> [AlertModel] {
+        let url = "/users/notifications"
+        
+        return try await request(with: url)
     }
     
     func DEBUGchangeRedemptionStatus(for id: UUID, merchantId: UUID) async throws {

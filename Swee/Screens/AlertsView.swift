@@ -22,6 +22,7 @@ struct AlertsView: View {
         var image: Image?
         var description: String?
         var action: Action?
+        var createdAt: Date
     }
     
     struct RedeemActivity: AlertType {
@@ -29,6 +30,7 @@ struct AlertsView: View {
         let title: String
         let interval: TimeInterval
         let merchant: String
+        var createdAt: Date
     }
     
     struct Announcement: AlertType {
@@ -38,6 +40,7 @@ struct AlertsView: View {
         var action: Action?
         let merchant: String
         var image: Image?
+        var createdAt: Date
     }
     
     enum Alert {
@@ -49,15 +52,16 @@ struct AlertsView: View {
     @Environment(\.tabIsShown) private var tabIsShown
     @Environment(\.currentTab) private var selectedTab
     @EnvironmentObject private var activeSession: ActiveSession
-
+    @EnvironmentObject private var api: API
+    
+    @StateObject private var viewModel = AlertsViewModel()
     @State private var goToMerchant: Bool = false
-    @State private var nrOfAlerts: Int = 6
-    @State private var alerts: [Alert] = [
-        .localCTA(.init(read: false, title: "Complete your profile and win 1 zoomoov ride", action: .init(title: "Complete profile", route: .profile))),
-        .redeemActivity(.init(read: true, title: "Jollyride active", interval: 8000, merchant: "Jollyfield")),
-        .announcement(.init(read: true, title: "Zoomoov is now on Swee", description: "We’re pleased to introduce that Zoomoov is now available in Swee", action: .init(title: "Explore", route: .merchant("Some id")), merchant: "Zoomoov", image: Image("alert-avatar"))),
-        .announcement(.init(read: true, title: "Celebrate your kids birthday at any of the Zoomoov location!", description: "50% off on all Zoomoov packages", merchant: "Zoomoov")),
-    ]
+//    @State private var alerts: [Alert] = [
+//        .localCTA(.init(read: false, title: "Complete your profile and win 1 zoomoov ride", action: .init(title: "Complete profile", route: .profile))),
+//        .redeemActivity(.init(read: true, title: "Jollyride active", interval: 8000, merchant: "Jollyfield")),
+//        .announcement(.init(read: true, title: "Zoomoov is now on Swee", description: "We’re pleased to introduce that Zoomoov is now available in Swee", action: .init(title: "Explore", route: .merchant("Some id")), merchant: "Zoomoov", image: Image("alert-avatar"))),
+//        .announcement(.init(read: true, title: "Celebrate your kids birthday at any of the Zoomoov location!", description: "50% off on all Zoomoov packages", merchant: "Zoomoov")),
+//    ]
     
     func handle(route: Routes) -> Void {
         switch route {
@@ -69,13 +73,14 @@ struct AlertsView: View {
     }
     
     func row(at index: Int) -> any View {
-        switch alerts[index] {
+        switch viewModel.alerts[index] {
         case .localCTA(let cta):
             return AlertRow(index: index,
                             read: cta.read,
                             title: cta.title,
                             description: cta.description,
                             image: cta.image,
+                            createdAt: cta.createdAt,
                             action: cta.action.toClosure({ route in
                 handle(route: route)
             }))
@@ -84,7 +89,8 @@ struct AlertsView: View {
                             read: activity.read,
                             title: activity.title,
                             merchant: activity.merchant,
-                            activityInterval: activity.interval)
+                            activityInterval: activity.interval,
+                            createdAt: activity.createdAt)
         case .announcement(let announcement):
             return AlertRow(index: index,
                             read: announcement.read,
@@ -92,6 +98,7 @@ struct AlertsView: View {
                             description: announcement.description,
                             image: announcement.image,
                             merchant: announcement.merchant,
+                            createdAt: announcement.createdAt,
                             action: announcement.action.toClosure({ route in
                 handle(route: route)
             }))
@@ -102,7 +109,7 @@ struct AlertsView: View {
         CustomNavView {
             VStack {
                 ScrollView {
-                    ForEach(alerts.indices, id: \.self) { index in
+                    ForEach(viewModel.alerts.indices, id: \.self) { index in
                         row(at: index).equatable.view
                     }
                     .padding(.bottom, activeSession.sessionIsActive ? 120 : 60)
@@ -112,15 +119,21 @@ struct AlertsView: View {
             }
             .onAppear {
                 tabIsShown.wrappedValue = true
+                viewModel.api = api
+                Task {
+                    try await viewModel.fetch()
+                }
             }
             .customNavigationBackButtonHidden(true)
             .customNavLeadingItem {
                 HStack(alignment: .center, spacing: 4) {
                     Text("Alerts")
                         .font(.custom("Poppins-SemiBold", size: 20))
-                    Text("(\(nrOfAlerts))")
-                        .font(.custom("Poppins-SemiBold", size: 16))
-                        .foregroundStyle(Color.text.black60)
+                    if !viewModel.alerts.isEmpty {
+                        Text("(\(viewModel.alerts.count))")
+                            .font(.custom("Poppins-SemiBold", size: 16))
+                            .foregroundStyle(Color.text.black60)
+                    }
                 }
             }
             .customNavTrailingItem {
@@ -163,6 +176,7 @@ struct AlertRow: View {
     @State var activityInterval: TimeInterval?
     var action: Action?
     var index: Int
+    var createdAt: Date
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
@@ -173,6 +187,7 @@ struct AlertRow: View {
          image: Image? = nil,
          merchant: String? = nil,
          activityInterval: TimeInterval? = nil,
+         createdAt: Date,
          action: Action? = nil) {
         self.index = index
         self.title = title
@@ -182,6 +197,7 @@ struct AlertRow: View {
         self.activityInterval = activityInterval
         self.action = action
         self.read = read
+        self.createdAt = createdAt
     }
     
     private var avatar: any View {
@@ -264,7 +280,7 @@ struct AlertRow: View {
                 }
                 Spacer()
                 VStack(spacing: 0) {
-                    Text("2m")
+                    Text(createdAt.timeElapsed)
                         .font(.custom("Poppins-Thin", size: 12))
                     Image("ellipsis")
                     Spacer()

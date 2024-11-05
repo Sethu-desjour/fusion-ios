@@ -28,6 +28,39 @@ extension Date {
     }
 }
 
+extension Date {
+    var timeElapsed: String {
+        let calendar = Calendar.current
+        let now = Date()
+        
+        if let seconds = calendar.dateComponents([.second], from: self, to: now).minute, seconds < 60 {
+            return "\(seconds)s"
+        }
+        
+        if let minutes = calendar.dateComponents([.minute], from: self, to: now).minute, minutes < 60 {
+            return "\(minutes)m"
+        }
+        
+        if let hours = calendar.dateComponents([.hour], from: self, to: now).hour, hours < 24 {
+            return "\(hours)h"
+        }
+        
+        if let days = calendar.dateComponents([.day], from: self, to: now).day, days < 30 {
+            return "\(days)d"
+        }
+        
+        if let months = calendar.dateComponents([.month], from: self, to: now).month, months < 12 {
+            return "\(months)mo"
+        }
+        
+        if let years = calendar.dateComponents([.year], from: self, to: now).year {
+            return "\(years)y"
+        }
+        
+        return ""
+    }
+}
+
 @propertyWrapper
 struct DecodableDate<Value: Codable & Equatable> {
     var wrappedValue: Value
