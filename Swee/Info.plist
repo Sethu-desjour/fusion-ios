@@ -24,10 +24,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.fusion.green</string>
+			<string>com.zoomoov.greenapp</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.fusion.green</string>
+				<string>com.zoomoov.greenapp</string>
 			</array>
 		</dict>
 	</array>

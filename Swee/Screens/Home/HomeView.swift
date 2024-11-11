@@ -16,7 +16,9 @@ struct HomeView: View {
     @State private var hideBottomSheet: Bool = true
     @State private var navView: UINavigationController? = nil
     @State private var goToPackage = false
+    @State private var goToMerchant = false
     @State private var deepLinkPackage: Package?
+    @State private var deepLinkMerchantId: UUID?
     
     func section(at index: Int) -> any View {
         let section = viewModel.sections[index]
@@ -65,7 +67,6 @@ struct HomeView: View {
                 }
             }
             .padding(.vertical, 20)
-//                        .padding(.horizontal, 16)
             .padding(.bottom, activeSession.sessionIsActive ? 160 : 100)
         }
         .ignoresSafeArea()
@@ -76,6 +77,9 @@ struct HomeView: View {
             ZStack {
                 if let package = deepLinkPackage {
                     CustomNavLink(isActive: $goToPackage, destination: PackageDetailView(package: package))
+                }
+                if let deepLinkMerchantId, let merchant = viewModel.merchant(for: deepLinkMerchantId) {
+                    CustomNavLink(isActive: $goToMerchant, destination: MerchantPageView(merchant: merchant))
                 }
                 VStack {
                     if viewModel.showError {
@@ -106,13 +110,6 @@ struct HomeView: View {
                 }
                 .customNavTrailingItem {
                     CartButton()
-                    //                Button(action: {
-                    //                    hideBottomSheet = false
-                    //                }, label: {
-                    //                    Image("cart")
-                    //                        .foregroundStyle(Color.text.black60)
-                    //                })
-                    //                .buttonStyle(EmptyStyle())
                 }
                 .customBottomSheet(hidden: $hideBottomSheet) {
                     NotificationUpsell(hide: $hideBottomSheet)
@@ -123,12 +120,11 @@ struct HomeView: View {
             guard let route = route.wrappedValue else {
                 return
             }
-            
+            defer {
+                self.route.wrappedValue = nil
+            }
             switch route {
             case .package(let id):
-                defer {
-                    self.route.wrappedValue = nil
-                }
                 Task {
                     do {
                         let package = try await viewModel.package(for: id)
@@ -140,6 +136,11 @@ struct HomeView: View {
                         // fail silently
                     }
                 }
+            case .merchant(let merchantId):
+                deepLinkMerchantId = merchantId
+                goToMerchant = true
+            default:
+                return
             }
         }
         .environment(\.navView, $navView)
@@ -174,9 +175,6 @@ struct BannersView: View {
                 page = min(Int(offset / 210) + 1, bannerModels.count - 1)
             }
         }
-//        .introspect(.scrollView, on: .iOS(.v15, .v16, .v17, .v18), customize: { scrollView in
-//            scrollView.clipsToBounds = false
-//        })
     }
 }
 
@@ -230,7 +228,6 @@ struct BannerView: View {
                 } placeholder: {
                     Color.white
                         .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
-//                        .frame(width: 70, height: 70)
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             case .gradient(let array):
@@ -328,9 +325,6 @@ struct PackagesCarousel: View {
                 }
                 .padding(.horizontal, 16)
             }
-//            .introspect(.scrollView, on: .iOS(.v15, .v16, .v17, .v18), customize: { scrollView in
-//                scrollView.clipsToBounds = false
-//            })
         }
     }
 }
@@ -351,10 +345,9 @@ extension PackagesCarousel: Skeletonable {
                             .equatable.view
                     }
                 }
-                .frame(maxHeight: 200)
+                .frame(maxHeight: 220)
             }
         }
-//        .frame(maxHeight: 400)
     }
 }
 

@@ -52,6 +52,19 @@ class HomeViewModel: ObservableObject {
         }
     }
     
+    func merchant(for id: UUID) -> Merchant? {
+        var merchant: Merchant? = nil
+        sections.forEach({ section in
+            if case .merchants(let merchants) = section.content {
+                merchant = merchants.first { merchant in
+                    merchant.id == id
+                }
+            }
+        })
+        
+        return merchant
+    }
+    
     func package(for id: UUID) async throws -> Package {
         var package: Package? = nil
         sections.forEach { section in

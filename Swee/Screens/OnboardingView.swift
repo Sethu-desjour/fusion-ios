@@ -12,14 +12,14 @@ struct OnboardingView: View {
     @State private var page = 0
     @State private var pages: [Page] = [
         .init(image: .init("onboarding-img-1", bundle: .main),
-              title: "Quick Bookings",
-              description: "Skip the lines! Reserve rides and play sessions effortlessly through the app"),
+              title: "Cheaper rides",
+              description: "Pay less and get more when buying ZOOMOOV products through Green App"),
         .init(image: .init("onboarding-img-2", bundle: .main),
               title: "Track Playtime",
-              description: "Monitor and manage your child's play history and favorite activities all in one place"),
+              description: "Easily monitor your purchases and balance, all in one place"),
         .init(image: .init("onboarding-img-3", bundle: .main),
-              title: "Exclusive Offers & Rewards",
-              description: "Unlock app-only discounts, promotions, and rewards. Enjoy more playtime while saving on every booking!"),
+              title: "Refer to get rewarded",
+              description: "Get one free ride when referring a friend to download Green App (T&C’s apply)"),
     ]
     
     private var nextTextView: some View {
@@ -59,6 +59,8 @@ struct OnboardingView: View {
                     ForEach(colors.indices, id: \.self) { index in
                         VStack {
                             pages[index].image
+                                .resizable()
+                                .frame(maxWidth: 375, maxHeight: 375)
                             Text(pages[index].title)
                                 .font(.custom("Poppins-SemiBold", size: 24))
                                 .foregroundStyle(Color.text.black100)

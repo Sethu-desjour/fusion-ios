@@ -232,7 +232,7 @@ struct CheckoutView: View {
                   buttonTitle: "View my purchases") {
             cart.reset()
             dismiss()
-            selectedTab.wrappedValue = .purchases
+            selectedTab.wrappedValue = .myWallet
         }
     }
     

@@ -14,7 +14,7 @@ struct PackageCard: View {
                     } placeholder: {
                         Color.white
                             .skeleton(with: true, shape: .rounded(.radius(4, style: .circular)))
-                            .frame(height: 140)
+                            .frame(width: 165, height: 165)
                     }
                     .transition(.fade(duration: 0.5))
                     .scaledToFill()
@@ -22,7 +22,7 @@ struct PackageCard: View {
                     .edgesIgnoringSafeArea(.all)
                     .clipShape(RoundedRectangle(cornerRadius: 4))
                 }
-                .frame(maxWidth: .infinity, maxHeight: 140)
+                .frame(maxWidth: 165, maxHeight: 165)
                 Text(package.title)
                     .font(.custom("Poppins-SemiBold", size: 16))
                     .foregroundStyle(Color.text.black100)
@@ -59,15 +59,15 @@ extension PackageCard: Skeletonable {
         VStack(alignment: .leading) {
             Color.white
                 .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
-                .frame(maxWidth: .infinity)
-                .frame(height: 140)
+                .frame(maxWidth: 165)
+                .frame(height: 165)
             Text("")
                 .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
-                .frame(maxWidth: 140)
+                .frame(maxWidth: 165)
                 .frame(height: 15)
             Text("")
                 .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
-                .frame(maxWidth: 140)
+                .frame(maxWidth: 165)
                 .frame(height: 10)
             Text("")
                 .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))

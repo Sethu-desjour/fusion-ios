@@ -12,9 +12,11 @@ struct MyWalletView: View {
     @Environment(\.tabIsShown) private var tabIsShown
     @Environment(\.currentTab) private var currentTab
     @Environment(\.goToActiveSession) private var goToActiveSession
+    @Environment(\.route) private var route
     @EnvironmentObject private var activeSession: ActiveSession
     @EnvironmentObject private var api: API
     @StateObject private var viewModel = MyWalletViewModel()
+    @State private var goToActivityView: Bool = false
     
     var emptyUI: some View {
         VStack(spacing: 0) {
@@ -51,6 +53,7 @@ struct MyWalletView: View {
             ZStack {
                 CustomNavLink(isActive: goToActiveSession,
                               destination: JollyfieldRedemptionView(merchant: activeSession.merchant ?? .empty))
+                CustomNavLink(isActive: $goToActivityView, destination: ActivityView())
                 ScrollView {
                     HStack {
                         Text("My purchases")
@@ -124,6 +127,16 @@ struct MyWalletView: View {
                 }
             }
         }
+        .onChange(of: route, perform: { newValue in
+            guard let route = route.wrappedValue else {
+                return
+            }
+            guard case .myActivity = route else {
+                return
+            }
+            goToActivityView = true
+            self.route.wrappedValue = nil
+        })
     }
 }
 

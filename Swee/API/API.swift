@@ -426,13 +426,44 @@ class API: ObservableObject {
     func getSessions() async throws -> [SessionModel] {
         let url = "/sessions"
         
-        return try await request(with: url) { data, response in
-            print("sessions ====", String(data: data, encoding: .utf8))
-            guard response.statusCode == 200 else {
+        return try await request(with: url)
+    }
+    
+    func savePushToken(_ token: String) async throws {
+        let url = "/push_tokens"
+        
+        let jsonData = try JSONEncoder().encode(["token": token, "device_type": "ios"])
+        
+        try await request(with: url, method: .POST(jsonData))
+    }
+    
+    func getAlerts() async throws -> [AlertModel] {
+        let url = "/users/notifications"
+        
+        return try await request(with: url)
+    }
+    
+    func markAsReadAlert(with id: UUID) async throws {
+        let url = "/users/notifications"
+        
+        let jsonData = try JSONEncoder().encode(["user_notification_ids": [id.uuidString.lowercased()]])
+        
+        try await request(with: url, method: .PUT(jsonData)) { data, response in
+            guard response.statusCode == 204 else {
                 throw APIError.wrongCode
             }
-            
-            return nil
+        }
+    }
+    
+    func markAsReadAllAlerts() async throws {
+        let url = "/users/notifications"
+        
+        let jsonData = try JSONEncoder().encode(["is_read_all": true])
+        
+        try await request(with: url, method: .PUT(jsonData)) { data, response in
+            guard response.statusCode == 204 else {
+                throw APIError.wrongCode
+            }
         }
     }
     
