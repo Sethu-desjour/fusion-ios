@@ -65,7 +65,6 @@ struct HomeView: View {
                 }
             }
             .padding(.vertical, 20)
-//                        .padding(.horizontal, 16)
             .padding(.bottom, activeSession.sessionIsActive ? 160 : 100)
         }
         .ignoresSafeArea()
@@ -106,13 +105,6 @@ struct HomeView: View {
                 }
                 .customNavTrailingItem {
                     CartButton()
-                    //                Button(action: {
-                    //                    hideBottomSheet = false
-                    //                }, label: {
-                    //                    Image("cart")
-                    //                        .foregroundStyle(Color.text.black60)
-                    //                })
-                    //                .buttonStyle(EmptyStyle())
                 }
                 .customBottomSheet(hidden: $hideBottomSheet) {
                     NotificationUpsell(hide: $hideBottomSheet)
@@ -174,9 +166,6 @@ struct BannersView: View {
                 page = min(Int(offset / 210) + 1, bannerModels.count - 1)
             }
         }
-//        .introspect(.scrollView, on: .iOS(.v15, .v16, .v17, .v18), customize: { scrollView in
-//            scrollView.clipsToBounds = false
-//        })
     }
 }
 
@@ -230,7 +219,6 @@ struct BannerView: View {
                 } placeholder: {
                     Color.white
                         .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
-//                        .frame(width: 70, height: 70)
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             case .gradient(let array):
@@ -328,9 +316,6 @@ struct PackagesCarousel: View {
                 }
                 .padding(.horizontal, 16)
             }
-//            .introspect(.scrollView, on: .iOS(.v15, .v16, .v17, .v18), customize: { scrollView in
-//                scrollView.clipsToBounds = false
-//            })
         }
     }
 }
@@ -351,10 +336,9 @@ extension PackagesCarousel: Skeletonable {
                             .equatable.view
                     }
                 }
-                .frame(maxHeight: 200)
+                .frame(maxHeight: 220)
             }
         }
-//        .frame(maxHeight: 400)
     }
 }
 

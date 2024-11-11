@@ -443,6 +443,30 @@ class API: ObservableObject {
         return try await request(with: url)
     }
     
+    func markAsReadAlert(with id: UUID) async throws {
+        let url = "/users/notifications"
+        
+        let jsonData = try JSONEncoder().encode(["user_notification_ids": [id.uuidString.lowercased()]])
+        
+        try await request(with: url, method: .PUT(jsonData)) { data, response in
+            guard response.statusCode == 204 else {
+                throw APIError.wrongCode
+            }
+        }
+    }
+    
+    func markAsReadAllAlerts() async throws {
+        let url = "/users/notifications"
+        
+        let jsonData = try JSONEncoder().encode(["is_read_all": true])
+        
+        try await request(with: url, method: .PUT(jsonData)) { data, response in
+            guard response.statusCode == 204 else {
+                throw APIError.wrongCode
+            }
+        }
+    }
+    
     func DEBUGchangeRedemptionStatus(for id: UUID, merchantId: UUID) async throws {
         let url = "/redemptions/\(id.uuidString.lowercased())/status"
         let update = RedemptionStatusUpdate(status: .success, merchantStoreId: merchantId.uuidString.lowercased())

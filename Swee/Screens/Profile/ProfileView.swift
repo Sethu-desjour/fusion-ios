@@ -50,17 +50,8 @@ struct ProfileView: View {
     func setupSections() {
         sections = [
             [
-//                .init(title: "Location", description: .text("Singapore"), leadingIcon: Image("location")) {
-//                    
-//                },
-//                .init(title: "Language", description: .text("English"), leadingIcon: Image("globe")) {
-//                    
-//                },
                 .init(title: "Email ID", description: .text(api.user?.email ?? "Add email ID"), leadingIcon: Image("mail")) {
                     goToEmail = true
-                },
-                .init(title: "Payment", description: .text("Add payment"), leadingIcon: Image("card")) {
-                    
                 },
                 .init(title: "Date of birth", description: .text(api.user?.birthDayString ?? "Add date"), leadingIcon: Image("calendar")) {
                     goToDOB = true
@@ -230,7 +221,6 @@ struct ProfileView: View {
                                 .shadow(color: .black.opacity(0.2), radius: 2, y: 1)
                             )
                         }
-                        ReferalCard(banner: .init(title: "Refer a friend and earn rewards ✨", description: "Enjoy a free Zoomoov ride for each friend who signs up through your referral, and your friend gets a free ride too!", buttonTitle: "Share", background: .image(URL(string: "https://i.ibb.co/LpYWLfQ/referal-bg-3x.png")!), badgeImage: URL(string: "https://i.ibb.co/qkHf8XZ/badge-1-3x.png")))
                     }
                     .padding()
                     .padding(.bottom, activeSession.sessionIsActive ? 120 : 60)

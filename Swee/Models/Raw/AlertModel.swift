@@ -22,6 +22,10 @@ struct AlertModel: Codable {
 
 extension AlertModel: RawModelConvertable {
     func toLocal() -> AlertsView.Alert {
-        AlertsView.Alert.localCTA(.init(read: isRead, title: title, description: body, createdAt: createdAt))
+        AlertsView.Alert.localCTA(.init(id: id,
+                                        read: isRead,
+                                        title: title,
+                                        description: body,
+                                        createdAt: createdAt))
     }
 }

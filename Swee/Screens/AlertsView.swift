@@ -7,6 +7,7 @@ enum Routes {
 
 struct AlertsView: View {
     protocol AlertType {
+        var id: UUID { get }
         var title: String { get }
         var read: Bool { get set }
     }
@@ -17,15 +18,17 @@ struct AlertsView: View {
     }
     
     struct LocalCTA: AlertType {
+        let id: UUID
         var read: Bool
         let title: String
         var image: Image?
         var description: String?
-        var action: Action?
         var createdAt: Date
+        var action: Action?
     }
     
     struct RedeemActivity: AlertType {
+        let id: UUID
         var read: Bool
         let title: String
         let interval: TimeInterval
@@ -34,6 +37,7 @@ struct AlertsView: View {
     }
     
     struct Announcement: AlertType {
+        let id: UUID
         var read: Bool
         let title: String
         var description: String?
@@ -43,10 +47,21 @@ struct AlertsView: View {
         var createdAt: Date
     }
     
-    enum Alert {
+    enum Alert: Identifiable {
         case localCTA(LocalCTA)
         case redeemActivity(RedeemActivity)
         case announcement(Announcement)
+        
+        var id: UUID {
+            switch self {
+            case .localCTA(let cta):
+                return cta.id
+            case .redeemActivity(let activity):
+                return activity.id
+            case .announcement(let announcement):
+                return announcement.id
+            }
+        }
     }
     
     @Environment(\.tabIsShown) private var tabIsShown
@@ -75,7 +90,8 @@ struct AlertsView: View {
     func row(at index: Int) -> any View {
         switch viewModel.alerts[index] {
         case .localCTA(let cta):
-            return AlertRow(index: index,
+            return AlertRow(alertId: cta.id,
+                            index: index,
                             read: cta.read,
                             title: cta.title,
                             description: cta.description,
@@ -83,16 +99,22 @@ struct AlertsView: View {
                             createdAt: cta.createdAt,
                             action: cta.action.toClosure({ route in
                 handle(route: route)
-            }))
+            })) { alertId in
+                viewModel.markAsRead(alertId)
+            }
         case .redeemActivity(let activity):
-            return AlertRow(index: index,
+            return AlertRow(alertId: activity.id,
+                            index: index,
                             read: activity.read,
                             title: activity.title,
                             merchant: activity.merchant,
                             activityInterval: activity.interval,
-                            createdAt: activity.createdAt)
+                            createdAt: activity.createdAt) { alertId in
+                viewModel.markAsRead(alertId)
+            }
         case .announcement(let announcement):
-            return AlertRow(index: index,
+            return AlertRow(alertId: announcement.id,
+                            index: index,
                             read: announcement.read,
                             title: announcement.title,
                             description: announcement.description,
@@ -101,7 +123,9 @@ struct AlertsView: View {
                             createdAt: announcement.createdAt,
                             action: announcement.action.toClosure({ route in
                 handle(route: route)
-            }))
+            })) { alertId in
+                viewModel.markAsRead(alertId)
+            }
         }
     }
     
@@ -109,12 +133,14 @@ struct AlertsView: View {
         CustomNavView {
             VStack {
                 ScrollView {
-                    ForEach(viewModel.alerts.indices, id: \.self) { index in
-                        row(at: index).equatable.view
+                    LazyVStack(spacing: 0) {
+                        ForEach(viewModel.alerts.indices, id: \.self) { index in
+                            row(at: index).equatable.view
+                        }
+                        //                    CustomNavLink(isActive: $goToMerchant, destination: MerchantPageView()) {
+                        //                    }
                     }
                     .padding(.bottom, activeSession.sessionIsActive ? 120 : 60)
-//                    CustomNavLink(isActive: $goToMerchant, destination: MerchantPageView()) {
-//                    }
                 }
             }
             .onAppear {
@@ -129,16 +155,17 @@ struct AlertsView: View {
                 HStack(alignment: .center, spacing: 4) {
                     Text("Alerts")
                         .font(.custom("Poppins-SemiBold", size: 20))
-                    if !viewModel.alerts.isEmpty {
-                        Text("(\(viewModel.alerts.count))")
+                    if viewModel.numberOfUnreadAlerts > 0 {
+                        Text("(\(viewModel.numberOfUnreadAlerts))")
                             .font(.custom("Poppins-SemiBold", size: 16))
                             .foregroundStyle(Color.text.black60)
                     }
                 }
             }
             .customNavTrailingItem {
-                Button {
-                    // @todo mark as read
+                AsyncButton(progressTint: Color.primary.brand) {
+                    try? await viewModel.markAllAsRead()
+                    try? await viewModel.fetch()
                 } label: {
                     Text("Mark all as read")
                         .font(.custom("Poppins-Medium", size: 14))
@@ -168,6 +195,8 @@ struct AlertRow: View {
         let closure: () -> Void
     }
     
+    @EnvironmentObject private var api: API
+    var alertId: UUID
     var read: Bool
     var title: String
     var description: String?
@@ -177,10 +206,12 @@ struct AlertRow: View {
     var action: Action?
     var index: Int
     var createdAt: Date
+    var onActionTriggered: (_ alertId: UUID) -> Void
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
-    init(index: Int,
+    init(alertId: UUID,
+         index: Int,
          read: Bool = true,
          title: String,
          description: String? = nil,
@@ -188,7 +219,9 @@ struct AlertRow: View {
          merchant: String? = nil,
          activityInterval: TimeInterval? = nil,
          createdAt: Date,
-         action: Action? = nil) {
+         action: Action? = nil,
+         onActionTriggered: @escaping (_ alertId: UUID) -> Void) {
+        self.alertId = alertId
         self.index = index
         self.title = title
         self.description = description
@@ -198,31 +231,34 @@ struct AlertRow: View {
         self.action = action
         self.read = read
         self.createdAt = createdAt
+        self.onActionTriggered = onActionTriggered
     }
     
     private var avatar: any View {
         ZStack {
-            if !read {
-                Circle()
-                    .foregroundStyle(Color.primary.brand)
-                    .frame(width: 8, height: 8)
-                    .padding(.leading, -40)
-            }
-            if let image = image {
-                image
-            } else if let merchant = merchant, !merchant.isEmpty {
-                Circle()
-                    .foregroundStyle(Color.text.black20)
-                    .frame(width: 48, height: 48)
-                    .overlay {
-                        Text(String(merchant.first!))
-                            .foregroundStyle(Color.text.black60)
-                            .font(.custom("Poppins-SemiBold", size: 20))
-                    }
-            } else {
-                Circle()
-                    .foregroundStyle(Color.random())
-                    .frame(width: 48, height: 48)
+            HStack(spacing: 0) {
+                if !read {
+                    Circle()
+                        .foregroundStyle(Color.primary.brand)
+                        .frame(width: 8, height: 8)
+                        .padding(.trailing, 8)
+                        .padding(.leading, -10)
+                }
+                if let image = image {
+                    image
+                } else if let merchant = merchant, !merchant.isEmpty {
+                    Circle()
+                        .foregroundStyle(Color.text.black20)
+                        .frame(width: 48, height: 48)
+                        .overlay {
+                            Text(String(merchant.first!))
+                                .foregroundStyle(Color.text.black60)
+                                .font(.custom("Poppins-SemiBold", size: 20))
+                        }
+                } else {
+                    Color.clear
+                        .frame(width: 0, height: 48)
+                }
             }
         }
     }
@@ -233,7 +269,7 @@ struct AlertRow: View {
                 Rectangle()
                     .fill(Color.text.black10)
                     .frame(height: 1)
-                    .padding(.leading, 65)
+                    .padding(.leading, 20)
                     .padding(.trailing, -20)
                 Spacer()
             }
@@ -282,13 +318,25 @@ struct AlertRow: View {
                 VStack(spacing: 0) {
                     Text(createdAt.timeElapsed)
                         .font(.custom("Poppins-Thin", size: 12))
-                    Image("ellipsis")
+                        .foregroundStyle(Color.text.black80)
                     Spacer()
                 }
             }
             .padding(.vertical, 24)
             Spacer()
         }
+        .onTapGesture {
+            if read { return }
+            onActionTriggered(alertId)
+            Task {
+                do {
+                    try await api.markAsReadAlert(with: alertId)
+                } catch {
+                    // fail silently
+                }
+            }
+        }
+        .contentShape(Rectangle())
         .padding(.horizontal)
         .background(read ? .white : Color(hex: "#EDF3FF"))
     }
