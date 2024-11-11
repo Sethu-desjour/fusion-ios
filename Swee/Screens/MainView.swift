@@ -5,7 +5,7 @@ import SDWebImageSwiftUI
 enum Tabs: Int, CaseIterable, Identifiable {
     
     case home = 0
-    case purchases
+    case myWallet
     case alerts
     case profile
     
@@ -15,7 +15,7 @@ enum Tabs: Int, CaseIterable, Identifiable {
         switch self {
         case .home:
             HomeView()
-        case .purchases:
+        case .myWallet:
             MyWalletView()
         case .alerts:
             AlertsView()
@@ -28,7 +28,7 @@ enum Tabs: Int, CaseIterable, Identifiable {
         switch self {
         case .home:
             return "Home"
-        case .purchases:
+        case .myWallet:
             return "My Wallet"
         case .alerts:
             return "Alerts"
@@ -41,7 +41,7 @@ enum Tabs: Int, CaseIterable, Identifiable {
         switch self {
         case .home:
             return "home"
-        case .purchases:
+        case .myWallet:
             return "purchases"
         case .alerts:
             return "alerts"
@@ -113,7 +113,7 @@ struct MainView: View {
         }
         .contentShape(.rect)
         .onTapGesture {
-            selectedTab = .purchases
+            selectedTab = .myWallet
             goToActiveSession = true
         }
         .transition(.move(edge: .bottom).combined(with: .opacity))
@@ -128,8 +128,32 @@ struct MainView: View {
             return
         }
         switch route {
-        case .package(let packageId):
+        case .package(_), .merchant(_):
             selectedTab = .home
+        case .profile:
+            selectedTab = .profile
+            self.route.wrappedValue = nil
+        case .alerts:
+            selectedTab = .alerts
+            self.route.wrappedValue = nil
+        case .wallet:
+            selectedTab = .myWallet
+            self.route.wrappedValue = nil
+        case .myActivity:
+            selectedTab = .myWallet
+        case .activeSession:
+            selectedTab = .myWallet
+            if activeSession.sessionIsActive {
+                goToActiveSession = true
+                self.route.wrappedValue = nil
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                    if activeSession.sessionIsActive {
+                        goToActiveSession = true
+                        self.route.wrappedValue = nil
+                    }
+                })
+            }
         }
     }
     

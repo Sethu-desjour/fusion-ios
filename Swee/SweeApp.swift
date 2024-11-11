@@ -18,7 +18,13 @@ final class AppRootManager: ObservableObject {
 }
 
 enum Route: Hashable {
+    case profile
+    case alerts
+    case wallet
+    case myActivity
     case package(UUID)
+    case merchant(UUID)
+    case activeSession
 }
 
 @main
@@ -54,11 +60,32 @@ struct SweeApp: App {
                 guard !stripeHandled else {
                     return
                 }
-                if url.scheme == "com.fusion.green" {
-                    if url.host == "stripe-redirect" {
+                if url.scheme == "com.zoomoov.greenapp", let host = url.host {
+                    var newRoute: Route = .profile
+                    let uuidString = url.absoluteString.components(separatedBy: "=").last
+                    switch host {
+                    case "profile":
+                        newRoute = .profile
+                    case "alerts":
+                        newRoute = .alerts
+                    case "wallet":
+                        newRoute = .wallet
+                    case "activity":
+                        newRoute = .myActivity
+                    case "activeSession":
+                        newRoute = .activeSession
+                    case "product":
+                        guard let uuidString, let uuid = UUID(uuidString: String(uuidString.uppercased())) else { return }
+                        newRoute = .package(uuid)
+                    case "merchant":
+                        guard let uuidString, let uuid = UUID(uuidString: String(uuidString.uppercased())) else { return }
+                        newRoute = .merchant(uuid)
+                    case "stripe-redirect":
+                        return
+                    default:
                         return
                     }
-                    let newRoute = Route.package(.init(uuidString: "8da6f2c0-691f-41ce-9ea7-8bd16c77c2ee".uppercased())!) // @todo remove the test UUID and parse the url
+                    
                     if appRootManager.currentRoot != .home {
                         delayedRoute = newRoute
                     } else {

@@ -16,7 +16,9 @@ struct HomeView: View {
     @State private var hideBottomSheet: Bool = true
     @State private var navView: UINavigationController? = nil
     @State private var goToPackage = false
+    @State private var goToMerchant = false
     @State private var deepLinkPackage: Package?
+    @State private var deepLinkMerchantId: UUID?
     
     func section(at index: Int) -> any View {
         let section = viewModel.sections[index]
@@ -76,6 +78,9 @@ struct HomeView: View {
                 if let package = deepLinkPackage {
                     CustomNavLink(isActive: $goToPackage, destination: PackageDetailView(package: package))
                 }
+                if let deepLinkMerchantId, let merchant = viewModel.merchant(for: deepLinkMerchantId) {
+                    CustomNavLink(isActive: $goToMerchant, destination: MerchantPageView(merchant: merchant))
+                }
                 VStack {
                     if viewModel.showError {
                         StateView.error {
@@ -115,12 +120,11 @@ struct HomeView: View {
             guard let route = route.wrappedValue else {
                 return
             }
-            
+            defer {
+                self.route.wrappedValue = nil
+            }
             switch route {
             case .package(let id):
-                defer {
-                    self.route.wrappedValue = nil
-                }
                 Task {
                     do {
                         let package = try await viewModel.package(for: id)
@@ -132,6 +136,11 @@ struct HomeView: View {
                         // fail silently
                     }
                 }
+            case .merchant(let merchantId):
+                deepLinkMerchantId = merchantId
+                goToMerchant = true
+            default:
+                return
             }
         }
         .environment(\.navView, $navView)
