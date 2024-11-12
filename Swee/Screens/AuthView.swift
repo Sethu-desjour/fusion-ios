@@ -33,7 +33,7 @@ struct AuthView: View {
     
     private var tosLink: (String) -> AttributedString =  { text in
         var string = text.underline()
-        string.link = URL(string: "https://google.com")
+        string.link = URL(string: "https://fusion-core-stg.s3.ap-southeast-1.amazonaws.com/terms_and_condition.pdf")
         
         return string
     }
@@ -245,7 +245,7 @@ struct AuthView: View {
                     Spacer()
                     Spacer()
                     HStack {
-                        Text(tosText("By continuing, you accept Green’s \n") + tosLink("Terms and Condition") + tosText(" and ") + tosLink("Privacy Policy"))
+                        Text(tosText("By continuing, you accept Green App's \n") + tosLink("Terms and Condition"))
                     }
                     .multilineTextAlignment(.center)
                     
