@@ -136,6 +136,8 @@
 		AF8FB9782CC2103900B3B21C /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB9772CC2103900B3B21C /* CustomAlert.swift */; };
 		AF8FB97A2CC37A1D00B3B21C /* PhoneLinkingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB9792CC37A1D00B3B21C /* PhoneLinkingView.swift */; };
 		AF9AC5682C894D5700B16186 /* JollyfieldRedemptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */; };
+		AF9D1B652CE611FF00234963 /* RemoteNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9D1B642CE611FF00234963 /* RemoteNotificationsManager.swift */; };
+		AF9D1B672CE615AC00234963 /* NotificationUpsell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9D1B662CE615AC00234963 /* NotificationUpsell.swift */; };
 		AFA335C82C92676700883CBB /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA335C72C92676700883CBB /* AlertsView.swift */; };
 		AFA408C02CD86758004D74A7 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA408BF2CD86758004D74A7 /* AlertModel.swift */; };
 		AFA408C22CD86C5B004D74A7 /* AlertsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA408C12CD86C5B004D74A7 /* AlertsViewModel.swift */; };
@@ -291,6 +293,8 @@
 		AF8FB9772CC2103900B3B21C /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
 		AF8FB9792CC37A1D00B3B21C /* PhoneLinkingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLinkingView.swift; sourceTree = "<group>"; };
 		AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JollyfieldRedemptionView.swift; sourceTree = "<group>"; };
+		AF9D1B642CE611FF00234963 /* RemoteNotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteNotificationsManager.swift; sourceTree = "<group>"; };
+		AF9D1B662CE615AC00234963 /* NotificationUpsell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUpsell.swift; sourceTree = "<group>"; };
 		AFA335C72C92676700883CBB /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
 		AFA408BF2CD86758004D74A7 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		AFA408C12CD86C5B004D74A7 /* AlertsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsViewModel.swift; sourceTree = "<group>"; };
@@ -501,6 +505,7 @@
 				AF3022C52CA18C62006DBCAD /* Cart.swift */,
 				AF3022CC2CA5584E006DBCAD /* LocationManager.swift */,
 				AF8FB9752CBF7B8000B3B21C /* ActiveSession.swift */,
+				AF9D1B642CE611FF00234963 /* RemoteNotificationsManager.swift */,
 			);
 			path = Singletons;
 			sourceTree = "<group>";
@@ -674,6 +679,7 @@
 				AF3022C72CA2B51B006DBCAD /* CartButton.swift */,
 				AF13C8542CAF980300496B0C /* TicketView.swift */,
 				AF3022CE2CA66CC6006DBCAD /* StateView.swift */,
+				AF9D1B662CE615AC00234963 /* NotificationUpsell.swift */,
 				AF82A4642C8432C700E0DD4C /* ObservableScrollView.swift */,
 				AF67C9AF2CB50C0F00A46B11 /* Redemptions */,
 				AF501F2B2C94736C00637042 /* AsyncButton.swift */,
@@ -869,6 +875,7 @@
 				AF8FB9702CBE5C5F00B3B21C /* EditDOBView.swift in Sources */,
 				AF2F85C22C9AA26D004B0B31 /* BannerModel.swift in Sources */,
 				AF2F85E62C9C5354004B0B31 /* ReferalCard.swift in Sources */,
+				AF9D1B652CE611FF00234963 /* RemoteNotificationsManager.swift in Sources */,
 				AF16A0FB2C86B96F0093CD99 /* Keys.swift in Sources */,
 				AFDF67FD2C7F5A6C00489D0C /* SeeAllView.swift in Sources */,
 				AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */,
@@ -951,6 +958,7 @@
 				AF501F272C945D7C00637042 /* API.swift in Sources */,
 				AF2F85E02C9C52CC004B0B31 /* PackageCard.swift in Sources */,
 				AF0558372CABA1F000ABEBA3 /* WalletMerchantModel.swift in Sources */,
+				AF9D1B672CE615AC00234963 /* NotificationUpsell.swift in Sources */,
 				AFA408C02CD86758004D74A7 /* AlertModel.swift in Sources */,
 				AF13C8622CAFD82C00496B0C /* ActivityViewModel.swift in Sources */,
 				AFDD17402CA1846E00DC8DB8 /* StoresView.swift in Sources */,
@@ -1102,7 +1110,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 9M2L2N97YU;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1141,7 +1149,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 9M2L2N97YU;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;

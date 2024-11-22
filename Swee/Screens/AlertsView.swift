@@ -129,18 +129,57 @@ struct AlertsView: View {
         }
     }
     
+    private var emptyUI: some View {
+        VStack(spacing: 0) {
+            Spacer()
+            Image("wallet-empty")
+            Text("No Alerts Yet")
+                .font(.custom("Poppins-SemiBold", size: 24))
+                .padding(.horizontal, 16)
+                .foregroundStyle(Color.text.black100)
+                .multilineTextAlignment(.center)
+                .padding(.top, 24)
+            Text("Your notifications will show up as you use the app. Watch this space!")
+                .font(.custom("Poppins-Regular", size: 14))
+                .padding(.horizontal, 44)
+                .foregroundStyle(Color.text.black60)
+                .multilineTextAlignment(.center)
+                .padding(.top, 8)
+            Spacer()
+            Spacer()
+        }
+    }
+    
+    private var loadingUI: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 24) {
+                PurchaseRow.skeleton.equatable.view
+                PurchaseRow.skeleton.equatable.view
+                PurchaseRow.skeleton.equatable.view
+                PurchaseRow.skeleton.equatable.view
+            }
+            .padding(.top, 48)
+        }
+    }
+    
     var body: some View {
         CustomNavView {
             VStack {
-                ScrollView {
-                    LazyVStack(spacing: 0) {
-                        ForEach(viewModel.alerts.indices, id: \.self) { index in
-                            row(at: index).equatable.view
+                if !viewModel.loadedData {
+                    loadingUI
+                } else if viewModel.alerts.isEmpty {
+                   emptyUI
+                } else {
+                    ScrollView {
+                        LazyVStack(spacing: 0) {
+                            ForEach(viewModel.alerts.indices, id: \.self) { index in
+                                row(at: index).equatable.view
+                            }
+                            //                    CustomNavLink(isActive: $goToMerchant, destination: MerchantPageView()) {
+                            //                    }
                         }
-                        //                    CustomNavLink(isActive: $goToMerchant, destination: MerchantPageView()) {
-                        //                    }
+                        .padding(.bottom, activeSession.sessionIsActive ? 120 : 60)
                     }
-                    .padding(.bottom, activeSession.sessionIsActive ? 120 : 60)
                 }
             }
             .onAppear {
@@ -347,6 +386,34 @@ struct AlertRow: View {
     AlertsView()
 }
 
+extension AlertRow: Skeletonable {
+    static var skeleton: any View {
+        VStack(alignment: .leading) {
+            HStack {
+                Color.white
+                    .skeleton(with: true, shape: .circle)
+                    .frame(width: 40, height: 40)
+                VStack(alignment: .leading) {
+                    Text("")
+                        .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                        .frame(width: 170, height: 20)
+                    Text("")
+                        .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                        .frame(width: 70, height: 10)
+                    Text("")
+                        .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                        .frame(width: 70, height: 10)
+                }
+                Spacer()
+                Text("")
+                    .skeleton(with: true, shape: .rounded(.radius(12, style: .circular)))
+                    .frame(width: 40, height: 30)
+            }
+        }
+        .padding(.horizontal)
+        .frame(maxWidth: .infinity)
+    }
+}
 
 extension Color {
     

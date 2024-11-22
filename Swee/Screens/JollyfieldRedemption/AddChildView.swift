@@ -118,23 +118,23 @@ struct ChildDetailsCard: View {
                     .font(.custom("Poppins-Medium", size: 12))
                     .foregroundStyle(Color.text.black40)
                 Spacer()
-                AsyncButton(progressTint: .red) {
-                    guard let id = child.id else { return }
-                    do {
-                        try await api.deleteChild(with: id)
-                        await MainActor.run {
-                            onDelete(child)
-                        }
-                    } catch {
-                        // fail silently
-                    }
-                } label: {
-                    Image("delete")
-                        .resizable()
-                        .frame(width: 17, height: 17)
-                        .foregroundStyle(Color.red)
-                }
-                .frame(width: 44, height: 20)
+//                AsyncButton(progressTint: .red) {
+//                    guard let id = child.id else { return }
+//                    do {
+//                        try await api.deleteChild(with: id)
+//                        await MainActor.run {
+//                            onDelete(child)
+//                        }
+//                    } catch {
+//                        // fail silently
+//                    }
+//                } label: {
+//                    Image("delete")
+//                        .resizable()
+//                        .frame(width: 17, height: 17)
+//                        .foregroundStyle(Color.red)
+//                }
+//                .frame(width: 44, height: 20)
             }
             HStack {
                 VStack(alignment: .leading, spacing: 8) {

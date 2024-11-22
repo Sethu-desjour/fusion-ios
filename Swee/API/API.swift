@@ -306,7 +306,12 @@ class API: ObservableObject {
             url = url + "?createdAtGte=\(isoDateString)"
         }
         
-        return try await request(with: url)
+        return try await request(with: url) { data, response in
+            guard response.statusCode == 200 else {
+                throw APIError.wrongCode
+            }
+            return nil
+        }
     }
     
     func redemptions(with filterDate: Date? = nil) async throws -> [RedemptionDetailModel] {
@@ -319,7 +324,12 @@ class API: ObservableObject {
             url = url + "?createdAtGte=\(isoDateString)"
         }
         
-        return try await request(with: url)
+        return try await request(with: url) { data, response in
+            guard response.statusCode == 200 else {
+                throw APIError.wrongCode
+            }
+            return nil
+        }
     }
     
     func walletMerchants() async throws -> [WalletMerchantModel] {
