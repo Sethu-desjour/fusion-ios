@@ -67,13 +67,13 @@ struct CheckoutView: View {
                                     .skeleton(with: true, shape: .rounded(.radius(4, style: .circular)))
 //                                    .frame(width: 127, height: 145)
                             }
+                            .frame(width: 127, height: 127)
                             .transition(.fade(duration: 0.5))
                             .scaledToFill()
                             .frame(minWidth: 0)
                             .edgesIgnoringSafeArea(.all)
                             .clipShape(RoundedRectangle(cornerRadius: 6))
                             .padding(.trailing, 16)
-                            .frame(width: 127, height: 145)
                             VStack(alignment: .leading) {
                                 Text(element.packageDetails?.name)
                                     .foregroundStyle(Color.text.black100)
@@ -168,7 +168,7 @@ struct CheckoutView: View {
 //                        )
 //                    }
 //                    .padding(.bottom, 24)
-                    SummaryRow(title: "Total amount", price: viewModel.cartTotal, currency: cart.currencyCode, blinking: cart.inProgress)
+                    SummaryRow(title: "Subtotal", price: viewModel.cartTotal, currency: cart.currencyCode, blinking: cart.inProgress)
                         .padding(.bottom, 4)
                     if let fees = cart.fees {
                         ForEach(fees.indices, id: \.self) { index in
