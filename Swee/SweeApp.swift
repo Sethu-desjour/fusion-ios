@@ -34,6 +34,7 @@ struct SweeApp: App {
     @StateObject var api = API()
     @StateObject var cart = Cart()
     @StateObject var locationManager = LocationManager()
+    @StateObject var pushNotificationManager = PushNotificationManager()
     @State var route: Route?
     @State private var delayedRoute: Route?
     @State var fcmToken: String?
@@ -120,6 +121,7 @@ struct SweeApp: App {
             .environmentObject(api)
             .environmentObject(cart)
             .environmentObject(locationManager)
+            .environmentObject(pushNotificationManager)
         }
     }
 }
@@ -134,12 +136,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         
         Messaging.messaging().delegate = self
         UNUserNotificationCenter.current().delegate = self
-
-        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-        UNUserNotificationCenter.current().requestAuthorization(
-          options: authOptions,
-          completionHandler: { _, _ in }
-        )
 
         application.registerForRemoteNotifications()
         return true

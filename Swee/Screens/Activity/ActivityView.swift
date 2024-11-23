@@ -54,7 +54,7 @@ struct ActivityView: View {
                 .padding(.top, 24)
             Text(description)
                 .font(.custom("Poppins-Regular", size: 14))
-                .padding([.leading, .trailing], 16)
+                .padding(.horizontal, 44)
                 .foregroundStyle(Color.text.black60)
                 .multilineTextAlignment(.center)
                 .padding(.top, 8)

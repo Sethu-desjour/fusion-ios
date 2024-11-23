@@ -6,6 +6,7 @@ struct AddChildView: View {
     @EnvironmentObject private var api: API
     
     @State var children: [Child]
+    @State private var childrenToEdit: [Child] = []
     @StateObject private var viewModel = AddChildViewModel()
     var editingMode: Bool = true
     private(set) var onSave: (_ children: [Child]) -> Void
@@ -44,7 +45,7 @@ struct AddChildView: View {
                         VStack(spacing: 10) {
                             ForEach(viewModel.children.indices, id: \.self) { index in
                                 var child = viewModel.children[index]
-                                if editingMode || child.id == nil {
+                                if editingMode || child.id == nil || childrenToEdit.contains(where: { $0.id == child.id }) {
                                     EditChildDetailsCard(child: child, index: index) { name, date in
                                         child.name = name
                                         child.dob = date
@@ -52,7 +53,8 @@ struct AddChildView: View {
                                     }
                                 } else {
                                     ChildDetailsCard(child: child, index: index) { child in
-                                        viewModel.children.remove(at: index)
+//                                        viewModel.children.remove(at: index)
+                                        childrenToEdit.append(child)
                                     }
                                 }
                             }
@@ -101,7 +103,7 @@ struct AddChildView: View {
 struct ChildDetailsCard: View {
     var child: Child
     var index: Int
-    var onDelete: (Child) -> Void
+    var onEdit: (Child) -> Void
     @EnvironmentObject private var api: API
     
     var body: some View {
@@ -119,15 +121,7 @@ struct ChildDetailsCard: View {
                     .foregroundStyle(Color.text.black40)
                 Spacer()
                 AsyncButton(progressTint: .red) {
-                    guard let id = child.id else { return }
-                    do {
-                        try await api.deleteChild(with: id)
-                        await MainActor.run {
-                            onDelete(child)
-                        }
-                    } catch {
-                        // fail silently
-                    }
+                    onEdit(child)
                 } label: {
                     Image("delete")
                         .resizable()
@@ -135,6 +129,24 @@ struct ChildDetailsCard: View {
                         .foregroundStyle(Color.red)
                 }
                 .frame(width: 44, height: 20)
+//                AsyncButton(progressTint: .red) {
+//                    guard let id = child.id else { return }
+//                    do {
+//                        try await api.deleteChild(with: id)
+//                        await MainActor.run {
+//                            onDelete(child)
+//                        }
+//                    } catch {
+//                        // fail silently
+//                    }
+//                } label: {
+//                    Image("delete")
+//                        .resizable()
+//                        .frame(width: 17, height: 17)
+//                        .foregroundStyle(Color.red)
+//                }
+//                .frame(width: 44, height: 20)
+
             }
             HStack {
                 VStack(alignment: .leading, spacing: 8) {

@@ -76,6 +76,9 @@ struct CompleteProfileView: View {
             .ignoresSafeArea(.keyboard)
             .navigationBarBackButtonHidden(true)
         }
+        .onAppear(perform: {
+            isKeyboardShowing = true
+        })
         .navigationBarTitle("")
         .navigationBarHidden(true)
     }

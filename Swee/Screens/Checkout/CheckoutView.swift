@@ -44,7 +44,7 @@ struct CheckoutView: View {
     @EnvironmentObject private var cart: Cart
     @StateObject private var viewModel = CheckoutViewModel()
     
-    @State private var text: String = ""
+//    @State private var text: String = ""
     @State private var showPaymentSheet = false
 //    @State private var showPaymentSuccess: Bool = false
     
@@ -67,13 +67,13 @@ struct CheckoutView: View {
                                     .skeleton(with: true, shape: .rounded(.radius(4, style: .circular)))
 //                                    .frame(width: 127, height: 145)
                             }
+                            .frame(width: 127, height: 127)
                             .transition(.fade(duration: 0.5))
                             .scaledToFill()
                             .frame(minWidth: 0)
                             .edgesIgnoringSafeArea(.all)
                             .clipShape(RoundedRectangle(cornerRadius: 6))
                             .padding(.trailing, 16)
-                            .frame(width: 127, height: 145)
                             VStack(alignment: .leading) {
                                 Text(element.packageDetails?.name)
                                     .foregroundStyle(Color.text.black100)
@@ -144,31 +144,31 @@ struct CheckoutView: View {
                     Text("Order summary")
                         .font(.custom("Poppins-Bold", size: 16))
                         .padding(.bottom, 16)
-                    HStack {
-                        TextField("Enter coupon code", text: $text)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 12)
-                            .overlay(RoundedRectangle(cornerRadius: 4)
-                                .stroke(.black.opacity(0.15),
-                                        lineWidth: 1)
-                            )
-                        Button {
-                            
-                        } label: {
-                            Text("Apply")
-                                .font(.custom("Roboto-Bold", size: 16))
-                                .foregroundStyle(Color.text.black80)
-                        }
-                        .padding(.vertical, 12)
-                        .padding(.horizontal, 32)
-                        .clipShape(Capsule())
-                        .overlay(RoundedRectangle(cornerRadius: 24)
-                            .stroke(Color.text.black20,
-                                    lineWidth: 1)
-                        )
-                    }
-                    .padding(.bottom, 24)
-                    SummaryRow(title: "Total amount", price: viewModel.cartTotal, currency: cart.currencyCode, blinking: cart.inProgress)
+//                    HStack {
+//                        TextField("Enter coupon code", text: $text)
+//                            .padding(.horizontal, 16)
+//                            .padding(.vertical, 12)
+//                            .overlay(RoundedRectangle(cornerRadius: 4)
+//                                .stroke(.black.opacity(0.15),
+//                                        lineWidth: 1)
+//                            )
+//                        Button {
+//                            
+//                        } label: {
+//                            Text("Apply")
+//                                .font(.custom("Roboto-Bold", size: 16))
+//                                .foregroundStyle(Color.text.black80)
+//                        }
+//                        .padding(.vertical, 12)
+//                        .padding(.horizontal, 32)
+//                        .clipShape(Capsule())
+//                        .overlay(RoundedRectangle(cornerRadius: 24)
+//                            .stroke(Color.text.black20,
+//                                    lineWidth: 1)
+//                        )
+//                    }
+//                    .padding(.bottom, 24)
+                    SummaryRow(title: "Subtotal", price: viewModel.cartTotal, currency: cart.currencyCode, blinking: cart.inProgress)
                         .padding(.bottom, 4)
                     if let fees = cart.fees {
                         ForEach(fees.indices, id: \.self) { index in

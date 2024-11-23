@@ -159,9 +159,6 @@ struct Authentication {
     }
     
     func logout() async throws {
-        //        // Google logout
-        //        GIDSignIn.sharedInstance.signOut()
-        //        try Auth.auth().signOut()
         do {
             try Auth.auth().signOut()
         } catch let signOutError as NSError {

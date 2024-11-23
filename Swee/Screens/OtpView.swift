@@ -196,6 +196,9 @@ struct OtpView: View {
                 print("received === \(verificationID)")
             }
         }
+        .onAppear(perform: {
+            isKeyboardShowing = true
+        })
         .navigationBarTitle("")
         .navigationBarHidden(true)
     }
