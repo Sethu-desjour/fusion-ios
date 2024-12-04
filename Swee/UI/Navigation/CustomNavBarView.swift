@@ -18,25 +18,37 @@ struct CustomNavBarView: View {
     }
     
     var body: some View {
-        ZStack {
-            Text(title)
-                .font(.custom("Poppins-Bold", size: 18))
-                .foregroundStyle(.black)
-            HStack {
-                if showBackButton {
-                    backButton
-                } else {
-                    leadingItem.view
-                }
-                Spacer()
-                trailingItem.view
-
+        VStack(alignment: .leading) {
+            #if BETA
+            VStack {
+                Text("STAGING BUILD")
+                    .font(.custom("Poppins-Bold", size: 14))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 8)
+                    .background(Capsule().foregroundStyle(.orange))
             }
+            .frame(maxWidth: .infinity, maxHeight: 20)
+            #endif
+            ZStack {
+                Text(title)
+                    .font(.custom("Poppins-Bold", size: 18))
+                    .foregroundStyle(.black)
+                HStack {
+                    if showBackButton {
+                        backButton
+                    } else {
+                        leadingItem.view
+                    }
+                    Spacer()
+                    trailingItem.view
+
+                }
+            }
+            .padding([.horizontal, .bottom], 16)
+            .tint(Color.text.black100)
+            .frame(maxWidth: .infinity)
+            .overlay(Rectangle().frame(width: nil, height: 1, alignment: .bottom).foregroundColor(Color.text.black10), alignment: .bottom)
         }
-        .padding([.horizontal, .bottom], 16)
-        .tint(Color.text.black100)
-        .frame(maxWidth: .infinity)
-        .overlay(Rectangle().frame(width: nil, height: 1, alignment: .bottom).foregroundColor(Color.text.black10), alignment: .bottom)
 //        .background(.red)
     }
 }
