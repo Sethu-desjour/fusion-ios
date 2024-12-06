@@ -10,16 +10,16 @@ struct EditBasicInfoView: View {
     @State private var uploadingImage = false
     @State private var sourceType: UIImagePickerController.SourceType = .photoLibrary
     @State private var goToEditName = false
-    @State private var goToEditPhone = false
-    private var phone: String {
-        guard var number = api.user?.phone, !number.isEmpty else {
-            return ""
-        }
-        
-        number.removeFirst(3)
-        return number
-    }
-    
+//    @State private var goToEditPhone = false
+//    private var phone: String {
+//        guard var number = api.user?.phone, !number.isEmpty else {
+//            return ""
+//        }
+//        
+//        number.removeFirst(3)
+//        return number
+//    }
+//    
     func row<Content: View>(title: String, @ViewBuilder content: () -> Content, editAction: @escaping () -> Void) -> some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
@@ -44,7 +44,7 @@ struct EditBasicInfoView: View {
     var body: some View {
         ScrollView {
             CustomNavLink(isActive: $goToEditName, destination: EditNameView(name: api.user?.name ?? "")) {}
-            CustomNavLink(isActive: $goToEditPhone, destination: EditPhoneView(phone: phone)) {}
+//            CustomNavLink(isActive: $goToEditPhone, destination: EditPhoneView(phone: phone)) {}
             VStack(alignment: .leading) {
                 row(title: "Add photo") {
                     if let image = image {
@@ -82,13 +82,13 @@ struct EditBasicInfoView: View {
                 } editAction: {
                     goToEditName = true
                 }
-                row(title: "Phone number") {
-                    Text(api.user?.phone)
-                        .font(.custom("Poppins-SemiBold", size: 18))
-                        .foregroundStyle(Color.text.black80)
-                } editAction: {
-                    goToEditPhone = true
-                }
+//                row(title: "Phone number") {
+//                    Text(api.user?.phone)
+//                        .font(.custom("Poppins-SemiBold", size: 18))
+//                        .foregroundStyle(Color.text.black80)
+//                } editAction: {
+//                    goToEditPhone = true
+//                }
             }
             .padding()
         }

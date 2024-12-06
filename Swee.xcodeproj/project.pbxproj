@@ -73,7 +73,6 @@
 		AF3733982CC8A35D00AE6A45 /* StripeApplePay in Frameworks */ = {isa = PBXBuildFile; productRef = AF3733972CC8A35D00AE6A45 /* StripeApplePay */; };
 		AF3813EF2CC5F59C0028FD02 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = AF3813EE2CC5F59C0028FD02 /* SwiftUIIntrospect */; };
 		AF3813F22CC601180028FD02 /* StripePaymentSheet in Frameworks */ = {isa = PBXBuildFile; productRef = AF3813F12CC601180028FD02 /* StripePaymentSheet */; };
-		AF501F242C942CDF00637042 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF501F232C942CDF00637042 /* GoogleService-Info.plist */; };
 		AF501F272C945D7C00637042 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F262C945D7C00637042 /* API.swift */; };
 		AF501F2A2C945F9C00637042 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F292C945F9C00637042 /* Strings.swift */; };
 		AF501F2C2C94736C00637042 /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F2B2C94736C00637042 /* AsyncButton.swift */; };
@@ -285,7 +284,6 @@
 		AFB830E52D0057FE00DB94C2 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022352C785E95001274FA /* Poppins-Regular.ttf */; };
 		AFB830E62D0057FE00DB94C2 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC552C79CEDD00654FB7 /* Roboto-Bold.ttf */; };
 		AFB830E72D0057FE00DB94C2 /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF80223F2C785E95001274FA /* Poppins-LightItalic.ttf */; };
-		AFB830E82D0057FE00DB94C2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF501F232C942CDF00637042 /* GoogleService-Info.plist */; };
 		AFB830E92D0057FE00DB94C2 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC4E2C79CEDD00654FB7 /* Roboto-Light.ttf */; };
 		AFB830EA2D0057FE00DB94C2 /* Poppins-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF80223A2C785E95001274FA /* Poppins-ExtraBoldItalic.ttf */; };
 		AFB830EB2D0057FE00DB94C2 /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC4B2C79CEDD00654FB7 /* Roboto-LightItalic.ttf */; };
@@ -467,6 +465,7 @@
 		AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteProfileView.swift; sourceTree = "<group>"; };
 		AFCEC5C32C7C260B00D157BE /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		AFCEC5C52C7C26EB00D157BE /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		AFCFB0312D02A5E500A92B50 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AFD6F07E2CB4D3DE004424E5 /* RedemptionDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionDetailModel.swift; sourceTree = "<group>"; };
 		AFD6F0802CB4D3F0004424E5 /* RedemptionDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionDetail.swift; sourceTree = "<group>"; };
 		AFDB2B512C9131AC00BA75DA /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -556,7 +555,7 @@
 		AF170AF42C71C02900544970 = {
 			isa = PBXGroup;
 			children = (
-				AF501F232C942CDF00637042 /* GoogleService-Info.plist */,
+				AFCFB0302D02A5C500A92B50 /* Firebase */,
 				AF170AFF2C71C02900544970 /* Swee */,
 				AFB830FC2D0057FE00DB94C2 /* Swee copy-Info.plist */,
 				AF170AFE2C71C02900544970 /* Products */,
@@ -880,6 +879,31 @@
 			path = Styles;
 			sourceTree = "<group>";
 		};
+		AFCFB0302D02A5C500A92B50 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				AFCFB0352D02AC3300A92B50 /* Beta */,
+				AFCFB0362D02AC3700A92B50 /* Release */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
+		AFCFB0352D02AC3300A92B50 /* Beta */ = {
+			isa = PBXGroup;
+			children = (
+				AF501F232C942CDF00637042 /* GoogleService-Info.plist */,
+			);
+			path = Beta;
+			sourceTree = "<group>";
+		};
+		AFCFB0362D02AC3700A92B50 /* Release */ = {
+			isa = PBXGroup;
+			children = (
+				AFCFB0312D02A5E500A92B50 /* GoogleService-Info.plist */,
+			);
+			path = Release;
+			sourceTree = "<group>";
+		};
 		AFDB90462C8EDE32008931DB /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
@@ -920,6 +944,7 @@
 				AF170AF92C71C02900544970 /* Sources */,
 				AF170AFA2C71C02900544970 /* Frameworks */,
 				AF170AFB2C71C02900544970 /* Resources */,
+				AFCFB0342D02A71600A92B50 /* Copy Google Service Plist File */,
 			);
 			buildRules = (
 			);
@@ -950,6 +975,7 @@
 				AFB830552D0057FE00DB94C2 /* Sources */,
 				AFB830CA2D0057FE00DB94C2 /* Frameworks */,
 				AFB830D62D0057FE00DB94C2 /* Resources */,
+				AFCFB0332D02A6EF00A92B50 /* Copy Google Service Plist File */,
 			);
 			buildRules = (
 			);
@@ -1038,7 +1064,6 @@
 				AF8022472C785E96001274FA /* Poppins-Regular.ttf in Resources */,
 				AF1FAC612C79CEDD00654FB7 /* Roboto-Bold.ttf in Resources */,
 				AF8022512C785E96001274FA /* Poppins-LightItalic.ttf in Resources */,
-				AF501F242C942CDF00637042 /* GoogleService-Info.plist in Resources */,
 				AF1FAC5A2C79CEDD00654FB7 /* Roboto-Light.ttf in Resources */,
 				AF80224C2C785E96001274FA /* Poppins-ExtraBoldItalic.ttf in Resources */,
 				AF1FAC572C79CEDD00654FB7 /* Roboto-LightItalic.ttf in Resources */,
@@ -1078,7 +1103,6 @@
 				AFB830E52D0057FE00DB94C2 /* Poppins-Regular.ttf in Resources */,
 				AFB830E62D0057FE00DB94C2 /* Roboto-Bold.ttf in Resources */,
 				AFB830E72D0057FE00DB94C2 /* Poppins-LightItalic.ttf in Resources */,
-				AFB830E82D0057FE00DB94C2 /* GoogleService-Info.plist in Resources */,
 				AFB830E92D0057FE00DB94C2 /* Roboto-Light.ttf in Resources */,
 				AFB830EA2D0057FE00DB94C2 /* Poppins-ExtraBoldItalic.ttf in Resources */,
 				AFB830EB2D0057FE00DB94C2 /* Roboto-LightItalic.ttf in Resources */,
@@ -1098,6 +1122,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AFCFB0332D02A6EF00A92B50 /* Copy Google Service Plist File */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Google Service Plist File";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Name of the resource we're selectively copying\nGOOGLESERVICE_INFO_PLIST=GoogleService-Info.plist\n\n# Get references to dev and prod versions of the GoogleService-Info.plist\n# NOTE: These should only live on the file system and should NOT be part of the target (since we'll be adding them to the target manually)\nGOOGLESERVICE_INFO_DEV=${PROJECT_DIR}/Firebase/Beta/${GOOGLESERVICE_INFO_PLIST}\nGOOGLESERVICE_INFO_PROD=${PROJECT_DIR}/Firebase/Release/${GOOGLESERVICE_INFO_PLIST}\n\n# Make sure the dev version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_DEV}\"\nif [ ! -f $GOOGLESERVICE_INFO_DEV ]\nthen\n    echo \"No Development GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\n# Make sure the prod version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_PROD}\"\nif [ ! -f $GOOGLESERVICE_INFO_PROD ]\nthen\n    echo \"No Production GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\n# Get a reference to the destination location for the GoogleService-Info.plist\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\necho \"Will copy ${GOOGLESERVICE_INFO_PLIST} to final destination: ${PLIST_DESTINATION}\"\n\n# Copying over BETA GoogleService-Info.plist\necho \"Using ${GOOGLESERVICE_INFO_DEV}\"\ncp \"${GOOGLESERVICE_INFO_DEV}\" \"${PLIST_DESTINATION}\"\n";
+		};
+		AFCFB0342D02A71600A92B50 /* Copy Google Service Plist File */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Google Service Plist File";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Name of the resource we're selectively copying\nGOOGLESERVICE_INFO_PLIST=GoogleService-Info.plist\n\n# Get references to dev and prod versions of the GoogleService-Info.plist\n# NOTE: These should only live on the file system and should NOT be part of the target (since we'll be adding them to the target manually)\nGOOGLESERVICE_INFO_DEV=${PROJECT_DIR}/Firebase/Beta/${GOOGLESERVICE_INFO_PLIST}\nGOOGLESERVICE_INFO_PROD=${PROJECT_DIR}/Firebase/Release/${GOOGLESERVICE_INFO_PLIST}\n\n# Make sure the dev version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_DEV}\"\nif [ ! -f $GOOGLESERVICE_INFO_DEV ]\nthen\n    echo \"No Development GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\n# Make sure the prod version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_PROD}\"\nif [ ! -f $GOOGLESERVICE_INFO_PROD ]\nthen\n    echo \"No Production GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\n# Get a reference to the destination location for the GoogleService-Info.plist\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\necho \"Will copy ${GOOGLESERVICE_INFO_PLIST} to final destination: ${PLIST_DESTINATION}\"\n\n# Copying over PROD GoogleService-Info.plist\necho \"Using ${GOOGLESERVICE_INFO_PROD}\"\ncp \"${GOOGLESERVICE_INFO_PROD}\" \"${PLIST_DESTINATION}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AF170AF92C71C02900544970 /* Sources */ = {
@@ -1506,7 +1569,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.desjour.fusion;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zoomoov.green;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1545,7 +1608,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.desjour.fusion;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zoomoov.green;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1584,7 +1647,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.desjour.fusion-beta";
+				PRODUCT_BUNDLE_IDENTIFIER = com.desjour.fusion;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1624,7 +1687,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.desjour.fusion-beta";
+				PRODUCT_BUNDLE_IDENTIFIER = com.desjour.fusion;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

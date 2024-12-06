@@ -17,7 +17,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.862723965615-h7dcrrfd2h5fhnojm7tj27odnd8st7hm</string>
+				<string>com.googleusercontent.apps.136912908792-ttbetii3b8rnhgcgch87ui7cj765jip7</string>
 			</array>
 		</dict>
 		<dict>
@@ -38,6 +38,13 @@
 			<key>fusion-core-1481052354.ap-southeast-1.elb.amazonaws.com</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+			<key>greenkidsapp.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
 				<true/>
 			</dict>
 		</dict>
