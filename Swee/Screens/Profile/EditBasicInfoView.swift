@@ -145,7 +145,8 @@ struct EditBasicInfoView: View {
                      phone: "+6544444444",
                      gender: .male,
                      email: nil,
-                     photoURL: nil)
+                     photoURL: nil,
+                     profileCompleteness: 0)
     return CustomNavView {
         EditBasicInfoView()
             .environmentObject(api)

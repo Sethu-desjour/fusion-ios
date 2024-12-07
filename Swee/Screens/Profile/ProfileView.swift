@@ -37,6 +37,7 @@ struct ProfileView: View {
     @State private var sections: [[RowData]] = []
     @State private var showDeleteProfileAlert = false
     @State private var showAlert = false
+    @State private var showCompleteProfileBanner: Bool = true
     @State private var alertData: CustomAlert.Data = .init(title: "",
                                                            message: "",
                                                            buttonTitle: "",
@@ -181,33 +182,11 @@ struct ProfileView: View {
                             Spacer()
                         }
                         .padding(.bottom, 34)
-                        HStack {
-                            CircularProgressView(progress: $profileProgress)
-                                .frame(width: 40, height: 40)
-                            Spacer()
-                            VStack(alignment: .leading) {
-                                Text("Complete your profile")
-                                    .font(.custom("Poppins-Medium", size: 16))
-                                    .foregroundStyle(.white)
-                                Text("Fill up a few missing steps to win exciting rewards")
-                                    .font(.custom("Poppins-Medium", size: 12))
-                                    .foregroundStyle(.white.opacity(0.55))
+                        if showCompleteProfileBanner {
+                            CompleteProfileBanner(profileProgress: $profileProgress) {
+                                showCompleteProfileBanner = false
                             }
-                            Spacer()
-                            Image("arrow-right")
-                                .padding(4)
-                                .background {
-                                    Circle()
-                                        .fill(.white.opacity(0.1))
-                                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                                }
-                                .foregroundStyle(.white)
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding(16)
-                        .background(LinearGradient(colors: Color.gradient.secondary, startPoint: .topLeading, endPoint: .bottomTrailing))
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                        
                         ForEach(sections.indices, id: \.self) { sectionIndex in
                             let section = sections[sectionIndex]
                             VStack(spacing: 0) {
@@ -228,12 +207,17 @@ struct ProfileView: View {
                     .customAlert(isActive: $showAlert, data: alertData)
                 }
             }
+            .animation(.default, value: showCompleteProfileBanner)
             .onChange(of: showAlert, perform: { newValue in
                 tabIsShown.wrappedValue = !showAlert
             })
             .onAppear(perform: {
                 setupSections()
                 tabIsShown.wrappedValue = true
+                if let progress = api.user?.profileCompleteness {
+                    profileProgress = Double(progress) / 100
+                    showCompleteProfileBanner = profileProgress != 1
+                }
             })
             
         }
@@ -321,6 +305,62 @@ struct ProfileView: View {
         }
     }
 }
+
+struct CompleteProfileBanner: View {
+    @Binding var profileProgress: Double
+    var onClose: () -> Void
+    
+    var body: some View {
+        HStack {
+            if profileProgress == 1 {
+                Image("checkmark-circle")
+                    .foregroundStyle(.white)
+            } else {
+                CircularProgressView(progress: $profileProgress)
+                    .frame(width: 40, height: 40)
+            }
+            Spacer()
+            VStack(alignment: .leading) {
+                Text(profileProgress == 1 ? "Congratulations!" : "Complete your profile")
+                    .font(.custom("Poppins-Medium", size: 16))
+                    .foregroundStyle(.white)
+                Text(profileProgress == 1 ? "You have successfully completed your profile" : "Fill up a few missing steps to win exciting rewards")
+                    .font(.custom("Poppins-Medium", size: 12))
+                    .foregroundStyle(.white.opacity(0.55))
+            }
+            Spacer()
+            if profileProgress == 1 {
+                Text("Close")
+                    .font(.custom("Poppins-Medium", size: 14))
+                    .foregroundStyle(.white)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 12)
+                    .background {
+                        Capsule()
+                            .fill(.white.opacity(0.1))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                    }
+                    .onTapGesture {
+                        onClose()
+                    }
+            } else {
+                Image("arrow-right")
+                    .padding(4)
+                    .background {
+                        Circle()
+                            .fill(.white.opacity(0.1))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                    }
+                    .foregroundStyle(.white)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding(16)
+        .background(LinearGradient(colors: Color.gradient.secondary, startPoint: .topLeading, endPoint: .bottomTrailing))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+}
+
 struct CircularProgressView: View {
     @Binding var progress: Double
     

@@ -29,6 +29,7 @@ struct User: Identifiable, Codable {
     let email: String?
     let photoURL: String?
     var uploadingImage: UIImage? = nil
+    let profileCompleteness: Int?
     @DecodableDayDate var dob: Date?
     
     var birthDayString: String? {
@@ -48,5 +49,6 @@ struct User: Identifiable, Codable {
         case email
         case photoURL = "photo_url"
         case dob = "date_of_birth"
+        case profileCompleteness = "profile_completeness"
     }
 }
