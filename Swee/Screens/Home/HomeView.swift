@@ -5,7 +5,6 @@ import SDWebImage
 import SkeletonUI
 
 struct HomeView: View {
-    
     @EnvironmentObject private var api: API
     @EnvironmentObject private var cart: Cart
     @EnvironmentObject private var locationManager: LocationManager
@@ -70,6 +69,9 @@ struct HomeView: View {
             .padding(.vertical, 20)
             .padding(.bottom, activeSession.sessionIsActive ? 160 : 100)
         }
+        .refreshable(action: {
+            try? await viewModel.fetch()
+        })
         .ignoresSafeArea()
     }
     
