@@ -93,7 +93,7 @@ struct OtpView: View {
                         let result = try await api.signIn(with: token)
                         switch result {
                         case .loggedIn:
-                            appRootManager.currentRoot = .home
+                            appRootManager.currentRoot = .main
                         case .withoutName:
                             goToCompleteProfile = true
                         }

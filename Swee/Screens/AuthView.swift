@@ -171,7 +171,7 @@ struct AuthView: View {
                                         try await api.signIn(with: token)
                                         await MainActor.run {
                                             loading = false
-                                            appRootManager.currentRoot = .home
+                                            appRootManager.currentRoot = .main
                                         }
                                     case .missingPhone:
                                         await MainActor.run {
@@ -211,7 +211,7 @@ struct AuthView: View {
                                         try await api.signIn(with: token)
                                         await MainActor.run {
                                             loading = false
-                                            appRootManager.currentRoot = .home
+                                            appRootManager.currentRoot = .main
                                         }
                                     case .missingPhone:
                                         await MainActor.run {

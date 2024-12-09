@@ -72,8 +72,8 @@ struct MerchantPageView: View {
                                     }
                                 }
                                 Spacer()
-                                Image("share-system")
-                                    .foregroundStyle(.white)
+//                                Image("share-system")
+//                                    .foregroundStyle(.white)
                             }
                             .padding([.leading, .trailing], 16)
                         }

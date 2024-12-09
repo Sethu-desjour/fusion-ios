@@ -200,6 +200,12 @@ struct ProfileView: View {
                                 .shadow(color: .black.opacity(0.2), radius: 2, y: 1)
                             )
                         }
+#if BETA
+                        VStack {
+                            Text("Beta build \(Bundle.main.releaseVersionNumber) #\(Bundle.main.buildVersionNumber)")
+                                .font(.custom("Poppins-Regular", size: 16))
+                        }
+#endif
                     }
                     .padding()
                     .padding(.bottom, activeSession.sessionIsActive ? 120 : 60)
@@ -329,30 +335,30 @@ struct CompleteProfileBanner: View {
                     .foregroundStyle(.white.opacity(0.55))
             }
             Spacer()
-            if profileProgress == 1 {
-                Text("Close")
-                    .font(.custom("Poppins-Medium", size: 14))
-                    .foregroundStyle(.white)
-                    .padding(.vertical, 4)
-                    .padding(.horizontal, 12)
-                    .background {
-                        Capsule()
-                            .fill(.white.opacity(0.1))
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                    }
-                    .onTapGesture {
-                        onClose()
-                    }
-            } else {
-                Image("arrow-right")
-                    .padding(4)
-                    .background {
-                        Circle()
-                            .fill(.white.opacity(0.1))
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                    }
-                    .foregroundStyle(.white)
-            }
+//            if profileProgress == 1 {
+//                Text("Close")
+//                    .font(.custom("Poppins-Medium", size: 14))
+//                    .foregroundStyle(.white)
+//                    .padding(.vertical, 4)
+//                    .padding(.horizontal, 12)
+//                    .background {
+//                        Capsule()
+//                            .fill(.white.opacity(0.1))
+//                            .clipShape(RoundedRectangle(cornerRadius: 8))
+//                    }
+//                    .onTapGesture {
+//                        onClose()
+//                    }
+//            } else {
+//                Image("arrow-right")
+//                    .padding(4)
+//                    .background {
+//                        Circle()
+//                            .fill(.white.opacity(0.1))
+//                            .clipShape(RoundedRectangle(cornerRadius: 8))
+//                    }
+//                    .foregroundStyle(.white)
+//            }
         }
         .frame(maxWidth: .infinity)
         .padding(16)
@@ -392,4 +398,13 @@ struct CircularProgressView: View {
         .environmentObject(AppRootManager())
         .environmentObject(API())
         .environmentObject(ActiveSession())
+}
+
+extension Bundle {
+    var releaseVersionNumber: String {
+        return infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    }
+    var buildVersionNumber: String {
+        return infoDictionary?["CFBundleVersion"] as? String ?? ""
+    }
 }

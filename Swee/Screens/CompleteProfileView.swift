@@ -56,7 +56,7 @@ struct CompleteProfileView: View {
                     errorMessage = nil
                     do {
                         try await api.completeUser(with: fullName.trimmingCharacters(in: .whitespaces))
-                        appRootManager.currentRoot = .home
+                        appRootManager.currentRoot = .main
                     } catch(let error) {
                         print("complete profile error =====", error)
                         errorMessage = "Something went wrong. Please try again"

@@ -81,12 +81,12 @@ struct PackageDetailView: View {
                                 .font(.custom("Poppins-Bold", size: 20))
                                 .foregroundStyle(Color.text.black100)
                             Spacer()
-                            Button {
-                                
-                            } label: {
-                                Image("share-system")
-                                    .tint(Color.text.black80)
-                            }
+//                            Button {
+//                                
+//                            } label: {
+//                                Image("share-system")
+//                                    .tint(Color.text.black80)
+//                            }
                         }
                         Text("By \(package.merchant)")
                             .font(.custom("Poppins-SemiBold", size: 14))

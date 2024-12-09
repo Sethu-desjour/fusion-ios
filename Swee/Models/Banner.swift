@@ -11,6 +11,7 @@ struct Banner {
     let buttonTitle: String?
     let background: Background
     let badgeImage: URL?
+    let linkURL: URL?
 }
 
 extension BannerModel: RawModelConvertable {
@@ -26,6 +27,7 @@ extension BannerModel: RawModelConvertable {
                       description: description  ?? "",
                       buttonTitle: ctaText,
                       background: background,
-                      badgeImage: iconURL)
+                      badgeImage: iconURL,
+                      linkURL: linkURL)
     }
 }

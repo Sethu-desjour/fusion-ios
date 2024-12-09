@@ -29,6 +29,10 @@ private struct RouteKey: EnvironmentKey {
     static let defaultValue: Binding<Route?> = .constant(nil)
 }
 
+private struct TriggerURLKey: EnvironmentKey {
+    static let defaultValue: Binding<String?> = .constant(nil)
+}
+
 private struct FCMTokenKey: EnvironmentKey {
     static let defaultValue: Binding<String?> = .constant(nil)
 }
@@ -62,6 +66,11 @@ extension EnvironmentValues {
     var route: Binding<Route?> {
         get { self[RouteKey.self] }
         set { self[RouteKey.self] = newValue }
+    }
+    
+    var triggerURL: Binding<String?> {
+        get { self[TriggerURLKey.self] }
+        set { self[TriggerURLKey.self] = newValue }
     }
     
     var fcmToken: Binding<String?> {

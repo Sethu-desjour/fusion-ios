@@ -24,6 +24,7 @@ struct AlertsView: View {
         var image: Image?
         var description: String?
         var createdAt: Date
+        var deeplink: String?
         var action: Action?
     }
     
@@ -96,6 +97,7 @@ struct AlertsView: View {
                             title: cta.title,
                             description: cta.description,
                             image: cta.image,
+                            deeplink: cta.deeplink,
                             createdAt: cta.createdAt,
                             action: cta.action.toClosure({ route in
                 handle(route: route)
@@ -235,11 +237,13 @@ struct AlertRow: View {
     }
     
     @EnvironmentObject private var api: API
+    @Environment(\.triggerURL) private var triggerURL
     var alertId: UUID
     var read: Bool
     var title: String
     var description: String?
     var image: Image?
+    var deeplink: String?
     var merchant: String?
     @State var activityInterval: TimeInterval?
     var action: Action?
@@ -255,6 +259,7 @@ struct AlertRow: View {
          title: String,
          description: String? = nil,
          image: Image? = nil,
+         deeplink: String? = nil,
          merchant: String? = nil,
          activityInterval: TimeInterval? = nil,
          createdAt: Date,
@@ -270,6 +275,7 @@ struct AlertRow: View {
         self.action = action
         self.read = read
         self.createdAt = createdAt
+        self.deeplink = deeplink
         self.onActionTriggered = onActionTriggered
     }
     
@@ -365,11 +371,12 @@ struct AlertRow: View {
             Spacer()
         }
         .onTapGesture {
-            if read { return }
+//            if read { return }
             onActionTriggered(alertId)
             Task {
                 do {
                     try await api.markAsReadAlert(with: alertId)
+                    triggerURL.wrappedValue = deeplink
                 } catch {
                     // fail silently
                 }
