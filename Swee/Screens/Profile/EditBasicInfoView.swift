@@ -20,19 +20,21 @@ struct EditBasicInfoView: View {
 //        return number
 //    }
 //    
-    func row<Content: View>(title: String, @ViewBuilder content: () -> Content, editAction: @escaping () -> Void) -> some View {
+    func row<Content: View>(title: String, showEdit: Bool = true, @ViewBuilder content: () -> Content, editAction: @escaping () -> Void = {}) -> some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Text(title)
                     .font(.custom("Poppins-Medium", size: 14))
                     .foregroundStyle(Color.text.black80)
                 Spacer()
-                Button {
-                    editAction()
-                } label: {
-                    Text("Edit")
-                        .font(.custom("Poppins-Medium", size: 14))
-                        .foregroundStyle(Color.primary.brand)
+                if showEdit {
+                    Button {
+                        editAction()
+                    } label: {
+                        Text("Edit")
+                            .font(.custom("Poppins-Medium", size: 14))
+                            .foregroundStyle(Color.primary.brand)
+                    }
                 }
             }
             content()
@@ -82,13 +84,11 @@ struct EditBasicInfoView: View {
                 } editAction: {
                     goToEditName = true
                 }
-//                row(title: "Phone number") {
-//                    Text(api.user?.phone)
-//                        .font(.custom("Poppins-SemiBold", size: 18))
-//                        .foregroundStyle(Color.text.black80)
-//                } editAction: {
-//                    goToEditPhone = true
-//                }
+                row(title: "Phone number", showEdit: false) {
+                    Text(api.user?.phone)
+                        .font(.custom("Poppins-SemiBold", size: 18))
+                        .foregroundStyle(Color.text.black80)
+                }
             }
             .padding()
         }

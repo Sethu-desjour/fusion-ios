@@ -29,7 +29,7 @@ private struct RouteKey: EnvironmentKey {
     static let defaultValue: Binding<Route?> = .constant(nil)
 }
 
-private struct TriggerURLKey: EnvironmentKey {
+private struct DeeplinkKey: EnvironmentKey {
     static let defaultValue: Binding<String?> = .constant(nil)
 }
 
@@ -68,9 +68,9 @@ extension EnvironmentValues {
         set { self[RouteKey.self] = newValue }
     }
     
-    var triggerURL: Binding<String?> {
-        get { self[TriggerURLKey.self] }
-        set { self[TriggerURLKey.self] = newValue }
+    var deeplink: Binding<String?> {
+        get { self[DeeplinkKey.self] }
+        set { self[DeeplinkKey.self] = newValue }
     }
     
     var fcmToken: Binding<String?> {

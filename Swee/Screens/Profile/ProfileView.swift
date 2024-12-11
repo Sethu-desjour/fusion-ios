@@ -37,7 +37,7 @@ struct ProfileView: View {
     @State private var sections: [[RowData]] = []
     @State private var showDeleteProfileAlert = false
     @State private var showAlert = false
-    @State private var showCompleteProfileBanner: Bool = true
+    @State private var showCompleteProfileBanner: Bool = false
     @State private var alertData: CustomAlert.Data = .init(title: "",
                                                            message: "",
                                                            buttonTitle: "",

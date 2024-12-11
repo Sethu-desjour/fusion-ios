@@ -237,13 +237,13 @@ struct AlertRow: View {
     }
     
     @EnvironmentObject private var api: API
-    @Environment(\.triggerURL) private var triggerURL
+    @Environment(\.deeplink) private var deeplink
     var alertId: UUID
     var read: Bool
     var title: String
     var description: String?
     var image: Image?
-    var deeplink: String?
+    var linkURL: String?
     var merchant: String?
     @State var activityInterval: TimeInterval?
     var action: Action?
@@ -275,7 +275,7 @@ struct AlertRow: View {
         self.action = action
         self.read = read
         self.createdAt = createdAt
-        self.deeplink = deeplink
+        self.linkURL = deeplink
         self.onActionTriggered = onActionTriggered
     }
     
@@ -376,7 +376,7 @@ struct AlertRow: View {
             Task {
                 do {
                     try await api.markAsReadAlert(with: alertId)
-                    triggerURL.wrappedValue = deeplink
+                    deeplink.wrappedValue = linkURL
                 } catch {
                     // fail silently
                 }

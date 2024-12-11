@@ -228,7 +228,7 @@ struct BannersCarousel: View {
 
 struct BannerView: View {
     @State var banner: Banner
-    @Environment(\.triggerURL) private var triggerURL
+    @Environment(\.deeplink) private var deeplink
     
     var body: some View {
         ZStack {
@@ -285,7 +285,7 @@ struct BannerView: View {
         }
         .onTapGesture {
             guard let deeplink = banner.linkURL?.absoluteString else { return }
-            triggerURL.wrappedValue = deeplink
+            self.deeplink.wrappedValue = deeplink
         }
         .frame(width: 210, height: 190)
     }

@@ -38,7 +38,7 @@ struct SweeApp: App {
     @State var route: Route?
     @State private var delayedRoute: Route?
     @State var fcmToken: String?
-    @State var triggerURL: String?
+    @State var deeplink: String?
     
     func handleURL(_ url: URL) {
         let stripeHandled = StripeAPI.handleURLCallback(with: url)
@@ -79,6 +79,16 @@ struct SweeApp: App {
         }
     }
     
+    private func process(deeplink: String?) {
+        if let deeplink = deeplink,
+            let url = URL(string: deeplink) {
+            DispatchQueue.main.async {
+                handleURL(url)
+            }
+            self.deeplink = nil
+        }
+    }
+    
     var body: some Scene {
         WindowGroup {
             Group {
@@ -109,21 +119,10 @@ struct SweeApp: App {
                 }
             })
             .onChange(of: delegate.deeplink, perform: { newValue in
-                if let deeplink = delegate.deeplink,
-                    let url = URL(string: deeplink) {
-                    DispatchQueue.main.async {
-                        handleURL(url)
-                    }
-                }
+                process(deeplink: delegate.deeplink)
             })
-            .onChange(of: triggerURL, perform: { newValue in
-                if let deeplink = triggerURL,
-                   let url = URL(string: deeplink) {
-                    DispatchQueue.main.async {
-                        handleURL(url)
-                    }
-                    triggerURL = nil
-                }
+            .onChange(of: deeplink, perform: { newValue in
+                process(deeplink: deeplink)
             })
             .onChange(of: appRootManager.currentRoot, perform: { newValue in
                 if newValue == .main {
@@ -138,7 +137,7 @@ struct SweeApp: App {
                 }
             })
             .environment(\.route, $route)
-            .environment(\.triggerURL, $triggerURL)
+            .environment(\.deeplink, $deeplink)
             .environment(\.fcmToken, $fcmToken)
             .environmentObject(appRootManager)
             .environmentObject(api)
