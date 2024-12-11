@@ -30,6 +30,7 @@ struct ProfileView: View {
     @EnvironmentObject private var appRootManager: AppRootManager
     @Environment(\.tabIsShown) private var tabIsShown
     @Environment(\.fcmToken) private var fcmToken
+    @Environment(\.openURL) var openURL
     @EnvironmentObject private var activeSession: ActiveSession
 
     
@@ -73,11 +74,11 @@ struct ProfileView: View {
                 .init(title: "Help Center", leadingIcon: Image("help")) {
                     
                 },
-                .init(title: "Terms & Condition", leadingIcon: Image("receipt")) {
-                    
+                .init(title: "Terms & Conditions", leadingIcon: Image("receipt")) {
+                    openURL(URL(string: Strings.tosLink)!)
                 },
                 .init(title: "Rate our app", leadingIcon: Image("raiting")) {
-                    
+                    openURL(URL(string: Strings.rateAppLink)!)
                 },
             ],
             [
@@ -92,21 +93,22 @@ struct ProfileView: View {
                         appRootManager.currentRoot = .authentication
                     }))
                 },
-            ],
-            [
-                .init(title: "Delete profile", trailingIcon: Image("delete"), tint: .red) {
-                    showAlert = true
-                    alertData = .init(title: "Delete?",
-                                      message: "All your data will be deleted including your purchases",
-                                      buttonTitle: "Delete",
-                                      cancelTitle: "Keep the data",
-                                      action: .init(closure: {
-                        try await api.DEBUGdeleteAccount()
-                    }))
-                },
-            ],
-            
+            ]
         ]
+        
+#if BETA
+        sections.append([
+            .init(title: "Delete profile", trailingIcon: Image("delete"), tint: .red) {
+                showAlert = true
+                alertData = .init(title: "Delete?",
+                                  message: "All your data will be deleted including your purchases",
+                                  buttonTitle: "Delete",
+                                  cancelTitle: "Keep the data",
+                                  action: .init(closure: {
+                    try await api.DEBUGdeleteAccount()
+                }))
+            },
+        ])
         
         if let token = fcmToken.wrappedValue {
             sections.append(
@@ -118,6 +120,8 @@ struct ProfileView: View {
                 ]
             )
         }
+#endif
+        
     }
     
     var body: some View {
