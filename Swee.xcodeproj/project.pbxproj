@@ -307,6 +307,8 @@
 		AFCEC5C22C7C111200D157BE /* CompleteProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */; };
 		AFCEC5C42C7C260B00D157BE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5C32C7C260B00D157BE /* HomeView.swift */; };
 		AFCEC5C62C7C26EB00D157BE /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5C52C7C26EB00D157BE /* MainView.swift */; };
+		AFCFB0382D09BDCA00A92B50 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = AFCFB0372D09BDCA00A92B50 /* FirebaseAnalytics */; };
+		AFCFB03A2D09C14C00A92B50 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = AFCFB0392D09C14C00A92B50 /* FirebaseAnalytics */; };
 		AFD6F07F2CB4D3DE004424E5 /* RedemptionDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD6F07E2CB4D3DE004424E5 /* RedemptionDetailModel.swift */; };
 		AFD6F0812CB4D3F0004424E5 /* RedemptionDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD6F0802CB4D3F0004424E5 /* RedemptionDetail.swift */; };
 		AFDB2B522C9131AC00BA75DA /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB2B512C9131AC00BA75DA /* ProfileView.swift */; };
@@ -492,6 +494,7 @@
 			files = (
 				AF3813EF2CC5F59C0028FD02 /* SwiftUIIntrospect in Frameworks */,
 				AF662A392CC5F28D00613E45 /* GoogleSignIn in Frameworks */,
+				AFCFB0382D09BDCA00A92B50 /* FirebaseAnalytics in Frameworks */,
 				AF662A362CC5F20C00613E45 /* SDWebImageSwiftUI in Frameworks */,
 				AF662A3B2CC5F28D00613E45 /* GoogleSignInSwift in Frameworks */,
 				AF662A332CC5F1AF00613E45 /* SkeletonUI in Frameworks */,
@@ -510,6 +513,7 @@
 			files = (
 				AFB830CB2D0057FE00DB94C2 /* SwiftUIIntrospect in Frameworks */,
 				AFB830CC2D0057FE00DB94C2 /* GoogleSignIn in Frameworks */,
+				AFCFB03A2D09C14C00A92B50 /* FirebaseAnalytics in Frameworks */,
 				AFB830CD2D0057FE00DB94C2 /* SDWebImageSwiftUI in Frameworks */,
 				AFB830CE2D0057FE00DB94C2 /* GoogleSignInSwift in Frameworks */,
 				AFB830CF2D0057FE00DB94C2 /* SkeletonUI in Frameworks */,
@@ -963,6 +967,7 @@
 				AF3813F12CC601180028FD02 /* StripePaymentSheet */,
 				AF3733972CC8A35D00AE6A45 /* StripeApplePay */,
 				AFB4E83E2CD4A247002273C4 /* FirebaseMessaging */,
+				AFCFB0372D09BDCA00A92B50 /* FirebaseAnalytics */,
 			);
 			productName = Swee;
 			productReference = AF170AFD2C71C02900544970 /* Swee.app */;
@@ -994,6 +999,7 @@
 				AFB830512D0057FE00DB94C2 /* StripePaymentSheet */,
 				AFB830532D0057FE00DB94C2 /* StripeApplePay */,
 				AFB830542D0057FE00DB94C2 /* FirebaseMessaging */,
+				AFCFB0392D09C14C00A92B50 /* FirebaseAnalytics */,
 			);
 			productName = Swee;
 			productReference = AFB830FB2D0057FE00DB94C2 /* Swee-Beta.app */;
@@ -1950,6 +1956,14 @@
 		AFB830542D0057FE00DB94C2 /* FirebaseMessaging */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FirebaseMessaging;
+		};
+		AFCFB0372D09BDCA00A92B50 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseAnalytics;
+		};
+		AFCFB0392D09C14C00A92B50 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseAnalytics;
 		};
 		AFDD173D2CA1438200DC8DB8 /* MarkdownUI */ = {
 			isa = XCSwiftPackageProductDependency;

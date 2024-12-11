@@ -1,6 +1,7 @@
 import SwiftUI
 import AuthenticationServices
 import FirebaseAuth
+import FirebaseAnalytics
 
 struct AuthView: View {
     @Environment(\.dismiss) private var dismiss
@@ -133,6 +134,11 @@ struct AuthView: View {
                             if case .incorrectPhone = error {
                                 errorMessage = "Check your phone number"
                             } else {
+                                var params: [String: Any] = [:]
+                                if case .other(let err) = error {
+                                    params["error"] = err?.localizedDescription
+                                }
+                                Analytics.logEvent("AUTH_ERROR", parameters: params)
                                 errorMessage = "Something went wrong. Please try again"
                             }
                             print(error.localizedDescription)
