@@ -458,7 +458,7 @@
 		AFA408C12CD86C5B004D74A7 /* AlertsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsViewModel.swift; sourceTree = "<group>"; };
 		AFA5CBF82CCA2DAA00660293 /* RedemptionErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionErrorView.swift; sourceTree = "<group>"; };
 		AFB830FB2D0057FE00DB94C2 /* Swee-Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swee-Beta.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AFB830FC2D0057FE00DB94C2 /* Swee copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Swee copy-Info.plist"; path = "/Users/serghei/Projects/fusion-ios/Swee copy-Info.plist"; sourceTree = "<absolute>"; };
+		AFB830FC2D0057FE00DB94C2 /* Beta-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Beta-Info.plist"; path = "/Users/serghei/Projects/fusion-ios/Beta-Info.plist"; sourceTree = "<absolute>"; };
 		AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtpView.swift; sourceTree = "<group>"; };
 		AFCEC5BF2C7C0E9100D157BE /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
@@ -557,7 +557,7 @@
 			children = (
 				AFCFB0302D02A5C500A92B50 /* Firebase */,
 				AF170AFF2C71C02900544970 /* Swee */,
-				AFB830FC2D0057FE00DB94C2 /* Swee copy-Info.plist */,
+				AFB830FC2D0057FE00DB94C2 /* Beta-Info.plist */,
 				AF170AFE2C71C02900544970 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -1631,7 +1631,7 @@
 				DEVELOPMENT_TEAM = 9M2L2N97YU;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Swee copy-Info.plist";
+				INFOPLIST_FILE = "Beta-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Green;
 				INFOPLIST_KEY_NSCameraUsageDescription = "To change your avatar and upload images";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To show you nearby offers and stores";
@@ -1671,7 +1671,7 @@
 				DEVELOPMENT_TEAM = 9M2L2N97YU;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Swee copy-Info.plist";
+				INFOPLIST_FILE = "Beta-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Green;
 				INFOPLIST_KEY_NSCameraUsageDescription = "To change your avatar and upload images";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To show you nearby offers and stores";
