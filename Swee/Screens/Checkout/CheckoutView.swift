@@ -44,9 +44,9 @@ struct CheckoutView: View {
     @EnvironmentObject private var cart: Cart
     @StateObject private var viewModel = CheckoutViewModel()
     
-//    @State private var text: String = ""
+    //    @State private var text: String = ""
     @State private var showPaymentSheet = false
-//    @State private var showPaymentSuccess: Bool = false
+    //    @State private var showPaymentSuccess: Bool = false
     
     var mainUI: some View {
         VStack(spacing: 0) {
@@ -65,7 +65,7 @@ struct CheckoutView: View {
                             } placeholder: {
                                 Color.white
                                     .skeleton(with: true, shape: .rounded(.radius(4, style: .circular)))
-//                                    .frame(width: 127, height: 145)
+                                //                                    .frame(width: 127, height: 145)
                             }
                             .frame(width: 127, height: 127)
                             .transition(.fade(duration: 0.5))
@@ -91,7 +91,7 @@ struct CheckoutView: View {
                                             .foregroundStyle(Color.text.black100)
                                             .font(.custom("Poppins-SemiBold", size: 14))
                                             .blinking()
-//                                            .skeleton(with: cart.inProgress, size: CGSize(width: CGFloat.infinity, height: 20), shape: .rounded(.radius(4, style: .circular)))
+                                        //                                            .skeleton(with: cart.inProgress, size: CGSize(width: CGFloat.infinity, height: 20), shape: .rounded(.radius(4, style: .circular)))
                                     } else {
                                         Text(element.priceString(currencyCode: cart.currencyCode))
                                             .foregroundStyle(Color.text.black100)
@@ -144,30 +144,30 @@ struct CheckoutView: View {
                     Text("Order summary")
                         .font(.custom("Poppins-Bold", size: 16))
                         .padding(.bottom, 16)
-//                    HStack {
-//                        TextField("Enter coupon code", text: $text)
-//                            .padding(.horizontal, 16)
-//                            .padding(.vertical, 12)
-//                            .overlay(RoundedRectangle(cornerRadius: 4)
-//                                .stroke(.black.opacity(0.15),
-//                                        lineWidth: 1)
-//                            )
-//                        Button {
-//                            
-//                        } label: {
-//                            Text("Apply")
-//                                .font(.custom("Roboto-Bold", size: 16))
-//                                .foregroundStyle(Color.text.black80)
-//                        }
-//                        .padding(.vertical, 12)
-//                        .padding(.horizontal, 32)
-//                        .clipShape(Capsule())
-//                        .overlay(RoundedRectangle(cornerRadius: 24)
-//                            .stroke(Color.text.black20,
-//                                    lineWidth: 1)
-//                        )
-//                    }
-//                    .padding(.bottom, 24)
+                    //                    HStack {
+                    //                        TextField("Enter coupon code", text: $text)
+                    //                            .padding(.horizontal, 16)
+                    //                            .padding(.vertical, 12)
+                    //                            .overlay(RoundedRectangle(cornerRadius: 4)
+                    //                                .stroke(.black.opacity(0.15),
+                    //                                        lineWidth: 1)
+                    //                            )
+                    //                        Button {
+                    //
+                    //                        } label: {
+                    //                            Text("Apply")
+                    //                                .font(.custom("Roboto-Bold", size: 16))
+                    //                                .foregroundStyle(Color.text.black80)
+                    //                        }
+                    //                        .padding(.vertical, 12)
+                    //                        .padding(.horizontal, 32)
+                    //                        .clipShape(Capsule())
+                    //                        .overlay(RoundedRectangle(cornerRadius: 24)
+                    //                            .stroke(Color.text.black20,
+                    //                                    lineWidth: 1)
+                    //                        )
+                    //                    }
+                    //                    .padding(.bottom, 24)
                     SummaryRow(title: "Subtotal", price: viewModel.cartTotal, currency: cart.currencyCode, blinking: cart.inProgress)
                         .padding(.bottom, 4)
                     if let fees = cart.fees {
@@ -177,7 +177,7 @@ struct CheckoutView: View {
                                        price: Double(fee.amountCents / 100),
                                        currency: cart.currencyCode,
                                        blinking: cart.inProgress)
-                                .padding(.bottom, 19)
+                            .padding(.bottom, 19)
                         }
                     }
                     Rectangle()
@@ -196,7 +196,9 @@ struct CheckoutView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 6))
                 .padding([.horizontal, .bottom], 16)
             }
+            
             BottomButtonContainer {
+                if let paymentSheet = viewModel.paymentSheet {
                     AsyncButton(progressWidth: .infinity) {
                         try? await viewModel.prepareForPayment()
                         showPaymentSheet = true
@@ -207,18 +209,28 @@ struct CheckoutView: View {
                         }
                         .foregroundStyle(Color.background.white)
                         .frame(maxWidth: .infinity)
-                    
-                    
                     }
                     .paymentSheet(
                         isPresented: $showPaymentSheet,
-                        paymentSheet: viewModel.paymentSheet ?? .empty,
+                        paymentSheet: paymentSheet,
                         onCompletion: viewModel.onPaymentCompletion)
                     .disabled(cart.inProgress)
                     .buttonStyle(PrimaryButton())
-
+                } else {
+                    Button {} label: {
+                        HStack {
+                            Text("Proceed to payment")
+                                .font(.custom("Roboto-Bold", size: 16))
+                        }
+                        .foregroundStyle(Color.background.white)
+                        .frame(maxWidth: .infinity)
+                    }
+                    .disabled(true)
+                    .buttonStyle(PrimaryButton())
                 }
+            }
             .padding(.bottom, 40)
+            
         }
         .animation(.default, value: cart.updatedAt)
         .ignoresSafeArea(edges: .bottom)
@@ -294,7 +306,7 @@ struct CheckoutView: View {
         }
         .onAppear(perform: {
             viewModel.cart = cart
-//            viewModel.preparePaymentSheet()
+            //            viewModel.preparePaymentSheet()
             Task {
                 try? await viewModel.fetch()
                 try? await viewModel.prepareForPayment()
