@@ -13,7 +13,7 @@ final class AppRootManager: ObservableObject {
         case splash
         case onboarding
         case authentication
-        case home
+        case main
     }
 }
 
@@ -38,6 +38,56 @@ struct SweeApp: App {
     @State var route: Route?
     @State private var delayedRoute: Route?
     @State var fcmToken: String?
+    @State var deeplink: String?
+    
+    func handleURL(_ url: URL) {
+        let stripeHandled = StripeAPI.handleURLCallback(with: url)
+        guard !stripeHandled else {
+            return
+        }
+        if url.scheme == "com.zoomoov.greenapp", let host = url.host {
+            var newRoute: Route = .profile
+            let uuidString = url.absoluteString.components(separatedBy: "=").last
+            switch host {
+            case "profile":
+                newRoute = .profile
+            case "alerts":
+                newRoute = .alerts
+            case "wallet":
+                newRoute = .wallet
+            case "activity":
+                newRoute = .myActivity
+            case "activesession":
+                newRoute = .activeSession
+            case "product":
+                guard let uuidString, let uuid = UUID(uuidString: String(uuidString.uppercased())) else { return }
+                newRoute = .package(uuid)
+            case "merchant":
+                guard let uuidString, let uuid = UUID(uuidString: String(uuidString.uppercased())) else { return }
+                newRoute = .merchant(uuid)
+            case "stripe-redirect":
+                return
+            default:
+                return
+            }
+            
+            if appRootManager.currentRoot != .main {
+                delayedRoute = newRoute
+            } else {
+                route = newRoute
+            }
+        }
+    }
+    
+    private func process(deeplink: String?) {
+        if let deeplink = deeplink,
+            let url = URL(string: deeplink) {
+            DispatchQueue.main.async {
+                handleURL(url)
+            }
+            self.deeplink = nil
+        }
+    }
     
     var body: some Scene {
         WindowGroup {
@@ -49,7 +99,7 @@ struct SweeApp: App {
                     OnboardingView()
                 case .authentication:
                     AuthView()
-                case .home:
+                case .main:
                     MainView()
                 }
             }
@@ -57,42 +107,7 @@ struct SweeApp: App {
                 cart.api = api
             })
             .onOpenURL(perform: { url in
-                let stripeHandled = StripeAPI.handleURLCallback(with: url)
-                guard !stripeHandled else {
-                    return
-                }
-                if url.scheme == "com.zoomoov.greenapp", let host = url.host {
-                    var newRoute: Route = .profile
-                    let uuidString = url.absoluteString.components(separatedBy: "=").last
-                    switch host {
-                    case "profile":
-                        newRoute = .profile
-                    case "alerts":
-                        newRoute = .alerts
-                    case "wallet":
-                        newRoute = .wallet
-                    case "activity":
-                        newRoute = .myActivity
-                    case "activeSession":
-                        newRoute = .activeSession
-                    case "product":
-                        guard let uuidString, let uuid = UUID(uuidString: String(uuidString.uppercased())) else { return }
-                        newRoute = .package(uuid)
-                    case "merchant":
-                        guard let uuidString, let uuid = UUID(uuidString: String(uuidString.uppercased())) else { return }
-                        newRoute = .merchant(uuid)
-                    case "stripe-redirect":
-                        return
-                    default:
-                        return
-                    }
-                    
-                    if appRootManager.currentRoot != .home {
-                        delayedRoute = newRoute
-                    } else {
-                        route = newRoute
-                    }
-                }
+                handleURL(url)
             })
             .onChange(of: delegate.fcmToken, perform: { newValue in
                 fcmToken = newValue
@@ -103,8 +118,14 @@ struct SweeApp: App {
                     try? await api.savePushToken(newValue)
                 }
             })
+            .onChange(of: delegate.deeplink, perform: { newValue in
+                process(deeplink: delegate.deeplink)
+            })
+            .onChange(of: deeplink, perform: { newValue in
+                process(deeplink: deeplink)
+            })
             .onChange(of: appRootManager.currentRoot, perform: { newValue in
-                if newValue == .home {
+                if newValue == .main {
                     route = delayedRoute
                     delayedRoute = nil
                 }
@@ -116,6 +137,7 @@ struct SweeApp: App {
                 }
             })
             .environment(\.route, $route)
+            .environment(\.deeplink, $deeplink)
             .environment(\.fcmToken, $fcmToken)
             .environmentObject(appRootManager)
             .environmentObject(api)
@@ -129,6 +151,7 @@ struct SweeApp: App {
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate, ObservableObject {
     
     @Published var fcmToken: String?
+    @Published var deeplink: String?
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
@@ -164,5 +187,15 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
       return GIDSignIn.sharedInstance.handle(url)
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+        if let deeplink = response.notification.request.content.userInfo["deeplink"] as? String {
+            self.deeplink = deeplink
+        }
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
+        return [.badge, .banner, .list, .sound]
     }
 }

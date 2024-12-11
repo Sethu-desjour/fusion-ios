@@ -5,7 +5,6 @@ import SDWebImage
 import SkeletonUI
 
 struct HomeView: View {
-    
     @EnvironmentObject private var api: API
     @EnvironmentObject private var cart: Cart
     @EnvironmentObject private var locationManager: LocationManager
@@ -70,6 +69,9 @@ struct HomeView: View {
             .padding(.vertical, 20)
             .padding(.bottom, activeSession.sessionIsActive ? 160 : 100)
         }
+        .refreshable(action: {
+            try? await viewModel.fetch()
+        })
         .ignoresSafeArea()
     }
     
@@ -226,6 +228,7 @@ struct BannersCarousel: View {
 
 struct BannerView: View {
     @State var banner: Banner
+    @Environment(\.deeplink) private var deeplink
     
     var body: some View {
         ZStack {
@@ -279,6 +282,10 @@ struct BannerView: View {
                 }
             }
             .padding(16)
+        }
+        .onTapGesture {
+            guard let deeplink = banner.linkURL?.absoluteString else { return }
+            self.deeplink.wrappedValue = deeplink
         }
         .frame(width: 210, height: 190)
     }

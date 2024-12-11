@@ -471,7 +471,7 @@ extension OrderType {
         case .online:
             return "Online"
         case .otc:
-            return "Other the counter"
+            return "Over the counter"
         }
     }
 }

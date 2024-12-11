@@ -6,6 +6,7 @@ struct AlertModel: Codable {
     let title: String
     let body: String
     let isRead: Bool
+    let payload: [String: String]?
     @DecodableDate var createdAt: Date
     @DecodableDate var updatedAt: Date
     
@@ -17,6 +18,7 @@ struct AlertModel: Codable {
         case isRead = "is_read"
         case createdAt = "created_at"
         case updatedAt = "updated_at"
+        case payload = "payload"
     }
 }
 
@@ -26,6 +28,7 @@ extension AlertModel: RawModelConvertable {
                                         read: isRead,
                                         title: title,
                                         description: body,
-                                        createdAt: createdAt))
+                                        createdAt: createdAt,
+                                        deeplink: payload?["deeplink"]))
     }
 }

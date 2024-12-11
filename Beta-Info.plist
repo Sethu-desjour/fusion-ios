@@ -9,7 +9,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>app-1-136912908792-ios-8de89c63ba2c58aa48660d</string>
+				<string>app-1-862723965615-ios-1ba3a1effb8f4625e0ca5a</string>
 			</array>
 		</dict>
 		<dict>
@@ -17,7 +17,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.136912908792-hmhmt943bng8op05rtpbb79d50l6cug9</string>
+				<string>com.googleusercontent.apps.862723965615-h7dcrrfd2h5fhnojm7tj27odnd8st7hm</string>
 			</array>
 		</dict>
 		<dict>
@@ -40,7 +40,7 @@
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
-			<key>greenkidsapp.com</key>
+			<key>fusionkidsapp.com</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>

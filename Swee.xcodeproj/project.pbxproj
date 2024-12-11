@@ -25,7 +25,6 @@
 		AF16A0F82C8567190093CD99 /* CheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0F72C8567190093CD99 /* CheckoutView.swift */; };
 		AF16A0FB2C86B96F0093CD99 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0FA2C86B96F0093CD99 /* Keys.swift */; };
 		AF16A0FD2C86C43A0093CD99 /* MyWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0FC2C86C43A0093CD99 /* MyWalletView.swift */; };
-		AF170B0A2C71C02B00544970 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF170B092C71C02B00544970 /* Assets.xcassets */; };
 		AF170B0D2C71C02B00544970 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = AF170B0C2C71C02B00544970 /* Base */; };
 		AF1C31F42CB946A8001DD7EE /* AddChildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1C31F32CB946A8001DD7EE /* AddChildViewModel.swift */; };
 		AF1FAC472C79B0E100654FB7 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1FAC462C79B0E100654FB7 /* AuthView.swift */; };
@@ -74,7 +73,6 @@
 		AF3733982CC8A35D00AE6A45 /* StripeApplePay in Frameworks */ = {isa = PBXBuildFile; productRef = AF3733972CC8A35D00AE6A45 /* StripeApplePay */; };
 		AF3813EF2CC5F59C0028FD02 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = AF3813EE2CC5F59C0028FD02 /* SwiftUIIntrospect */; };
 		AF3813F22CC601180028FD02 /* StripePaymentSheet in Frameworks */ = {isa = PBXBuildFile; productRef = AF3813F12CC601180028FD02 /* StripePaymentSheet */; };
-		AF501F242C942CDF00637042 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF501F232C942CDF00637042 /* GoogleService-Info.plist */; };
 		AF501F272C945D7C00637042 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F262C945D7C00637042 /* API.swift */; };
 		AF501F2A2C945F9C00637042 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F292C945F9C00637042 /* Strings.swift */; };
 		AF501F2C2C94736C00637042 /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F2B2C94736C00637042 /* AsyncButton.swift */; };
@@ -143,6 +141,166 @@
 		AFA408C22CD86C5B004D74A7 /* AlertsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA408C12CD86C5B004D74A7 /* AlertsViewModel.swift */; };
 		AFA5CBF92CCA2DAA00660293 /* RedemptionErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5CBF82CCA2DAA00660293 /* RedemptionErrorView.swift */; };
 		AFB4E83F2CD4A247002273C4 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = AFB4E83E2CD4A247002273C4 /* FirebaseMessaging */; };
+		AFB830562D0057FE00DB94C2 /* EditOtpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558342CAAC2DA00ABEBA3 /* EditOtpView.swift */; };
+		AFB830572D0057FE00DB94C2 /* PhoneLinkingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB9792CC37A1D00B3B21C /* PhoneLinkingView.swift */; };
+		AFB830582D0057FE00DB94C2 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F292C945F9C00637042 /* Strings.swift */; };
+		AFB830592D0057FE00DB94C2 /* CompleteProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */; };
+		AFB8305A2D0057FE00DB94C2 /* PackageDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDD173A2CA139D100DC8DB8 /* PackageDetailViewModel.swift */; };
+		AFB8305B2D0057FE00DB94C2 /* Skeletonable.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85E12C9C5310004B0B31 /* Skeletonable.swift */; };
+		AFB8305C2D0057FE00DB94C2 /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA335C72C92676700883CBB /* AlertsView.swift */; };
+		AFB8305D2D0057FE00DB94C2 /* MerchantPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72DFE82C81699C00F70387 /* MerchantPageView.swift */; };
+		AFB8305E2D0057FE00DB94C2 /* RedemptionLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF67C9B42CB50C8D00A46B11 /* RedemptionLoadingView.swift */; };
+		AFB8305F2D0057FE00DB94C2 /* MerchantCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85E32C9C5337004B0B31 /* MerchantCard.swift */; };
+		AFB830602D0057FE00DB94C2 /* OrderItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022D42CAA48C7006DBCAD /* OrderItemModel.swift */; };
+		AFB830612D0057FE00DB94C2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5C52C7C26EB00D157BE /* MainView.swift */; };
+		AFB830622D0057FE00DB94C2 /* OrderDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6D42412CB4D0FB0050C2B8 /* OrderDetailModel.swift */; };
+		AFB830632D0057FE00DB94C2 /* MerchantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85C32C9AA2B4004B0B31 /* MerchantModel.swift */; };
+		AFB830642D0057FE00DB94C2 /* PaymentIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3733952CC766C500AE6A45 /* PaymentIntent.swift */; };
+		AFB830652D0057FE00DB94C2 /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67F82C7F4EA900489D0C /* BottomSheet.swift */; };
+		AFB830662D0057FE00DB94C2 /* AddChildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1C31F32CB946A8001DD7EE /* AddChildViewModel.swift */; };
+		AFB830672D0057FE00DB94C2 /* RedemptionDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD6F0802CB4D3F0004424E5 /* RedemptionDetail.swift */; };
+		AFB830682D0057FE00DB94C2 /* OrderItemSnapshotModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022D62CAA48D7006DBCAD /* OrderItemSnapshotModel.swift */; };
+		AFB830692D0057FE00DB94C2 /* PurchaseProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C85C2CAFCB1000496B0C /* PurchaseProduct.swift */; };
+		AFB8306A2D0057FE00DB94C2 /* FirebaseAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F2D2C95234C00637042 /* FirebaseAuth.swift */; };
+		AFB8306B2D0057FE00DB94C2 /* EditDOBView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB96F2CBE5C5F00B3B21C /* EditDOBView.swift */; };
+		AFB8306C2D0057FE00DB94C2 /* BannerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85C12C9AA26D004B0B31 /* BannerModel.swift */; };
+		AFB8306D2D0057FE00DB94C2 /* ReferalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85E52C9C5354004B0B31 /* ReferalCard.swift */; };
+		AFB8306E2D0057FE00DB94C2 /* RemoteNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9D1B642CE611FF00234963 /* RemoteNotificationsManager.swift */; };
+		AFB8306F2D0057FE00DB94C2 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0FA2C86B96F0093CD99 /* Keys.swift */; };
+		AFB830702D0057FE00DB94C2 /* SeeAllView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67FC2C7F5A6C00489D0C /* SeeAllView.swift */; };
+		AFB830712D0057FE00DB94C2 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */; };
+		AFB830722D0057FE00DB94C2 /* AddChildView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF78C2C32C89681400F8F8DB /* AddChildView.swift */; };
+		AFB830732D0057FE00DB94C2 /* RedemptionScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF67C9B02CB50C3000A46B11 /* RedemptionScanView.swift */; };
+		AFB830742D0057FE00DB94C2 /* MerchantStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85DC2C9C46B5004B0B31 /* MerchantStore.swift */; };
+		AFB830752D0057FE00DB94C2 /* MyWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0FC2C86C43A0093CD99 /* MyWalletView.swift */; };
+		AFB830762D0057FE00DB94C2 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF72DFE62C80248200F70387 /* ActivityView.swift */; };
+		AFB830772D0057FE00DB94C2 /* TextStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67F62C7E38FB00489D0C /* TextStyles.swift */; };
+		AFB830782D0057FE00DB94C2 /* LogoNavItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85CB2C9BB7F1004B0B31 /* LogoNavItem.swift */; };
+		AFB830792D0057FE00DB94C2 /* StateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022CE2CA66CC6006DBCAD /* StateView.swift */; };
+		AFB8307A2D0057FE00DB94C2 /* OrderDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6D42432CB4D12C0050C2B8 /* OrderDetail.swift */; };
+		AFB8307B2D0057FE00DB94C2 /* TicketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C8542CAF980300496B0C /* TicketView.swift */; };
+		AFB8307C2D0057FE00DB94C2 /* CustomNavBarContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB90492C8EE077008931DB /* CustomNavBarContainerView.swift */; };
+		AFB8307D2D0057FE00DB94C2 /* PackageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF82A4662C84418200E0DD4C /* PackageDetailView.swift */; };
+		AFB8307E2D0057FE00DB94C2 /* ObservableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF82A4642C8432C700E0DD4C /* ObservableScrollView.swift */; };
+		AFB8307F2D0057FE00DB94C2 /* Redemption.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C8582CAFCA9700496B0C /* Redemption.swift */; };
+		AFB830802D0057FE00DB94C2 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85C92C9AA340004B0B31 /* Date.swift */; };
+		AFB830812D0057FE00DB94C2 /* EditGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB9712CBE61DB00B3B21C /* EditGenderView.swift */; };
+		AFB830822D0057FE00DB94C2 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F302C96B56D00637042 /* SplashView.swift */; };
+		AFB830832D0057FE00DB94C2 /* ObservableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDF67FA2C7F576B00489D0C /* ObservableWrapper.swift */; };
+		AFB830842D0057FE00DB94C2 /* JollyfieldRedemptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9AC5672C894D5700B16186 /* JollyfieldRedemptionView.swift */; };
+		AFB830852D0057FE00DB94C2 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF7DF73A2C79F2B100C3F347 /* TestView.swift */; };
+		AFB830862D0057FE00DB94C2 /* ZoomoovBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C8562CAF98EF00496B0C /* ZoomoovBottomSheet.swift */; };
+		AFB830872D0057FE00DB94C2 /* ZoomoovRedemptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8B1E172C8729B600B44D75 /* ZoomoovRedemptionView.swift */; };
+		AFB830882D0057FE00DB94C2 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F322C97EB4A00637042 /* HomeViewModel.swift */; };
+		AFB830892D0057FE00DB94C2 /* CheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF16A0F72C8567190093CD99 /* CheckoutView.swift */; };
+		AFB8308A2D0057FE00DB94C2 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF82A4622C819B8500E0DD4C /* String.swift */; };
+		AFB8308B2D0057FE00DB94C2 /* EditEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB96D2CBE50A900B3B21C /* EditEmailView.swift */; };
+		AFB8308C2D0057FE00DB94C2 /* Merchant.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85DA2C9C467B004B0B31 /* Merchant.swift */; };
+		AFB8308D2D0057FE00DB94C2 /* MockProductsURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85CD2C9C138B004B0B31 /* MockProductsURLProtocol.swift */; };
+		AFB8308E2D0057FE00DB94C2 /* Cart.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022C52CA18C62006DBCAD /* Cart.swift */; };
+		AFB8308F2D0057FE00DB94C2 /* Purchase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C85A2CAFCAE200496B0C /* Purchase.swift */; };
+		AFB830902D0057FE00DB94C2 /* OtpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */; };
+		AFB830912D0057FE00DB94C2 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1FAC462C79B0E100654FB7 /* AuthView.swift */; };
+		AFB830922D0057FE00DB94C2 /* ActiveSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB9752CBF7B8000B3B21C /* ActiveSession.swift */; };
+		AFB830932D0057FE00DB94C2 /* ContentErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022D02CA9850D006DBCAD /* ContentErrorView.swift */; };
+		AFB830942D0057FE00DB94C2 /* MockHomeSectionURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F372C9813D300637042 /* MockHomeSectionURLProtocol.swift */; };
+		AFB830952D0057FE00DB94C2 /* MerchantStoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85C72C9AA324004B0B31 /* MerchantStoreModel.swift */; };
+		AFB830962D0057FE00DB94C2 /* EditNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558302CAABC2100ABEBA3 /* EditNameView.swift */; };
+		AFB830972D0057FE00DB94C2 /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB90442C8EA256008931DB /* TimeInterval.swift */; };
+		AFB830982D0057FE00DB94C2 /* MyWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022D92CAA75EF006DBCAD /* MyWalletViewModel.swift */; };
+		AFB830992D0057FE00DB94C2 /* RedemptionErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5CBF82CCA2DAA00660293 /* RedemptionErrorView.swift */; };
+		AFB8309A2D0057FE00DB94C2 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDD17372CA1221D00DC8DB8 /* User.swift */; };
+		AFB8309B2D0057FE00DB94C2 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85D62C9C4629004B0B31 /* Package.swift */; };
+		AFB8309C2D0057FE00DB94C2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8423C52CB8D4160087497A /* Session.swift */; };
+		AFB8309D2D0057FE00DB94C2 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C8632CAFD87100496B0C /* Order.swift */; };
+		AFB8309E2D0057FE00DB94C2 /* EditBasicInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022DC2CAAA00E006DBCAD /* EditBasicInfoView.swift */; };
+		AFB8309F2D0057FE00DB94C2 /* CustomPreferenceKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB904F2C8EE471008931DB /* CustomPreferenceKeys.swift */; };
+		AFB830A02D0057FE00DB94C2 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5BF2C7C0E9100D157BE /* ButtonStyles.swift */; };
+		AFB830A12D0057FE00DB94C2 /* EditPhoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558322CAABFF500ABEBA3 /* EditPhoneView.swift */; };
+		AFB830A22D0057FE00DB94C2 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1FAC482C79B12A00654FB7 /* View.swift */; };
+		AFB830A32D0057FE00DB94C2 /* CheckoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022CA2CA2BA03006DBCAD /* CheckoutViewModel.swift */; };
+		AFB830A42D0057FE00DB94C2 /* AlertsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA408C12CD86C5B004D74A7 /* AlertsViewModel.swift */; };
+		AFB830A52D0057FE00DB94C2 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB2B512C9131AC00BA75DA /* ProfileView.swift */; };
+		AFB830A62D0057FE00DB94C2 /* Child.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF69BC032CB5393000E87E2B /* Child.swift */; };
+		AFB830A72D0057FE00DB94C2 /* HomeSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F352C980FCB00637042 /* HomeSectionModel.swift */; };
+		AFB830A82D0057FE00DB94C2 /* CustomNavView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB904B2C8EE190008931DB /* CustomNavView.swift */; };
+		AFB830A92D0057FE00DB94C2 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF80222E2C770C27001274FA /* Colors.swift */; };
+		AFB830AA2D0057FE00DB94C2 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022CC2CA5584E006DBCAD /* LocationManager.swift */; };
+		AFB830AB2D0057FE00DB94C2 /* MerchantPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85D12C9C1760004B0B31 /* MerchantPageViewModel.swift */; };
+		AFB830AC2D0057FE00DB94C2 /* JollyfieldRedemptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF69BC012CB5391100E87E2B /* JollyfieldRedemptionViewModel.swift */; };
+		AFB830AD2D0057FE00DB94C2 /* MockMerchantStoresURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85D32C9C24C6004B0B31 /* MockMerchantStoresURLProtocol.swift */; };
+		AFB830AE2D0057FE00DB94C2 /* ChildCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8423C32CB7C7400087497A /* ChildCard.swift */; };
+		AFB830AF2D0057FE00DB94C2 /* SeeAllViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDD17332C9DBFEC00DC8DB8 /* SeeAllViewModel.swift */; };
+		AFB830B02D0057FE00DB94C2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5C32C7C260B00D157BE /* HomeView.swift */; };
+		AFB830B12D0057FE00DB94C2 /* RedemptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C8522CAC10C800496B0C /* RedemptionModel.swift */; };
+		AFB830B22D0057FE00DB94C2 /* CustomNavLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB904D2C8EE2EC008931DB /* CustomNavLink.swift */; };
+		AFB830B32D0057FE00DB94C2 /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C8502CABB99000496B0C /* PurchaseModel.swift */; };
+		AFB830B42D0057FE00DB94C2 /* RedemptionCompletedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF67C9B22CB50C6200A46B11 /* RedemptionCompletedView.swift */; };
+		AFB830B52D0057FE00DB94C2 /* ZoomoovRedemptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C84E2CABB83000496B0C /* ZoomoovRedemptionViewModel.swift */; };
+		AFB830B62D0057FE00DB94C2 /* CartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022C72CA2B51B006DBCAD /* CartButton.swift */; };
+		AFB830B72D0057FE00DB94C2 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85D82C9C4652004B0B31 /* Banner.swift */; };
+		AFB830B82D0057FE00DB94C2 /* PackageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85C52C9AA30E004B0B31 /* PackageModel.swift */; };
+		AFB830B92D0057FE00DB94C2 /* OrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3022D22CAA4894006DBCAD /* OrderModel.swift */; };
+		AFB830BA2D0057FE00DB94C2 /* ChildModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF69BBFF2CB52CF800E87E2B /* ChildModel.swift */; };
+		AFB830BB2D0057FE00DB94C2 /* CustomNavBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB90472C8EDE42008931DB /* CustomNavBarView.swift */; };
+		AFB830BC2D0057FE00DB94C2 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF80222B2C72F39E001274FA /* OnboardingView.swift */; };
+		AFB830BD2D0057FE00DB94C2 /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF8FB9772CC2103900B3B21C /* CustomAlert.swift */; };
+		AFB830BE2D0057FE00DB94C2 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F262C945D7C00637042 /* API.swift */; };
+		AFB830BF2D0057FE00DB94C2 /* PackageCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF2F85DF2C9C52CC004B0B31 /* PackageCard.swift */; };
+		AFB830C02D0057FE00DB94C2 /* WalletMerchantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0558362CABA1F000ABEBA3 /* WalletMerchantModel.swift */; };
+		AFB830C12D0057FE00DB94C2 /* NotificationUpsell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF9D1B662CE615AC00234963 /* NotificationUpsell.swift */; };
+		AFB830C22D0057FE00DB94C2 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA408BF2CD86758004D74A7 /* AlertModel.swift */; };
+		AFB830C32D0057FE00DB94C2 /* ActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C8612CAFD82C00496B0C /* ActivityViewModel.swift */; };
+		AFB830C42D0057FE00DB94C2 /* StoresView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDD173F2CA1846E00DC8DB8 /* StoresView.swift */; };
+		AFB830C52D0057FE00DB94C2 /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF501F2B2C94736C00637042 /* AsyncButton.swift */; };
+		AFB830C62D0057FE00DB94C2 /* WalletMerchant.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF13C85E2CAFCB2900496B0C /* WalletMerchant.swift */; };
+		AFB830C72D0057FE00DB94C2 /* SweeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF557FC72C79AAC700AD99A5 /* SweeApp.swift */; };
+		AFB830C82D0057FE00DB94C2 /* SessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF69BC072CB649B400E87E2B /* SessionModel.swift */; };
+		AFB830C92D0057FE00DB94C2 /* RedemptionDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD6F07E2CB4D3DE004424E5 /* RedemptionDetailModel.swift */; };
+		AFB830CB2D0057FE00DB94C2 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = AFB8304F2D0057FE00DB94C2 /* SwiftUIIntrospect */; };
+		AFB830CC2D0057FE00DB94C2 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = AFB830492D0057FE00DB94C2 /* GoogleSignIn */; };
+		AFB830CD2D0057FE00DB94C2 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = AFB830472D0057FE00DB94C2 /* SDWebImageSwiftUI */; };
+		AFB830CE2D0057FE00DB94C2 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = AFB8304B2D0057FE00DB94C2 /* GoogleSignInSwift */; };
+		AFB830CF2D0057FE00DB94C2 /* SkeletonUI in Frameworks */ = {isa = PBXBuildFile; productRef = AFB830452D0057FE00DB94C2 /* SkeletonUI */; };
+		AFB830D02D0057FE00DB94C2 /* StripeApplePay in Frameworks */ = {isa = PBXBuildFile; productRef = AFB830532D0057FE00DB94C2 /* StripeApplePay */; };
+		AFB830D12D0057FE00DB94C2 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = AFB8304E2D0057FE00DB94C2 /* FirebaseCrashlytics */; };
+		AFB830D22D0057FE00DB94C2 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = AFB8304C2D0057FE00DB94C2 /* FirebaseAuth */; };
+		AFB830D32D0057FE00DB94C2 /* StripePaymentSheet in Frameworks */ = {isa = PBXBuildFile; productRef = AFB830512D0057FE00DB94C2 /* StripePaymentSheet */; };
+		AFB830D42D0057FE00DB94C2 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = AFB830542D0057FE00DB94C2 /* FirebaseMessaging */; };
+		AFB830D52D0057FE00DB94C2 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = AFB830432D0057FE00DB94C2 /* MarkdownUI */; };
+		AFB830D72D0057FE00DB94C2 /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022432C785E96001274FA /* Poppins-ExtraLight.ttf */; };
+		AFB830D82D0057FE00DB94C2 /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC542C79CEDD00654FB7 /* Roboto-ThinItalic.ttf */; };
+		AFB830DA2D0057FE00DB94C2 /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022402C785E95001274FA /* Poppins-Light.ttf */; };
+		AFB830DB2D0057FE00DB94C2 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022442C785E96001274FA /* Poppins-Black.ttf */; };
+		AFB830DC2D0057FE00DB94C2 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC562C79CEDD00654FB7 /* Roboto-Black.ttf */; };
+		AFB830DD2D0057FE00DB94C2 /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF80223E2C785E95001274FA /* Poppins-ExtraBold.ttf */; };
+		AFB830DE2D0057FE00DB94C2 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022362C785E95001274FA /* Poppins-Medium.ttf */; };
+		AFB830DF2D0057FE00DB94C2 /* Poppins-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022392C785E95001274FA /* Poppins-ExtraLightItalic.ttf */; };
+		AFB830E02D0057FE00DB94C2 /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC532C79CEDD00654FB7 /* Roboto-Italic.ttf */; };
+		AFB830E12D0057FE00DB94C2 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = AF170B0C2C71C02B00544970 /* Base */; };
+		AFB830E22D0057FE00DB94C2 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC4D2C79CEDD00654FB7 /* Roboto-Thin.ttf */; };
+		AFB830E32D0057FE00DB94C2 /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC502C79CEDD00654FB7 /* Roboto-BoldItalic.ttf */; };
+		AFB830E42D0057FE00DB94C2 /* Poppins-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022332C785E95001274FA /* Poppins-Italic.ttf */; };
+		AFB830E52D0057FE00DB94C2 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022352C785E95001274FA /* Poppins-Regular.ttf */; };
+		AFB830E62D0057FE00DB94C2 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC552C79CEDD00654FB7 /* Roboto-Bold.ttf */; };
+		AFB830E72D0057FE00DB94C2 /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF80223F2C785E95001274FA /* Poppins-LightItalic.ttf */; };
+		AFB830E92D0057FE00DB94C2 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC4E2C79CEDD00654FB7 /* Roboto-Light.ttf */; };
+		AFB830EA2D0057FE00DB94C2 /* Poppins-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF80223A2C785E95001274FA /* Poppins-ExtraBoldItalic.ttf */; };
+		AFB830EB2D0057FE00DB94C2 /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC4B2C79CEDD00654FB7 /* Roboto-LightItalic.ttf */; };
+		AFB830EC2D0057FE00DB94C2 /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022382C785E95001274FA /* Poppins-SemiBoldItalic.ttf */; };
+		AFB830ED2D0057FE00DB94C2 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC522C79CEDD00654FB7 /* Roboto-MediumItalic.ttf */; };
+		AFB830EE2D0057FE00DB94C2 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF80223D2C785E95001274FA /* Poppins-Bold.ttf */; };
+		AFB830EF2D0057FE00DB94C2 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF80223B2C785E95001274FA /* Poppins-Thin.ttf */; };
+		AFB830F02D0057FE00DB94C2 /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC4F2C79CEDD00654FB7 /* Roboto-BlackItalic.ttf */; };
+		AFB830F12D0057FE00DB94C2 /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF80223C2C785E95001274FA /* Poppins-ThinItalic.ttf */; };
+		AFB830F22D0057FE00DB94C2 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC4C2C79CEDD00654FB7 /* Roboto-Regular.ttf */; };
+		AFB830F32D0057FE00DB94C2 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022412C785E96001274FA /* Poppins-SemiBold.ttf */; };
+		AFB830F42D0057FE00DB94C2 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF1FAC512C79CEDD00654FB7 /* Roboto-Medium.ttf */; };
+		AFB830F52D0057FE00DB94C2 /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022422C785E96001274FA /* Poppins-BlackItalic.ttf */; };
+		AFB830F62D0057FE00DB94C2 /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022342C785E95001274FA /* Poppins-MediumItalic.ttf */; };
+		AFB830F72D0057FE00DB94C2 /* Poppins-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF8022372C785E95001274FA /* Poppins-BoldItalic.ttf */; };
+		AFB831002D005BCA00DB94C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF170B092C71C02B00544970 /* Assets.xcassets */; };
+		AFB831012D005BE300DB94C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF170B092C71C02B00544970 /* Assets.xcassets */; };
 		AFCEC5BA2C7ACEB000D157BE /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */; };
 		AFCEC5BC2C7AD00F00D157BE /* OtpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */; };
 		AFCEC5C02C7C0E9100D157BE /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCEC5BF2C7C0E9100D157BE /* ButtonStyles.swift */; };
@@ -299,12 +457,15 @@
 		AFA408BF2CD86758004D74A7 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		AFA408C12CD86C5B004D74A7 /* AlertsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsViewModel.swift; sourceTree = "<group>"; };
 		AFA5CBF82CCA2DAA00660293 /* RedemptionErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionErrorView.swift; sourceTree = "<group>"; };
+		AFB830FB2D0057FE00DB94C2 /* Swee-Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swee-Beta.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFB830FC2D0057FE00DB94C2 /* Beta-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Beta-Info.plist"; path = "/Users/serghei/Projects/fusion-ios/Beta-Info.plist"; sourceTree = "<absolute>"; };
 		AFCEC5B92C7ACEB000D157BE /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
 		AFCEC5BB2C7AD00F00D157BE /* OtpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtpView.swift; sourceTree = "<group>"; };
 		AFCEC5BF2C7C0E9100D157BE /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		AFCEC5C12C7C111200D157BE /* CompleteProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteProfileView.swift; sourceTree = "<group>"; };
 		AFCEC5C32C7C260B00D157BE /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		AFCEC5C52C7C26EB00D157BE /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		AFCFB0312D02A5E500A92B50 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AFD6F07E2CB4D3DE004424E5 /* RedemptionDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionDetailModel.swift; sourceTree = "<group>"; };
 		AFD6F0802CB4D3F0004424E5 /* RedemptionDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionDetail.swift; sourceTree = "<group>"; };
 		AFDB2B512C9131AC00BA75DA /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -343,6 +504,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AFB830CA2D0057FE00DB94C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFB830CB2D0057FE00DB94C2 /* SwiftUIIntrospect in Frameworks */,
+				AFB830CC2D0057FE00DB94C2 /* GoogleSignIn in Frameworks */,
+				AFB830CD2D0057FE00DB94C2 /* SDWebImageSwiftUI in Frameworks */,
+				AFB830CE2D0057FE00DB94C2 /* GoogleSignInSwift in Frameworks */,
+				AFB830CF2D0057FE00DB94C2 /* SkeletonUI in Frameworks */,
+				AFB830D02D0057FE00DB94C2 /* StripeApplePay in Frameworks */,
+				AFB830D12D0057FE00DB94C2 /* FirebaseCrashlytics in Frameworks */,
+				AFB830D22D0057FE00DB94C2 /* FirebaseAuth in Frameworks */,
+				AFB830D32D0057FE00DB94C2 /* StripePaymentSheet in Frameworks */,
+				AFB830D42D0057FE00DB94C2 /* FirebaseMessaging in Frameworks */,
+				AFB830D52D0057FE00DB94C2 /* MarkdownUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -376,8 +555,9 @@
 		AF170AF42C71C02900544970 = {
 			isa = PBXGroup;
 			children = (
-				AF501F232C942CDF00637042 /* GoogleService-Info.plist */,
+				AFCFB0302D02A5C500A92B50 /* Firebase */,
 				AF170AFF2C71C02900544970 /* Swee */,
+				AFB830FC2D0057FE00DB94C2 /* Beta-Info.plist */,
 				AF170AFE2C71C02900544970 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -386,6 +566,7 @@
 			isa = PBXGroup;
 			children = (
 				AF170AFD2C71C02900544970 /* Swee.app */,
+				AFB830FB2D0057FE00DB94C2 /* Swee-Beta.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -698,6 +879,31 @@
 			path = Styles;
 			sourceTree = "<group>";
 		};
+		AFCFB0302D02A5C500A92B50 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				AFCFB0352D02AC3300A92B50 /* Beta */,
+				AFCFB0362D02AC3700A92B50 /* Release */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
+		AFCFB0352D02AC3300A92B50 /* Beta */ = {
+			isa = PBXGroup;
+			children = (
+				AF501F232C942CDF00637042 /* GoogleService-Info.plist */,
+			);
+			path = Beta;
+			sourceTree = "<group>";
+		};
+		AFCFB0362D02AC3700A92B50 /* Release */ = {
+			isa = PBXGroup;
+			children = (
+				AFCFB0312D02A5E500A92B50 /* GoogleService-Info.plist */,
+			);
+			path = Release;
+			sourceTree = "<group>";
+		};
 		AFDB90462C8EDE32008931DB /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
@@ -738,6 +944,7 @@
 				AF170AF92C71C02900544970 /* Sources */,
 				AF170AFA2C71C02900544970 /* Frameworks */,
 				AF170AFB2C71C02900544970 /* Resources */,
+				AFCFB0342D02A71600A92B50 /* Copy Google Service Plist File */,
 			);
 			buildRules = (
 			);
@@ -759,6 +966,37 @@
 			);
 			productName = Swee;
 			productReference = AF170AFD2C71C02900544970 /* Swee.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AFB830422D0057FE00DB94C2 /* Swee-Beta */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AFB830F82D0057FE00DB94C2 /* Build configuration list for PBXNativeTarget "Swee-Beta" */;
+			buildPhases = (
+				AFB830552D0057FE00DB94C2 /* Sources */,
+				AFB830CA2D0057FE00DB94C2 /* Frameworks */,
+				AFB830D62D0057FE00DB94C2 /* Resources */,
+				AFCFB0332D02A6EF00A92B50 /* Copy Google Service Plist File */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Swee-Beta";
+			packageProductDependencies = (
+				AFB830432D0057FE00DB94C2 /* MarkdownUI */,
+				AFB830452D0057FE00DB94C2 /* SkeletonUI */,
+				AFB830472D0057FE00DB94C2 /* SDWebImageSwiftUI */,
+				AFB830492D0057FE00DB94C2 /* GoogleSignIn */,
+				AFB8304B2D0057FE00DB94C2 /* GoogleSignInSwift */,
+				AFB8304C2D0057FE00DB94C2 /* FirebaseAuth */,
+				AFB8304E2D0057FE00DB94C2 /* FirebaseCrashlytics */,
+				AFB8304F2D0057FE00DB94C2 /* SwiftUIIntrospect */,
+				AFB830512D0057FE00DB94C2 /* StripePaymentSheet */,
+				AFB830532D0057FE00DB94C2 /* StripeApplePay */,
+				AFB830542D0057FE00DB94C2 /* FirebaseMessaging */,
+			);
+			productName = Swee;
+			productReference = AFB830FB2D0057FE00DB94C2 /* Swee-Beta.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -799,6 +1037,7 @@
 			projectRoot = "";
 			targets = (
 				AF170AFC2C71C02900544970 /* Swee */,
+				AFB830422D0057FE00DB94C2 /* Swee-Beta */,
 			);
 		};
 /* End PBXProject section */
@@ -810,7 +1049,6 @@
 			files = (
 				AF8022552C785E96001274FA /* Poppins-ExtraLight.ttf in Resources */,
 				AF1FAC602C79CEDD00654FB7 /* Roboto-ThinItalic.ttf in Resources */,
-				AF170B0A2C71C02B00544970 /* Assets.xcassets in Resources */,
 				AF8022522C785E96001274FA /* Poppins-Light.ttf in Resources */,
 				AF8022562C785E96001274FA /* Poppins-Black.ttf in Resources */,
 				AF1FAC622C79CEDD00654FB7 /* Roboto-Black.ttf in Resources */,
@@ -822,10 +1060,10 @@
 				AF1FAC592C79CEDD00654FB7 /* Roboto-Thin.ttf in Resources */,
 				AF1FAC5C2C79CEDD00654FB7 /* Roboto-BoldItalic.ttf in Resources */,
 				AF8022452C785E96001274FA /* Poppins-Italic.ttf in Resources */,
+				AFB831002D005BCA00DB94C2 /* Assets.xcassets in Resources */,
 				AF8022472C785E96001274FA /* Poppins-Regular.ttf in Resources */,
 				AF1FAC612C79CEDD00654FB7 /* Roboto-Bold.ttf in Resources */,
 				AF8022512C785E96001274FA /* Poppins-LightItalic.ttf in Resources */,
-				AF501F242C942CDF00637042 /* GoogleService-Info.plist in Resources */,
 				AF1FAC5A2C79CEDD00654FB7 /* Roboto-Light.ttf in Resources */,
 				AF80224C2C785E96001274FA /* Poppins-ExtraBoldItalic.ttf in Resources */,
 				AF1FAC572C79CEDD00654FB7 /* Roboto-LightItalic.ttf in Resources */,
@@ -844,7 +1082,85 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AFB830D62D0057FE00DB94C2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFB830D72D0057FE00DB94C2 /* Poppins-ExtraLight.ttf in Resources */,
+				AFB830D82D0057FE00DB94C2 /* Roboto-ThinItalic.ttf in Resources */,
+				AFB830DA2D0057FE00DB94C2 /* Poppins-Light.ttf in Resources */,
+				AFB830DB2D0057FE00DB94C2 /* Poppins-Black.ttf in Resources */,
+				AFB830DC2D0057FE00DB94C2 /* Roboto-Black.ttf in Resources */,
+				AFB830DD2D0057FE00DB94C2 /* Poppins-ExtraBold.ttf in Resources */,
+				AFB830DE2D0057FE00DB94C2 /* Poppins-Medium.ttf in Resources */,
+				AFB830DF2D0057FE00DB94C2 /* Poppins-ExtraLightItalic.ttf in Resources */,
+				AFB830E02D0057FE00DB94C2 /* Roboto-Italic.ttf in Resources */,
+				AFB830E12D0057FE00DB94C2 /* Base in Resources */,
+				AFB830E22D0057FE00DB94C2 /* Roboto-Thin.ttf in Resources */,
+				AFB830E32D0057FE00DB94C2 /* Roboto-BoldItalic.ttf in Resources */,
+				AFB830E42D0057FE00DB94C2 /* Poppins-Italic.ttf in Resources */,
+				AFB831012D005BE300DB94C2 /* Assets.xcassets in Resources */,
+				AFB830E52D0057FE00DB94C2 /* Poppins-Regular.ttf in Resources */,
+				AFB830E62D0057FE00DB94C2 /* Roboto-Bold.ttf in Resources */,
+				AFB830E72D0057FE00DB94C2 /* Poppins-LightItalic.ttf in Resources */,
+				AFB830E92D0057FE00DB94C2 /* Roboto-Light.ttf in Resources */,
+				AFB830EA2D0057FE00DB94C2 /* Poppins-ExtraBoldItalic.ttf in Resources */,
+				AFB830EB2D0057FE00DB94C2 /* Roboto-LightItalic.ttf in Resources */,
+				AFB830EC2D0057FE00DB94C2 /* Poppins-SemiBoldItalic.ttf in Resources */,
+				AFB830ED2D0057FE00DB94C2 /* Roboto-MediumItalic.ttf in Resources */,
+				AFB830EE2D0057FE00DB94C2 /* Poppins-Bold.ttf in Resources */,
+				AFB830EF2D0057FE00DB94C2 /* Poppins-Thin.ttf in Resources */,
+				AFB830F02D0057FE00DB94C2 /* Roboto-BlackItalic.ttf in Resources */,
+				AFB830F12D0057FE00DB94C2 /* Poppins-ThinItalic.ttf in Resources */,
+				AFB830F22D0057FE00DB94C2 /* Roboto-Regular.ttf in Resources */,
+				AFB830F32D0057FE00DB94C2 /* Poppins-SemiBold.ttf in Resources */,
+				AFB830F42D0057FE00DB94C2 /* Roboto-Medium.ttf in Resources */,
+				AFB830F52D0057FE00DB94C2 /* Poppins-BlackItalic.ttf in Resources */,
+				AFB830F62D0057FE00DB94C2 /* Poppins-MediumItalic.ttf in Resources */,
+				AFB830F72D0057FE00DB94C2 /* Poppins-BoldItalic.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AFCFB0332D02A6EF00A92B50 /* Copy Google Service Plist File */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Google Service Plist File";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Name of the resource we're selectively copying\nGOOGLESERVICE_INFO_PLIST=GoogleService-Info.plist\n\n# Get references to dev and prod versions of the GoogleService-Info.plist\n# NOTE: These should only live on the file system and should NOT be part of the target (since we'll be adding them to the target manually)\nGOOGLESERVICE_INFO_DEV=${PROJECT_DIR}/Firebase/Beta/${GOOGLESERVICE_INFO_PLIST}\nGOOGLESERVICE_INFO_PROD=${PROJECT_DIR}/Firebase/Release/${GOOGLESERVICE_INFO_PLIST}\n\n# Make sure the dev version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_DEV}\"\nif [ ! -f $GOOGLESERVICE_INFO_DEV ]\nthen\n    echo \"No Development GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\n# Make sure the prod version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_PROD}\"\nif [ ! -f $GOOGLESERVICE_INFO_PROD ]\nthen\n    echo \"No Production GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\n# Get a reference to the destination location for the GoogleService-Info.plist\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\necho \"Will copy ${GOOGLESERVICE_INFO_PLIST} to final destination: ${PLIST_DESTINATION}\"\n\n# Copying over BETA GoogleService-Info.plist\necho \"Using ${GOOGLESERVICE_INFO_DEV}\"\ncp \"${GOOGLESERVICE_INFO_DEV}\" \"${PLIST_DESTINATION}\"\n";
+		};
+		AFCFB0342D02A71600A92B50 /* Copy Google Service Plist File */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Google Service Plist File";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Name of the resource we're selectively copying\nGOOGLESERVICE_INFO_PLIST=GoogleService-Info.plist\n\n# Get references to dev and prod versions of the GoogleService-Info.plist\n# NOTE: These should only live on the file system and should NOT be part of the target (since we'll be adding them to the target manually)\nGOOGLESERVICE_INFO_DEV=${PROJECT_DIR}/Firebase/Beta/${GOOGLESERVICE_INFO_PLIST}\nGOOGLESERVICE_INFO_PROD=${PROJECT_DIR}/Firebase/Release/${GOOGLESERVICE_INFO_PLIST}\n\n# Make sure the dev version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_DEV}\"\nif [ ! -f $GOOGLESERVICE_INFO_DEV ]\nthen\n    echo \"No Development GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\n# Make sure the prod version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_PROD}\"\nif [ ! -f $GOOGLESERVICE_INFO_PROD ]\nthen\n    echo \"No Production GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\n# Get a reference to the destination location for the GoogleService-Info.plist\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\necho \"Will copy ${GOOGLESERVICE_INFO_PLIST} to final destination: ${PLIST_DESTINATION}\"\n\n# Copying over PROD GoogleService-Info.plist\necho \"Using ${GOOGLESERVICE_INFO_PROD}\"\ncp \"${GOOGLESERVICE_INFO_PROD}\" \"${PLIST_DESTINATION}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AF170AF92C71C02900544970 /* Sources */ = {
@@ -967,6 +1283,129 @@
 				AF557FC82C79AAC700AD99A5 /* SweeApp.swift in Sources */,
 				AF69BC082CB649B400E87E2B /* SessionModel.swift in Sources */,
 				AFD6F07F2CB4D3DE004424E5 /* RedemptionDetailModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AFB830552D0057FE00DB94C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFB830562D0057FE00DB94C2 /* EditOtpView.swift in Sources */,
+				AFB830572D0057FE00DB94C2 /* PhoneLinkingView.swift in Sources */,
+				AFB830582D0057FE00DB94C2 /* Strings.swift in Sources */,
+				AFB830592D0057FE00DB94C2 /* CompleteProfileView.swift in Sources */,
+				AFB8305A2D0057FE00DB94C2 /* PackageDetailViewModel.swift in Sources */,
+				AFB8305B2D0057FE00DB94C2 /* Skeletonable.swift in Sources */,
+				AFB8305C2D0057FE00DB94C2 /* AlertsView.swift in Sources */,
+				AFB8305D2D0057FE00DB94C2 /* MerchantPageView.swift in Sources */,
+				AFB8305E2D0057FE00DB94C2 /* RedemptionLoadingView.swift in Sources */,
+				AFB8305F2D0057FE00DB94C2 /* MerchantCard.swift in Sources */,
+				AFB830602D0057FE00DB94C2 /* OrderItemModel.swift in Sources */,
+				AFB830612D0057FE00DB94C2 /* MainView.swift in Sources */,
+				AFB830622D0057FE00DB94C2 /* OrderDetailModel.swift in Sources */,
+				AFB830632D0057FE00DB94C2 /* MerchantModel.swift in Sources */,
+				AFB830642D0057FE00DB94C2 /* PaymentIntent.swift in Sources */,
+				AFB830652D0057FE00DB94C2 /* BottomSheet.swift in Sources */,
+				AFB830662D0057FE00DB94C2 /* AddChildViewModel.swift in Sources */,
+				AFB830672D0057FE00DB94C2 /* RedemptionDetail.swift in Sources */,
+				AFB830682D0057FE00DB94C2 /* OrderItemSnapshotModel.swift in Sources */,
+				AFB830692D0057FE00DB94C2 /* PurchaseProduct.swift in Sources */,
+				AFB8306A2D0057FE00DB94C2 /* FirebaseAuth.swift in Sources */,
+				AFB8306B2D0057FE00DB94C2 /* EditDOBView.swift in Sources */,
+				AFB8306C2D0057FE00DB94C2 /* BannerModel.swift in Sources */,
+				AFB8306D2D0057FE00DB94C2 /* ReferalCard.swift in Sources */,
+				AFB8306E2D0057FE00DB94C2 /* RemoteNotificationsManager.swift in Sources */,
+				AFB8306F2D0057FE00DB94C2 /* Keys.swift in Sources */,
+				AFB830702D0057FE00DB94C2 /* SeeAllView.swift in Sources */,
+				AFB830712D0057FE00DB94C2 /* UIApplication.swift in Sources */,
+				AFB830722D0057FE00DB94C2 /* AddChildView.swift in Sources */,
+				AFB830732D0057FE00DB94C2 /* RedemptionScanView.swift in Sources */,
+				AFB830742D0057FE00DB94C2 /* MerchantStore.swift in Sources */,
+				AFB830752D0057FE00DB94C2 /* MyWalletView.swift in Sources */,
+				AFB830762D0057FE00DB94C2 /* ActivityView.swift in Sources */,
+				AFB830772D0057FE00DB94C2 /* TextStyles.swift in Sources */,
+				AFB830782D0057FE00DB94C2 /* LogoNavItem.swift in Sources */,
+				AFB830792D0057FE00DB94C2 /* StateView.swift in Sources */,
+				AFB8307A2D0057FE00DB94C2 /* OrderDetail.swift in Sources */,
+				AFB8307B2D0057FE00DB94C2 /* TicketView.swift in Sources */,
+				AFB8307C2D0057FE00DB94C2 /* CustomNavBarContainerView.swift in Sources */,
+				AFB8307D2D0057FE00DB94C2 /* PackageDetailView.swift in Sources */,
+				AFB8307E2D0057FE00DB94C2 /* ObservableScrollView.swift in Sources */,
+				AFB8307F2D0057FE00DB94C2 /* Redemption.swift in Sources */,
+				AFB830802D0057FE00DB94C2 /* Date.swift in Sources */,
+				AFB830812D0057FE00DB94C2 /* EditGenderView.swift in Sources */,
+				AFB830822D0057FE00DB94C2 /* SplashView.swift in Sources */,
+				AFB830832D0057FE00DB94C2 /* ObservableWrapper.swift in Sources */,
+				AFB830842D0057FE00DB94C2 /* JollyfieldRedemptionView.swift in Sources */,
+				AFB830852D0057FE00DB94C2 /* TestView.swift in Sources */,
+				AFB830862D0057FE00DB94C2 /* ZoomoovBottomSheet.swift in Sources */,
+				AFB830872D0057FE00DB94C2 /* ZoomoovRedemptionView.swift in Sources */,
+				AFB830882D0057FE00DB94C2 /* HomeViewModel.swift in Sources */,
+				AFB830892D0057FE00DB94C2 /* CheckoutView.swift in Sources */,
+				AFB8308A2D0057FE00DB94C2 /* String.swift in Sources */,
+				AFB8308B2D0057FE00DB94C2 /* EditEmailView.swift in Sources */,
+				AFB8308C2D0057FE00DB94C2 /* Merchant.swift in Sources */,
+				AFB8308D2D0057FE00DB94C2 /* MockProductsURLProtocol.swift in Sources */,
+				AFB8308E2D0057FE00DB94C2 /* Cart.swift in Sources */,
+				AFB8308F2D0057FE00DB94C2 /* Purchase.swift in Sources */,
+				AFB830902D0057FE00DB94C2 /* OtpView.swift in Sources */,
+				AFB830912D0057FE00DB94C2 /* AuthView.swift in Sources */,
+				AFB830922D0057FE00DB94C2 /* ActiveSession.swift in Sources */,
+				AFB830932D0057FE00DB94C2 /* ContentErrorView.swift in Sources */,
+				AFB830942D0057FE00DB94C2 /* MockHomeSectionURLProtocol.swift in Sources */,
+				AFB830952D0057FE00DB94C2 /* MerchantStoreModel.swift in Sources */,
+				AFB830962D0057FE00DB94C2 /* EditNameView.swift in Sources */,
+				AFB830972D0057FE00DB94C2 /* TimeInterval.swift in Sources */,
+				AFB830982D0057FE00DB94C2 /* MyWalletViewModel.swift in Sources */,
+				AFB830992D0057FE00DB94C2 /* RedemptionErrorView.swift in Sources */,
+				AFB8309A2D0057FE00DB94C2 /* User.swift in Sources */,
+				AFB8309B2D0057FE00DB94C2 /* Package.swift in Sources */,
+				AFB8309C2D0057FE00DB94C2 /* Session.swift in Sources */,
+				AFB8309D2D0057FE00DB94C2 /* Order.swift in Sources */,
+				AFB8309E2D0057FE00DB94C2 /* EditBasicInfoView.swift in Sources */,
+				AFB8309F2D0057FE00DB94C2 /* CustomPreferenceKeys.swift in Sources */,
+				AFB830A02D0057FE00DB94C2 /* ButtonStyles.swift in Sources */,
+				AFB830A12D0057FE00DB94C2 /* EditPhoneView.swift in Sources */,
+				AFB830A22D0057FE00DB94C2 /* View.swift in Sources */,
+				AFB830A32D0057FE00DB94C2 /* CheckoutViewModel.swift in Sources */,
+				AFB830A42D0057FE00DB94C2 /* AlertsViewModel.swift in Sources */,
+				AFB830A52D0057FE00DB94C2 /* ProfileView.swift in Sources */,
+				AFB830A62D0057FE00DB94C2 /* Child.swift in Sources */,
+				AFB830A72D0057FE00DB94C2 /* HomeSectionModel.swift in Sources */,
+				AFB830A82D0057FE00DB94C2 /* CustomNavView.swift in Sources */,
+				AFB830A92D0057FE00DB94C2 /* Colors.swift in Sources */,
+				AFB830AA2D0057FE00DB94C2 /* LocationManager.swift in Sources */,
+				AFB830AB2D0057FE00DB94C2 /* MerchantPageViewModel.swift in Sources */,
+				AFB830AC2D0057FE00DB94C2 /* JollyfieldRedemptionViewModel.swift in Sources */,
+				AFB830AD2D0057FE00DB94C2 /* MockMerchantStoresURLProtocol.swift in Sources */,
+				AFB830AE2D0057FE00DB94C2 /* ChildCard.swift in Sources */,
+				AFB830AF2D0057FE00DB94C2 /* SeeAllViewModel.swift in Sources */,
+				AFB830B02D0057FE00DB94C2 /* HomeView.swift in Sources */,
+				AFB830B12D0057FE00DB94C2 /* RedemptionModel.swift in Sources */,
+				AFB830B22D0057FE00DB94C2 /* CustomNavLink.swift in Sources */,
+				AFB830B32D0057FE00DB94C2 /* PurchaseModel.swift in Sources */,
+				AFB830B42D0057FE00DB94C2 /* RedemptionCompletedView.swift in Sources */,
+				AFB830B52D0057FE00DB94C2 /* ZoomoovRedemptionViewModel.swift in Sources */,
+				AFB830B62D0057FE00DB94C2 /* CartButton.swift in Sources */,
+				AFB830B72D0057FE00DB94C2 /* Banner.swift in Sources */,
+				AFB830B82D0057FE00DB94C2 /* PackageModel.swift in Sources */,
+				AFB830B92D0057FE00DB94C2 /* OrderModel.swift in Sources */,
+				AFB830BA2D0057FE00DB94C2 /* ChildModel.swift in Sources */,
+				AFB830BB2D0057FE00DB94C2 /* CustomNavBarView.swift in Sources */,
+				AFB830BC2D0057FE00DB94C2 /* OnboardingView.swift in Sources */,
+				AFB830BD2D0057FE00DB94C2 /* CustomAlert.swift in Sources */,
+				AFB830BE2D0057FE00DB94C2 /* API.swift in Sources */,
+				AFB830BF2D0057FE00DB94C2 /* PackageCard.swift in Sources */,
+				AFB830C02D0057FE00DB94C2 /* WalletMerchantModel.swift in Sources */,
+				AFB830C12D0057FE00DB94C2 /* NotificationUpsell.swift in Sources */,
+				AFB830C22D0057FE00DB94C2 /* AlertModel.swift in Sources */,
+				AFB830C32D0057FE00DB94C2 /* ActivityViewModel.swift in Sources */,
+				AFB830C42D0057FE00DB94C2 /* StoresView.swift in Sources */,
+				AFB830C52D0057FE00DB94C2 /* AsyncButton.swift in Sources */,
+				AFB830C62D0057FE00DB94C2 /* WalletMerchant.swift in Sources */,
+				AFB830C72D0057FE00DB94C2 /* SweeApp.swift in Sources */,
+				AFB830C82D0057FE00DB94C2 /* SessionModel.swift in Sources */,
+				AFB830C92D0057FE00DB94C2 /* RedemptionDetailModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1110,7 +1549,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 9M2L2N97YU;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1130,7 +1569,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.desjour.fusion;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zoomoov.green;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1149,11 +1588,50 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 9M2L2N97YU;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Swee/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Green;
+				INFOPLIST_KEY_NSCameraUsageDescription = "To change your avatar and upload images";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To show you nearby offers and stores";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.zoomoov.green;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		AFB830F92D0057FE00DB94C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Beta";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 15;
+				DEVELOPMENT_TEAM = 9M2L2N97YU;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Beta-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Green;
 				INFOPLIST_KEY_NSCameraUsageDescription = "To change your avatar and upload images";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To show you nearby offers and stores";
@@ -1175,6 +1653,47 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited) BETA";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		AFB830FA2D0057FE00DB94C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Beta";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 15;
+				DEVELOPMENT_TEAM = 9M2L2N97YU;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Beta-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Green;
+				INFOPLIST_KEY_NSCameraUsageDescription = "To change your avatar and upload images";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To show you nearby offers and stores";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.desjour.fusion;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = BETA;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1198,6 +1717,15 @@
 			buildConfigurations = (
 				AF170B122C71C02B00544970 /* Debug */,
 				AF170B132C71C02B00544970 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AFB830F82D0057FE00DB94C2 /* Build configuration list for PBXNativeTarget "Swee-Beta" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AFB830F92D0057FE00DB94C2 /* Debug */,
+				AFB830FA2D0057FE00DB94C2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1251,6 +1779,62 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 11.3.0;
+			};
+		};
+		AFB830442D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.0;
+			};
+		};
+		AFB830462D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "SkeletonUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CSolanaM/SkeletonUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.2;
+			};
+		};
+		AFB830482D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.2;
+			};
+		};
+		AFB8304A2D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+		AFB8304D2D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.3.0;
+			};
+		};
+		AFB830502D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/swiftui-introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
+		AFB830522D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stripe/stripe-ios-spm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 23.31.1;
 			};
 		};
 		AFDD173C2CA1438200DC8DB8 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
@@ -1310,6 +1894,60 @@
 			productName = FirebaseCrashlytics;
 		};
 		AFB4E83E2CD4A247002273C4 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseMessaging;
+		};
+		AFB830432D0057FE00DB94C2 /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFB830442D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
+			productName = MarkdownUI;
+		};
+		AFB830452D0057FE00DB94C2 /* SkeletonUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFB830462D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "SkeletonUI" */;
+			productName = SkeletonUI;
+		};
+		AFB830472D0057FE00DB94C2 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFB830482D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
+		AFB830492D0057FE00DB94C2 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFB8304A2D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		AFB8304B2D0057FE00DB94C2 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFB8304A2D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		AFB8304C2D0057FE00DB94C2 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFB8304D2D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		AFB8304E2D0057FE00DB94C2 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFB8304D2D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		AFB8304F2D0057FE00DB94C2 /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFB830502D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
+			productName = SwiftUIIntrospect;
+		};
+		AFB830512D0057FE00DB94C2 /* StripePaymentSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFB830522D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = StripePaymentSheet;
+		};
+		AFB830532D0057FE00DB94C2 /* StripeApplePay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFB830522D0057FE00DB94C2 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = StripeApplePay;
+		};
+		AFB830542D0057FE00DB94C2 /* FirebaseMessaging */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FirebaseMessaging;
 		};

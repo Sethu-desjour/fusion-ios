@@ -51,7 +51,7 @@ struct SplashView: View {
                         await MainActor.run {
                             switch result {
                             case .loggedIn:
-                                appRootManager.currentRoot = .home
+                                appRootManager.currentRoot = .main
                             case .withoutName:
                                 goToCompleteProfile = true
                             }
