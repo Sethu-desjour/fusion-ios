@@ -3,6 +3,7 @@ import SwiftUI
 struct JollyfieldRedemptionView: View {
     @Environment(\.tabIsShown) private var tabIsShown
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     @EnvironmentObject private var api: API
     @EnvironmentObject private var activeSession: ActiveSession
     
@@ -259,7 +260,7 @@ struct JollyfieldRedemptionView: View {
                 Text("")
             } else if sessionOngoing {
                 Button {
-                    // @todo show Help UI
+                    openURL(URL(string: Strings.helpLink)!)
                 } label: {
                     HStack(spacing: 4) {
                         Text("Help")

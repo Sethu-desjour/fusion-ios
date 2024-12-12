@@ -72,7 +72,7 @@ struct ProfileView: View {
             ],
             [
                 .init(title: "Help Center", leadingIcon: Image("help")) {
-                    
+                    openURL(URL(string: Strings.helpLink)!)
                 },
                 .init(title: "Terms & Conditions", leadingIcon: Image("receipt")) {
                     openURL(URL(string: Strings.tosLink)!)

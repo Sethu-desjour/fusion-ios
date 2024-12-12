@@ -47,6 +47,14 @@ struct AuthView: View {
         return phoneFieldActive ? Color.text.black100 : Color(hex: "#E7EAEB")
     }
     
+    private func track(_ error: (any Error)?) {
+        var params: [String: Any] = [:]
+        if let err = error {
+            params["error"] = err.localizedDescription
+        }
+        Analytics.logEvent("AUTH_ERROR", parameters: params)
+    }
+    
     var body: some View {
         ZStack {
             NavigationView {
@@ -134,11 +142,7 @@ struct AuthView: View {
                             if case .incorrectPhone = error {
                                 errorMessage = "Check your phone number"
                             } else {
-                                var params: [String: Any] = [:]
-                                if case .other(let err) = error {
-                                    params["error"] = err?.localizedDescription
-                                }
-                                Analytics.logEvent("AUTH_ERROR", parameters: params)
+                                 track(error)
                                 errorMessage = "Something went wrong. Please try again"
                             }
                             print(error.localizedDescription)
@@ -196,6 +200,7 @@ struct AuthView: View {
                                         loading = false
                                     }
                                     print("AppleAuthorization failed: \(error)")
+                                    track(error)
                                     showAlert = true
                                 }
                             }
@@ -235,6 +240,7 @@ struct AuthView: View {
                                         loading = false
                                     }
                                     print("google auth error ====", error)
+                                    track(error)
                                     showAlert = true
                                 }
                             }
