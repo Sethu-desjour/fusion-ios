@@ -256,16 +256,49 @@ struct EditChildDetailsCard: View {
                             .font(.custom("Poppins-Medium", size: child.dob != nil ? 16 : 14))
                             .foregroundStyle(child.dob != nil ? Color.text.black80 : Color.text.black60)
                             .overlay {
-                                DatePicker(
-                                    "",
-                                    selection: $dob,
-                                    in: ...Date(),
-                                    displayedComponents: [.date]
-                                )
-                                .blendMode(.destinationOver)
-                                .onChange(of: dob, perform: { value in
-                                    onEdit(child.name, dob)
-                                })
+                                HStack {
+                                    // NOTE: this weirdness is due to the fact that you can't layout a datepicker to take a wider area, nor can you trigger the datepicker programmatically (as of the time of this commit)
+                                    DatePicker(
+                                        "",
+                                        selection: $dob,
+                                        in: ...Date(),
+                                        displayedComponents: [.date]
+                                    )
+                                    .blendMode(.destinationOver)
+                                    .onChange(of: dob, perform: { value in
+                                        onEdit(child.name, dob)
+                                    })
+                                    DatePicker(
+                                        "",
+                                        selection: $dob,
+                                        in: ...Date(),
+                                        displayedComponents: [.date]
+                                    )
+                                    .blendMode(.destinationOver)
+                                    .onChange(of: dob, perform: { value in
+                                        onEdit(child.name, dob)
+                                    })
+                                    DatePicker(
+                                        "",
+                                        selection: $dob,
+                                        in: ...Date(),
+                                        displayedComponents: [.date]
+                                    )
+                                    .blendMode(.destinationOver)
+                                    .onChange(of: dob, perform: { value in
+                                        onEdit(child.name, dob)
+                                    })
+                                    DatePicker(
+                                        "",
+                                        selection: $dob,
+                                        in: ...Date(),
+                                        displayedComponents: [.date]
+                                    )
+                                    .blendMode(.destinationOver)
+                                    .onChange(of: dob, perform: { value in
+                                        onEdit(child.name, dob)
+                                    })
+                                }
                             }
                         Spacer()
                         Image("chevron-down")
