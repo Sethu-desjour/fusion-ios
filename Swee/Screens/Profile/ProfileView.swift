@@ -30,6 +30,7 @@ struct ProfileView: View {
     @EnvironmentObject private var appRootManager: AppRootManager
     @Environment(\.tabIsShown) private var tabIsShown
     @Environment(\.fcmToken) private var fcmToken
+    @Environment(\.openURL) var openURL
     @EnvironmentObject private var activeSession: ActiveSession
 
     
@@ -71,13 +72,13 @@ struct ProfileView: View {
             ],
             [
                 .init(title: "Help Center", leadingIcon: Image("help")) {
-                    
+                    openURL(URL(string: Strings.helpLink)!)
                 },
-                .init(title: "Terms & Condition", leadingIcon: Image("receipt")) {
-                    
+                .init(title: "Terms & Conditions", leadingIcon: Image("receipt")) {
+                    openURL(URL(string: Strings.tosLink)!)
                 },
                 .init(title: "Rate our app", leadingIcon: Image("raiting")) {
-                    
+                    openURL(URL(string: Strings.rateAppLink)!)
                 },
             ],
             [
@@ -101,13 +102,18 @@ struct ProfileView: View {
                                       buttonTitle: "Delete",
                                       cancelTitle: "Keep the data",
                                       action: .init(closure: {
-                        try await api.DEBUGdeleteAccount()
+                        do {
+                            try await api.DEBUGdeleteAccount()
+                            appRootManager.currentRoot = .authentication
+                        } catch {
+                            print("Error deleting user: \(error)")
+                        }
                     }))
-                },
-            ],
+                }
+            ]
             
         ]
-        
+#if BETA
         if let token = fcmToken.wrappedValue {
             sections.append(
                 [
@@ -118,6 +124,8 @@ struct ProfileView: View {
                 ]
             )
         }
+#endif
+        
     }
     
     var body: some View {

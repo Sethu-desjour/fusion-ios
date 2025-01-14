@@ -62,6 +62,9 @@ struct HomeView: View {
     var mainUI: some View {
         ScrollView {
             VStack(spacing: 16) {
+//                Button("Crash") {
+//                  fatalError("Crash was triggered")
+//                }
                 ForEach(viewModel.sections.indices, id: \.self) { index in
                     section(at: index).equatable.view
                 }

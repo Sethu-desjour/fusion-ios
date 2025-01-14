@@ -182,6 +182,9 @@ class API: ObservableObject {
                 throw APIError.wrongCode
             }
         }
+  
+        // This is not necessary since the BE deletes the Firebase account.
+//        try await Authentication().deleteUser()
     }
     
     func homeSections() async throws -> [HomeSectionModel] {

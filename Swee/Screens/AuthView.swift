@@ -1,6 +1,7 @@
 import SwiftUI
 import AuthenticationServices
 import FirebaseAuth
+import FirebaseAnalytics
 
 struct AuthView: View {
     @Environment(\.dismiss) private var dismiss
@@ -33,7 +34,7 @@ struct AuthView: View {
     
     private var tosLink: (String) -> AttributedString =  { text in
         var string = text.underline()
-        string.link = URL(string: "https://fusion-core-stg.s3.ap-southeast-1.amazonaws.com/terms_and_condition.pdf")
+        string.link = URL(string: Strings.tosLink)
         
         return string
     }
@@ -44,6 +45,14 @@ struct AuthView: View {
         }
         
         return phoneFieldActive ? Color.text.black100 : Color(hex: "#E7EAEB")
+    }
+    
+    private func track(_ error: (any Error)?) {
+        var params: [String: Any] = [:]
+        if let err = error {
+            params["error"] = err.localizedDescription
+        }
+        Analytics.logEvent("AUTH_ERROR", parameters: params)
     }
     
     var body: some View {
@@ -133,6 +142,7 @@ struct AuthView: View {
                             if case .incorrectPhone = error {
                                 errorMessage = "Check your phone number"
                             } else {
+                                 track(error)
                                 errorMessage = "Something went wrong. Please try again"
                             }
                             print(error.localizedDescription)
@@ -190,6 +200,7 @@ struct AuthView: View {
                                         loading = false
                                     }
                                     print("AppleAuthorization failed: \(error)")
+                                    track(error)
                                     showAlert = true
                                 }
                             }
@@ -229,6 +240,7 @@ struct AuthView: View {
                                         loading = false
                                     }
                                     print("google auth error ====", error)
+                                    track(error)
                                     showAlert = true
                                 }
                             }
