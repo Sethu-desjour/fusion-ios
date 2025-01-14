@@ -123,9 +123,9 @@ struct ChildDetailsCard: View {
                 AsyncButton(progressTint: .red) {
                     onEdit(child)
                 } label: {
-                    Image("delete")
+                    Image("edit")
                         .resizable()
-                        .frame(width: 17, height: 17)
+                        .frame(width: 20, height: 20)
                         .foregroundStyle(Color.red)
                 }
                 .frame(width: 44, height: 20)
