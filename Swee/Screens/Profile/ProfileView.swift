@@ -93,23 +93,27 @@ struct ProfileView: View {
                         appRootManager.currentRoot = .authentication
                     }))
                 },
+            ],
+            [
+                .init(title: "Delete profile", trailingIcon: Image("delete"), tint: .red) {
+                    showAlert = true
+                    alertData = .init(title: "Delete?",
+                                      message: "All your data will be deleted including your purchases",
+                                      buttonTitle: "Delete",
+                                      cancelTitle: "Keep the data",
+                                      action: .init(closure: {
+                        do {
+                            try await api.DEBUGdeleteAccount()
+                            appRootManager.currentRoot = .authentication
+                        } catch {
+                            print("Error deleting user: \(error)")
+                        }
+                    }))
+                }
             ]
+            
         ]
-        
 #if BETA
-        sections.append([
-            .init(title: "Delete profile", trailingIcon: Image("delete"), tint: .red) {
-                showAlert = true
-                alertData = .init(title: "Delete?",
-                                  message: "All your data will be deleted including your purchases",
-                                  buttonTitle: "Delete",
-                                  cancelTitle: "Keep the data",
-                                  action: .init(closure: {
-                    try await api.DEBUGdeleteAccount()
-                }))
-            },
-        ])
-        
         if let token = fcmToken.wrappedValue {
             sections.append(
                 [

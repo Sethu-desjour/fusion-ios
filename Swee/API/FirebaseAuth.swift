@@ -166,6 +166,15 @@ struct Authentication {
         }
     }
     
+    func deleteUser() async throws {
+        do {
+            let user = Auth.auth().currentUser
+            try await user?.delete()
+        } catch {
+            print("Error deleting user: %@", error)
+        }
+    }
+    
     func appleSignIn() async throws -> SocialSignInResult {
         return try await withCheckedThrowingContinuation { continuation in
             appleSignIn.callback = { result in

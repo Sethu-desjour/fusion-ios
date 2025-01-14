@@ -90,6 +90,6 @@ Pods/
 
 # End of https://www.toptal.com/developers/gitignore/api/swift
 
-# Keys and Secrets
+## Keys and Secrets
 **/GoogleService-Info.plist
 **/AuthKey_XGG5YF5QJS.p8
