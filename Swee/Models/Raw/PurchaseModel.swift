@@ -22,7 +22,7 @@ struct PurchaseModel: Codable {
     let startingValue: Int
     let remainingValue: Int
     let status: PurchaseStatus
-    @DecodableDate var expiresAt: Date
+    @DecodableExpiryDate var expiresAt: Date
     @DecodableDate var createdAt: Date
     @DecodableDate var updatedAt: Date
 

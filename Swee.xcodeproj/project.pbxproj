@@ -311,6 +311,7 @@
 		AFCFB03A2D09C14C00A92B50 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = AFCFB0392D09C14C00A92B50 /* FirebaseAnalytics */; };
 		AFD6F07F2CB4D3DE004424E5 /* RedemptionDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD6F07E2CB4D3DE004424E5 /* RedemptionDetailModel.swift */; };
 		AFD6F0812CB4D3F0004424E5 /* RedemptionDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD6F0802CB4D3F0004424E5 /* RedemptionDetail.swift */; };
+		AFD6F5C52D36757F0015B536 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = AFD6F5C42D36757F0015B536 /* FirebaseAnalytics */; };
 		AFDB2B522C9131AC00BA75DA /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB2B512C9131AC00BA75DA /* ProfileView.swift */; };
 		AFDB90452C8EA256008931DB /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB90442C8EA256008931DB /* TimeInterval.swift */; };
 		AFDB90482C8EDE43008931DB /* CustomNavBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFDB90472C8EDE42008931DB /* CustomNavBarView.swift */; };
@@ -496,6 +497,7 @@
 				AF662A392CC5F28D00613E45 /* GoogleSignIn in Frameworks */,
 				AFCFB0382D09BDCA00A92B50 /* FirebaseAnalytics in Frameworks */,
 				AF662A362CC5F20C00613E45 /* SDWebImageSwiftUI in Frameworks */,
+				AFD6F5C52D36757F0015B536 /* FirebaseAnalytics in Frameworks */,
 				AF662A3B2CC5F28D00613E45 /* GoogleSignInSwift in Frameworks */,
 				AF662A332CC5F1AF00613E45 /* SkeletonUI in Frameworks */,
 				AF3733982CC8A35D00AE6A45 /* StripeApplePay in Frameworks */,
@@ -969,6 +971,7 @@
 				AF3733972CC8A35D00AE6A45 /* StripeApplePay */,
 				AFB4E83E2CD4A247002273C4 /* FirebaseMessaging */,
 				AFCFB0372D09BDCA00A92B50 /* FirebaseAnalytics */,
+				AFD6F5C42D36757F0015B536 /* FirebaseAnalytics */,
 			);
 			productName = Swee;
 			productReference = AF170AFD2C71C02900544970 /* Swee.app */;
@@ -1579,7 +1582,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = RS7P22YXAS;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -1599,7 +1602,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zoomoov.green;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1620,7 +1623,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = RS7P22YXAS;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1639,7 +1642,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zoomoov.green;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1989,6 +1992,10 @@
 			productName = FirebaseAnalytics;
 		};
 		AFCFB0392D09C14C00A92B50 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseAnalytics;
+		};
+		AFD6F5C42D36757F0015B536 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FirebaseAnalytics;
 		};

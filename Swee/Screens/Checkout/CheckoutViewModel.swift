@@ -124,9 +124,6 @@ class CheckoutViewModel: ObservableObject {
                 configuration.merchantDisplayName = Strings.stripeMerchantName
                 configuration.customer = .init(id: paymentIntent.customerId, ephemeralKeySecret: paymentIntent.ephemeralKey)
                 configuration.appearance = paymentSheetAppearance()
-                // Set `allowsDelayedPaymentMethods` to true if your business handles
-                // delayed notification payment methods like US bank accounts.
-                // configuration.allowsDelayedPaymentMethods = true
                 self.paymentSheet = PaymentSheet(paymentIntentClientSecret: paymentIntent.clientSecret,
                                                  configuration: configuration)
             }
