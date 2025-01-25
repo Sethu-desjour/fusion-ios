@@ -13,7 +13,7 @@ struct MerchantPageView: View {
     
     @State var merchant: Merchant
     @StateObject var viewModel = MerchantPageViewModel()
-    @State private var isExpanded: Bool = true
+    @State private var isExpanded: Bool = false
     
     var columns: [GridItem] = [
         GridItem(.flexible()),
@@ -73,8 +73,8 @@ struct MerchantPageView: View {
                                     }
                                 }
                                 Spacer()
-//                                Image("share-system")
-//                                    .foregroundStyle(.white)
+                                //                                Image("share-system")
+                                //                                    .foregroundStyle(.white)
                             }
                             .padding([.leading, .trailing], 16)
                         }
@@ -91,13 +91,14 @@ struct MerchantPageView: View {
                     .background { bgImage }
                     VStack(alignment: .leading, spacing: 20) {
                         if let description = merchant.description {
-//                            Text(description)
-//                                .font(.custom("Poppins-Medium", size: 16))
-//                                .foregroundStyle(Color.text.black80)
+                            //                            Text(description)
+                            //                                .font(.custom("Poppins-Medium", size: 16))
+                            //                                .foregroundStyle(Color.text.black80)
                             Text(description)
                                 .lineLimit(isExpanded ? nil : 6)
                                 .font(.custom("Poppins-Medium", size: 16))
                                 .foregroundStyle(Color.text.black80)
+                                .padding(.bottom, isExpanded ? 20 : 0)
                                 .overlay(
                                     GeometryReader { proxy in
                                         Button(action: {
@@ -110,19 +111,19 @@ struct MerchantPageView: View {
                                         .frame(width: proxy.size.width, height: proxy.size.height - 2, alignment: .bottomTrailing)
                                     }
                                 )
-                                .animation(.default, value: isExpanded)
+                                .zIndex(3)
                         }
                         // NOTE: this was moved for an upcoming release
-//                        VStack(alignment: .leading) {
-//                            Text("Legendary deals just for today")
-//                                .font(.custom("Poppins-Bold", size: 20))
-//                            DealBanner(banner: .init(expiryDate: "06:00 hrs left",
-//                                                     title: "Super hero Tuesday",
-//                                                     description: "One free ride when you bring Zoomoov hero mask",
-//                                                     image: .init("badge-2"),
-//                                                     bgColors: [Color(hex:"#3900B1"), Color(hex:"#9936CE"), Color(hex:"#FDC093")],
-//                                                     timerColors: [Color(hex: "#FFC107"), Color(hex: "#FFC107", opacity: 0)]))
-//                        }
+                        //                        VStack(alignment: .leading) {
+                        //                            Text("Legendary deals just for today")
+                        //                                .font(.custom("Poppins-Bold", size: 20))
+                        //                            DealBanner(banner: .init(expiryDate: "06:00 hrs left",
+                        //                                                     title: "Super hero Tuesday",
+                        //                                                     description: "One free ride when you bring Zoomoov hero mask",
+                        //                                                     image: .init("badge-2"),
+                        //                                                     bgColors: [Color(hex:"#3900B1"), Color(hex:"#9936CE"), Color(hex:"#FDC093")],
+                        //                                                     timerColors: [Color(hex: "#FFC107"), Color(hex: "#FFC107", opacity: 0)]))
+                        //                        }
                         Text("Packages just for you")
                             .font(.custom("Poppins-Bold", size: 20))
                         if viewModel.showError {
@@ -136,8 +137,7 @@ struct MerchantPageView: View {
                             }
                         } else {
                             LazyVGrid(columns: columns, spacing: 16) {
-                                ForEach(viewModel.packages.indices, id: \.self) { index in
-                                    let package = viewModel.packages[index]
+                                ForEach(viewModel.packages, id: \.id) { package in
                                     PackageCard(package: package)
                                         .id(package.id)
                                 }
@@ -168,6 +168,7 @@ struct MerchantPageView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                 }
                 .padding(.bottom, 30)
+                .animation(.snappy, value: isExpanded)
             }
             .ignoresSafeArea()
             .customNavigationTitle(merchant.name)
@@ -187,11 +188,10 @@ struct MerchantPageView: View {
                 try? await viewModel.fetch(with: merchant.id.uuidString)
             }
             tabIsShown.wrappedValue = false
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                isExpanded = !viewModel.longDescription
-//            })
-
         })
+        .onFirstAppear {
+            isExpanded = !viewModel.longDescription
+        }
     }
 }
 
@@ -284,8 +284,8 @@ struct VenueCard: View {
                     .skeleton(with: true, shape: .rectangle)
             }
             .transition(.fade(duration: 0.5))
-                .frame(minWidth: 0, maxHeight: 230)
-                .edgesIgnoringSafeArea(.all)
+            .frame(minWidth: 0, maxHeight: 230)
+            .edgesIgnoringSafeArea(.all)
             VStack(alignment: .leading) {
                 Spacer()
                 HStack {
