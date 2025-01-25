@@ -13,6 +13,7 @@ struct MerchantPageView: View {
     
     @State var merchant: Merchant
     @StateObject var viewModel = MerchantPageViewModel()
+    @State private var isExpanded: Bool = true
     
     var columns: [GridItem] = [
         GridItem(.flexible()),
@@ -90,9 +91,26 @@ struct MerchantPageView: View {
                     .background { bgImage }
                     VStack(alignment: .leading, spacing: 20) {
                         if let description = merchant.description {
+//                            Text(description)
+//                                .font(.custom("Poppins-Medium", size: 16))
+//                                .foregroundStyle(Color.text.black80)
                             Text(description)
+                                .lineLimit(isExpanded ? nil : 6)
                                 .font(.custom("Poppins-Medium", size: 16))
                                 .foregroundStyle(Color.text.black80)
+                                .overlay(
+                                    GeometryReader { proxy in
+                                        Button(action: {
+                                            isExpanded.toggle()
+                                        }) {
+                                            Text(isExpanded ? "see less".underline(font: .custom("Roboto-Medium", size: 16), color: Color.primary.brand) : "see more".underline(font: .custom("Roboto-Medium", size: 16), color: Color.primary.brand))
+                                                .padding(.leading, 8.0)
+                                                .shadow(color: Color.background.pale, radius: 4, x: -8)
+                                        }
+                                        .frame(width: proxy.size.width, height: proxy.size.height - 2, alignment: .bottomTrailing)
+                                    }
+                                )
+                                .animation(.default, value: isExpanded)
                         }
                         // NOTE: this was moved for an upcoming release
 //                        VStack(alignment: .leading) {
@@ -119,7 +137,9 @@ struct MerchantPageView: View {
                         } else {
                             LazyVGrid(columns: columns, spacing: 16) {
                                 ForEach(viewModel.packages.indices, id: \.self) { index in
-                                    PackageCard(package: viewModel.packages[index])
+                                    let package = viewModel.packages[index]
+                                    PackageCard(package: package)
+                                        .id(package.id)
                                 }
                             }
                         }
@@ -159,12 +179,18 @@ struct MerchantPageView: View {
             }
         }
         .onAppear(perform: {
+            print("Run on Appear!!! \(Date())")
             viewModel.locationManager = locationManager
             viewModel.api = api
+            viewModel.merchant = merchant
             Task {
                 try? await viewModel.fetch(with: merchant.id.uuidString)
             }
             tabIsShown.wrappedValue = false
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                isExpanded = !viewModel.longDescription
+//            })
+
         })
     }
 }
