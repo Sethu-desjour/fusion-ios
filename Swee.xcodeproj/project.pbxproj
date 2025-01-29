@@ -335,6 +335,7 @@
 		AF0558322CAABFF500ABEBA3 /* EditPhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPhoneView.swift; sourceTree = "<group>"; };
 		AF0558342CAAC2DA00ABEBA3 /* EditOtpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOtpView.swift; sourceTree = "<group>"; };
 		AF0558362CABA1F000ABEBA3 /* WalletMerchantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletMerchantModel.swift; sourceTree = "<group>"; };
+		AF08EAFA2D44DD3B0002A9CE /* Swee-Beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Swee-Beta.entitlements"; sourceTree = "<group>"; };
 		AF13C84E2CABB83000496B0C /* ZoomoovRedemptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomoovRedemptionViewModel.swift; sourceTree = "<group>"; };
 		AF13C8502CABB99000496B0C /* PurchaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseModel.swift; sourceTree = "<group>"; };
 		AF13C8522CAC10C800496B0C /* RedemptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionModel.swift; sourceTree = "<group>"; };
@@ -581,6 +582,7 @@
 			isa = PBXGroup;
 			children = (
 				AF501F2F2C952FCD00637042 /* Swee.entitlements */,
+				AF08EAFA2D44DD3B0002A9CE /* Swee-Beta.entitlements */,
 				AF557FC72C79AAC700AD99A5 /* SweeApp.swift */,
 				AF7DF73A2C79F2B100C3F347 /* TestView.swift */,
 				AF3022C42CA18C4E006DBCAD /* Singletons */,
@@ -1582,7 +1584,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = RS7P22YXAS;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -1623,7 +1625,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = RS7P22YXAS;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1661,7 +1663,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Beta";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Swee/Swee-Beta.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 9M2L2N97YU;
@@ -1701,7 +1703,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Beta";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Swee/Swee.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Swee/Swee-Beta.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = 9M2L2N97YU;

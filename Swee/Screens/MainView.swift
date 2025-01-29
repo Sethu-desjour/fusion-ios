@@ -29,7 +29,7 @@ enum Tabs: Int, CaseIterable, Identifiable {
         case .home:
             return "Home"
         case .myWallet:
-            return "My Wallet"
+            return "Purchases"
         case .alerts:
             return "Alerts"
         case .profile:

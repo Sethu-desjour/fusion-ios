@@ -47,8 +47,8 @@ final class LocationManager: NSObject, CLLocationManagerDelegate, ObservableObje
             placemarks, error -> Void in
             
             guard let placeMark = placemarks?.first else { return }
-            if let city = placeMark.subAdministrativeArea {
-                self.lastKnownCity = city
+            if let city = placeMark.postalAddress {
+                self.lastKnownCity = city.street
             } else if let country = placeMark.country {
                 self.lastKnownCity = country
             }

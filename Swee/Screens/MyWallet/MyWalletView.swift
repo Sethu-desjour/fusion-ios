@@ -56,7 +56,7 @@ struct MyWalletView: View {
                 CustomNavLink(isActive: $goToActivityView, destination: ActivityView())
                 ScrollView {
                     HStack {
-                        Text("My purchases")
+                        Text("Purchases")
                             .font(.custom("Poppins-SemiBold", size: 18))
                         Spacer()
                         CustomNavLink(destination: ActivityView()) {
