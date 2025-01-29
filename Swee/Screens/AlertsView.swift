@@ -212,6 +212,7 @@ struct AlertsView: View {
                         .font(.custom("Poppins-Medium", size: 14))
                 }
                 .tint(Color.primary.brand)
+                .hidden(viewModel.alerts.isEmpty)
             }
         }
     }

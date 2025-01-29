@@ -71,9 +71,60 @@ extension Date {
     }
 }
 
+protocol DecodableDateType {
+    associatedtype Value: Codable & Equatable
+    var wrappedValue: Value { get set }
+    init(with formatter: DateFormatter, decoder: Decoder) throws
+    init(wrappedValue: Value)
+    func encode(using formatter: DateFormatter, to encoder: Encoder) throws
+}
+
+extension DecodableDateType {
+    init(with formatter: DateFormatter, decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        
+        // If the Value is an optional Date
+        if Value.self == Date?.self {
+            let dateString = try? container.decode(String.self)
+            let value = dateString.flatMap { formatter.date(from: $0) } as! Value
+            self.init(wrappedValue: value)
+        }
+        // If the Value is a non-optional Date
+        else if Value.self == Date.self {
+            let dateString = try container.decode(String.self)
+            let value = (formatter.date(from: dateString) ?? Date()) as! Value
+            self.init(wrappedValue: value)
+        } else {
+            throw DecodingError.typeMismatch(Value.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid type for DecodableDate"))
+        }
+    }
+    
+    func encode(using formatter: DateFormatter, to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        
+        // If the Value is an optional Date
+        if let date = wrappedValue as? Date? {
+            if let date = date {
+                let dateString = formatter.string(from: date)
+                try container.encode(dateString)
+            } else {
+                try container.encodeNil()
+            }
+        }
+        // If the Value is a non-optional Date
+        else if let date = wrappedValue as? Date {
+            let dateString = formatter.string(from: date)
+            try container.encode(dateString)
+        } else {
+            throw EncodingError.invalidValue(wrappedValue, EncodingError.Context(codingPath: encoder.codingPath, debugDescription: "Invalid value for DecodableDate"))
+        }
+    }
+}
 
 @propertyWrapper
-struct DecodableExpiryDate<Value: Codable & Equatable> {
+struct DecodableExpiryDate<DateValue: Codable & Equatable>: DecodableDateType {
+    typealias Value = DateValue
+    
     var wrappedValue: Value
     
     init(wrappedValue: Value) {
@@ -83,46 +134,17 @@ struct DecodableExpiryDate<Value: Codable & Equatable> {
 
 extension DecodableExpiryDate: Codable, Equatable {
     init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-
-        // If the Value is an optional Date
-        if Value.self == Date?.self {
-            let dateString = try? container.decode(String.self)
-            self.wrappedValue = dateString.flatMap { Date.iso8601ExpiryDate.date(from: $0) } as! Value
-        }
-        // If the Value is a non-optional Date
-        else if Value.self == Date.self {
-            let dateString = try container.decode(String.self)
-            self.wrappedValue = (Date.iso8601ExpiryDate.date(from: dateString) ?? Date()) as! Value
-        } else {
-            throw DecodingError.typeMismatch(Value.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid type for DecodableDate"))
-        }
+        try self.init(with: Date.iso8601ExpiryDate, decoder: decoder)
     }
     
     func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        
-        // If the Value is an optional Date
-        if let date = wrappedValue as? Date? {
-            if let date = date {
-                let dateString = Date.iso8601Full.string(from: date)
-                try container.encode(dateString)
-            } else {
-                try container.encodeNil()
-            }
-        }
-        // If the Value is a non-optional Date
-        else if let date = wrappedValue as? Date {
-            let dateString = Date.iso8601Full.string(from: date)
-            try container.encode(dateString)
-        } else {
-            throw EncodingError.invalidValue(wrappedValue, EncodingError.Context(codingPath: encoder.codingPath, debugDescription: "Invalid value for DecodableDate"))
-        }
+        try encode(using: Date.iso8601Full, to: encoder)
     }
 }
 
 @propertyWrapper
-struct DecodableDate<Value: Codable & Equatable> {
+struct DecodableDate<DateValue: Codable & Equatable>: DecodableDateType {
+    typealias Value = DateValue
     var wrappedValue: Value
     
     init(wrappedValue: Value) {
@@ -132,46 +154,17 @@ struct DecodableDate<Value: Codable & Equatable> {
 
 extension DecodableDate: Codable, Equatable {
     init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-
-        // If the Value is an optional Date
-        if Value.self == Date?.self {
-            let dateString = try? container.decode(String.self)
-            self.wrappedValue = dateString.flatMap { Date.iso8601Full.date(from: $0) } as! Value
-        }
-        // If the Value is a non-optional Date
-        else if Value.self == Date.self {
-            let dateString = try container.decode(String.self)
-            self.wrappedValue = (Date.iso8601Full.date(from: dateString) ?? Date()) as! Value
-        } else {
-            throw DecodingError.typeMismatch(Value.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid type for DecodableDate"))
-        }
+        try self.init(with: Date.iso8601Full, decoder: decoder)
     }
     
     func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        
-        // If the Value is an optional Date
-        if let date = wrappedValue as? Date? {
-            if let date = date {
-                let dateString = Date.iso8601Full.string(from: date)
-                try container.encode(dateString)
-            } else {
-                try container.encodeNil()
-            }
-        }
-        // If the Value is a non-optional Date
-        else if let date = wrappedValue as? Date {
-            let dateString = Date.iso8601Full.string(from: date)
-            try container.encode(dateString)
-        } else {
-            throw EncodingError.invalidValue(wrappedValue, EncodingError.Context(codingPath: encoder.codingPath, debugDescription: "Invalid value for DecodableDate"))
-        }
+        try encode(using: Date.iso8601Full, to: encoder)
     }
 }
 
 @propertyWrapper
-struct DecodableDayDate<Value: Codable & Equatable> {
+struct DecodableDayDate<DateValue: Codable & Equatable>: DecodableDateType {
+    typealias Value = DateValue
     var wrappedValue: Value
     
     init(wrappedValue: Value) {
@@ -181,41 +174,11 @@ struct DecodableDayDate<Value: Codable & Equatable> {
 
 extension DecodableDayDate: Codable, Equatable {
     init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-
-        // If the Value is an optional Date
-        if Value.self == Date?.self {
-            let dateString = try? container.decode(String.self)
-            self.wrappedValue = dateString.flatMap { Date.iso8601DateOnly.date(from: $0) } as! Value
-        }
-        // If the Value is a non-optional Date
-        else if Value.self == Date.self {
-            let dateString = try container.decode(String.self)
-            self.wrappedValue = (Date.iso8601DateOnly.date(from: dateString) ?? Date()) as! Value
-        } else {
-            throw DecodingError.typeMismatch(Value.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid type for DecodableDate"))
-        }
+        try self.init(with: Date.iso8601DateOnly, decoder: decoder)
     }
     
     func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        
-        // If the Value is an optional Date
-        if let date = wrappedValue as? Date? {
-            if let date = date {
-                let dateString = Date.iso8601DateOnly.string(from: date)
-                try container.encode(dateString)
-            }
-            
-            return
-        }
-        // If the Value is a non-optional Date
-        else if let date = wrappedValue as? Date {
-            let dateString = Date.iso8601DateOnly.string(from: date)
-            try container.encode(dateString)
-        } else {
-            throw EncodingError.invalidValue(wrappedValue, EncodingError.Context(codingPath: encoder.codingPath, debugDescription: "Invalid value for DecodableDate"))
-        }
+        try encode(using: Date.iso8601DateOnly, to: encoder)
     }
 }
 
@@ -226,7 +189,7 @@ extension KeyedDecodingContainer {
         if let value = try self.decodeIfPresent(type, forKey: key) {
             return value
         }
-
+        
         return DecodableDate(wrappedValue: nil)
     }
 }
@@ -236,7 +199,7 @@ extension KeyedDecodingContainer {
         if let value = try self.decodeIfPresent(type, forKey: key) {
             return value
         }
-
+        
         return DecodableDayDate(wrappedValue: nil)
     }
 }
