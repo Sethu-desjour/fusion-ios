@@ -187,6 +187,12 @@ class API: ObservableObject {
 //        try await Authentication().deleteUser()
     }
     
+    func referralCode() async throws -> UserReferralCodeModel {
+        let url = "/referral_code"
+        
+        return try await request(with: url, mockProtocol: nil)
+    }
+    
     func homeSections() async throws -> [HomeSectionModel] {
         return try await request(with: "/home_sections", mockProtocol: nil /*MockHomeSectionURLProtocol.self*/)
     }

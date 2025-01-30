@@ -19,6 +19,8 @@ struct HomeView: View {
     @State private var goToMerchant = false
     @State private var deepLinkPackage: Package?
     @State private var deepLinkMerchantId: UUID?
+    @State private var showShareSheet: Bool = false
+    @State private var shareSheetText: String = ""
     
     func section(at index: Int) -> any View {
         let section = viewModel.sections[index]
@@ -118,6 +120,9 @@ struct HomeView: View {
                     tabIsShown.wrappedValue = true
                     locationManager.checkLocationAuthorization()
                 })
+                .sheet(isPresented: $showShareSheet, content: {
+                    ShareSheet(text: shareSheetText)
+                })
                 .customNavigationBackButtonHidden(true)
                 .customNavLeadingItem {
                     LogoNavItem()
@@ -153,6 +158,26 @@ struct HomeView: View {
             case .merchant(let merchantId):
                 deepLinkMerchantId = merchantId
                 goToMerchant = true
+            case .referral:
+                Task {
+                    do {
+                        let referralCode = try await viewModel.getReferralCode().referralCode
+                        
+                        shareSheetText = """
+Join me on Green and get a free ZOOMOOV ride when downloading the Green Your Day app for the first time! Terms and conditions apply. Download the app and use my referral code.
+
+Referral code : \(referralCode)
+
+https://green.onelink.me/\(referralCode)
+"""
+                        
+                        await MainActor.run {
+                            showShareSheet = true
+                        }
+                    } catch {
+                        // fail silently
+                    }
+                }
             default:
                 return
             }
