@@ -2,10 +2,18 @@ import SwiftUI
 
 struct CustomAlert: View {
     struct Data: Equatable {
+        struct Style: Equatable {
+            var width: CGFloat = .infinity
+            var titleFont: Font = .custom("Poppins-SemiBold", size: 18)
+            var messageFont: Font = .custom("Poppins-Regular", size: 14)
+            var mainButtonColor: Color = .red
+        }
         let title: String
         let message: String
         let buttonTitle: String
-        let cancelTitle: String
+        var cancelTitle: String? = nil
+//        let showConfetti: Bool
+        var style: Style = .init()
         let action: EquatableAsyncVoidClosure
     }
     
@@ -23,12 +31,12 @@ struct CustomAlert: View {
                     .transition(.opacity)
                 VStack {
                     Text(data.title)
-                        .font(.custom("Poppins-SemiBold", size: 18))
+                        .font(data.style.titleFont)
                         .foregroundStyle(Color.text.black100)
                         .padding()
                     
                     Text(data.message)
-                        .font(.custom("Poppins-Regular", size: 14))
+                        .font(data.style.messageFont)
                         .foregroundStyle(Color.text.black60)
                         .multilineTextAlignment(.center)
                     
@@ -42,15 +50,17 @@ struct CustomAlert: View {
                             .frame(maxWidth: .infinity)
                     }
                     .padding()
-                    .buttonStyle(PrimaryButton(backgroundColor: .error))
-                    Button {
-                        close()
-                    } label: {
-                        Text(data.cancelTitle)
-                            .font(.custom("Poppins-SemiBold", size: 16))
-                            .foregroundStyle(Color.text.black60)
+                    .buttonStyle(PrimaryButton(backgroundColor: data.style.mainButtonColor))
+                    if let cancelTitle = data.cancelTitle {
+                        Button {
+                            close()
+                        } label: {
+                            Text(cancelTitle)
+                                .font(.custom("Poppins-SemiBold", size: 16))
+                                .foregroundStyle(Color.text.black60)
+                        }
+                        .padding(.bottom, 24)
                     }
-                    .padding(.bottom, 24)
                 }
                 .fixedSize(horizontal: false, vertical: true)
                 .padding()
@@ -58,6 +68,7 @@ struct CustomAlert: View {
                 .clipShape(RoundedRectangle(cornerRadius: 4))
                 .shadow(radius: 20)
                 .padding(30)
+//                .frame(width: data.style.width)
                 .transition(.flipFromBottom.combined(with: .opacity))
             }
         }

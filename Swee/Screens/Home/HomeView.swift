@@ -21,6 +21,12 @@ struct HomeView: View {
     @State private var deepLinkMerchantId: UUID?
     @State private var showShareSheet: Bool = false
     @State private var shareSheetText: String = ""
+    @State private var showAlert = false
+    @State private var alertData: CustomAlert.Data = .init(title: "Congratulations!",
+                                                           message: "You have received a free ZOOMOOV ride as a sign-up gift",
+                                                           buttonTitle: "Yay!",
+                                                           style: .init(mainButtonColor: .yellow),
+                                                           action: .init(closure: {}))
     
     func section(at index: Int) -> any View {
         let section = viewModel.sections[index]
@@ -118,6 +124,14 @@ struct HomeView: View {
                         try? await viewModel.fetch()
                     }
                     tabIsShown.wrappedValue = true
+                    if let freshReferral = api.user?.freshReferral, freshReferral {
+                        Task {
+                            await MainActor.run() {
+                                showAlert = true
+                                api.user?.freshReferral = false
+                            }
+                        }
+                    }
                     locationManager.checkLocationAuthorization()
                 })
                 .sheet(isPresented: $showShareSheet, content: {
@@ -133,8 +147,12 @@ struct HomeView: View {
                 .customBottomSheet(hidden: $hideBottomSheet) {
                     NotificationUpsell(hide: $hideBottomSheet)
                 }
+                .customAlert(isActive: $showAlert, data: alertData)
             }
         }
+        .onChange(of: showAlert, perform: { newValue in
+            tabIsShown.wrappedValue = !showAlert
+        })
         .onChange(of: route) { newValue in
             guard let route = route.wrappedValue else {
                 return

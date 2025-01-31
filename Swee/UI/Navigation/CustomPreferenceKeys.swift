@@ -54,7 +54,8 @@ struct CustomAlertData: PreferenceKey, Equatable {
     let title: String
     let message: String
     let buttonTitle: String
-    let cancelTitle: String
+    let cancelTitle: String?
+    var style: CustomAlert.Data.Style = .init()
     let action: EquatableAsyncVoidClosure
     
     static var defaultValue: CustomAlertData = .init(isActive: .constant(false),
@@ -62,6 +63,7 @@ struct CustomAlertData: PreferenceKey, Equatable {
                                                      message: "",
                                                      buttonTitle: "",
                                                      cancelTitle: "",
+                                                     style: .init(),
                                                      action: .init(closure: {}))
     
     static func reduce(value: inout CustomAlertData, nextValue: () -> CustomAlertData) {
@@ -95,7 +97,8 @@ extension View {
     }
         
     func customAlert(isActive: Binding<Bool>, data: CustomAlert.Data) -> some View {
-        preference(key: CustomAlertData.self, value: .init(isActive: isActive, title: data.title, message: data.message, buttonTitle: data.buttonTitle, cancelTitle: data.cancelTitle, action: data.action))
+        print("alert data style color =====", data.style.mainButtonColor)
+        return preference(key: CustomAlertData.self, value: .init(isActive: isActive, title: data.title, message: data.message, buttonTitle: data.buttonTitle, cancelTitle: data.cancelTitle, style: data.style, action: data.action))
     }
 }
 
