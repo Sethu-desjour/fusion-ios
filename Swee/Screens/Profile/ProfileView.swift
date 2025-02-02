@@ -88,7 +88,6 @@ struct ProfileView: View {
                                       message: "Do you want to log out from the app, you ll have to sign in again",
                                       buttonTitle: "Log out", 
                                       cancelTitle: "Stay In",
-                                      style: .init(mainButtonColor: .green),
                                       action: .init(closure: {
                         await api.signOut()
                         appRootManager.currentRoot = .authentication
@@ -102,7 +101,6 @@ struct ProfileView: View {
                                       message: "All your data will be deleted including your purchases",
                                       buttonTitle: "Delete",
                                       cancelTitle: "Keep the data",
-                                      style: .init(mainButtonColor: .green),
                                       action: .init(closure: {
                         do {
                             try await api.DEBUGdeleteAccount()

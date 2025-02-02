@@ -4,12 +4,13 @@ struct CustomNavView<Content: View>: View {
     let content: Content
     @State private var bottomSheetData: BottomSheetData = .init(view: Text("").equatable, hidden: .constant(true))
     @State private var alertData: CustomAlertData = .init(isActive: .constant(false),
-                                                           title: "",
-                                                           message: "",
-                                                           buttonTitle: "", 
-                                                           cancelTitle: "",
-                                                           action: .init(closure: {}))
-
+                                                          title: "",
+                                                          message: "",
+                                                          buttonTitle: "",
+                                                          cancelTitle: "",
+                                                          style: nil,
+                                                          action: .init(closure: {}))
+    
     init(@ViewBuilder content: () -> Content) {
         self.content = content()
     }
@@ -35,10 +36,11 @@ struct CustomNavView<Content: View>: View {
                 bottomSheetData.view.view
             }
             CustomAlert(isActive: alertData.$isActive, data: .init(title: alertData.title,
-                                                                  message: alertData.message,
-                                                                  buttonTitle: alertData.buttonTitle,
-                                                                  cancelTitle: alertData.cancelTitle, 
-                                                                  action: alertData.action))
+                                                                   message: alertData.message,
+                                                                   buttonTitle: alertData.buttonTitle,
+                                                                   cancelTitle: alertData.cancelTitle,
+                                                                   style: alertData.style,
+                                                                   action: alertData.action))
         }
     }
 }

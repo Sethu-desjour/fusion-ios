@@ -25,7 +25,10 @@ struct HomeView: View {
     @State private var alertData: CustomAlert.Data = .init(title: "Congratulations!",
                                                            message: "You have received a free ZOOMOOV ride as a sign-up gift",
                                                            buttonTitle: "Yay!",
-                                                           style: .init(mainButtonColor: .yellow),
+                                                           style: .defaultStyle(width: 260,
+                                                                                mainButtonColor: Color.primary.brand,
+                                                                                cornerRadius: 12,
+                                                                                image: Image("star")),
                                                            action: .init(closure: {}))
     
     func section(at index: Int) -> any View {
@@ -43,7 +46,7 @@ struct HomeView: View {
                 return EmptyView()
             }
             return ReferalCard(banner: banners[0])
-                    .padding(.horizontal, 16)
+                .padding(.horizontal, 16)
         }
     }
     
@@ -70,9 +73,9 @@ struct HomeView: View {
     var mainUI: some View {
         ScrollView {
             VStack(spacing: 16) {
-//                Button("Crash") {
-//                  fatalError("Crash was triggered")
-//                }
+                //                Button("Crash") {
+                //                  fatalError("Crash was triggered")
+                //                }
                 ForEach(viewModel.sections.indices, id: \.self) { index in
                     section(at: index).equatable.view
                 }
@@ -124,14 +127,14 @@ struct HomeView: View {
                         try? await viewModel.fetch()
                     }
                     tabIsShown.wrappedValue = true
-                    if let freshReferral = api.user?.freshReferral, freshReferral {
+//                    if let freshReferral = api.user?.freshReferral, freshReferral {
                         Task {
                             await MainActor.run() {
                                 showAlert = true
                                 api.user?.freshReferral = false
                             }
                         }
-                    }
+//                    }
                     locationManager.checkLocationAuthorization()
                 })
                 .sheet(isPresented: $showShareSheet, content: {
