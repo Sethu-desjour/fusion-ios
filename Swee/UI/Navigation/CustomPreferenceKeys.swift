@@ -55,6 +55,7 @@ struct CustomAlertData: PreferenceKey, Equatable {
     let message: String
     let buttonTitle: String
     let cancelTitle: String?
+    let showConfetti: Bool
     let style: CustomAlert.Data.Style?
     let action: EquatableAsyncVoidClosure
     
@@ -63,6 +64,7 @@ struct CustomAlertData: PreferenceKey, Equatable {
                                                      message: "",
                                                      buttonTitle: "",
                                                      cancelTitle: "",
+                                                     showConfetti: false,
                                                      style: .defaultStyle(),
                                                      action: .init(closure: {}))
     
@@ -97,7 +99,14 @@ extension View {
     }
         
     func customAlert(isActive: Binding<Bool>, data: CustomAlert.Data) -> some View {
-        return preference(key: CustomAlertData.self, value: .init(isActive: isActive, title: data.title, message: data.message, buttonTitle: data.buttonTitle, cancelTitle: data.cancelTitle, style: data.style, action: data.action))
+        return preference(key: CustomAlertData.self, value: .init(isActive: isActive,
+                                                                  title: data.title,
+                                                                  message: data.message,
+                                                                  buttonTitle: data.buttonTitle,
+                                                                  cancelTitle: data.cancelTitle,
+                                                                  showConfetti: data.showConfetti,
+                                                                  style: data.style,
+                                                                  action: data.action))
     }
 }
 

@@ -8,6 +8,7 @@ struct CustomNavView<Content: View>: View {
                                                           message: "",
                                                           buttonTitle: "",
                                                           cancelTitle: "",
+                                                          showConfetti: false,
                                                           style: nil,
                                                           action: .init(closure: {}))
     
@@ -39,6 +40,7 @@ struct CustomNavView<Content: View>: View {
                                                                    message: alertData.message,
                                                                    buttonTitle: alertData.buttonTitle,
                                                                    cancelTitle: alertData.cancelTitle,
+                                                                   showConfetti: alertData.showConfetti,
                                                                    style: alertData.style,
                                                                    action: alertData.action))
         }

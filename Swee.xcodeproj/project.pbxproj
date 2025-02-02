@@ -30,6 +30,8 @@
 		AF1A26CF2D4A3AA8003949BC /* UserReferralCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1A26CD2D4A3AA8003949BC /* UserReferralCodeModel.swift */; };
 		AF1A26D12D4B1FA3003949BC /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1A26D02D4B1FA3003949BC /* ShareSheet.swift */; };
 		AF1A26D22D4B1FA3003949BC /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1A26D02D4B1FA3003949BC /* ShareSheet.swift */; };
+		AF1A26DF2D4F2303003949BC /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = AF1A26DE2D4F2303003949BC /* ConfettiSwiftUI */; };
+		AF1A26E12D4F2310003949BC /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = AF1A26E02D4F2310003949BC /* ConfettiSwiftUI */; };
 		AF1C31F42CB946A8001DD7EE /* AddChildViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1C31F32CB946A8001DD7EE /* AddChildViewModel.swift */; };
 		AF1FAC472C79B0E100654FB7 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1FAC462C79B0E100654FB7 /* AuthView.swift */; };
 		AF1FAC492C79B12A00654FB7 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1FAC482C79B12A00654FB7 /* View.swift */; };
@@ -506,6 +508,7 @@
 				AF662A362CC5F20C00613E45 /* SDWebImageSwiftUI in Frameworks */,
 				AFD6F5C52D36757F0015B536 /* FirebaseAnalytics in Frameworks */,
 				AF662A3B2CC5F28D00613E45 /* GoogleSignInSwift in Frameworks */,
+				AF1A26DF2D4F2303003949BC /* ConfettiSwiftUI in Frameworks */,
 				AF662A332CC5F1AF00613E45 /* SkeletonUI in Frameworks */,
 				AF3733982CC8A35D00AE6A45 /* StripeApplePay in Frameworks */,
 				AF662A402CC5F44400613E45 /* FirebaseCrashlytics in Frameworks */,
@@ -532,6 +535,7 @@
 				AFB830D32D0057FE00DB94C2 /* StripePaymentSheet in Frameworks */,
 				AFB830D42D0057FE00DB94C2 /* FirebaseMessaging in Frameworks */,
 				AFB830D52D0057FE00DB94C2 /* MarkdownUI in Frameworks */,
+				AF1A26E12D4F2310003949BC /* ConfettiSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -982,6 +986,7 @@
 				AFB4E83E2CD4A247002273C4 /* FirebaseMessaging */,
 				AFCFB0372D09BDCA00A92B50 /* FirebaseAnalytics */,
 				AFD6F5C42D36757F0015B536 /* FirebaseAnalytics */,
+				AF1A26DE2D4F2303003949BC /* ConfettiSwiftUI */,
 			);
 			productName = Swee;
 			productReference = AF170AFD2C71C02900544970 /* Swee.app */;
@@ -1014,6 +1019,7 @@
 				AFB830532D0057FE00DB94C2 /* StripeApplePay */,
 				AFB830542D0057FE00DB94C2 /* FirebaseMessaging */,
 				AFCFB0392D09C14C00A92B50 /* FirebaseAnalytics */,
+				AF1A26E02D4F2310003949BC /* ConfettiSwiftUI */,
 			);
 			productName = Swee;
 			productReference = AFB830FB2D0057FE00DB94C2 /* Swee-Beta.app */;
@@ -1051,6 +1057,7 @@
 				AF662A3C2CC5F44400613E45 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				AF3813ED2CC5F59C0028FD02 /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
 				AF3813F02CC601180028FD02 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
+				AF1A26DD2D4F2302003949BC /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 			);
 			productRefGroup = AF170AFE2C71C02900544970 /* Products */;
 			projectDirPath = "";
@@ -1783,6 +1790,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		AF1A26DD2D4F2302003949BC /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.2;
+			};
+		};
 		AF3813ED2CC5F59C0028FD02 /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/siteline/swiftui-introspect";
@@ -1898,6 +1913,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		AF1A26DE2D4F2303003949BC /* ConfettiSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF1A26DD2D4F2302003949BC /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
+			productName = ConfettiSwiftUI;
+		};
+		AF1A26E02D4F2310003949BC /* ConfettiSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF1A26DD2D4F2302003949BC /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
+			productName = ConfettiSwiftUI;
+		};
 		AF3733972CC8A35D00AE6A45 /* StripeApplePay */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AF3813F02CC601180028FD02 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;

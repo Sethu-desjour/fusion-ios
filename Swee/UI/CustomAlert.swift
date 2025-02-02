@@ -1,4 +1,5 @@
 import SwiftUI
+import ConfettiSwiftUI
 
 struct CustomAlert: View {
     struct Data: Equatable {
@@ -28,7 +29,7 @@ struct CustomAlert: View {
         let message: String
         let buttonTitle: String
         var cancelTitle: String? = nil
-//        let showConfetti: Bool
+        var showConfetti: Bool = false
         var style: Style? = nil
         let action: EquatableAsyncVoidClosure
     }
@@ -38,6 +39,7 @@ struct CustomAlert: View {
     }
     
     @Binding var isActive: Bool
+    @State private var confettiTrigger: Int = 0
     var data: Data
     
     var body: some View {
@@ -92,6 +94,11 @@ struct CustomAlert: View {
                     .padding(dataStyle.width == .infinity ? 30 : 0)
                     .frame(width: dataStyle.width)
                     .transition(.flipFromBottom.combined(with: .opacity))
+                    .onAppear {
+                        if data.showConfetti {
+                            confettiTrigger += 1
+                        }
+                    }
                     if let image = dataStyle.image {
                         image
                             .padding(.top, -20)
@@ -99,6 +106,7 @@ struct CustomAlert: View {
                 }
             }
         }
+        .confettiCannon(trigger: $confettiTrigger, num: 40)
         .animation(.spring(duration: 0.2), value: isActive)
         .ignoresSafeArea()
     }

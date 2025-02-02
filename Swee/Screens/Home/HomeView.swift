@@ -25,6 +25,7 @@ struct HomeView: View {
     @State private var alertData: CustomAlert.Data = .init(title: "Congratulations!",
                                                            message: "You have received a free ZOOMOOV ride as a sign-up gift",
                                                            buttonTitle: "Yay!",
+                                                           showConfetti: true,
                                                            style: .defaultStyle(width: 260,
                                                                                 mainButtonColor: Color.primary.brand,
                                                                                 cornerRadius: 12,
@@ -127,14 +128,14 @@ struct HomeView: View {
                         try? await viewModel.fetch()
                     }
                     tabIsShown.wrappedValue = true
-//                    if let freshReferral = api.user?.freshReferral, freshReferral {
+                    if let freshReferral = api.user?.freshReferral, freshReferral {
                         Task {
                             await MainActor.run() {
                                 showAlert = true
                                 api.user?.freshReferral = false
                             }
                         }
-//                    }
+                    }
                     locationManager.checkLocationAuthorization()
                 })
                 .sheet(isPresented: $showShareSheet, content: {
