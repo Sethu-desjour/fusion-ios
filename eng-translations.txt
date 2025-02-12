@@ -86,6 +86,8 @@
 
 "cta_apply" = "Apply";
 
+"cta_retry" = "Retry";
+
 /* CTA Buttons */
 "cta_complete" = "Complete";
 
@@ -112,6 +114,8 @@
 "cta_share" = "Share";
 
 "cta_skip" = "Skip";
+
+"cta_confirm" = "Confirm";
 
 "error_cta" = "Try again";
 
@@ -141,11 +145,15 @@
 
 "my_activity_empty_cta_reset_filters" = "Reset filters";
 
+"my_activity_empty_purchases_description" = "You have not made any purchases yet";
+
+"my_activity_empty_redemptions_description" = "You have not redeemed anything yet";
+
 "my_activity_empty_description" = "You have not made any purchases or redemptions yet";
 
-"my_activity_empty_purchases_description" = "No purchases to show for the date range selected";
+"my_activity_empty_purchases_description_filter" = "No purchases to show for the date range selected";
 
-"my_activity_empty_redemptions_description" = "No redemptions to show for the date range selected";
+"my_activity_empty_redemptions_description_filter" = "No redemptions to show for the date range selected";
 
 "my_activity_empty_title" = "It's empty here";
 
@@ -194,9 +202,9 @@
 
 "notification_permission_dialog_context_3" = "Child pick up alert messages";
 
-"notification_permission_dialog_context_title" = "If you allow notification, you'll receive";
+"notification_permission_dialog_context_title" = "If you allow notifications, you'll receive";
 
-"notification_permission_dialog_cta_allow" = "Allow notification";
+"notification_permission_dialog_cta_allow" = "Allow notifications";
 
 "notification_permission_dialog_cta_later" = "Not now";
 
@@ -205,7 +213,7 @@
 /* Permission Request: Notification */
 "notification_permission_dialog_title" = "Stay up to date";
 
-"product_details_by_merchant_stores_title" = "See all %@ applicable location(s)";
+"product_details_by_merchant_stores_title" = "See all %@ location(s)";
 
 /* Product Details */
 "product_details_by_merchant_title" = "By %@";
@@ -216,9 +224,15 @@
 
 "profile_add_child_title" = "Add child";
 
+"profile_add_another_child" = "Add another child";
+
 "profile_add_child_title_not_empty" = "Children";
 
 "profile_add_photo_cta" = "Add Photo";
+
+"profile_add_photo_album" = "Photo Album";
+
+"profile_add_photo_camera" = "Camera";
 
 "profile_child_age" = "Age";
 
@@ -289,6 +303,8 @@
 
 "profile_settings_email_id_hint" = "Enter email ID";
 
+"profile_settings_email_invalid" = "Check your email format";
+
 "profile_settings_gender" = "Gender";
 
 "profile_settings_gender_empty_cta" = "Add gender";
@@ -336,6 +352,8 @@
 
 "redemption_scan_qr_to_end_session_success_message" = "Session ended!";
 
+"redemption_scan_qr_to_end_session_success_description" = "Remaining time left %@ hr";
+
 "redemption_scan_qr_to_end_session_title" = "Check-out";
 
 "redemption_scan_qr_to_redeem_coupon_description" = "Show this QR code at the counter to redeem your purchase from our staff";
@@ -356,6 +374,10 @@
 
 "redemption_select_child_cta" = "Select child";
 
+"redemption_time_allotted" = "Time allotted: %@ hr";
+
+"redemption_time_remaining" = "Time remaining: %@ hr";
+
 "redemption_set_qty_cta" = "Redeem now";
 
 /* Redemption: QR */
@@ -367,6 +389,8 @@
 "redemption_validity" = "Valid until";
 
 "see_more" = "see more";
+
+"see_less" = "see less";
 
 "select" = "Select";
 
@@ -398,6 +422,10 @@
 
 "user_onboarding_tnc" = "By continuing, you accept Green App <br/><u><a href=\"https://www.greenyourday.app/privacy-policy\">Terms and condition</a></u>";
 
+"ios_user_onboarding_tnc_1" = "By continuing, you accept Green App's";
+
+"ios_user_onboarding_tnc_2" = "Terms and Conditions";
+
 "user_onboarding_verification_cta_from_phone_login" = "Login";
 
 "user_onboarding_verification_cta_from_social_login" = "Verify";
@@ -416,8 +444,18 @@
 
 "user_onboarding_verification_otp_user_invalid" = "Check your phone number";
 
+"user_onboarding_social_login_failed_title" = "Social login failed";
+
+"user_onboarding_social_login_failed_message" = "Please try again";
+
+"user_onboarding_verification_otp_phone_taken" = "This phone number is registered to another account";
+
 "user_onboarding_verification_subtitle" = "Enter OTP";
 
 /* User Onboarding, OTP */
 "user_onboarding_verification_title" = "Enter your OTP";
 
+/* API errors */
+"api_error_reauthentication" = "Failed to reauthenticate";
+
+"api_error_loading_content_failed" = "Unable to load content";
