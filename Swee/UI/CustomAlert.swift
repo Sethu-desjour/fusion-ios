@@ -22,12 +22,12 @@ struct CustomAlert: View {
                     }
                     .transition(.opacity)
                 VStack {
-                    Text(data.title)
+                    Text(data.title.i18n)
                         .font(.custom("Poppins-SemiBold", size: 18))
                         .foregroundStyle(Color.text.black100)
                         .padding()
                     
-                    Text(data.message)
+                    Text(data.message.i18n)
                         .font(.custom("Poppins-Regular", size: 14))
                         .foregroundStyle(Color.text.black60)
                         .multilineTextAlignment(.center)
@@ -36,7 +36,7 @@ struct CustomAlert: View {
                         try? await data.action.closure()
                         close()
                     } label: {
-                        Text(data.buttonTitle)
+                        Text(data.buttonTitle.i18n)
                             .font(.custom("Poppins-Bold", size: 16))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -46,7 +46,7 @@ struct CustomAlert: View {
                     Button {
                         close()
                     } label: {
-                        Text(data.cancelTitle)
+                        Text(data.cancelTitle.i18n)
                             .font(.custom("Poppins-SemiBold", size: 16))
                             .foregroundStyle(Color.text.black60)
                     }
